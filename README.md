@@ -45,7 +45,7 @@ Full project documentation lives in [`/docs`](./docs/):
 | [REPORT_SPEC.md](./docs/REPORT_SPEC.md) | Clinical report and export behavior |
 | [AI_ROADMAP.md](./docs/AI_ROADMAP.md) | Rule-based insights today; AI future |
 | [CONTRIBUTING.md](./docs/CONTRIBUTING.md) | Development workflow and PR guidance |
-| [ENGINEERING_PRINCIPLES.md](./docs/ENGINEERING_PRINCIPLES.md) | Engineering constitution and standards |
+| [ENGINEERING_PRINCIPLES.md](./ENGINEERING_PRINCIPLES.md) | Engineering constitution and standards (repository root) |
 | [CHANGELOG.md](./docs/CHANGELOG.md) | Release history |
 
 ## Clinical Anatomy Engine

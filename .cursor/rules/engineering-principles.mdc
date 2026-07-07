@@ -1,0 +1,64 @@
+---
+description: PainLocator engineering constitution — CAE ecosystem, workflows, clinical UX, git standards
+alwaysApply: true
+---
+
+# PainLocator Engineering Constitution
+
+PainLocator is not a generic demo application. It is a professional clinical software platform built on the **Clinical Anatomy Engine (CAE)**.
+
+Every architectural, UI, and engineering decision must support this long-term vision.
+
+## CAE Ecosystem Principle (critical)
+
+**PainLocator is a flagship application built on CAE.** The engine must remain **reusable** so future healthcare applications can use the same rendering, coordinate mapping, annotation, reporting, and AI infrastructure **without modification**.
+
+- `src/engine/` = reusable CAE (no PainLocator workflow logic)
+- `src/features/`, `src/app/` = PainLocator application
+- Never duplicate engine capabilities in app code
+
+## Product philosophy
+
+Prioritize: clinical clarity, patient ease, physician efficiency, accessibility, maintainability, extensibility, professional presentation. Quality over quantity. Every feature must solve a real clinical workflow.
+
+## UX
+
+Anatomy is always the primary focus. Calm, uncluttered, progressive disclosure. Professional medical software — not a control dashboard.
+
+## Workflows
+
+Every feature belongs to one: **Capture** (log pain), **Review** (history/timeline), **Clinical Analysis** (AI, reporting, clinical tools). If unclear, reconsider placement.
+
+## CAE rules
+
+Normalized coordinates (0–1). Decouple rendering from annotation. No duplicated coordinate logic. Region detection independent of assets.
+
+## UI
+
+Majority screen space for anatomy. Theme tokens only — never hardcode colors. WCAG contrast. Toolbar readable in light and dark.
+
+## Annotations
+
+Entries contain regions/points/polygons. Editable: move, resize, delete, rename, recolor. Hierarchy: Markers → Entries → Sessions → Patients.
+
+## Reporting
+
+Clinical-grade reports. PDF (print), JSON, PNG. Never expose debug info in reports.
+
+## JSON
+
+Schema version required. Backward compatibility via versioning. Document in `docs/JSON_SCHEMA.md`.
+
+## AI
+
+Assistive only — never diagnostic. Label: "Assistive Clinical Observation — Not a Medical Diagnosis."
+
+## Code
+
+Maintainability over speed. Small modules. Conventional Commits. `npm run build` must pass before milestone commits.
+
+## Final principle
+
+Never sacrifice long-term maintainability for short-term speed. Build for an ecosystem of clinical applications on CAE.
+
+**Full constitution:** `ENGINEERING_PRINCIPLES.md` (repository root)

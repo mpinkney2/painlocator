@@ -72,7 +72,7 @@ PainLocator transitions from prototype to platform. This release establishes the
 ### Documentation
 
 - Foundation `/docs` architecture and vision documentation
-- [ENGINEERING_PRINCIPLES.md](./ENGINEERING_PRINCIPLES.md) — engineering constitution
+- [ENGINEERING_PRINCIPLES.md](../ENGINEERING_PRINCIPLES.md) — engineering constitution
 
 ---
 
