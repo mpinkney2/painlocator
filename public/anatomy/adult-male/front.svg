@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 360" width="200" height="360">
+  <defs>
+    <linearGradient id="skin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c4a882"/>
+      <stop offset="100%" stop-color="#9a7b5a"/>
+    </linearGradient>
+    <radialGradient id="shade" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#d4bc9a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.15"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="360" fill="#0a1220"/>
+  <ellipse cx="100" cy="40" rx="20" ry="24" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <rect x="92" y="60" width="16" height="16" rx="3" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <path d="M 62 76 C 62 76 66 114 74 122 C 80 130 120 130 126 122 C 134 114 138 76 138 76 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <path d="M 74 122 C 74 122 76 154 76 160 C 80 166 120 166 124 160 C 124 154 126 122 126 122 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <path d="M 76 160 L 124 160 L 126 184 L 74 184 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <path d="M 62 76 Q 52 82 48 92" stroke="#7a6348" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M 48 92 L 38 140 L 30 185" stroke="#7a6348" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <ellipse cx="27" cy="194" rx="7" ry="8" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <path d="M 138 76 Q 148 82 152 92" stroke="#7a6348" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M 152 92 L 162 140 L 170 185" stroke="#7a6348" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <ellipse cx="173" cy="194" rx="7" ry="8" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <path d="M 85 184 L 81 255 L 77 326" stroke="#7a6348" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <ellipse cx="74" cy="336" rx="10" ry="6" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <path d="M 115 184 L 119 255 L 123 326" stroke="#7a6348" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <ellipse cx="126" cy="336" rx="10" ry="6" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <rect width="200" height="360" fill="url(#shade)" pointer-events="none"/>
+  <text x="100" y="350" fill="#64748b" font-size="8" text-anchor="middle" font-family="sans-serif">Clinical Atlas  Front</text>
+</svg>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clinical Anatomy Engine (CAE) - Advanced pain tracking visualization suite and clinical evaluation portal.">
+  <title>PainLocator - Clinical Anatomy Engine</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CDNs for Medical Icons & Charts -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.3">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.3">
+</head>
+<body class="wf-capture">
+  <div class="app" id="app">
+
+    <!-- HEADER / CONTROL HUD -->
+    <header class="header">
+      <div class="brand" role="banner" aria-label="PainLocator">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <div class="brand-lockup">
+          <p class="brand-title">
+            <span class="brand-pain">Pain</span><span class="brand-locator">Locator</span>
+          </p>
+          <p class="brand-tagline">Powered by Clinical Anatomy Engine</p>
+        </div>
+      </div>
+      
+      <!-- WORKFLOW STAGES -->
+      <div class="mode-toggle-group workflow-toggle">
+        <span class="toggle-label-sm">Workflow:</span>
+        <div class="toggle-buttons">
+          <button type="button" class="btn btn-toggle active" id="btnCaptureWF" onclick="setWorkflowMode('capture')">Capture</button>
+          <button type="button" class="btn btn-toggle" id="btnReviewWF" onclick="setWorkflowMode('review')">Review</button>
+          <button type="button" class="btn btn-toggle" id="btnClinicalWF" onclick="setWorkflowMode('clinical')">Clinical Analysis</button>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-ghost" id="btnThemeToggle" onclick="toggleTheme()"><i data-lucide="moon"></i> Dark Mode</button>
+        <button type="button" class="btn btn-ghost" id="btnClear" title="Clear all entries">Clear Data</button>
+        <button type="button" class="btn btn-ghost show-clinical" id="btnInsights" aria-label="Open AI pattern analysis">AI Analysis</button>
+        <button type="button" class="btn btn-primary show-clinical" id="btnExport" aria-label="Export session or report">Export</button>
+        <button type="button" class="btn btn-ghost show-clinical" id="btnImport" aria-label="Import session from JSON">Import</button>
+      </div>
+    </header>
+
+    <!-- WORKSPACE LAYOUT -->
+    <main class="layout">
+
+      <!-- LEFT COLUMN: CLINICAL ANATOMY COMMAND CENTER -->
+      <aside class="panel panel-left command-center cae-sidebar" id="caeSidebar">
+        <h2 class="command-center-title"><i data-lucide="sliders"></i> CAE Command Center</h2>
+        <div class="cae-sidebar-content">
+        
+        <!-- ACCORDION 1: PATIENT MODEL -->
+        <div class="accordion" id="accModel">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accModel')">
+            <span><i data-lucide="user"></i> Patient Model</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="radio-group" id="modelSelector">
+              <label class="radio-option"><input type="radio" name="patient_model" value="male" checked><span>Adult Male</span></label>
+              <label class="radio-option"><input type="radio" name="patient_model" value="female"><span>Adult Female</span></label>
+              <label class="radio-option"><input type="radio" name="patient_model" value="child"><span>Child</span></label>
+              <label class="radio-option"><input type="radio" name="patient_model" value="teen"><span>Teen</span></label>
+              <label class="radio-option"><input type="radio" name="patient_model" value="senior"><span>Senior</span></label>
+            </div>
+            <div class="future-placeholders show-clinical">
+              <span class="placeholder-title">Future Profiles:</span>
+              <span class="placeholder-tag">Athletic</span>
+              <span class="placeholder-tag">Bariatric</span>
+              <span class="placeholder-tag">Pregnancy</span>
+              <span class="placeholder-tag">Pediatric Ortho</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCORDION 2: BODY VIEW -->
+        <div class="accordion" id="accView">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accView')">
+            <span><i data-lucide="eye"></i> Body View</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="grid-2x2" id="viewSelector">
+              <button type="button" class="view-btn active" data-view="front">Front</button>
+              <button type="button" class="view-btn" data-view="back">Back</button>
+              <button type="button" class="view-btn" data-view="left">Left</button>
+              <button type="button" class="view-btn" data-view="right">Right</button>
+            </div>
+            <div class="future-placeholders show-clinical">
+              <span class="placeholder-title">Future Operations:</span>
+              <span class="placeholder-tag">3D Rotate</span>
+              <span class="placeholder-tag">Perspective</span>
+              <span class="placeholder-tag">Top / Bottom</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISUALIZATION -->
+        <div class="accordion" id="accVisualization">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accVisualization')">
+            <span><i data-lucide="scan-eye"></i> Visualization</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="radio-group" id="visualizationMode">
+              <label class="radio-option"><input type="radio" name="viz_mode" value="standard" checked><span>Standard Anatomy</span></label>
+              <label class="radio-option"><input type="radio" name="viz_mode" value="heatmap"><span>Pain Heatmap</span></label>
+              <label class="radio-option show-clinical"><input type="radio" name="viz_mode" value="reference"><span>Reference Overlay</span></label>
+            </div>
+            <div class="viz-reference-panel show-clinical" id="vizReferencePanel" hidden>
+              <span class="viz-subtitle">Reference Overlay</span>
+              <div class="radio-group" id="referenceOverlayOptions">
+                <label class="radio-option"><input type="radio" name="ref_overlay" value="none" checked><span>None</span></label>
+              </div>
+              <p class="viz-empty-note" id="vizOverlayEmpty" hidden>No reference plates available for this view.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORT SETTINGS (Clinical) -->
+        <div class="accordion collapsed show-clinical" id="accDetail">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accDetail')">
+            <span><i data-lucide="settings"></i> Report Settings</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="meta-field" style="margin-bottom: 12px;">
+              <span>Rendering Engine</span>
+              <select id="selectRendererMode" onchange="changeRendererMode(this.value)">
+                <option value="clinical" selected>Clinical (Medical Atlas)</option>
+                <option value="prototype">Prototype (Geometric Outline)</option>
+              </select>
+            </div>
+            <div class="radio-group" id="detailSelector">
+              <label class="radio-option"><input type="radio" name="body_detail" value="basic"><span>Basic</span></label>
+              <label class="radio-option"><input type="radio" name="body_detail" value="clinical"><span>Clinical</span></label>
+              <label class="radio-option"><input type="radio" name="body_detail" value="professional" checked><span>Professional</span></label>
+              <label class="radio-option"><input type="radio" name="body_detail" value="expert"><span>Expert</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAIN STYLE (Clinical) -->
+        <div class="accordion collapsed show-clinical" id="accPainStyle">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accPainStyle')">
+            <span><i data-lucide="activity"></i> Pain Style</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="radio-group" id="painStyleSelector">
+              <label class="radio-option"><input type="radio" name="pain_style" value="heatmap" checked><span>Heat Map Glow</span></label>
+              <label class="radio-option"><input type="radio" name="pain_style" value="target"><span>Target Marker</span></label>
+              <label class="radio-option show-clinical"><input type="radio" name="pain_style" value="radiating"><span>Radiating Waves</span></label>
+              <label class="radio-option show-clinical"><input type="radio" name="pain_style" value="trigger"><span>Trigger Point Cross</span></label>
+              <label class="radio-option show-clinical"><input type="radio" name="pain_style" value="diffuse"><span>Diffuse/Numbness</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI OVERLAYS (Clinical) -->
+        <div class="accordion collapsed show-clinical" id="accAIOverlays">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accAIOverlays')">
+            <span><i data-lucide="sparkles"></i> AI Overlays</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="checkbox-group" id="aiOverlayToggles">
+              <label class="check-option"><input type="checkbox" data-overlay="suggested"><span>Suggested Structures</span></label>
+              <label class="check-option"><input type="checkbox" data-overlay="referred"><span>Referred Pain Zones</span></label>
+              <label class="check-option"><input type="checkbox" data-overlay="dermatomes"><span>Dermatomes (Nerve Root)</span></label>
+              <label class="check-option"><input type="checkbox" data-overlay="myotomes"><span>Myotomes (Muscle Chains)</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCESSIBILITY -->
+        <div class="accordion collapsed" id="accAccessibility">
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accAccessibility')">
+            <span><i data-lucide="accessibility"></i> Accessibility</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="checkbox-group" id="accessibilitySelector">
+              <label class="check-option"><input type="checkbox" id="checkContrast"><span>High Contrast Mode</span></label>
+              <label class="check-option"><input type="checkbox" id="checkColorblind"><span>Color Blind Safe Theme</span></label>
+              <label class="check-option"><input type="checkbox" id="checkTargets"><span>Large Touch Targets</span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+      <div class="col-resizer" id="leftResizeHandle" title="Drag to resize sidebar" aria-label="Resize left panel"></div>
+
+      <!-- CENTER COLUMN: ANATOMY + TIMELINE -->
+      <section class="panel panel-center center-panel">
+        <div class="center-workspace">
+        <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
+          <div class="region-tools review-tools show-review" id="reviewTools">
+            <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
+            <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
+            <button type="button" class="region-tool" data-review-tool="compare" title="Compare two entries">Compare</button>
+            <button type="button" class="btn btn-ghost btn-sm region-tool-edit" id="btnEditEntry" title="Enable region editing">Edit Entry</button>
+          </div>
+          <div class="region-tools capture-tools" id="captureTools">
+            <button type="button" class="region-tool" data-tool="select" title="Select / move regions">Select</button>
+            <button type="button" class="region-tool" data-tool="point" title="Mark a pain point">Point</button>
+            <button type="button" class="region-tool active" data-tool="circle" title="Click-drag to mark a pain region">Region</button>
+            <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Click vertices · double-click or close on first point">Polygon</button>
+            <button type="button" class="region-tool show-clinical" data-tool="brush" disabled title="Coming soon">Brush</button>
+            <button type="button" class="region-tool show-clinical" data-tool="lasso" disabled title="Coming soon">Lasso</button>
+            <button type="button" class="region-tool" data-tool="eraser" title="Remove region">Eraser</button>
+          </div>
+          <div class="avatar-stage" id="avatarStage"></div>
+          <p class="avatar-hint" id="avatarHint">Select Point or Region · mark where it hurts before saving</p>
+        </div>
+
+        <section class="timeline-panel" id="timelinePanel">
+          <div class="timeline-panel-head">
+            <h2 class="block-title">Recovery Timeline</h2>
+            <div class="timeline-panel-meta" id="timelineMeta">No entries logged yet.</div>
+          </div>
+          <div class="chart-box timeline-chart-box">
+            <canvas id="timelineChart"></canvas>
+            <div class="chart-empty" id="chartEmpty">No entries yet. Log pain entries to build your timeline.</div>
+          </div>
+        </section>
+        </div>
+      </section>
+
+      <div class="col-resizer" id="rightResizeHandle" title="Drag to resize panel" aria-label="Resize right panel"></div>
+
+      <!-- RIGHT COLUMN: PAIN ENTRY / REGION DETAILS -->
+      <aside class="panel panel-right clinical-doc-panel">
+        <h2 class="clinical-doc-title" id="clinicalDocTitle">Log Pain</h2>
+        <div class="clinical-doc-scroll">
+          <div class="trend-summary show-review" id="trendSummary">
+            <span class="block-title">Trend Summary</span>
+            <div class="insight-box" id="trendSummaryBox">
+              <p>Log entries in Capture to see patterns here.</p>
+            </div>
+          </div>
+
+          <div class="compare-panel show-review" id="comparePanel" hidden>
+            <span class="block-title">Compare Entries</span>
+            <div class="compare-row">
+              <label class="meta-field">
+                <span>Entry A</span>
+                <select id="compareEntryA"></select>
+              </label>
+              <label class="meta-field">
+                <span>Entry B</span>
+                <select id="compareEntryB"></select>
+              </label>
+            </div>
+            <div class="compare-result" id="compareResult"></div>
+          </div>
+
+          <div class="entry-filter-bar show-review" id="entryFilterBar" hidden>
+            <span class="block-title">Filter</span>
+            <div class="pill-grid" id="entryFilters">
+              <button type="button" class="pill active" data-filter="all">All</button>
+              <button type="button" class="pill" data-filter="week">Last 7 days</button>
+              <button type="button" class="pill" data-filter="severe">Severe (7+)</button>
+            </div>
+          </div>
+
+          <div class="active-entry-summary" id="activeEntrySummary">
+            <p class="entry-list-empty">No active entry. Mark regions on the anatomy or select from the timeline.</p>
+          </div>
+
+          <div class="show-capture-form">
+          <section class="intensity-hero" id="intensityHero" aria-label="Pain intensity">
+            <div class="intensity-hero-head">
+              <span class="block-title">Pain Intensity</span>
+              <div class="intensity-row">
+                <span class="intensity-num" id="intensityNum">5</span>
+                <span class="intensity-label" id="intensityLabel">Moderate</span>
+              </div>
+            </div>
+            <input type="range" id="intensitySlider" class="slider slider-hero" min="0" max="10" value="5" aria-valuemin="0" aria-valuemax="10">
+            <div class="intensity-scale" aria-hidden="true">
+              <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span>
+            </div>
+          </section>
+
+          <div class="accordion show-review-or-clinical" id="accActiveEntry">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('accActiveEntry')">
+              <span><i data-lucide="list"></i> Pain Entries</span>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="entry-list" id="entryList">
+                <p class="entry-list-empty">No pain entries yet. Mark regions on the anatomy to start.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion show-clinical" id="accRegions">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('accRegions')">
+              <span><i data-lucide="map-pin"></i> Regions</span>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="region-editor" id="regionEditor">
+                <span class="block-title">Selected Region</span>
+                <div class="region-editor-row">
+                  <input type="text" id="regionLabelInput" class="notes-input" placeholder="Describe where it hurts">
+                  <select id="regionLayerSelect" class="show-clinical">
+                    <option value="skin">Skin</option>
+                    <option value="muscle">Muscle</option>
+                    <option value="skeleton">Skeleton</option>
+                    <option value="nerve">Nerve</option>
+                    <option value="organ">Organ</option>
+                  </select>
+                  <select id="regionShapeSelect" class="show-clinical">
+                    <option value="circle">Circle</option>
+                    <option value="ellipse">Ellipse</option>
+                    <option value="polygon">Polygon</option>
+                    <option value="point">Point</option>
+                  </select>
+                </div>
+                <div class="region-meta show-clinical" id="regionMetaPanel"></div>
+                <div class="entry-form-actions">
+                  <button type="button" class="btn btn-ghost btn-sm show-clinical" id="btnDupRegion">Duplicate</button>
+                  <button type="button" class="btn btn-ghost btn-sm show-clinical" id="btnMirrorRegion">Mirror</button>
+                  <button type="button" class="btn btn-ghost btn-sm danger-text" id="btnDeleteRegion">Delete Region</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion show-capture-form" id="accSymptoms">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('accSymptoms')">
+              <span><i data-lucide="activity"></i> Symptoms</span>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <div class="accordion-content intake-form-box pain-entry-panel">
+          <div class="block-row">
+            <div class="intake-block flex-grow">
+              <span class="block-title">Pain Quality (Qualitative Indicators)</span>
+              <div class="pill-grid" id="qualityPills">
+                <button type="button" class="pill" data-value="Burning">Burning</button>
+                <button type="button" class="pill" data-value="Sharp">Sharp</button>
+                <button type="button" class="pill" data-value="Pressure">Pressure</button>
+                <button type="button" class="pill" data-value="Pulling">Pulling</button>
+                <button type="button" class="pill" data-value="Throbbing">Throbbing</button>
+                <button type="button" class="pill" data-value="Ache">Ache</button>
+                <button type="button" class="pill" data-value="Cramping">Cramping</button>
+                <button type="button" class="pill" data-value="Stabbing">Stabbing</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="block-row margin-top-sm">
+            <div class="intake-block flex-grow">
+              <span class="block-title">Trigger Factors</span>
+              <div class="pill-grid" id="triggerPills">
+                <button type="button" class="pill" data-value="Standing">Standing</button>
+                <button type="button" class="pill" data-value="First step">First step</button>
+                <button type="button" class="pill" data-value="Sitting">Sitting</button>
+                <button type="button" class="pill" data-value="Coughing">Coughing</button>
+                <button type="button" class="pill" data-value="Lifting">Lifting</button>
+                <button type="button" class="pill" data-value="Walking">Walking</button>
+                <button type="button" class="pill" data-value="At rest">At rest</button>
+                <button type="button" class="pill" data-value="Bending">Bending</button>
+              </div>
+            </div>
+
+            <div class="intake-block show-clinical">
+              <span class="block-title">Ease After Stopping</span>
+              <div class="pill-grid" id="easePills">
+                <button type="button" class="pill" data-value="5 sec">5 sec</button>
+                <button type="button" class="pill" data-value="15 sec">15 sec</button>
+                <button type="button" class="pill" data-value="1 min">1 min</button>
+                <button type="button" class="pill" data-value="None">None</button>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
+
+          <div class="accordion show-capture-form" id="accNotes">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('accNotes')">
+              <span><i data-lucide="file-text"></i> Notes</span>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="entry-bar">
+                <button type="button" class="mic-btn" id="btnMic" title="Voice dictation — speak to fill notes" aria-label="Voice dictation">
+                  <i data-lucide="mic"></i>
+                  <span class="mic-btn-label">Dictate</span>
+                </button>
+                <input type="text" id="notesInput" class="notes-input" placeholder="Dictate clinical observations or notes for the physician...">
+              </div>
+              <div class="entry-meta">
+                <label class="meta-field">
+                  <span>Pain Duration</span>
+                  <select id="durationSelect">
+                    <option value="">Select…</option>
+                    <option value="Seconds">Seconds</option>
+                    <option value="Minutes">Minutes</option>
+                    <option value="Hours">Hours</option>
+                    <option value="Days">Days</option>
+                    <option value="Constant">Constant</option>
+                  </select>
+                </label>
+                <label class="meta-field">
+                  <span>When Occurring</span>
+                  <select id="occurrenceSelect">
+                    <option value="">Select…</option>
+                    <option value="Morning">Morning</option>
+                    <option value="Afternoon">Afternoon</option>
+                    <option value="Evening">Evening</option>
+                    <option value="During activity">During activity</option>
+                    <option value="At rest">At rest</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="accordion collapsed show-clinical" id="accInsight">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('accInsight')">
+              <span><i data-lucide="sparkles"></i> AI Clinical Insight</span>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="insight-box" id="insightBox">
+                <p>Log multiple entries to unlock pattern recognition for intensity, location, and triggers.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion collapsed show-clinical" id="accExport">
+            <button type="button" class="accordion-header" onclick="toggleAccordion('accExport')">
+              <span><i data-lucide="share-2"></i> Report / Export</span>
+              <i data-lucide="chevron-down" class="chevron"></i>
+            </button>
+            <div class="accordion-content">
+              <div class="export-actions">
+                <button type="button" class="btn btn-primary btn-block" id="btnExportPdf">
+                  <i data-lucide="file-text"></i> Export Clinical Report (PDF)
+                </button>
+                <button type="button" class="btn btn-secondary btn-block" id="btnExportJson">
+                  <i data-lucide="braces"></i> Export Session (JSON)
+                </button>
+                <button type="button" class="btn btn-secondary btn-block" id="btnExportPng">
+                  <i data-lucide="image"></i> Export Clinical Snapshot (PNG)
+                </button>
+                <button type="button" class="btn btn-ghost btn-block" id="btnImportSidebar">
+                  <i data-lucide="upload"></i> Import Session
+                </button>
+              </div>
+              <p class="modal-note export-note">Reports print as PDF from your browser. Sessions are portable JSON files you can re-import later.</p>
+            </div>
+          </div>
+
+          <div class="clinical-doc-actions show-capture-form">
+            <button type="button" class="btn btn-primary btn-log" id="btnLog" disabled>Save Pain Entry</button>
+            <div class="entry-form-actions">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnNewEntry">New Entry</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnRemoveMarker" disabled>Remove Selected</button>
+              <button type="button" class="btn btn-ghost btn-sm danger-text" id="btnDeleteEntry" disabled>Delete Entry</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- Insights modal -->
+    <dialog class="modal" id="insightsModal">
+      <div class="modal-head">
+        <h3>Pattern Analysis</h3>
+        <button type="button" class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body" id="insightsModalBody"></div>
+    </dialog>
+
+    <!-- Export modal -->
+    <dialog class="modal" id="exportModal" aria-labelledby="exportModalTitle">
+      <div class="modal-head">
+        <h3 id="exportModalTitle">Export</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-note">Choose an export format. All data stays on your device until you save or share a file.</p>
+        <div class="export-actions">
+          <button type="button" class="btn btn-primary btn-block" id="btnExportPdfModal">
+            <i data-lucide="file-text"></i> Export Clinical Report (PDF)
+          </button>
+          <button type="button" class="btn btn-secondary btn-block" id="btnExportJsonModal">
+            <i data-lucide="braces"></i> Export Session (JSON)
+          </button>
+          <button type="button" class="btn btn-secondary btn-block" id="btnExportPngModal">
+            <i data-lucide="image"></i> Export Clinical Snapshot (PNG)
+          </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Share modal (JSON preview) -->
+    <dialog class="modal" id="shareModal">
+      <div class="modal-head">
+        <h3>Share Record</h3>
+        <button type="button" class="modal-close" data-close>&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-note">Data never leaves your device unless you copy or share it. This exports a JSON snapshot of your pain log.</p>
+        <textarea id="sharePayload" class="share-text" readonly rows="6"></textarea>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btnCopyShare">Copy JSON</button>
+          <button type="button" class="btn btn-primary" id="btnDownloadShare">Download File</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Marker context menu -->
+    <div class="marker-context-menu" id="markerContextMenu" hidden>
+      <button type="button" data-action="edit">Edit details</button>
+      <button type="button" data-action="duplicate">Duplicate region</button>
+      <button type="button" data-action="mirror">Mirror side</button>
+      <button type="button" data-action="note">Focus note</button>
+      <button type="button" data-action="delete" class="danger">Delete region</button>
+    </div>
+
+    <!-- Hidden import picker -->
+    <input type="file" id="importSessionInput" accept="application/json,.json" hidden>
+
+    <!-- Print-only report -->
+    <div id="printReport" class="print-only"></div>
+  </div>
+
+  <script src="src/utils/dev-mode.js?v=5.3"></script>
+  <!-- Clinical Anatomy Engine -->
+  <script src="src/engine/anatomy/regions.js?v=5.3"></script>
+  <script src="src/engine/annotations/pain-models.js?v=5.3"></script>
+  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.3"></script>
+  <script src="src/engine/annotations/pain-entry-store.js?v=5.3"></script>
+  <script src="src/layout/panel-resizers.js?v=5.3"></script>
+  <script src="src/engine/anatomy/asset-paths.js?v=5.3"></script>
+  <script src="src/engine/anatomy/pain-colors.js?v=5.3"></script>
+  <script src="src/engine/overlays/visualization-controller.js?v=5.3"></script>
+  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.3"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.3"></script>
+
+  <!-- PainLocator app -->
+  <script src="src/utils/theme-tokens.js?v=5.3"></script>
+  <script src="src/state/app-state.js?v=5.3"></script>
+  <script src="src/utils/forms.js?v=5.3"></script>
+  <script src="src/features/capture/entry-crud.js?v=5.3"></script>
+  <script src="src/features/review/timeline.js?v=5.3"></script>
+  <script src="src/features/clinical-analysis/insights.js?v=5.3"></script>
+  <script src="src/features/review/history-ui.js?v=5.3"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.3"></script>
+  <script src="src/engine/reporting/clinical-report.js?v=5.3"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.3"></script>
+  <script src="src/engine/reporting/reports.js?v=5.3"></script>
+  <script src="src/ui/context-menu.js?v=5.3"></script>
+  <script src="src/features/capture/speech.js?v=5.3"></script>
+  <script src="src/state/workflow.js?v=5.3"></script>
+  <script src="src/app/bootstrap.js?v=5.3"></script>
+</body>
+</html>

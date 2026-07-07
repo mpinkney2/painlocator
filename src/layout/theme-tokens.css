@@ -1,0 +1,153 @@
+/* ==========================================================================
+   PAINLOCATOR — SEMANTIC THEME TOKENS
+   Components must use these variables only. Light/dark swap values here.
+   ========================================================================== */
+:root {
+  --left-panel-width: 290px;
+  --right-panel-width: 310px;
+
+  /* Surfaces */
+  --background: #f1f5f9;
+  --surface: #ffffff;
+  --surface-secondary: #e8edf4;
+  --surface-elevated: #ffffff;
+  --border: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.2);
+
+  /* Brand & actions */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-contrast: #ffffff;
+  --accent: #0ea5e9;
+  --accent-dim: #0369a1;
+  --accent-subtle: rgba(14, 165, 233, 0.12);
+  --accent-border: rgba(14, 165, 233, 0.35);
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  /* Status */
+  --danger: #dc2626;
+  --danger-subtle: rgba(220, 38, 38, 0.12);
+  --success: #059669;
+  --success-subtle: rgba(5, 150, 105, 0.12);
+  --warning: #d97706;
+  --warning-subtle: rgba(217, 119, 6, 0.12);
+
+  /* Chrome */
+  --header-bg: var(--surface);
+  --header-border: var(--border);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.1);
+  --overlay-backdrop: rgba(15, 23, 42, 0.55);
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--accent);
+
+  /* Controls */
+  --control-bg: var(--surface-secondary);
+  --control-border: var(--border);
+  --toggle-track: var(--surface-secondary);
+  --slider-thumb: var(--primary-contrast);
+  --slider-track: var(--accent);
+
+  /* Charts */
+  --chart-line: var(--accent);
+  --chart-fill: rgba(14, 165, 233, 0.14);
+  --chart-grid: rgba(15, 23, 42, 0.08);
+  --chart-ticks: var(--text-muted);
+  --chart-point-active: var(--text-inverse);
+  --chart-point-border: var(--accent);
+
+  /* Anatomy stage */
+  --anatomy-stage-bg: radial-gradient(ellipse at center, #e2e8f0 0%, #cbd5e1 100%);
+  --anatomy-overlay-bg: rgba(15, 23, 42, 0.45);
+
+  /* Brand wordmark */
+  --brand-pain: var(--text-primary);
+  --brand-locator: var(--accent);
+  --brand-tagline: var(--text-muted);
+
+  /* Legacy aliases (prefer semantic tokens in new code) */
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
+
+  --font: 'Inter', system-ui, sans-serif;
+  --display: 'Outfit', var(--font);
+}
+
+body.theme-dark {
+  --background: #090e1a;
+  --surface: #111827;
+  --surface-secondary: rgba(30, 41, 59, 0.65);
+  --surface-elevated: #1e293b;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-contrast: #ffffff;
+  --accent: #22d3ee;
+  --accent-dim: #0e7490;
+  --accent-subtle: rgba(34, 211, 238, 0.12);
+  --accent-border: rgba(34, 211, 238, 0.4);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+
+  --danger: #f87171;
+  --danger-subtle: rgba(248, 113, 113, 0.15);
+  --success: #34d399;
+  --success-subtle: rgba(52, 211, 153, 0.12);
+  --warning: #fbbf24;
+  --warning-subtle: rgba(251, 191, 36, 0.12);
+
+  --header-bg: rgba(9, 14, 26, 0.96);
+  --header-border: var(--border);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --overlay-backdrop: rgba(0, 0, 0, 0.65);
+
+  --control-bg: rgba(15, 23, 42, 0.55);
+  --toggle-track: rgba(0, 0, 0, 0.35);
+
+  --chart-line: var(--accent);
+  --chart-fill: rgba(34, 211, 238, 0.12);
+  --chart-grid: rgba(255, 255, 255, 0.06);
+  --chart-ticks: var(--text-muted);
+  --chart-point-active: var(--text-primary);
+  --chart-point-border: var(--accent);
+
+  --anatomy-stage-bg: radial-gradient(ellipse at center, #10192a 0%, #060a12 100%);
+  --anatomy-overlay-bg: rgba(0, 0, 0, 0.45);
+
+  --brand-pain: var(--text-primary);
+  --brand-locator: var(--accent);
+  --brand-tagline: var(--text-muted);
+}
+
+.high-contrast-active {
+  --background: #000000;
+  --surface: #0a0f1d;
+  --surface-secondary: #151f32;
+  --border: #ffffff;
+  --border-strong: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #e2e8f0;
+  --text-muted: #cbd5e1;
+  --header-bg: var(--surface);
+}
+
+.colorblind-active {
+  --accent: #3b82f6;
+  --accent-dim: #1d4ed8;
+  --chart-line: #3b82f6;
+  --chart-fill: rgba(59, 130, 246, 0.14);
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 360" width="200" height="360">
+  <defs>
+    <linearGradient id="skin" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9a7b5a"/>
+      <stop offset="100%" stop-color="#c4a882"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="360" fill="#0a1220"/>
+  <path d="M 96 18 C 114 18 122 30 120 40 C 118 48 114 50 116 54 C 118 56 122 58 118 60 C 114 62 108 60 98 60 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <rect x="90" y="60" width="16" height="16" rx="2" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <path d="M 90 76 C 90 76 118 80 114 122 C 110 144 80 144 80 144 L 82 76 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <path d="M 80 122 C 80 122 84 154 84 160 C 84 166 112 166 112 160 C 112 154 110 122 110 122 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <path d="M 84 160 L 112 160 L 108 184 L 82 184 Z" fill="url(#skin)" stroke="#7a6348" stroke-width="1.2"/>
+  <path d="M 96 76 C 90 82 92 90 92 90" stroke="#7a6348" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M 92 90 L 88 138 L 84 180" stroke="#7a6348" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <circle cx="82" cy="188" r="7" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <path d="M 96 184 L 98 255 L 94 326" stroke="#7a6348" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <ellipse cx="102" cy="336" rx="14" ry="6" fill="url(#skin)" stroke="#7a6348" stroke-width="1"/>
+  <text x="100" y="350" fill="#64748b" font-size="8" text-anchor="middle" font-family="sans-serif">Clinical Atlas  Left</text>
+</svg>
