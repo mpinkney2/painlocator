@@ -1030,7 +1030,7 @@ body.theme-dark .timeline-panel {
   display: flex;
   gap: 4px;
   padding: 4px;
-  background: rgba(15, 23, 42, 0.82);
+  background: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
   border: 1px solid var(--border);
   border-radius: 8px;
   backdrop-filter: blur(8px);
@@ -1043,11 +1043,14 @@ body.theme-dark .timeline-panel {
   border-radius: 5px;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--text);
+  color: var(--text-secondary);
   cursor: pointer;
 }
 
-.region-tool:hover:not(:disabled) { border-color: rgba(34, 211, 238, 0.35); }
+.region-tool:hover:not(:disabled) {
+  border-color: var(--accent-border);
+  color: var(--text-primary);
+}
 .region-tool.active { background: var(--accent-subtle); border-color: var(--accent); color: var(--accent); }
 .region-tool:disabled { opacity: 0.4; cursor: not-allowed; }
 
