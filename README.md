@@ -1,81 +1,132 @@
 # PainLocator
 
-A simple, client-side pain logging tool. Tap the body avatar to mark where it hurts, describe the pain, and build a timeline your doctor can review.
+PainLocator is an interactive clinical pain mapping and recovery documentation platform powered by the **Clinical Anatomy Engine (CAE)**.
 
-**All data stays in your browser** (localStorage). No server, no accounts, no network calls.
+All session data stays in the browser (localStorage). No server, accounts, or network calls are required for normal use.
 
-## Quick start
+## Status
 
-```bash
-cd /Users/mattpinkney/DEV/Pain_Locator
-./start.sh
-```
+**v0.1.0** — Foundation Release
 
-Open **http://localhost:5500** in your browser.
+Establishes the baseline CAE architecture, modular project structure, and core clinical workflows for future development.
 
-> **Note:** If port 8080 shows your home directory listing, another server is running from `~`. Use `./start.sh` (port 5500) instead, or stop the old server: `kill $(lsof -t -i:8080)`
+## Core Workflows
 
-> You can also open `index.html` directly, but a local server is recommended for speech recognition in some browsers.
+| Workflow | Purpose |
+|----------|---------|
+| **Capture** | Quick pain logging — mark regions, set intensity, symptoms, and notes |
+| **Review** | History — timeline, trends, compare entries, edit past records |
+| **Clinical Analysis** | Full clinical tools — polygon/lasso, metadata, AI insights, export |
 
-## How to use
+## Features
 
-1. **Pick a body view** — Front, Back, Left, or Right.
-2. **Tap a body region** on the avatar to place a pain marker.
-3. **Set intensity** (0–10), quality, triggers, and how long pain eases after stopping.
-4. **Add notes** — type or use the microphone (Chrome/Safari).
-5. Click **+ Log This Entry**.
-6. Review the **Recovery Timeline** chart and **AI Pattern Insight** on the right.
-7. **Export Report** (print/PDF) or **Share** (copy/download JSON).
+- Interactive anatomical pain mapping
+- Region-based symptom annotation
+- Recovery timeline visualization
+- Structured clinical documentation
+- AI-assisted clinical observations (non-diagnostic)
+- Physician-oriented reporting
+- JSON session import/export
+- Clinical snapshot and PDF report foundation
+- Light/dark theme with semantic design tokens
 
-## Project structure
+## Clinical Anatomy Engine
+
+PainLocator is built on the **Clinical Anatomy Engine (CAE)**, a reusable subsystem for:
+
+- Anatomy rendering
+- Coordinate mapping
+- Region-based annotation
+- Visualization overlays
+- Clinical documentation
+- Reporting and export workflows
+
+**PainLocator** is the flagship clinical application. **CAE** (`src/engine/`) is the reusable infrastructure that can support future products or a standalone package.
+
+## Architecture
 
 ```
 src/engine/          Clinical Anatomy Engine (reusable)
   anatomy/           Regions, plates, CAE core
   coordinates/       Normalized coordinate mapping
-  annotations/       Pain regions, markup renderer
+  annotations/       Pain regions, entry store, markup renderer
   overlays/          Visualization modes
-  reporting/         Print/share reports
+  reporting/         Session schema, clinical reports, import/export
 
 src/features/        PainLocator workflow features
-  capture/           Entry logging
+  capture/           Entry logging, speech dictation
   review/            Timeline, history, compare
   clinical-analysis/ Clinical insights
 
-src/layout/          Shell styles, panel resizers
+src/layout/          Shell styles, theme tokens, panel resizers
 src/ui/              Generic UI behaviors
 src/state/           App state, workflow mode
 src/types/           TypeScript definitions
-src/app/             Bootstrap / init
+src/utils/           Theme helpers, forms, dev mode
+src/app/             Bootstrap / initialization
 
-public/anatomy/      Anatomy plate assets per model
+public/anatomy/      Anatomy plate assets per patient model
+  adult-male/
+  adult-female/
+  child/
+  teen/
+  senior/
 ```
+
+## Roadmap
+
+- Improved clinical reports
+- PDF export (browser print)
+- PNG clinical snapshots
+- Session import/export refinements
+- Additional anatomical overlays (muscle, nerve, organ)
+- Pediatric, senior, athletic, and bariatric model support
+- AI-assisted recovery insights
+- Physician review workflow enhancements
+- Possible future CAE extraction as a standalone npm package
 
 ## Development
 
 ```bash
 npm install
-npm run build    # TypeScript check
-./start.sh       # http://localhost:5500
+npm start          # serves at http://localhost:5500
+npm run build      # TypeScript check (tsc --noEmit)
 ```
 
-## Files
+Open the app:
 
-| Path | Purpose |
-|------|---------|
-| `index.html` | App shell and script load order |
-| `src/app/bootstrap.js` | Initialization |
-| `src/layout/styles.css` | UI styles |
-| `src/engine/` | Clinical Anatomy Engine |
-| `src/features/` | Capture, Review, Clinical Analysis |
+**http://localhost:5500/?v=5.3**
+
+> Use a local server (`npm start` or `./start.sh`) for speech recognition and correct asset loading. Opening `index.html` directly may limit some browser APIs.
+
+### Project scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start Python static server (port 5500) |
+| `npm run build` | Run TypeScript validation |
+| `npm run typecheck` | Alias for build |
+
+## Development Workflow
+
+`main` is the stable release branch.
+
+Future work should happen on feature branches, for example:
+
+- `feature/workflow-ui`
+- `feature/reporting-v2`
+- `feature/ai-analysis`
+- `feature/clinical-overlays`
+- `feature/session-import-export`
+
+Tag releases on `main` (e.g. `v0.1.0`) after review and verification.
 
 ## Privacy
 
-- Entries are stored under the key `painlocator_entries` in localStorage.
-- Sharing exports a JSON file you control — nothing is sent automatically.
-- Use **Clear** to wipe all local data.
+- Pain entries are stored in `localStorage` under `painlocator_pain_entries`.
+- Export/import uses JSON files you control — nothing is sent automatically.
+- Use **Clear Data** in the app to wipe local storage.
 
-## Customization
+## License
 
-- **Anatomy layers** — toggle muscle, skeletal, nerve, and organ overlays in the left panel.
-- **Pattern insights** — rule-based summaries in `src/features/clinical-analysis/insights.js`.
+Private / unreleased — see repository owner for terms.
