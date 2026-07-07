@@ -30,6 +30,23 @@ Establishes the baseline CAE architecture, modular project structure, and core c
 - Clinical snapshot and PDF report foundation
 - Light/dark theme with semantic design tokens
 
+## Documentation
+
+Full project documentation lives in [`/docs`](./docs/):
+
+| Document | Description |
+|----------|-------------|
+| [PRODUCT_VISION.md](./docs/PRODUCT_VISION.md) | Product goals, users, and design principles |
+| [ROADMAP.md](./docs/ROADMAP.md) | Shipped vs planned features |
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Technical structure and data model |
+| [CLINICAL_ANATOMY_ENGINE.md](./docs/CLINICAL_ANATOMY_ENGINE.md) | CAE modules and boundaries |
+| [UI_GUIDELINES.md](./docs/UI_GUIDELINES.md) | Theme tokens, layout, accessibility |
+| [JSON_SCHEMA.md](./docs/JSON_SCHEMA.md) | Session export/import format |
+| [REPORT_SPEC.md](./docs/REPORT_SPEC.md) | Clinical report and export behavior |
+| [AI_ROADMAP.md](./docs/AI_ROADMAP.md) | Rule-based insights today; AI future |
+| [CONTRIBUTING.md](./docs/CONTRIBUTING.md) | Development workflow and PR guidance |
+| [CHANGELOG.md](./docs/CHANGELOG.md) | Release history |
+
 ## Clinical Anatomy Engine
 
 PainLocator is built on the **Clinical Anatomy Engine (CAE)**, a reusable subsystem for:
@@ -75,10 +92,12 @@ public/anatomy/      Anatomy plate assets per patient model
 
 ## Roadmap
 
+See [docs/ROADMAP.md](./docs/ROADMAP.md) for shipped vs planned work. Highlights:
+
 - Improved clinical reports
-- PDF export (browser print)
-- PNG clinical snapshots
-- Session import/export refinements
+- PDF export (browser print) — [shipped foundation](./docs/REPORT_SPEC.md)
+- PNG clinical snapshots — [shipped](./docs/REPORT_SPEC.md)
+- Session import/export — [shipped v1.0.0](./docs/JSON_SCHEMA.md)
 - Additional anatomical overlays (muscle, nerve, organ)
 - Pediatric, senior, athletic, and bariatric model support
 - AI-assisted recovery insights
@@ -119,7 +138,7 @@ Future work should happen on feature branches, for example:
 - `feature/clinical-overlays`
 - `feature/session-import-export`
 
-Tag releases on `main` (e.g. `v0.1.0`) after review and verification.
+Tag releases on `main` (e.g. `v0.1.0`) after review and verification. See [CONTRIBUTING.md](./docs/CONTRIBUTING.md).
 
 ## Privacy
 
