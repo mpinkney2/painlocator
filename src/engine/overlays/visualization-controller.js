@@ -12,7 +12,7 @@ const REFERENCE_OVERLAY_DEFS = [
 function overlayAssetPath(overlayId, modelType, viewType) {
   const model = normalizeModelType(modelType).replace("adult-", "");
   const gender = model.includes("female") ? "female" : "male";
-  return `public/anatomy/overlays/overlay_${overlayId}_${gender}_${viewType}.png`;
+  return `/anatomy/overlays/overlay_${overlayId}_${gender}_${viewType}.png`;
 }
 
 class VisualizationController {

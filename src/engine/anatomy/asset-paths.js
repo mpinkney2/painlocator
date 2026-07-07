@@ -11,11 +11,15 @@ function normalizeAnatomyModel(modelType) {
   return modelType || "adult-male";
 }
 
+function getAnatomyAssetRoot() {
+  return '/anatomy';
+}
+
 function getAssetPath(modelType, viewType) {
   const model = normalizeAnatomyModel(modelType);
-  const view = ANATOMY_VIEWS.includes(viewType) ? viewType : "front";
-  const folder = ANATOMY_MODELS.includes(model) ? model : "adult-male";
-  return `public/anatomy/${folder}/${view}.png`;
+  const view = ANATOMY_VIEWS.includes(viewType) ? viewType : 'front';
+  const folder = ANATOMY_MODELS.includes(model) ? model : 'adult-male';
+  return `${getAnatomyAssetRoot()}/${folder}/${view}.png`;
 }
 
 window.ANATOMY_MODELS = ANATOMY_MODELS;

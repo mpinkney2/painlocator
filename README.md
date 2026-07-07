@@ -109,23 +109,57 @@ See [docs/ROADMAP.md](./docs/ROADMAP.md) for shipped vs planned work. Highlights
 
 ```bash
 npm install
-npm start          # serves at http://localhost:5500
-npm run build      # TypeScript check (tsc --noEmit)
+npm start          # Vite dev server at http://localhost:5500
+npm run dev        # same as start (Vite)
+npm run build      # typecheck + copy to dist/ for deployment
+npm run preview    # preview production build locally
 ```
 
 Open the app:
 
-**http://localhost:5500/?v=5.3**
+**http://localhost:5500**
 
-> Use a local server (`npm start` or `./start.sh`) for speech recognition and correct asset loading. Opening `index.html` directly may limit some browser APIs.
+> Use `npm start` or `npm run dev` for speech recognition and correct asset loading. Opening `index.html` directly may limit some browser APIs.
 
 ### Project scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm start` | Start Python static server (port 5500) |
-| `npm run build` | Run TypeScript validation |
-| `npm run typecheck` | Alias for build |
+| `npm start` | Start Vite dev server (port 5500) via `./start.sh` |
+| `npm run dev` | Vite dev server |
+| `npm run build` | Typecheck + assemble static output to `dist/` |
+| `npm run preview` | Serve `dist/` locally after build |
+| `npm run typecheck` | TypeScript validation only |
+
+## Deployment
+
+PainLocator is designed to deploy on [Vercel](https://vercel.com) as a static site.
+
+### Steps
+
+1. Push the repository to GitHub (`mpinkney2/painlocator`).
+2. Import the repository in Vercel (**Add New Project** → select repo).
+3. Use these settings (also defined in `vercel.json`):
+
+| Setting | Value |
+|---------|--------|
+| **Framework Preset** | Other |
+| **Install Command** | `npm install` |
+| **Build Command** | `npm run build` |
+| **Output Directory** | `dist` |
+
+4. Deploy. Vercel will serve `index.html`, `src/`, and anatomy assets from `dist/`.
+
+### Anatomy assets
+
+Source files remain in **`public/anatomy/`** in the repository. The build copies them to **`dist/anatomy/`**, which Vercel serves at **`/anatomy/...`** (e.g. `/anatomy/adult-male/front.png`).
+
+Do not reference `public/anatomy/` in runtime URLs — use `/anatomy/` paths via `getAssetPath()`.
+
+### Production behavior
+
+- CAE renderer debug panel is **hidden** on Vercel (localhost only with `?dev=1`).
+- No server-side API required — fully client-side.
 
 ## Development Workflow
 
