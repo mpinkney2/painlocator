@@ -72,7 +72,7 @@ Examples aligned with the roadmap:
 | Helpers | `src/utils/` |
 | Documentation | `docs/` |
 
-Read [ARCHITECTURE.md](./ARCHITECTURE.md) and [CLINICAL_ANATOMY_ENGINE.md](./CLINICAL_ANATOMY_ENGINE.md) before moving code across the CAE boundary.
+Read [ARCHITECTURE.md](./ARCHITECTURE.md), [CLINICAL_ANATOMY_ENGINE.md](./CLINICAL_ANATOMY_ENGINE.md), and [ENGINEERING_PRINCIPLES.md](./ENGINEERING_PRINCIPLES.md) before moving code across the CAE boundary.
 
 ## Coding Guidelines
 
@@ -90,6 +90,7 @@ Update `docs/` when changing:
 - Session schema → [JSON_SCHEMA.md](./JSON_SCHEMA.md)
 - Report layout → [REPORT_SPEC.md](./REPORT_SPEC.md)
 - Architecture boundaries → [ARCHITECTURE.md](./ARCHITECTURE.md)
+- Engineering standards → [ENGINEERING_PRINCIPLES.md](./ENGINEERING_PRINCIPLES.md)
 - Shipped features → [CHANGELOG.md](./CHANGELOG.md)
 
 ## Commits
