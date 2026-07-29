@@ -290,6 +290,11 @@ class RegionInteractionLayer {
     this._didDrag = false;
     this._preview = null;
     this._polygonVerts = null;
+    this._panOrigin = null;
+    this._pointerOrigin = null;
+    this._raf = 0;
+    this._pendingMove = null;
+    this._unbindMoveEnd = null;
   }
 
   dist(a, b) {
@@ -335,6 +340,7 @@ class RegionInteractionLayer {
     this.svg = svg;
     if (!svg) return;
 
+    svg.style.touchAction = "none";
     svg.addEventListener("mousedown", (e) => this.onPointerDown(e));
     svg.addEventListener("touchstart", (e) => this.onPointerDown(e), { passive: false });
     svg.addEventListener("dblclick", (e) => {
@@ -350,6 +356,9 @@ class RegionInteractionLayer {
 
   onPointerDown(e) {
     const pt = e.touches ? e.touches[0] : e;
+    if (!this.mapper?.isInsideImage(pt.clientX, pt.clientY) && this.store.activeTool !== "select") {
+      return;
+    }
     const loc = this.clientToNorm(pt.clientX, pt.clientY);
     if (!loc) return;
     const tool = this.store.activeTool;
@@ -385,6 +394,20 @@ class RegionInteractionLayer {
       this._didDrag = false;
       this.engine.trigger("regionselected", { region: this.store.findRegion(regionEl.dataset.id)?.region });
       this.renderer.renderRegions();
+      this.bindMoveEnd();
+      return;
+    }
+
+    if (this.renderer.isEnlarged() && !regionEl && (tool === "select" || e.shiftKey || e.altKey)) {
+      e.preventDefault();
+      this._dragKind = "pan";
+      this._didDrag = false;
+      this._pointerOrigin = { x: pt.clientX, y: pt.clientY };
+      this._panOrigin = { x: this.mapper.panX, y: this.mapper.panY };
+      if (tool === "select" && !regionEl) {
+        this.store.selectedRegionIds = [];
+        this.renderer.renderRegions();
+      }
       this.bindMoveEnd();
       return;
     }
@@ -427,47 +450,87 @@ class RegionInteractionLayer {
 
     if (tool === "brush" || tool === "lasso") return;
 
+    if (this.renderer.isEnlarged() && !regionEl) {
+      e.preventDefault();
+      this._dragKind = "pan";
+      this._didDrag = false;
+      this._pointerOrigin = { x: pt.clientX, y: pt.clientY };
+      this._panOrigin = { x: this.mapper.panX, y: this.mapper.panY };
+      this.bindMoveEnd();
+      return;
+    }
+
     if (tool === "select" && !regionEl) {
       this.store.selectedRegionIds = [];
       this.renderer.renderRegions();
     }
   }
 
+  applyPendingMove() {
+    this._raf = 0;
+    const pending = this._pendingMove;
+    this._pendingMove = null;
+    if (!pending) return;
+
+    if (this._dragKind === "pan" && this._panOrigin && this._pointerOrigin) {
+      this.mapper.setPan(
+        this._panOrigin.x + (pending.clientX - this._pointerOrigin.x),
+        this._panOrigin.y + (pending.clientY - this._pointerOrigin.y)
+      );
+      this.renderer.syncLayout();
+      return;
+    }
+
+    const loc = this.clientToNorm(pending.clientX, pending.clientY);
+    if (!loc) return;
+
+    if (this._mode === "circle-draw" && this._start) {
+      this._preview = {
+        cx: this._start.x,
+        cy: this._start.y,
+        rx: Math.abs(loc.x - this._start.x),
+        ry: Math.abs(loc.y - this._start.y)
+      };
+      this.renderer.renderRegions(this._preview);
+      return;
+    }
+
+    if (this._dragKind === "move" && this._dragId) {
+      this.store.moveRegion(this._dragId, loc.x, loc.y);
+      this.renderer.renderRegions();
+      return;
+    }
+
+    if (this._dragKind === "resize" && this._dragId) {
+      this.store.resizeRegion(this._dragId, loc.x, loc.y);
+      this.renderer.renderRegions();
+    }
+  }
+
   bindMoveEnd() {
+    this._unbindMoveEnd?.();
+
     const move = (ev) => {
+      if (ev.cancelable) ev.preventDefault();
       const pt = ev.touches ? ev.touches[0] : ev;
-      const loc = this.clientToNorm(pt.clientX, pt.clientY);
-      if (!loc) return;
+      if (!pt) return;
       this._didDrag = true;
-
-      if (this._mode === "circle-draw" && this._start) {
-        this._preview = {
-          cx: this._start.x,
-          cy: this._start.y,
-          rx: Math.abs(loc.x - this._start.x),
-          ry: Math.abs(loc.y - this._start.y)
-        };
-        this.renderer.renderRegions(this._preview);
-        return;
-      }
-
-      if (this._dragKind === "move" && this._dragId) {
-        this.store.moveRegion(this._dragId, loc.x, loc.y);
-        this.renderer.renderRegions();
-        return;
-      }
-
-      if (this._dragKind === "resize" && this._dragId) {
-        this.store.resizeRegion(this._dragId, loc.x, loc.y);
-        this.renderer.renderRegions();
+      this._pendingMove = { clientX: pt.clientX, clientY: pt.clientY };
+      if (!this._raf) {
+        this._raf = requestAnimationFrame(() => this.applyPendingMove());
       }
     };
 
     const end = (ev) => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("touchmove", move);
-      document.removeEventListener("mouseup", end);
-      document.removeEventListener("touchend", end);
+      this._unbindMoveEnd?.();
+      this._unbindMoveEnd = null;
+      if (this._raf) {
+        cancelAnimationFrame(this._raf);
+        this._raf = 0;
+      }
+      if (this._pendingMove) this.applyPendingMove();
+
+      const wasPan = this._dragKind === "pan";
 
       if (this._mode === "circle-draw" && this._start && this._didDrag) {
         const pt = ev.changedTouches ? ev.changedTouches[0] : ev;
@@ -489,14 +552,25 @@ class RegionInteractionLayer {
       this._dragKind = null;
       this._start = null;
       this._preview = null;
+      this._panOrigin = null;
+      this._pointerOrigin = null;
       this.renderer.renderRegions();
-      this.engine.trigger("regionchanged", {});
+      if (!wasPan) this.engine.trigger("regionchanged", {});
     };
 
     document.addEventListener("mousemove", move);
     document.addEventListener("touchmove", move, { passive: false });
     document.addEventListener("mouseup", end);
     document.addEventListener("touchend", end);
+    document.addEventListener("touchcancel", end);
+
+    this._unbindMoveEnd = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("touchmove", move);
+      document.removeEventListener("mouseup", end);
+      document.removeEventListener("touchend", end);
+      document.removeEventListener("touchcancel", end);
+    };
   }
 }
 
@@ -511,14 +585,85 @@ class ClinicalMarkupRenderer {
     this.viewport = null;
     this.frame = null;
     this.tooltip = null;
+    this._boundView = null;
+    this._boundModel = null;
     this._onResize = () => this.syncLayout();
     this._resizeObserver = null;
+    this._zoomListeners = [];
+  }
+
+  onZoomChange(cb) {
+    if (typeof cb === "function") this._zoomListeners.push(cb);
+  }
+
+  _emitZoomChange() {
+    const payload = { enlarged: this.isEnlarged(), zoom: this.mapper.zoom };
+    this._zoomListeners.forEach(cb => {
+      try { cb(payload); } catch (_) { /* ignore listener errors */ }
+    });
+  }
+
+  isEnlarged() {
+    return this.mapper.isEnlarged();
+  }
+
+  getFocusFromSelection() {
+    const ids = this.store?.selectedRegionIds || [];
+    if (ids.length) {
+      const found = this.store.findRegion(ids[0]);
+      if (found?.region && typeof getRegionCenter === "function") {
+        return getRegionCenter(found.region);
+      }
+    }
+    const model = typeof normalizeModelType === "function"
+      ? normalizeModelType(this.engine.modelType)
+      : this.engine.modelType;
+    const regions = this.store?.getRegionsForView?.(model, this.engine.viewType) || [];
+    if (regions.length && typeof getRegionCenter === "function") {
+      const c = getRegionCenter(regions[regions.length - 1]);
+      return { x: c.x, y: c.y };
+    }
+    return { x: 0.5, y: 0.42 };
+  }
+
+  /**
+   * Enlarge silhouette for precise marking, or return to fit.
+   * @param {boolean} [enlarged]
+   * @param {{ focusX?: number, focusY?: number }} [focus]
+   */
+  setEnlarged(enlarged, focus = null) {
+    if (enlarged) {
+      const c = focus || this.getFocusFromSelection();
+      this.mapper.setZoom(AnatomyCoordinateMapper.ENLARGED_ZOOM, {
+        focusX: c.x,
+        focusY: c.y,
+        resetPan: true
+      });
+    } else {
+      this.mapper.resetZoom();
+    }
+    this.syncLayout();
+    this._emitZoomChange();
+  }
+
+  toggleEnlarge(focus = null) {
+    this.setEnlarged(!this.isEnlarged(), focus);
+    return this.isEnlarged();
   }
 
   render(container) {
     this.fallbackActive = false;
     this.loadStatus = "loading";
     const imgPath = getAssetPath(this.engine.modelType, this.engine.viewType);
+
+    const viewChanged = this._boundView !== this.engine.viewType
+      || this._boundModel !== this.engine.modelType;
+    if (viewChanged && this._boundView != null) {
+      this.mapper.resetZoom();
+      this._emitZoomChange();
+    }
+    this._boundView = this.engine.viewType;
+    this._boundModel = this.engine.modelType;
 
     window.removeEventListener("resize", this._onResize);
     this._resizeObserver?.disconnect();
@@ -549,6 +694,7 @@ class ClinicalMarkupRenderer {
     this.mapper.setElements(this.frame, img);
     this.layers.interaction = new RegionInteractionLayer(this);
     this.layers.interaction.bind(this.layers.markers.el);
+    this.applyZoomClasses();
 
     const placeholder = container.querySelector("#caeTestBodySvg");
     let settled = false;
@@ -594,10 +740,20 @@ class ClinicalMarkupRenderer {
   syncLayout() {
     if (!this.frame || !this.layers.image?.el) return;
     this.mapper.syncFrameToImage();
+    this.applyZoomClasses();
     if (this.layers.overlay) this.layers.overlay.render();
     if (this.layers.reference) this.layers.reference.render();
     this.applyVisualizationClasses();
     this.renderMarkers();
+  }
+
+  applyZoomClasses() {
+    const viewport = this.viewport;
+    if (!viewport) return;
+    const enlarged = this.isEnlarged();
+    viewport.classList.toggle("cae-enlarged", enlarged);
+    viewport.parentElement?.classList.toggle("cae-enlarged", enlarged);
+    document.getElementById("avatarWrap")?.classList.toggle("anatomy-enlarged", enlarged);
   }
 
   applyVisualizationClasses() {
@@ -607,6 +763,7 @@ class ClinicalMarkupRenderer {
     viewport.classList.toggle("viz-heatmap", viz.baseMode === "heatmap");
     viewport.classList.toggle("viz-reference", viz.baseMode === "reference");
     viewport.classList.toggle("viz-standard", viz.baseMode === "standard" || !viz.baseMode);
+    this.applyZoomClasses();
   }
 
   handlePlace() { /* legacy — tools handle placement */ }

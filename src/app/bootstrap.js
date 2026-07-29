@@ -30,6 +30,7 @@ function init() {
 
   state.vizController.attachEngine(state.engine);
   state.vizController.refreshAvailability(state.modelType, state.view);
+  initAnatomyZoom();
 
   const onRegionUpdate = ({ entry } = {}) => {
     if (!entryStore.getActiveEntry() && entry) entryStore.activeEntryId = DRAFT_KEY;

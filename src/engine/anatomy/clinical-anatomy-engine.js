@@ -102,6 +102,22 @@ class ClinicalAnatomyEngine {
     }
   }
 
+  isEnlarged() {
+    return !!this.clinicalRenderer?.isEnlarged?.();
+  }
+
+  setEnlarged(enlarged, focus = null) {
+    this.clinicalRenderer?.setEnlarged?.(enlarged, focus);
+  }
+
+  toggleEnlarge(focus = null) {
+    return this.clinicalRenderer?.toggleEnlarge?.(focus) ?? false;
+  }
+
+  onZoomChange(callback) {
+    this.clinicalRenderer?.onZoomChange?.(callback);
+  }
+
   setPins(pins) {
     this.pins = pins;
     this.renderPins();

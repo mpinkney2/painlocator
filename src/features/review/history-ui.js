@@ -71,13 +71,13 @@ function updateEntryList() {
 }
 
 function initRegionTools() {
-  document.querySelectorAll('.capture-tools .region-tool').forEach(btn => {
+  document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.disabled) return;
       const interaction = state.engine?.clinicalRenderer?.layers?.interaction;
       if (interaction?.cancelPolygonDraw) interaction.cancelPolygonDraw();
       entryStore.setTool(btn.dataset.tool);
-      document.querySelectorAll('.capture-tools .region-tool').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(b => b.classList.toggle('active', b === btn));
       const layer = document.querySelector('.cae-region-layer');
       const tool = btn.dataset.tool;
       if (layer) {
@@ -88,6 +88,36 @@ function initRegionTools() {
       }
     });
   });
+}
+
+function syncEnlargeButton(enlarged) {
+  const btn = document.getElementById('btnEnlargeAnatomy');
+  if (!btn) return;
+  const on = !!enlarged;
+  btn.classList.toggle('active', on);
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  btn.textContent = on ? 'Fit' : 'Enlarge';
+  btn.title = on
+    ? 'Return silhouette to full view'
+    : 'Enlarge silhouette for precise marking';
+  const hint = document.getElementById('avatarHint');
+  if (hint && on) {
+    hint.textContent = 'Silhouette enlarged — mark precisely, or drag empty space to pan';
+    hint.classList.remove('hidden');
+  } else if (hint && !hint.classList.contains('hidden') && hint.textContent.includes('enlarged')) {
+    hint.textContent = 'Choose a tool, mark where you feel pain, then describe intensity and symptoms';
+  }
+}
+
+function initAnatomyZoom() {
+  const btn = document.getElementById('btnEnlargeAnatomy');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const enlarged = state.engine?.toggleEnlarge?.();
+    syncEnlargeButton(enlarged);
+  });
+  state.engine?.onZoomChange?.(({ enlarged }) => syncEnlargeButton(enlarged));
+  syncEnlargeButton(state.engine?.isEnlarged?.());
 }
 
 function updateTrendSummary() {

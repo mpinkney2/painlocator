@@ -124,16 +124,20 @@ function applyWorkflowMode(mode) {
 
   if (mode === 'review') {
     entryStore.setTool('select');
-    document.querySelectorAll('.capture-tools .region-tool').forEach(b => {
+    document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(b => {
       b.classList.toggle('active', b.dataset.tool === 'select');
     });
     document.getElementById('entryFilterBar').hidden = true;
     document.getElementById('comparePanel').hidden = true;
   } else if (mode === 'capture') {
     entryStore.setTool('circle');
-    document.querySelectorAll('.capture-tools .region-tool').forEach(b => {
+    document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(b => {
       b.classList.toggle('active', b.dataset.tool === 'circle');
     });
+  }
+
+  if (typeof syncEnlargeButton === 'function') {
+    syncEnlargeButton(state.engine?.isEnlarged?.());
   }
 
   const accNotes = document.getElementById('accNotes');

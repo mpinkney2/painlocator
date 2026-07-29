@@ -1060,11 +1060,14 @@ body.theme-dark .timeline-panel {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .cae-image-frame {
   position: absolute;
   pointer-events: none;
+  will-change: left, top, width, height;
 }
 
 .cae-image-frame .cae-anatomy-image {
@@ -1075,6 +1078,8 @@ body.theme-dark .timeline-panel {
   object-fit: contain;
   pointer-events: none;
   display: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .cae-layer-overlay,
@@ -1092,6 +1097,15 @@ body.theme-dark .timeline-panel {
   pointer-events: auto;
   cursor: crosshair;
   z-index: 4;
+  touch-action: none;
+}
+
+.cae-clinical-viewport.cae-enlarged .cae-region-layer {
+  cursor: grab;
+}
+.cae-clinical-viewport.cae-enlarged.cae-panning .cae-region-layer,
+.anatomy-enlarged .cae-region-layer:active {
+  cursor: grabbing;
 }
 
 .region-tools {
@@ -1107,6 +1121,19 @@ body.theme-dark .timeline-panel {
   border: 1px solid var(--border);
   border-radius: 8px;
   backdrop-filter: blur(8px);
+  align-items: center;
+}
+
+.region-tool-divider {
+  width: 1px;
+  align-self: stretch;
+  margin: 2px 2px;
+  background: var(--border);
+  flex: 0 0 auto;
+}
+
+.region-tool-zoom {
+  font-weight: 700;
 }
 
 .region-tool {

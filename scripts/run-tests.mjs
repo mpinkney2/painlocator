@@ -101,6 +101,23 @@ function createSandbox() {
   return sandbox;
 }
 
+function createMapperSandbox() {
+  const sandbox = {
+    console,
+    Math,
+    Object,
+    Number,
+    window: {},
+    document: {}
+  };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/annotations/pain-models.js', sandbox);
+  loadScript('src/engine/coordinates/anatomy-coordinate-mapper.js', sandbox);
+  return sandbox;
+}
+
 console.log('PainLocator tests\n');
 
 // --- Trend summary ---
@@ -279,6 +296,73 @@ console.log('PainLocator tests\n');
     assert.equal(s.isEntryContentEmpty(blank), true);
     const zero = s.createPainEntry({ intensity: 0 });
     assert.equal(s.isEntryContentEmpty(zero), false);
+  });
+}
+
+// --- Coordinate mapper zoom / enlarge ---
+{
+  const s = createMapperSandbox();
+  const Mapper = s.AnatomyCoordinateMapper;
+
+  function mockFrame(parentW, parentH, rect) {
+    const parent = { clientWidth: parentW, clientHeight: parentH };
+    const style = {};
+    const frame = {
+      parentElement: parent,
+      style,
+      getBoundingClientRect: () => rect
+    };
+    const image = { naturalWidth: 400, naturalHeight: 800 };
+    return { frame, image, style };
+  }
+
+  test('mapper fit bounds letterbox without zoom', () => {
+    const { frame, image } = mockFrame(200, 400, { left: 50, top: 0, width: 100, height: 200 });
+    const mapper = new Mapper(frame, image);
+    const b = mapper.getImageBounds();
+    assert.equal(b.width, 200);
+    assert.equal(b.height, 400);
+    assert.equal(mapper.isEnlarged(), false);
+  });
+
+  test('mapper enlarge scales frame and keeps focus center', () => {
+    const { frame, image } = mockFrame(200, 400, { left: 0, top: 0, width: 200, height: 400 });
+    const mapper = new Mapper(frame, image);
+    mapper.setZoom(Mapper.ENLARGED_ZOOM, { focusX: 0.5, focusY: 0.5 });
+    assert.equal(mapper.isEnlarged(), true);
+    const b = mapper.getImageBounds();
+    assert.ok(Math.abs(b.width - 200 * Mapper.ENLARGED_ZOOM) < 0.01);
+    assert.ok(Math.abs(b.height - 400 * Mapper.ENLARGED_ZOOM) < 0.01);
+    // Focus at center → frame extends equally beyond viewport
+    assert.ok(b.left < 0);
+    assert.ok(b.top < 0);
+  });
+
+  test('mapper clientToNormalized uses frame rect (sync-safe)', () => {
+    const { frame, image } = mockFrame(200, 400, { left: 10, top: 20, width: 100, height: 200 });
+    const mapper = new Mapper(frame, image);
+    const n = mapper.clientToNormalized(60, 120);
+    assert.equal(n.x, 0.5);
+    assert.equal(n.y, 0.5);
+  });
+
+  test('mapper isInsideImage rejects clamped-only exterior taps', () => {
+    const { frame, image } = mockFrame(200, 400, { left: 10, top: 20, width: 100, height: 200 });
+    const mapper = new Mapper(frame, image);
+    assert.equal(mapper.isInsideImage(60, 120), true);
+    assert.equal(mapper.isInsideImage(5, 120), false);
+    assert.equal(mapper.isInsideImage(60, 10), false);
+  });
+
+  test('mapper resetZoom returns to fit', () => {
+    const { frame, image } = mockFrame(200, 400, { left: 0, top: 0, width: 200, height: 400 });
+    const mapper = new Mapper(frame, image);
+    mapper.setZoom(2, { focusX: 0.3, focusY: 0.4 });
+    mapper.setPan(12, -8);
+    mapper.resetZoom();
+    assert.equal(mapper.isEnlarged(), false);
+    assert.equal(mapper.panX, 0);
+    assert.equal(mapper.panY, 0);
   });
 }
 

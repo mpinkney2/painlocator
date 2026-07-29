@@ -15,8 +15,8 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.5">
-  <link rel="stylesheet" href="src/layout/styles.css?v=5.5">
+  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.6">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.6">
 </head>
 <body class="wf-capture">
   <a class="skip-link" href="#avatarStage">Skip to anatomy</a>
@@ -247,6 +247,8 @@
             <button type="button" class="region-tool" data-tool="eraser" title="Remove region" aria-label="Eraser tool">Eraser</button>
             <button type="button" class="region-tool" id="btnUndo" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>Undo</button>
             <button type="button" class="region-tool" id="btnRedo" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>Redo</button>
+            <span class="region-tool-divider" aria-hidden="true"></span>
+            <button type="button" class="region-tool region-tool-zoom" id="btnEnlargeAnatomy" title="Enlarge silhouette for precise marking" aria-label="Enlarge silhouette for accuracy" aria-pressed="false">Enlarge</button>
           </div>
           <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Anatomy map — mark pain locations"></div>
           <p class="avatar-hint" id="avatarHint">Choose a tool, mark where you feel pain, then describe intensity and symptoms</p>

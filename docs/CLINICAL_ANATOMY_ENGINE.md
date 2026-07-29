@@ -50,8 +50,21 @@ The engine emits region/marker lifecycle events consumed by `src/app/bootstrap.j
 - Origin: top-left of the anatomy image frame
 - Range: `x` and `y` in `[0, 1]`
 - Independent of display size (responsive)
+- **Enlarge / zoom** lives on the mapper (`zoom`, `focusX`/`focusY`, `panX`/`panY`) so image and SVG overlays stay locked
+- `clientToNormalized` uses the live frame `getBoundingClientRect()` after sync
 
 Pain regions store `anchors[]` in this space. Reports and exports preserve four decimal places.
+
+### Precise marking (enlarge)
+
+`ClinicalMarkupRenderer.setEnlarged(true)` / `ClinicalAnatomyEngine.toggleEnlarge()` scales the silhouette (~1.85×) centered on the selected pain region (or latest region / torso). While enlarged:
+
+- Touch/pointer drawing stays mapped to the same 0–1 anchors
+- Empty-space drag pans the silhouette
+- View/model changes reset zoom to fit
+- Capture toolbar **Enlarge** / **Fit** toggles the mode
+
+Touch interaction uses `touch-action: none` and `preventDefault` on move so page scroll does not desync marks from the plate.
 
 ## Pain Region Model
 

@@ -5,6 +5,15 @@ All notable changes to PainLocator are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).  
 Versioning: [Semantic Versioning](https://semver.org/) for application releases; git tags (e.g. `v0.1.0`) mark foundation milestones.
 
+## [5.5.0] — 2026-07-29
+
+### Capture accuracy — touch sync & enlarge
+
+- Smooth touch/pointer sync: `touch-action: none`, preventDefault on drag, rAF-throttled moves
+- `AnatomyCoordinateMapper` enlarge/zoom + pan so image and SVG overlays stay locked
+- Capture toolbar **Enlarge** / **Fit** button focuses selected (or latest) pain region for precise marking
+- Empty-space drag pans while enlarged; view/model change resets to fit
+
 ## [5.4.0] — 2026-07-29
 
 ### Demo-ready polish
