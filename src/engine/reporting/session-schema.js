@@ -52,7 +52,7 @@
  */
 
 const SESSION_SCHEMA_VERSION = '1.0.0';
-const APPLICATION_VERSION = '5.3.0';
+const APPLICATION_VERSION = '5.4.0';
 const ENGINE_VERSION = '1.0.0';
 
 function formatPatientModelLabel(model) {

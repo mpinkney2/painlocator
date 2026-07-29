@@ -73,17 +73,40 @@ function applyWorkflowMode(mode) {
   document.getElementById('btnReviewWF')?.classList.toggle('active', mode === 'review');
   document.getElementById('btnClinicalWF')?.classList.toggle('active', mode === 'clinical');
 
-  const titles = { capture: 'Log Pain', review: 'Pain History', clinical: 'Clinical Documentation' };
+  const titles = {
+    capture: 'Capture — Log Pain',
+    review: 'Review — History & Trends',
+    clinical: 'Clinical — Report & Share'
+  };
   const titleEl = document.getElementById('clinicalDocTitle');
   if (titleEl) titleEl.textContent = titles[mode];
 
+  const progress = document.getElementById('workflowProgressHint');
+  if (progress) {
+    const hints = {
+      capture: 'Step 1 of 3 — Mark pain, set intensity, then save',
+      review: 'Step 2 of 3 — Review timeline and compare entries',
+      clinical: 'Step 3 of 3 — Generate and share a clinician summary'
+    };
+    progress.textContent = hints[mode];
+  }
+
   const hints = {
-    capture: 'Tap the body · mark where it hurts · then save',
-    review: 'Select an entry from the timeline to review patterns',
+    capture: 'Choose a tool, mark where you feel pain, then describe intensity and symptoms',
+    review: 'Select an entry from the timeline or list to review patterns',
     clinical: 'Clinical tools for annotation, pattern notes, and clinician sharing'
   };
   const hint = document.getElementById('avatarHint');
   if (hint) hint.textContent = hints[mode];
+
+  // Tab accessibility
+  ['btnCaptureWF', 'btnReviewWF', 'btnClinicalWF'].forEach((id, i) => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    const modes = ['capture', 'review', 'clinical'];
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', modes[i] === mode ? 'true' : 'false');
+  });
 
   const editBtn = document.getElementById('btnEditEntry');
   if (editBtn) editBtn.textContent = 'Edit Entry';

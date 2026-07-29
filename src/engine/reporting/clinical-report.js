@@ -120,23 +120,47 @@ async function buildClinicalReportHtml() {
   const session = buildSessionExport(state, entryStore);
   const entries = [...session.entries].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const visitDate = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const generatedAt = new Date().toLocaleString();
   const anatomyFigures = await buildAnnotatedViewFigures(session);
   const insights = generateInsights();
-  const avgIntensity = entries.length
-    ? (entries.reduce((s, e) => s + e.intensity, 0) / entries.length).toFixed(1)
+  const trend = typeof generateTrendSummary === 'function'
+    ? generateTrendSummary(entries, { rangeDays: 'all' })
+    : { observations: [], disclaimer: 'These observations summarize your recorded entries and are not a medical diagnosis.' };
+
+  const intensities = entries.map(e => e.intensity);
+  const avgIntensity = intensities.length
+    ? (intensities.reduce((s, e) => s + e, 0) / intensities.length).toFixed(1)
     : '—';
-  const peakIntensity = entries.length ? Math.max(...entries.map(e => e.intensity)) : '—';
+  const peakIntensity = intensities.length ? Math.max(...intensities) : '—';
+  const lowIntensity = intensities.length ? Math.min(...intensities) : '—';
+  const currentIntensity = intensities.length ? intensities[intensities.length - 1] : '—';
   const qualities = summarizeQualities(entries);
   const triggers = summarizeTriggers(entries);
+  const eases = (() => {
+    const counts = {};
+    entries.forEach(e => (e.easesAfter || []).forEach(x => { counts[x] = (counts[x] || 0) + 1; }));
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} (${v})`);
+  })();
+
+  const dateRange = entries.length
+    ? `${new Date(entries[0].createdAt).toLocaleDateString()} – ${new Date(entries[entries.length - 1].createdAt).toLocaleDateString()}`
+    : '—';
+
+  const patientLabel = session.patient?.label
+    || (typeof formatPatientModelLabel === 'function' ? formatPatientModelLabel(session.patient.model) : session.patient.model)
+    || 'Anonymous patient model';
+  const identifier = demoMode?.isActive?.()
+    ? 'Demo participant (fictional sample — not a real patient)'
+    : 'Anonymous / device-local identifier';
 
   const regionRows = session.regions.length
     ? session.regions.map(r => `
         <tr>
-          <td>${r.label}</td>
-          <td>${r.patientLabel || '—'}</td>
-          <td>${r.physicianLabel || '—'}</td>
-          <td>${r.view}</td>
-          <td>${r.shape}</td>
+          <td>${escapeHtml(r.label)}</td>
+          <td>${escapeHtml(r.patientLabel || '—')}</td>
+          <td>${escapeHtml(r.physicianLabel || '—')}</td>
+          <td>${escapeHtml(r.view)}</td>
+          <td>${escapeHtml(r.shape)}</td>
         </tr>`).join('')
     : '<tr><td colspan="5">No pain regions recorded.</td></tr>';
 
@@ -146,18 +170,18 @@ async function buildClinicalReportHtml() {
         const time = new Date(entry.createdAt).toLocaleString();
         const locs = (entry.regions || []).map((r, ri) => {
           const label = regionLabel(num, ri);
-          return `<li><strong>${label}</strong> — ${r.patientLabel || 'Unspecified'} (${r.view} view, ${r.shape})</li>`;
+          return `<li><strong>${escapeHtml(label)}</strong> — ${escapeHtml(r.patientLabel || 'Unspecified')} (${escapeHtml(r.view)} view, ${escapeHtml(r.shape)})</li>`;
         }).join('') || '<li>No regions marked</li>';
         return `
           <section class="report-section">
-            <h3>Entry #${num} — ${time}</h3>
+            <h3>Entry #${num} — ${escapeHtml(time)}</h3>
             <p><strong>Intensity:</strong> ${entry.intensity}/10 &nbsp;|&nbsp;
-            <strong>Duration:</strong> ${entry.duration || '—'} &nbsp;|&nbsp;
-            <strong>When:</strong> ${entry.whenOccurring || '—'}</p>
-            <p><strong>Quality:</strong> ${(entry.quality || []).join(', ') || '—'}</p>
-            <p><strong>Triggers:</strong> ${(entry.triggers || []).join(', ') || '—'}</p>
-            <p><strong>Eases after:</strong> ${(entry.easesAfter || []).join(', ') || '—'}</p>
-            <p><strong>Clinical notes:</strong> ${entry.note || '—'}</p>
+            <strong>Duration:</strong> ${escapeHtml(entry.duration || '—')} &nbsp;|&nbsp;
+            <strong>When:</strong> ${escapeHtml(entry.whenOccurring || '—')}</p>
+            <p><strong>Quality:</strong> ${escapeHtml((entry.quality || []).join(', ') || '—')}</p>
+            <p><strong>Triggers:</strong> ${escapeHtml((entry.triggers || []).join(', ') || '—')}</p>
+            <p><strong>Relieving factors:</strong> ${escapeHtml((entry.easesAfter || []).join(', ') || '—')}</p>
+            <p><strong>Patient notes:</strong> ${escapeHtml(entry.note || '—')}</p>
             <p><strong>Regions:</strong></p>
             <ul>${locs}</ul>
           </section>`;
@@ -168,20 +192,20 @@ async function buildClinicalReportHtml() {
     ? session.timeline.map(t => `
         <tr>
           <td>#${t.entryNumber}</td>
-          <td>${new Date(t.createdAt).toLocaleString()}</td>
+          <td>${escapeHtml(new Date(t.createdAt).toLocaleString())}</td>
           <td>${t.intensity}/10</td>
           <td>${t.regionCount}</td>
         </tr>`).join('')
     : '<tr><td colspan="4">No timeline data.</td></tr>';
 
-  const aiBlock = `
-      <div class="report-ai-notice">
-        <p><strong>Assistive pattern notes — not a medical diagnosis</strong></p>
-        <p class="report-muted">${insights.brief || ''}</p>
-        ${insights.alerts.length ? `<ul>${insights.alerts.map(a => `<li>${a}</li>`).join('')}</ul>` : ''}
-        <div class="report-ai-body">${insights.html.replace(/<div class="insight-alert">/g, '<p class="report-alert">').replace(/<\/div>/g, '</p>')}</div>
-        <p class="report-disclaimer">These notes summarize patient-reported patterns only. They do not constitute a medical diagnosis, treatment plan, or clinical decision.</p>
-      </div>`;
+  const trendList = (trend.observations || [])
+    .map(o => `<li>${escapeHtml(o)}</li>`)
+    .join('') || '<li>Insufficient data for trend observations.</li>';
+
+  const activityNotes = entries
+    .filter(e => e.note && /medication|appointment|procedure|activity|ice|pt |physical therapy/i.test(e.note))
+    .map(e => `<li><strong>${escapeHtml(new Date(e.createdAt).toLocaleDateString())}:</strong> ${escapeHtml(e.note)}</li>`)
+    .join('');
 
   return `
     <article class="clinical-report">
@@ -190,20 +214,23 @@ async function buildClinicalReportHtml() {
           <span class="report-brand-name">Pain<span class="report-brand-accent">Locator</span></span>
           <span class="report-brand-sub">Powered by Clinical Anatomy Engine</span>
         </div>
-        <h1>Clinical Pain Consultation Report</h1>
-        <p class="report-meta-line">Prepared for clinician review · ${visitDate}</p>
+        <h1>Patient-Reported Pain Summary</h1>
+        <p class="report-meta-line">Prepared for clinician review · ${escapeHtml(visitDate)}</p>
+        <p class="report-disclaimer">Patient-reported content only — not a diagnosis, medical record, or physician assessment.</p>
       </header>
 
       <section class="report-section report-brief">
-        <h2>Clinician brief</h2>
-        <p>${insights.brief || 'No entries logged.'}</p>
+        <h2>Summary</h2>
         <table class="report-table report-table-meta">
-          <tr><th>Patient Model</th><td>${formatPatientModelLabel(session.patient.model)}</td></tr>
-          <tr><th>Entries / Regions</th><td>${entries.length} / ${session.regions.length}</td></tr>
-          <tr><th>Average / Peak</th><td>${avgIntensity}/10 · ${peakIntensity}/10</td></tr>
-          <tr><th>Top qualities</th><td>${qualities.slice(0, 3).join(', ') || '—'}</td></tr>
-          <tr><th>Top triggers</th><td>${triggers.slice(0, 3).join(', ') || '—'}</td></tr>
+          <tr><th>Patient / identifier</th><td>${escapeHtml(identifier)} · ${escapeHtml(patientLabel)}</td></tr>
+          <tr><th>Report date range</th><td>${escapeHtml(dateRange)}</td></tr>
+          <tr><th>Current / avg / low / high</th><td>${currentIntensity} / ${avgIntensity} / ${lowIntensity} / ${peakIntensity} (scale 0–10)</td></tr>
+          <tr><th>Entries / regions</th><td>${entries.length} / ${session.regions.length}</td></tr>
+          <tr><th>Common symptoms</th><td>${escapeHtml(qualities.slice(0, 5).join(', ') || '—')}</td></tr>
+          <tr><th>Reported triggers</th><td>${escapeHtml(triggers.slice(0, 5).join(', ') || '—')}</td></tr>
+          <tr><th>Relieving factors</th><td>${escapeHtml(eases.slice(0, 5).join(', ') || '—')}</td></tr>
         </table>
+        <p>${escapeHtml(insights.brief || 'No entries logged.')}</p>
       </section>
 
       <section class="report-section">
@@ -212,14 +239,20 @@ async function buildClinicalReportHtml() {
       </section>
 
       <section class="report-section">
-        <h2>Pain summary</h2>
-        <table class="report-table report-table-meta">
-          <tr><th>Average Intensity</th><td>${avgIntensity}/10</td></tr>
-          <tr><th>Peak Intensity</th><td>${peakIntensity}/10</td></tr>
-          <tr><th>Symptom Qualities</th><td>${qualities.join(', ') || '—'}</td></tr>
-          <tr><th>Common Triggers</th><td>${triggers.join(', ') || '—'}</td></tr>
+        <h2>Recovery timeline</h2>
+        <table class="report-table">
+          <thead><tr><th>Entry</th><th>Date/Time</th><th>Intensity</th><th>Regions</th></tr></thead>
+          <tbody>${timelineRows}</tbody>
         </table>
       </section>
+
+      <section class="report-section">
+        <h2>Trend observations</h2>
+        <p class="assistive-disclaimer">${escapeHtml(trend.disclaimer)}</p>
+        <ul>${trendList}</ul>
+      </section>
+
+      ${activityNotes ? `<section class="report-section"><h2>Medication / activity / appointment notes</h2><ul>${activityNotes}</ul><p class="report-muted">Items listed were recorded on the same day as the entry; association is not causation.</p></section>` : ''}
 
       <section class="report-section">
         <h2>Pain regions</h2>
@@ -230,39 +263,24 @@ async function buildClinicalReportHtml() {
       </section>
 
       <section class="report-section">
-        <h2>Pain timeline</h2>
-        <table class="report-table">
-          <thead><tr><th>Entry</th><th>Date/Time</th><th>Intensity</th><th>Regions</th></tr></thead>
-          <tbody>${timelineRows}</tbody>
-        </table>
+        <h2>Patient notes (aggregate)</h2>
+        <p>${escapeHtml(session.notes.aggregate || 'No clinical notes recorded.')}</p>
       </section>
 
       <section class="report-section">
-        <h2>Clinical notes</h2>
-        <p>${session.notes.aggregate || 'No clinical notes recorded.'}</p>
-      </section>
-
-      <section class="report-section">
-        <h2>Entry detail</h2>
+        <h2>Chronological entries</h2>
         ${entryBlocks}
       </section>
 
-      <section class="report-section">
-        <h2>Assistive pattern notes</h2>
-        ${aiBlock}
-      </section>
-
       <footer class="report-footer">
-        <h2>Session metadata</h2>
+        <h2>Generation details</h2>
         <table class="report-table report-table-meta">
-          <tr><th>Generated</th><td>${new Date().toLocaleString()}</td></tr>
-          <tr><th>Schema Version</th><td>${session.schemaVersion}</td></tr>
-          <tr><th>Application</th><td>PainLocator ${session.applicationVersion}</td></tr>
-          <tr><th>Engine</th><td>Clinical Anatomy Engine ${session.engineVersion}</td></tr>
-          <tr><th>Session Created</th><td>${new Date(session.created).toLocaleString()}</td></tr>
-          <tr><th>Session Modified</th><td>${new Date(session.modified).toLocaleString()}</td></tr>
+          <tr><th>Generated</th><td>${escapeHtml(generatedAt)}</td></tr>
+          <tr><th>Schema Version</th><td>${escapeHtml(session.schemaVersion)}</td></tr>
+          <tr><th>Application</th><td>PainLocator ${escapeHtml(session.applicationVersion)}</td></tr>
+          <tr><th>Engine</th><td>Clinical Anatomy Engine ${escapeHtml(session.engineVersion)}</td></tr>
         </table>
-        <p class="report-disclaimer">This document is a patient-reported pain log exported from PainLocator. It is intended to support clinical consultation and does not replace professional medical evaluation.</p>
+        <p class="report-disclaimer">This document summarizes patient-entered information from PainLocator. It does not replace professional medical evaluation and is not a medical diagnosis.</p>
       </footer>
     </article>`;
 }

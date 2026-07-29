@@ -196,10 +196,11 @@ On success:
 
 ## Local Storage (Separate from Session Export)
 
-Runtime persistence uses a different shape under `painlocator_pain_entries`:
+Runtime persistence uses a versioned envelope under `painlocator_pain_entries` (or `painlocator_demo_entries` in Demo Mode):
 
 ```json
 {
+  "schemaVersion": "1.1.0",
   "entries": [],
   "draftEntry": null,
   "activeEntryId": null,
@@ -207,6 +208,13 @@ Runtime persistence uses a different shape under `painlocator_pain_entries`:
   "activeTool": "circle"
 }
 ```
+
+| Local schema | Notes |
+|--------------|-------|
+| `1.0.0` (implicit) | Pre-versioned envelopes without `schemaVersion` |
+| `1.1.0` | Adds `schemaVersion`; draft lifecycle no longer auto-creates blank Entry #1 on load |
+
+Demo Mode uses a separate key and never merges with real user data.
 
 Session export is a **portable snapshot** for backup and transfer — not identical to the localStorage envelope.
 

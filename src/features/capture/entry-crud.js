@@ -23,7 +23,8 @@ function populateFormFromEntry(entry) {
   document.getElementById('notesInput').value = entry.note || '';
   document.getElementById('durationSelect').value = entry.duration || '';
   document.getElementById('occurrenceSelect').value = entry.whenOccurring || '';
-  document.getElementById('avatarHint').classList.add('hidden');
+  document.getElementById('avatarHint')?.classList.add('hidden');
+  hideAnatomyTip?.();
   updateEntryButtons();
   updateRegionEditor();
 }
@@ -49,12 +50,12 @@ function updateRegionEditor() {
   if (meta && useClinicalLabels()) {
     const anchors = (r.anchors || []).map(a => `(${a.x.toFixed(3)}, ${a.y.toFixed(3)})`).join(' · ');
     meta.innerHTML = `
-      <div class="region-meta-row"><span>Region ID</span><code>${r.regionId || '—'}</code></div>
-      <div class="region-meta-row"><span>Structure</span><code>${r.structureId || r.structureLabel || '—'}</code></div>
-      <div class="region-meta-row"><span>Layer</span><code>${r.anatomyLayer || 'skin'}</code></div>
-      <div class="region-meta-row"><span>Shape</span><code>${r.shape}</code></div>
-      <div class="region-meta-row"><span>View</span><code>${r.view}</code></div>
-      <div class="region-meta-row"><span>Anchors</span><code>${anchors || '—'}</code></div>`;
+      <div class="region-meta-row"><span>Region ID</span><code>${escapeHtml(r.regionId || '—')}</code></div>
+      <div class="region-meta-row"><span>Structure</span><code>${escapeHtml(r.structureId || r.structureLabel || '—')}</code></div>
+      <div class="region-meta-row"><span>Layer</span><code>${escapeHtml(r.anatomyLayer || 'skin')}</code></div>
+      <div class="region-meta-row"><span>Shape</span><code>${escapeHtml(r.shape)}</code></div>
+      <div class="region-meta-row"><span>View</span><code>${escapeHtml(r.view)}</code></div>
+      <div class="region-meta-row"><span>Anchors</span><code>${escapeHtml(anchors || '—')}</code></div>`;
   } else if (meta) {
     meta.innerHTML = '';
   }
@@ -73,41 +74,167 @@ function syncRegionEditorToStore() {
   entryStore.updateRegion(id, patch);
 }
 
+function entryHasSaveableContent(entry) {
+  if (!entry) return false;
+  if (entry.regions?.length) return true;
+  if ((entry.intensity ?? 5) === 0) return true;
+  if ((entry.quality || []).length || (entry.triggers || []).length) return true;
+  if (String(entry.note || '').trim()) return true;
+  return false;
+}
+
 function updateEntryButtons() {
   const entry = entryStore.getActiveEntry();
+  const hasContent = entryHasSaveableContent(entry);
   const hasRegions = entry && entry.regions.length > 0;
   const isSaved = entry && entryStore.isEntrySaved(entry);
   const btnLog = document.getElementById('btnLog');
   const btnDelete = document.getElementById('btnDeleteEntry');
   const btnRemove = document.getElementById('btnRemoveMarker');
-  btnLog.disabled = !hasRegions;
-  btnLog.textContent = isSaved ? 'Update Pain Entry' : 'Save Pain Entry';
+  const saveHint = document.getElementById('saveValidationHint');
+  const emptyButIntentional = entry && !hasRegions && (
+    entry.intensity === 0 ||
+    (entry.quality || []).length ||
+    (entry.triggers || []).length ||
+    String(entry.note || '').trim()
+  );
+
+  if (btnLog) {
+    btnLog.disabled = !entry || (!hasRegions && !emptyButIntentional);
+    btnLog.textContent = isSaved ? 'Update Pain Entry' : 'Save Pain Entry';
+    btnLog.classList.toggle('btn-log-ready', Boolean(hasRegions || emptyButIntentional));
+    if (!entry) {
+      btnLog.title = 'Start a new entry or mark the anatomy first';
+    } else if (!hasRegions && !emptyButIntentional) {
+      btnLog.title = 'Mark at least one location, or set intensity to 0 / add symptoms for a symptom-free day';
+    } else if (!hasRegions && emptyButIntentional) {
+      btnLog.title = 'Save a symptom-free or zero-pain day (confirmation required)';
+    } else {
+      btnLog.title = isSaved ? 'Update this pain entry' : 'Save this pain entry';
+    }
+  }
+  if (saveHint) {
+    if (!entry) {
+      saveHint.textContent = 'Select New Entry or mark the anatomy to begin.';
+      saveHint.hidden = false;
+    } else if (!hasRegions && !emptyButIntentional) {
+      saveHint.textContent = 'Mark where it hurts on the body map, then save.';
+      saveHint.hidden = false;
+    } else if (!hasRegions && emptyButIntentional) {
+      saveHint.textContent = 'No body locations marked — you can still save a zero-pain or symptom-only day.';
+      saveHint.hidden = false;
+    } else {
+      saveHint.textContent = '';
+      saveHint.hidden = true;
+    }
+  }
   if (btnDelete) btnDelete.disabled = !entry;
   if (btnRemove) btnRemove.disabled = !entryStore.selectedRegionIds.length;
+  updateUndoRedoButtons();
+  if (entryStore.dirty) setSaveStatus?.('unsaved');
+  else if (isSaved) setSaveStatus?.('saved');
+}
+
+function updateUndoRedoButtons() {
+  const undo = document.getElementById('btnUndo');
+  const redo = document.getElementById('btnRedo');
+  if (undo) undo.disabled = !entryStore.canUndo();
+  if (redo) redo.disabled = !entryStore.canRedo();
 }
 
 function syncFormToActiveEntry() {
-  const entry = entryStore.getActiveEntry();
-  if (!entry) return;
+  let entry = entryStore.getActiveEntry();
+  if (!entry) {
+    entry = entryStore.ensureActiveEntry(normalizeModelType(state.modelType));
+  }
   entryStore.updateActiveEntry(getFormValues());
+  updateEntryButtons();
 }
 
-function saveCurrentEntry() {
+function confirmEmptyDaySave(entry) {
+  const banner = document.getElementById('emptySaveConfirm');
+  if (!banner) {
+    return window.confirm(
+      'No body locations are marked. Save this as a symptom-free or zero-pain day?'
+    );
+  }
+  return new Promise((resolve) => {
+    banner.hidden = false;
+    const yes = document.getElementById('emptySaveYes');
+    const no = document.getElementById('emptySaveNo');
+    const cleanup = () => {
+      banner.hidden = true;
+      yes?.removeEventListener('click', onYes);
+      no?.removeEventListener('click', onNo);
+    };
+    const onYes = () => { cleanup(); resolve(true); };
+    const onNo = () => { cleanup(); resolve(false); };
+    yes?.addEventListener('click', onYes);
+    no?.addEventListener('click', onNo);
+  });
+}
+
+async function saveCurrentEntry() {
+  recordAppAction?.('save_entry');
   syncFormToActiveEntry();
-  const saved = entryStore.saveActiveEntry();
+  const entry = entryStore.getActiveEntry();
+  if (!entry) {
+    showToast?.('Nothing to save yet. Mark the anatomy or start a new entry.', { type: 'warning' });
+    return null;
+  }
+
+  const hasRegions = entry.regions.length > 0;
+  let allowEmpty = false;
+  if (!hasRegions) {
+    const intentional = entry.intensity === 0
+      || (entry.quality || []).length
+      || (entry.triggers || []).length
+      || String(entry.note || '').trim();
+    if (!intentional) {
+      showToast?.('Mark at least one location on the body before saving.', { type: 'warning', assertive: true });
+      document.getElementById('saveValidationHint')?.focus?.();
+      return null;
+    }
+    allowEmpty = await confirmEmptyDaySave(entry);
+    if (!allowEmpty) {
+      showToast?.('Save cancelled. Mark a location or adjust the entry.', { type: 'info' });
+      return null;
+    }
+  }
+
+  setSaveStatus?.('saving');
+  const saved = entryStore.saveActiveEntry({ allowEmpty });
   if (saved) {
-    entryStore.newEntry(normalizeModelType(state.modelType));
+    const num = entryStore.getEntryNumber(saved);
+    showToast?.(`Pain entry #${num} saved.`, { type: 'success' });
+    setSaveStatus?.('saved');
+    trackEvent?.('entry_saved');
+    entryStore.clearActiveDraft?.();
+    entryStore.activeEntryId = null;
+    entryStore.draftEntry = null;
     resetFormFields();
-    document.getElementById('avatarHint').classList.remove('hidden');
+    document.getElementById('avatarHint')?.classList.remove('hidden');
+    showAnatomyTip?.();
+  } else {
+    setSaveStatus?.('failed');
+    showToast?.('Could not save entry.', { type: 'error', assertive: true });
   }
   refreshUI();
   return saved;
 }
 
 function startNewEntry() {
+  recordAppAction?.('new_entry');
+  if (entryStore.hasUnsavedDraft?.() && entryStore.isDraftActive()) {
+    const proceed = window.confirm('Discard the current unsaved draft and start a new entry?');
+    if (!proceed) return;
+  }
   entryStore.newEntry(normalizeModelType(state.modelType));
   populateFormFromEntry(entryStore.getActiveEntry());
   resetFormFields();
+  document.getElementById('avatarHint')?.classList.add('hidden');
+  hideAnatomyTip?.();
+  showToast?.('New entry started.', { type: 'info', duration: 2500 });
   refreshUI();
 }
 
@@ -136,9 +263,15 @@ function selectRegionOnly(regionId) {
 
 function removeSelectedRegions() {
   if (!entryStore.selectedRegionIds.length) return;
-  if (!confirm(`Remove ${entryStore.selectedRegionIds.length} selected region(s)?`)) return;
+  const count = entryStore.selectedRegionIds.length;
+  if (!confirm(`Remove ${count} selected region(s)?`)) return;
   entryStore.deleteSelectedRegions();
   populateFormFromEntry(entryStore.getActiveEntry());
+  showToast?.(`Removed ${count} region(s).`, {
+    type: 'info',
+    actionLabel: 'Undo',
+    onAction: () => { entryStore.undo(); refreshUI(); }
+  });
   refreshUI();
 }
 
@@ -148,18 +281,63 @@ function deleteActiveEntry() {
   const num = entryStore.getEntryNumber(entry);
   if (!confirm(`Delete Pain Entry #${num} and all its regions?`)) return;
   const id = entryStore.isDraftActive() ? DRAFT_KEY : entry.id;
-  entryStore.deleteEntry(id);
+  const result = entryStore.deleteEntry(id);
   resetFormFields();
-  document.getElementById('avatarHint').classList.remove('hidden');
+  document.getElementById('avatarHint')?.classList.remove('hidden');
+  showToast?.(`Entry #${num} deleted.`, {
+    type: 'warning',
+    duration: 8000,
+    actionLabel: 'Undo',
+    onAction: () => {
+      result?.restore?.();
+      refreshUI();
+      showToast?.('Entry restored.', { type: 'success' });
+    }
+  });
   refreshUI();
 }
 
 function clearAllEntries() {
-  if (!confirm('Clear all pain entries? This is permanent.')) return;
-  entryStore.clearAll();
-  startNewEntry();
-  document.getElementById('avatarHint').classList.remove('hidden');
+  if (!confirm('Clear all pain entries? You can undo for a few seconds.')) return;
+  const result = entryStore.clearAll();
+  entryStore.activeEntryId = null;
+  entryStore.draftEntry = null;
+  resetFormFields();
+  document.getElementById('avatarHint')?.classList.remove('hidden');
+  showToast?.('All entries cleared.', {
+    type: 'warning',
+    duration: 8000,
+    actionLabel: 'Undo',
+    onAction: () => {
+      result?.restore?.();
+      refreshUI();
+      showToast?.('Entries restored.', { type: 'success' });
+    }
+  });
+  maybeShowWelcome?.();
+  refreshUI();
 }
+
+function performUndo() {
+  if (entryStore.undo()) {
+    populateFormFromEntry(entryStore.getActiveEntry());
+    showToast?.('Undo', { type: 'info', duration: 1800 });
+    refreshUI();
+  }
+}
+
+function performRedo() {
+  if (entryStore.redo()) {
+    populateFormFromEntry(entryStore.getActiveEntry());
+    showToast?.('Redo', { type: 'info', duration: 1800 });
+    refreshUI();
+  }
+}
+
+window.performUndo = performUndo;
+window.performRedo = performRedo;
+window.saveCurrentEntry = saveCurrentEntry;
+window.startNewEntry = startNewEntry;
 
 // ==========================================================================
 // CHART & INSIGHTS

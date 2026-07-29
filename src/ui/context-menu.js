@@ -41,8 +41,16 @@ function initKeyboardShortcuts() {
         removeSelectedRegions();
       }
     }
-    if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); entryStore.undo(); refreshUI(); }
-    if ((e.metaKey || e.ctrlKey) && e.key === 'z' && e.shiftKey) { e.preventDefault(); entryStore.redo(); refreshUI(); }
+    if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      if (typeof performUndo === 'function') performUndo();
+      else { entryStore.undo(); refreshUI(); }
+    }
+    if ((e.metaKey || e.ctrlKey) && ((e.key === 'z' && e.shiftKey) || e.key === 'y')) {
+      e.preventDefault();
+      if (typeof performRedo === 'function') performRedo();
+      else { entryStore.redo(); refreshUI(); }
+    }
     if (entryStore.selectedRegionIds.length !== 1) return;
     const id = entryStore.selectedRegionIds[0];
     const found = entryStore.findRegion(id);

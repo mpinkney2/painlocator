@@ -1,6 +1,10 @@
 function init() {
   restoreSavedTheme();
+
+  // Demo mode may remap storage key before load
+  demoMode?.initControls?.();
   entryStore.load();
+
   initPanelResizers();
   initMarkerContextMenu();
   initKeyboardShortcuts();
@@ -8,7 +12,10 @@ function init() {
   initRegionTools();
   initReviewTools();
 
-  entryStore.onChange(() => refreshUI());
+  entryStore.onChange(() => {
+    updateUndoRedoButtons?.();
+    refreshUI();
+  });
 
   const stageEl = document.getElementById('avatarStage');
   state.engine = new ClinicalAnatomyEngine(stageEl, {
@@ -28,17 +35,33 @@ function init() {
     if (!entryStore.getActiveEntry() && entry) entryStore.activeEntryId = DRAFT_KEY;
     if (entry) populateFormFromEntry(entry);
     document.getElementById('avatarHint')?.classList.add('hidden');
+    hideAnatomyTip?.();
     refreshUI();
   };
 
   state.engine.on('regionplaced', onRegionUpdate);
   state.engine.on('regionselected', onRegionUpdate);
-  state.engine.on('regionchanged', () => refreshUI());
+  state.engine.on('regionchanged', () => {
+    entryStore.commitGeometry?.();
+    refreshUI();
+  });
   state.engine.on('markerplaced', onRegionUpdate);
   state.engine.on('markerselected', onRegionUpdate);
-  state.engine.on('markermoved', () => refreshUI());
+  state.engine.on('markermoved', () => {
+    entryStore.commitGeometry?.();
+    refreshUI();
+  });
 
-  entryStore.newEntry(normalizeModelType(state.modelType));
+  // Do NOT auto-create a blank draft on load — only restore existing draft or stay empty
+  if (entryStore.draftEntry && entryStore.draftEntry.regions?.length) {
+    entryStore.activeEntryId = DRAFT_KEY;
+    populateFormFromEntry(entryStore.draftEntry);
+  } else if (entryStore.activeEntryId && entryStore.getActiveEntry()) {
+    populateFormFromEntry(entryStore.getActiveEntry());
+  } else {
+    entryStore.draftEntry = null;
+    entryStore.activeEntryId = null;
+  }
 
   ['accPainStyle', 'accAccessibility'].forEach(id => {
     document.getElementById(id)?.classList.add('collapsed');
@@ -46,11 +69,15 @@ function init() {
   document.getElementById('accDetail')?.classList.add('collapsed');
   document.getElementById('accAIOverlays')?.classList.add('collapsed');
 
-  applyWorkflowMode('capture');
+  applyWorkflowMode(demoMode?.isActive?.() ? 'review' : 'capture');
 
   document.querySelectorAll('input[name="patient_model"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       state.modelType = e.target.value;
+      const active = entryStore.getActiveEntry();
+      if (active && entryStore.isDraftActive()) {
+        entryStore.updateActiveEntry({ patientModel: normalizeModelType(state.modelType) });
+      }
       state.engine.update({ modelType: state.modelType });
       state.vizController?.refreshAvailability(state.modelType, state.view);
       refreshUI();
@@ -99,8 +126,19 @@ function init() {
     state.engine.update({ accessibility: { targets: e.target.checked } });
   });
 
+  // Reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.classList.add('reduced-motion-active');
+  }
+
   const slider = document.getElementById('intensitySlider');
-  slider.addEventListener('input', () => updateIntensityUI(slider.value));
+  slider.addEventListener('input', () => {
+    updateIntensityUI(slider.value);
+    if (!entryStore.getActiveEntry()) {
+      entryStore.ensureActiveEntry(normalizeModelType(state.modelType));
+    }
+    syncFormToActiveEntry();
+  });
   updateIntensityUI(slider.value, true);
 
   ['notesInput', 'durationSelect', 'occurrenceSelect'].forEach(id => {
@@ -112,10 +150,12 @@ function init() {
   setupPillToggles('triggerPills');
   setupPillToggles('easePills', false);
 
-  document.getElementById('btnLog').addEventListener('click', saveCurrentEntry);
+  document.getElementById('btnLog').addEventListener('click', () => saveCurrentEntry());
   document.getElementById('btnNewEntry').addEventListener('click', startNewEntry);
   document.getElementById('btnRemoveMarker').addEventListener('click', removeSelectedRegions);
   document.getElementById('btnDeleteEntry').addEventListener('click', deleteActiveEntry);
+  document.getElementById('btnUndo')?.addEventListener('click', performUndo);
+  document.getElementById('btnRedo')?.addEventListener('click', performRedo);
   document.getElementById('btnDupRegion')?.addEventListener('click', () => {
     const id = entryStore.selectedRegionIds[0];
     if (id) { entryStore.duplicateRegion(id); refreshUI(); }
@@ -126,7 +166,10 @@ function init() {
   });
   document.getElementById('btnDeleteRegion')?.addEventListener('click', () => {
     const id = entryStore.selectedRegionIds[0];
-    if (id && confirm('Delete this pain region?')) { entryStore.selectRegion(id); removeSelectedRegions(); }
+    if (id && confirm('Delete this pain region?')) {
+      entryStore.selectRegion(id);
+      removeSelectedRegions();
+    }
   });
   ['regionLabelInput', 'regionLayerSelect', 'regionShapeSelect'].forEach(id => {
     document.getElementById(id)?.addEventListener('change', () => { syncRegionEditorToStore(); refreshUI(); });
@@ -134,20 +177,43 @@ function init() {
   });
   document.getElementById('btnClear').addEventListener('click', clearAllEntries);
   document.getElementById('btnMic').addEventListener('click', toggleMic);
+  document.getElementById('btnFeedback')?.addEventListener('click', () => openFeedbackForm());
+  document.getElementById('btnHelpMenu')?.addEventListener('click', () => {
+    document.getElementById('helpModal')?.showModal();
+  });
+  document.getElementById('btnRestartWalkthrough')?.addEventListener('click', () => {
+    document.getElementById('helpModal')?.close();
+    walkthrough?.restart();
+  });
 
-  document.getElementById('btnExport').addEventListener('click', openExportModal);
+  document.getElementById('btnExport').addEventListener('click', () => {
+    openExportModal();
+    trackEvent?.('report_opened');
+  });
   ['btnExportPdf', 'btnExportPdfModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
+      setSaveStatus?.('report', 'Preparing report…');
       await printClinicalReport();
+      setSaveStatus?.('report', 'Report ready');
+      trackEvent?.('report_exported', { format: 'pdf' });
       document.getElementById('exportModal')?.close();
     });
   });
   ['btnExportJson', 'btnExportJsonModal'].forEach(id => {
-    document.getElementById(id)?.addEventListener('click', () => { exportSessionJson(); document.getElementById('exportModal')?.close(); });
+    document.getElementById(id)?.addEventListener('click', () => {
+      exportSessionJson();
+      setSaveStatus?.('exported');
+      showToast?.('Session JSON exported.', { type: 'success' });
+      trackEvent?.('report_exported', { format: 'json' });
+      document.getElementById('exportModal')?.close();
+    });
   });
   ['btnExportPng', 'btnExportPngModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
       await captureClinicalSnapshot();
+      setSaveStatus?.('exported');
+      showToast?.('Anatomy snapshot saved.', { type: 'success' });
+      trackEvent?.('report_exported', { format: 'png' });
       document.getElementById('exportModal')?.close();
     });
   });
@@ -158,11 +224,18 @@ function init() {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
+      if (entryStore.entries.length && !confirm('Import replaces the current session. Continue?')) {
+        e.target.value = '';
+        return;
+      }
       await importSessionFromFile(file);
-      alert('Session imported successfully.');
+      setSaveStatus?.('imported');
+      showToast?.('Session imported successfully.', { type: 'success' });
+      dismissWelcome?.();
     } catch (err) {
-      alert(err.message || 'Could not import session.');
+      showToast?.(err.message || 'Could not import session.', { type: 'error', assertive: true });
     }
+    e.target.value = '';
   });
 
   document.getElementById('btnInsights').addEventListener('click', () => {
@@ -170,7 +243,9 @@ function init() {
     document.getElementById('insightsModal').showModal();
   });
   document.getElementById('btnCopyShare').addEventListener('click', () => {
-    navigator.clipboard.writeText(buildSharePayload()).then(() => alert('JSON snapshot copied.'));
+    navigator.clipboard.writeText(buildSharePayload()).then(() => {
+      showToast?.('JSON snapshot copied.', { type: 'success' });
+    });
   });
   document.getElementById('btnDownloadShare').addEventListener('click', () => {
     const blob = new Blob([buildSharePayload()], { type: 'application/json' });
@@ -179,9 +254,10 @@ function init() {
     a.download = `painlocator-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(a.href);
+    showToast?.('Download started.', { type: 'success' });
   });
   document.querySelectorAll('[data-close]').forEach(btn => {
-    btn.addEventListener('click', () => btn.closest('dialog').close());
+    btn.addEventListener('click', () => btn.closest('dialog')?.close());
   });
 
   initSpeech();
@@ -189,6 +265,8 @@ function init() {
   updateChartTheme();
   syncThemeToggleLabel();
   refreshUI();
+  maybeShowWelcome?.();
+  if (!demoMode?.isActive?.() && !entryStore.entries.length) showAnatomyTip?.();
   if (window.lucide) lucide.createIcons();
 }
 
@@ -198,6 +276,7 @@ function setBodyView(view) {
   if (!view) return;
   document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.view === view);
+    b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false');
   });
   state.view = view;
   state.engine?.update({ viewType: state.view });

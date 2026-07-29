@@ -26,7 +26,7 @@ function exportSessionJsonString() {
 async function captureClinicalSnapshot() {
   const dataUrl = await captureAnatomyMapDataUrl({ view: state.view });
   if (!dataUrl) {
-    alert('Anatomy image is not ready. Wait for the clinical plate to load, then try again.');
+    showToast?.('Anatomy image is not ready. Wait for the plate to load, then try again.', { type: 'warning' });
     return null;
   }
   const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
