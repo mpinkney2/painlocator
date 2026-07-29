@@ -9,12 +9,12 @@ function intensityBaseColor(intensity) {
 
 function painGradientStops(intensity, opacity) {
   const base = intensityBaseColor(intensity);
-  const o = opacity ?? 0.7;
+  const o = opacity ?? 0.85;
   return `
-    <stop offset="0%" stop-color="${base}" stop-opacity="${Math.min(1, o + 0.18)}"/>
-    <stop offset="40%" stop-color="${base}" stop-opacity="${o}"/>
-    <stop offset="72%" stop-color="${base}" stop-opacity="${Math.min(0.85, o * 0.72)}"/>
-    <stop offset="100%" stop-color="${base}" stop-opacity="${Math.min(0.2, o * 0.18)}"/>`;
+    <stop offset="0%" stop-color="${base}" stop-opacity="1"/>
+    <stop offset="35%" stop-color="${base}" stop-opacity="${o}"/>
+    <stop offset="68%" stop-color="${base}" stop-opacity="${Math.min(0.92, o * 0.85)}"/>
+    <stop offset="100%" stop-color="${base}" stop-opacity="${Math.min(0.35, o * 0.32)}"/>`;
 }
 
 function polygonPoints(anchors) {
