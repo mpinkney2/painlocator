@@ -36,7 +36,7 @@ All surfaces label observations as **non-diagnostic**.
 - Dermatomes (nerve root)
 - Myotomes (muscle chains)
 
-These are **UI and state hooks** in `src/engine/overlays/visualization-controller.js`. Full anatomical datasets and rendering for these overlays are **not shipped** in v0.1.0.
+These are wired through `VisualizationController` and rendered via schematic datasets in `src/engine/overlays/overlay-datasets.js`. They are **educational / assistive**, not diagnostic atlases.
 
 ## What Does Not Exist Today
 

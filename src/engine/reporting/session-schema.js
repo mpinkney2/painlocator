@@ -6,7 +6,7 @@
  * All session files include `schemaVersion` for forward-compatible migrations.
  *
  * @typedef {Object} PainLocatorSessionV1
- * @property {string} schemaVersion        - Schema identifier (e.g. "1.0.0")
+ * @property {string} schemaVersion        - Schema identifier (e.g. "1.1.0")
  * @property {string} applicationVersion - PainLocator app semver
  * @property {string} engineVersion        - Clinical Anatomy Engine semver
  * @property {string} created              - ISO 8601 — first session creation
@@ -51,9 +51,9 @@
  * @property {string} aggregate - Combined clinical notes summary
  */
 
-const SESSION_SCHEMA_VERSION = '1.0.0';
-const APPLICATION_VERSION = '5.3.0';
-const ENGINE_VERSION = '1.0.0';
+const SESSION_SCHEMA_VERSION = '1.1.0';
+const APPLICATION_VERSION = '5.5.0';
+const ENGINE_VERSION = '1.1.0';
 
 function formatPatientModelLabel(model) {
   const labels = {

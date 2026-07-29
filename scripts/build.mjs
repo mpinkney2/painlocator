@@ -25,7 +25,14 @@ if (!existsSync(anatomyFront)) {
   process.exit(1);
 }
 
+const overlaySample = join(dist, 'anatomy', 'overlays', 'overlay_muscle_male_front.svg');
+if (!existsSync(overlaySample)) {
+  console.error('Build verification failed: missing', overlaySample);
+  process.exit(1);
+}
+
 console.log('Build complete → dist/');
 console.log('  index.html');
 console.log('  src/');
 console.log('  anatomy/ (from public/anatomy/)');
+console.log('  anatomy/overlays/ (schematic reference SVGs)');

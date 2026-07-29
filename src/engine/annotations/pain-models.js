@@ -10,6 +10,18 @@ const DRAFT_KEY = "__draft__";
 
 const REGION_TOOLS = ["select", "point", "circle", "polygon", "brush", "lasso", "eraser"];
 
+const CLINICAL_STATUSES = [
+  { id: "logged", label: "Logged" },
+  { id: "ready_for_review", label: "Ready for review" },
+  { id: "reviewed", label: "Reviewed" },
+  { id: "signed_off", label: "Signed off" }
+];
+
+function normalizeClinicalStatus(status) {
+  const allowed = CLINICAL_STATUSES.map(s => s.id);
+  return allowed.includes(status) ? status : "logged";
+}
+
 function normalizeModelType(modelType) {
   const map = { male: "adult-male", female: "adult-female", child: "child", teen: "teen", senior: "senior" };
   return map[modelType] || modelType || "adult-male";
@@ -63,6 +75,10 @@ function createPainEntry(partial = {}) {
     duration: partial.duration || "",
     whenOccurring: partial.whenOccurring || "",
     note: partial.note || "",
+    clinicalStatus: normalizeClinicalStatus(partial.clinicalStatus),
+    reviewedAt: partial.reviewedAt || null,
+    reviewedBy: partial.reviewedBy || null,
+    signedOffAt: partial.signedOffAt || null,
     regions
   };
 }
@@ -150,3 +166,8 @@ function migrateLegacyFlatEntry(entry) {
     regions: [createPainRegion({ view: entry.view || "front", anchors: [{ x, y }], patientLabel: entry.region || entry.regionLabel })]
   });
 }
+
+window.CLINICAL_STATUSES = CLINICAL_STATUSES;
+window.normalizeClinicalStatus = normalizeClinicalStatus;
+window.clamp01 = clamp01;
+

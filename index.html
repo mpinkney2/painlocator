@@ -15,8 +15,8 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.4">
-  <link rel="stylesheet" href="src/layout/styles.css?v=5.4">
+  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.5">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.5">
 </head>
 <body class="wf-capture">
   <div class="app" id="app">
@@ -129,7 +129,7 @@
               <div class="radio-group" id="referenceOverlayOptions">
                 <label class="radio-option"><input type="radio" name="ref_overlay" value="none" checked><span>None</span></label>
               </div>
-              <p class="viz-empty-note" id="vizOverlayEmpty" hidden>No reference plates available for this view.</p>
+              <p class="viz-empty-note" id="vizOverlayEmpty" hidden>Schematic vector overlays are available for Muscle, Skeleton, Nerves, and Organs.</p>
             </div>
           </div>
         </div>
@@ -232,6 +232,8 @@
             <button type="button" class="region-tool" data-tool="point" title="Mark a pain point">Point</button>
             <button type="button" class="region-tool active" data-tool="circle" title="Click-drag to mark a pain region">Region</button>
             <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Click vertices · double-click or close on first point">Polygon</button>
+            <button type="button" class="region-tool show-clinical" data-tool="brush" title="Paint a freehand pain area">Brush</button>
+            <button type="button" class="region-tool show-clinical" data-tool="lasso" title="Draw a freehand outline">Lasso</button>
             <button type="button" class="region-tool" data-tool="eraser" title="Remove region">Eraser</button>
           </div>
           <div class="avatar-stage" id="avatarStage"></div>
@@ -262,6 +264,12 @@
             <div class="insight-box" id="trendSummaryBox">
               <p>Log entries in Capture to see patterns here.</p>
             </div>
+          </div>
+
+          <div class="review-queue-panel show-review-or-clinical" id="reviewQueuePanel">
+            <span class="block-title">Review queue</span>
+            <p class="modal-note">Mark entries ready for visit, then review or sign off locally.</p>
+            <div class="review-queue-list" id="reviewQueueList"></div>
           </div>
 
           <div class="compare-panel show-review" id="comparePanel" hidden>
@@ -473,11 +481,14 @@
                 <button type="button" class="btn btn-ghost btn-block" id="btnExportJson">
                   <i data-lucide="braces"></i> Session file (JSON)
                 </button>
+                <button type="button" class="btn btn-ghost btn-block" id="btnExportFhir">
+                  <i data-lucide="hospital"></i> EHR handoff (FHIR JSON)
+                </button>
                 <button type="button" class="btn btn-ghost btn-block" id="btnImportSidebar">
                   <i data-lucide="upload"></i> Import session
                 </button>
               </div>
-              <p class="modal-note export-note">Share the PDF at your visit. Everything stays on this device until you save or send a file.</p>
+              <p class="modal-note export-note">Share PDF at your visit, or export FHIR JSON for EHR import workflows. Everything stays on this device until you save or send a file.</p>
             </div>
           </div>
 
@@ -524,6 +535,9 @@
           <button type="button" class="btn btn-ghost btn-block" id="btnExportJsonModal">
             <i data-lucide="braces"></i> Session file (JSON)
           </button>
+          <button type="button" class="btn btn-ghost btn-block" id="btnExportFhirModal">
+            <i data-lucide="hospital"></i> EHR handoff (FHIR JSON)
+          </button>
         </div>
       </div>
     </dialog>
@@ -560,35 +574,38 @@
     <div id="printReport" class="print-only"></div>
   </div>
 
-  <script src="src/utils/env.js?v=5.4"></script>
-  <script src="src/utils/dev-mode.js?v=5.4"></script>
+  <script src="src/utils/env.js?v=5.5"></script>
+  <script src="src/utils/dev-mode.js?v=5.5"></script>
   <!-- Clinical Anatomy Engine -->
-  <script src="src/engine/anatomy/regions.js?v=5.4"></script>
-  <script src="src/engine/annotations/pain-models.js?v=5.4"></script>
-  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.4"></script>
-  <script src="src/engine/annotations/pain-entry-store.js?v=5.4"></script>
-  <script src="src/layout/panel-resizers.js?v=5.4"></script>
-  <script src="src/engine/anatomy/asset-paths.js?v=5.4"></script>
-  <script src="src/engine/anatomy/pain-colors.js?v=5.4"></script>
-  <script src="src/engine/overlays/visualization-controller.js?v=5.4"></script>
-  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.4"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.4"></script>
+  <script src="src/engine/anatomy/regions.js?v=5.5"></script>
+  <script src="src/engine/annotations/pain-models.js?v=5.5"></script>
+  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.5"></script>
+  <script src="src/engine/annotations/pain-entry-store.js?v=5.5"></script>
+  <script src="src/layout/panel-resizers.js?v=5.5"></script>
+  <script src="src/engine/anatomy/asset-paths.js?v=5.5"></script>
+  <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
+  <script src="src/engine/overlays/overlay-datasets.js?v=5.5"></script>
+  <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
+  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.5"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.5"></script>
 
   <!-- PainLocator app -->
-  <script src="src/utils/theme-tokens.js?v=5.4"></script>
-  <script src="src/state/app-state.js?v=5.4"></script>
-  <script src="src/utils/forms.js?v=5.4"></script>
-  <script src="src/features/capture/entry-crud.js?v=5.4"></script>
-  <script src="src/features/review/timeline.js?v=5.4"></script>
-  <script src="src/features/clinical-analysis/insights.js?v=5.4"></script>
-  <script src="src/features/review/history-ui.js?v=5.4"></script>
-  <script src="src/engine/reporting/session-schema.js?v=5.4"></script>
-  <script src="src/engine/reporting/clinical-report.js?v=5.4"></script>
-  <script src="src/engine/reporting/session-io.js?v=5.4"></script>
-  <script src="src/engine/reporting/reports.js?v=5.4"></script>
-  <script src="src/ui/context-menu.js?v=5.4"></script>
-  <script src="src/features/capture/speech.js?v=5.4"></script>
-  <script src="src/state/workflow.js?v=5.4"></script>
-  <script src="src/app/bootstrap.js?v=5.4"></script>
+  <script src="src/utils/theme-tokens.js?v=5.5"></script>
+  <script src="src/state/app-state.js?v=5.5"></script>
+  <script src="src/utils/forms.js?v=5.5"></script>
+  <script src="src/features/capture/entry-crud.js?v=5.5"></script>
+  <script src="src/features/review/timeline.js?v=5.5"></script>
+  <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
+  <script src="src/features/clinical-analysis/review-queue.js?v=5.5"></script>
+  <script src="src/features/review/history-ui.js?v=5.5"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
+  <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
+  <script src="src/engine/reporting/fhir-export.js?v=5.5"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.5"></script>
+  <script src="src/engine/reporting/reports.js?v=5.5"></script>
+  <script src="src/ui/context-menu.js?v=5.5"></script>
+  <script src="src/features/capture/speech.js?v=5.5"></script>
+  <script src="src/state/workflow.js?v=5.5"></script>
+  <script src="src/app/bootstrap.js?v=5.5"></script>
 </body>
 </html>

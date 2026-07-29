@@ -78,7 +78,15 @@ PainLocator transitions from prototype to platform. This release establishes the
 
 ## Unreleased
 
-Planned work is tracked in [ROADMAP.md](./ROADMAP.md) and [AI_ROADMAP.md](./AI_ROADMAP.md).
+### Added
+
+- Local **review queue** with clinical status (`logged` → `ready_for_review` → `reviewed` → `signed_off`)
+- FHIR R4 document Bundle export for EHR handoff (portable JSON — not live EHR write)
+- Brush and lasso region tools (Clinical Analysis)
+- Vector overlay datasets + schematic SVG plates under `public/anatomy/overlays/`
+- Session schema **1.1.0** (`clinicalStatus` and review metadata on entries)
+
+Planned follow-ups remain in [ROADMAP.md](./ROADMAP.md) and [AI_ROADMAP.md](./AI_ROADMAP.md).
 
 [Unreleased]: https://github.com/mpinkney2/painlocator/compare/v0.1.0...main
 [v0.1.0]: https://github.com/mpinkney2/painlocator/releases/tag/v0.1.0
