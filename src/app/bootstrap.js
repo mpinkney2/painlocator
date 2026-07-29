@@ -7,6 +7,7 @@ function init() {
   initVisualization();
   initRegionTools();
   initReviewTools();
+  initReviewQueue();
 
   entryStore.onChange(() => refreshUI());
 
@@ -144,6 +145,9 @@ function init() {
   });
   ['btnExportJson', 'btnExportJsonModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => { exportSessionJson(); document.getElementById('exportModal')?.close(); });
+  });
+  ['btnExportFhir', 'btnExportFhirModal'].forEach(id => {
+    document.getElementById(id)?.addEventListener('click', () => { exportFhirBundleJson(); document.getElementById('exportModal')?.close(); });
   });
   ['btnExportPng', 'btnExportPngModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {

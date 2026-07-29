@@ -10,6 +10,8 @@ export type VisualizationBaseMode = "standard" | "heatmap" | "reference";
 
 export type RegionTool = "select" | "point" | "circle" | "polygon" | "brush" | "lasso" | "eraser";
 
+export type ClinicalStatus = "logged" | "ready_for_review" | "reviewed" | "signed_off";
+
 export interface NormalizedPoint {
   x: number;
   y: number;
@@ -47,6 +49,10 @@ export interface PainEntry {
   duration: string;
   whenOccurring: string;
   note: string;
+  clinicalStatus: ClinicalStatus;
+  reviewedAt: string | null;
+  reviewedBy: string | null;
+  signedOffAt: string | null;
   regions: PainRegion[];
 }
 

@@ -217,6 +217,39 @@ class PainEntryStore {
     return entry;
   }
 
+  setClinicalStatus(entryId, status, meta = {}) {
+    const normalized = normalizeClinicalStatus(status);
+    const entry = this.entries.find(e => e.id === entryId) || (this.getActiveEntry()?.id === entryId ? this.getActiveEntry() : null);
+    if (!entry) return null;
+    entry.clinicalStatus = normalized;
+    entry.updatedAt = new Date().toISOString();
+    if (normalized === "reviewed" || normalized === "signed_off") {
+      entry.reviewedAt = meta.reviewedAt || entry.reviewedAt || new Date().toISOString();
+      entry.reviewedBy = meta.reviewedBy || entry.reviewedBy || "Clinician";
+    }
+    if (normalized === "signed_off") {
+      entry.signedOffAt = meta.signedOffAt || new Date().toISOString();
+    }
+    if (normalized === "logged" || normalized === "ready_for_review") {
+      if (normalized === "logged") {
+        entry.reviewedAt = null;
+        entry.reviewedBy = null;
+        entry.signedOffAt = null;
+      }
+    }
+    if (this.isEntrySaved(entry)) this.save();
+    this._notify();
+    return entry;
+  }
+
+  getEntriesByClinicalStatus(status, patientModel) {
+    const model = normalizeModelType(patientModel || "adult-male");
+    return this.entries.filter(e =>
+      normalizeModelType(e.patientModel) === model &&
+      normalizeClinicalStatus(e.clinicalStatus) === normalizeClinicalStatus(status)
+    );
+  }
+
   updateRegion(id, patch) {
     const found = this.findRegion(id);
     if (!found) return null;
@@ -485,6 +518,7 @@ window.createPainRegion = createPainRegion;
 window.createPainEntry = createPainEntry;
 window.createPainMarker = createPainRegion;
 window.normalizeModelType = normalizeModelType;
+window.normalizeClinicalStatus = normalizeClinicalStatus;
 window.regionLabel = regionLabel;
 window.markerLabel = regionLabel;
 window.getRegionCenter = getRegionCenter;
@@ -492,3 +526,4 @@ window.getRegionRadii = getRegionRadii;
 window.getRegionOpacity = getRegionOpacity;
 window.DRAFT_KEY = DRAFT_KEY;
 window.REGION_TOOLS = REGION_TOOLS;
+window.CLINICAL_STATUSES = CLINICAL_STATUSES;

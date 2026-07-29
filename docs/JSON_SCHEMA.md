@@ -8,21 +8,21 @@ Import/export handlers: **`src/engine/reporting/session-io.js`**
 
 ## Versioning
 
-| Field | v0.1.0 value |
+| Field | Current value |
 |-------|----------------|
-| `schemaVersion` | `"1.0.0"` |
-| `applicationVersion` | `"5.3.0"` (PainLocator app) |
-| `engineVersion` | `"1.0.0"` (CAE) |
+| `schemaVersion` | `"1.1.0"` |
+| `applicationVersion` | `"5.5.0"` (PainLocator app) |
+| `engineVersion` | `"1.1.0"` (CAE) |
 
-Major schema version (`1`) must match for import. Future versions will require migration utilities (planned — see [ROADMAP.md](./ROADMAP.md)).
+Major schema version (`1`) must match for import. Minor bumps (e.g. `1.0.0` → `1.1.0`) remain import-compatible; missing fields default safely (e.g. `clinicalStatus` → `"logged"`).
 
 ## Top-Level Object
 
 ```json
 {
-  "schemaVersion": "1.0.0",
-  "applicationVersion": "5.3.0",
-  "engineVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
+  "applicationVersion": "5.5.0",
+  "engineVersion": "1.1.0",
   "created": "2026-07-07T12:00:00.000Z",
   "modified": "2026-07-07T18:30:00.000Z",
   "patient": { },
@@ -71,6 +71,10 @@ Entry shape (from `createPainEntry` in `pain-models.js`):
 | `duration` | string |
 | `whenOccurring` | string |
 | `note` | string |
+| `clinicalStatus` | string — `logged` \| `ready_for_review` \| `reviewed` \| `signed_off` (default `logged`) |
+| `reviewedAt` | ISO 8601 \| null |
+| `reviewedBy` | string \| null |
+| `signedOffAt` | ISO 8601 \| null |
 | `regions` | PainRegion[] |
 
 ### `regions`

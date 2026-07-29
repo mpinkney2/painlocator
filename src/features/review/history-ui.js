@@ -40,11 +40,12 @@ function updateEntryList() {
       </button>`;
     }).join('');
 
-    return `<div class="entry-card${isActive ? ' active' : ''}${isDraft ? ' draft' : ''}" data-entry-id="${isDraft ? DRAFT_KEY : entry.id}">
+    return `<div class="entry-card${isActive ? ' active' : ''}${isDraft ? ' draft' : ''} status-${normalizeClinicalStatus(entry.clinicalStatus)}" data-entry-id="${isDraft ? DRAFT_KEY : entry.id}">
       <button type="button" class="entry-card-header">
         <span class="entry-dot" style="background:${PAIN_COLORS[entry.intensity]}"></span>
         <span class="entry-card-title">
           <strong>Entry #${num}${isDraft ? ' (unsaved)' : ''}</strong>
+          ${!isDraft ? `<span class="queue-status">${clinicalStatusLabel(entry.clinicalStatus)}</span>` : ''}
           <span class="entry-card-meta">${summary.regionCount} region${summary.regionCount !== 1 ? 's' : ''} · Intensity ${summary.intensity}${summary.triggers ? ' · ' + summary.triggers : ''}</span>
           <span class="entry-card-regions">${summary.regions}</span>
           <span class="entry-card-time">${summary.time}${regionsOnView.length ? ` · ${regionsOnView.length} on this view` : ''}</span>
@@ -81,7 +82,7 @@ function initRegionTools() {
       if (layer) {
         layer.style.cursor = tool === 'select' ? 'default'
           : tool === 'eraser' ? 'not-allowed'
-          : tool === 'polygon' ? 'crosshair'
+          : (tool === 'polygon' || tool === 'brush' || tool === 'lasso') ? 'crosshair'
           : 'crosshair';
       }
     });
@@ -225,8 +226,12 @@ function refreshUI() {
   updateActiveEntrySummary();
   updateEntryList();
   updateRegionEditor();
+  if (typeof renderReviewQueue === 'function') renderReviewQueue();
   setCaptureFormDisabled(state.workflowMode === 'review' && !state.reviewEditMode);
-  if (state.engine) state.engine.renderPins();
+  if (state.engine) {
+    state.engine.renderPins();
+    state.engine.clinicalRenderer?.layers?.overlay?.render?.();
+  }
 }
 
 // ==========================================================================

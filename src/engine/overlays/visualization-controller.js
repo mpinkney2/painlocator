@@ -9,10 +9,10 @@ const REFERENCE_OVERLAY_DEFS = [
   { id: "organ", label: "Organs" }
 ];
 
-function overlayAssetPath(overlayId, modelType, viewType) {
+function overlayAssetPath(overlayId, modelType, viewType, ext = "svg") {
   const model = normalizeModelType(modelType).replace("adult-", "");
   const gender = model.includes("female") ? "female" : "male";
-  return `/anatomy/overlays/overlay_${overlayId}_${gender}_${viewType}.png`;
+  return `/anatomy/overlays/overlay_${overlayId}_${gender}_${viewType}.${ext}`;
 }
 
 class VisualizationController {
@@ -27,7 +27,10 @@ class VisualizationController {
       dermatomes: false,
       myotomes: false
     };
-    this.availableOverlays = new Set();
+    // Vector schematic overlays are always available in CAE.
+    this.availableOverlays = new Set(REFERENCE_OVERLAY_DEFS.map(d => d.id));
+    this.assetOverlays = new Set();
+    this.assetOverlayPaths = new Map();
     this._probeToken = 0;
   }
 
@@ -65,32 +68,39 @@ class VisualizationController {
       referenceOverlay: this.referenceOverlay,
       aiOverlays: { ...this.aiOverlays },
       availableOverlays: [...this.availableOverlays],
-      overlayPath: this.getActiveOverlayPath()
+      overlayPath: this.getActiveOverlayPath(),
+      useVectorOverlay: true
     };
   }
 
   getActiveOverlayPath() {
     if (this.referenceOverlay === "none" || !this.engine) return null;
-    if (!this.availableOverlays.has(this.referenceOverlay)) return null;
-    return overlayAssetPath(this.referenceOverlay, this.engine.modelType, this.engine.viewType);
+    return this.assetOverlayPaths.get(this.referenceOverlay) || null;
   }
 
   async refreshAvailability(modelType, viewType) {
     const token = ++this._probeToken;
-    const next = new Set();
+    const nextAssets = new Set();
+    const nextPaths = new Map();
     for (const def of REFERENCE_OVERLAY_DEFS) {
-      const path = overlayAssetPath(def.id, modelType, viewType);
-      if (await this.assetExists(path)) next.add(def.id);
+      const svgPath = overlayAssetPath(def.id, modelType, viewType, "svg");
+      const pngPath = overlayAssetPath(def.id, modelType, viewType, "png");
+      if (await this.assetExists(svgPath)) {
+        nextAssets.add(def.id);
+        nextPaths.set(def.id, svgPath);
+      } else if (await this.assetExists(pngPath)) {
+        nextAssets.add(def.id);
+        nextPaths.set(def.id, pngPath);
+      }
     }
     if (token !== this._probeToken) return;
-    this.availableOverlays = next;
-    if (this.referenceOverlay !== "none" && !next.has(this.referenceOverlay)) {
-      this.referenceOverlay = "none";
-      if (this.baseMode === "reference") this.baseMode = "standard";
-    }
+    this.assetOverlays = nextAssets;
+    this.assetOverlayPaths = nextPaths;
+    // Keep vector overlays selectable even without PNG/SVG files.
+    this.availableOverlays = new Set(REFERENCE_OVERLAY_DEFS.map(d => d.id));
     this.apply();
-    this.onChange({ type: "availability", available: [...next] });
-    return [...next];
+    this.onChange({ type: "availability", available: [...this.availableOverlays], assets: [...nextAssets] });
+    return [...this.availableOverlays];
   }
 
   assetExists(url) {

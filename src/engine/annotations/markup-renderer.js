@@ -60,9 +60,57 @@ class AnatomyLayerOverlay {
     return this.el;
   }
 
+  appendShape(shape) {
+    if (shape.kind === "ellipse") {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+      el.setAttribute("cx", String(shape.cx));
+      el.setAttribute("cy", String(shape.cy));
+      el.setAttribute("rx", String(shape.rx));
+      el.setAttribute("ry", String(shape.ry));
+      el.setAttribute("fill", shape.color || "rgba(34,211,238,0.2)");
+      el.setAttribute("stroke", "rgba(255,255,255,0.35)");
+      el.setAttribute("stroke-width", "0.002");
+      this.el.appendChild(el);
+      return;
+    }
+    if (!shape.points?.length) return;
+    const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    poly.setAttribute("points", shape.points.map(p => `${p.x},${p.y}`).join(" "));
+    poly.setAttribute("fill", shape.color || "rgba(34,211,238,0.2)");
+    poly.setAttribute("stroke", "rgba(255,255,255,0.35)");
+    poly.setAttribute("stroke-width", "0.002");
+    this.el.appendChild(poly);
+    if (shape.label) {
+      const c = shape.points.reduce((a, p) => ({ x: a.x + p.x, y: a.y + p.y }), { x: 0, y: 0 });
+      const n = shape.points.length || 1;
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", String(c.x / n));
+      text.setAttribute("y", String(c.y / n));
+      text.setAttribute("fill", "rgba(248,250,252,0.85)");
+      text.setAttribute("font-size", "0.028");
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("font-family", "Inter, sans-serif");
+      text.textContent = shape.label;
+      this.el.appendChild(text);
+    }
+  }
+
   render() {
     if (!this.el) return;
     this.el.innerHTML = "";
+    const viz = this.engine.visualization || {};
+    const view = this.engine.viewType || "front";
+    const store = this.engine.markerStore;
+
+    if (viz.baseMode === "reference" && viz.referenceOverlay && viz.referenceOverlay !== "none") {
+      getReferenceOverlayShapes(viz.referenceOverlay, view).forEach(s => this.appendShape(s));
+    }
+
+    const ai = viz.aiOverlays || {};
+    if (ai.dermatomes) getDermatomeShapes(view).forEach(s => this.appendShape(s));
+    if (ai.myotomes) getMyotomeShapes(view).forEach(s => this.appendShape(s));
+    if (ai.suggested) getSuggestedShapes(view, store, this.engine.modelType).forEach(s => this.appendShape(s));
+    if (ai.referred) getReferredShapes(view, store, this.engine.modelType).forEach(s => this.appendShape(s));
   }
 }
 
@@ -86,7 +134,8 @@ class ReferenceOverlayLayer {
     if (!this.el) return;
     const viz = this.engine.visualization || {};
     const path = viz.overlayPath;
-    const show = viz.baseMode === "reference" && path;
+    // Vector schematics are the primary reference layer; asset plates are optional.
+    const show = viz.baseMode === "reference" && path && viz.useVectorOverlay === false;
     if (!show) {
       this.el.hidden = true;
       this.el.removeAttribute("src");
@@ -290,6 +339,7 @@ class RegionInteractionLayer {
     this._didDrag = false;
     this._preview = null;
     this._polygonVerts = null;
+    this._strokePath = null;
   }
 
   dist(a, b) {
@@ -298,6 +348,72 @@ class RegionInteractionLayer {
 
   cancelPolygonDraw() {
     this._polygonVerts = null;
+    this._mode = null;
+    this._preview = null;
+    this._strokePath = null;
+    this.renderer.renderRegions();
+  }
+
+  simplifyPath(points, minDist = 0.012) {
+    if (!points?.length) return [];
+    const out = [points[0]];
+    for (let i = 1; i < points.length; i++) {
+      if (this.dist(out[out.length - 1], points[i]) >= minDist) out.push(points[i]);
+    }
+    return out;
+  }
+
+  finishLassoDraw() {
+    const verts = this.simplifyPath(this._strokePath || [], 0.01);
+    if (verts.length < 3) {
+      this.cancelPolygonDraw();
+      return;
+    }
+    this.store.createPolygonRegion(
+      normalizeModelType(this.engine.modelType),
+      this.engine.viewType,
+      verts,
+      this.renderer.getActiveAnatomyLayer(),
+      this.engine.physicianMode
+    );
+    this.engine.trigger("regionplaced", { entry: this.store.getActiveEntry() });
+    this._strokePath = null;
+    this._mode = null;
+    this._preview = null;
+    this.renderer.renderRegions();
+  }
+
+  finishBrushDraw() {
+    const path = this.simplifyPath(this._strokePath || [], 0.008);
+    if (path.length < 2) {
+      this.cancelPolygonDraw();
+      return;
+    }
+    // Convert stroke to a ribbon polygon using perpendicular offsets.
+    const width = 0.018;
+    const left = [];
+    const right = [];
+    for (let i = 0; i < path.length; i++) {
+      const prev = path[Math.max(0, i - 1)];
+      const next = path[Math.min(path.length - 1, i + 1)];
+      const dx = next.x - prev.x;
+      const dy = next.y - prev.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const nx = (-dy / len) * width;
+      const ny = (dx / len) * width;
+      left.push({ x: clamp01(path[i].x + nx), y: clamp01(path[i].y + ny) });
+      right.push({ x: clamp01(path[i].x - nx), y: clamp01(path[i].y - ny) });
+    }
+    const verts = left.concat(right.reverse());
+    this.store.createPolygonRegion(
+      normalizeModelType(this.engine.modelType),
+      this.engine.viewType,
+      verts,
+      this.renderer.getActiveAnatomyLayer(),
+      this.engine.physicianMode
+    );
+    this.engine.trigger("regionplaced", { entry: this.store.getActiveEntry() });
+    this._strokePath = null;
     this._mode = null;
     this._preview = null;
     this.renderer.renderRegions();
@@ -425,7 +541,16 @@ class RegionInteractionLayer {
       return;
     }
 
-    if (tool === "brush" || tool === "lasso") return;
+    if (tool === "brush" || tool === "lasso") {
+      e.preventDefault();
+      this._mode = tool === "brush" ? "brush-draw" : "lasso-draw";
+      this._strokePath = [{ x: loc.x, y: loc.y }];
+      this._didDrag = false;
+      this._preview = { type: "polygon", vertices: this._strokePath };
+      this.renderer.renderRegions(this._preview);
+      this.bindMoveEnd();
+      return;
+    }
 
     if (tool === "select" && !regionEl) {
       this.store.selectedRegionIds = [];
@@ -439,6 +564,16 @@ class RegionInteractionLayer {
       const loc = this.clientToNorm(pt.clientX, pt.clientY);
       if (!loc) return;
       this._didDrag = true;
+
+      if ((this._mode === "brush-draw" || this._mode === "lasso-draw") && this._strokePath) {
+        const last = this._strokePath[this._strokePath.length - 1];
+        if (this.dist(last, loc) >= 0.006) {
+          this._strokePath.push({ x: loc.x, y: loc.y });
+          this._preview = { type: "polygon", vertices: [...this._strokePath] };
+          this.renderer.renderRegions(this._preview);
+        }
+        return;
+      }
 
       if (this._mode === "circle-draw" && this._start) {
         this._preview = {
@@ -469,6 +604,20 @@ class RegionInteractionLayer {
       document.removeEventListener("mouseup", end);
       document.removeEventListener("touchend", end);
 
+      if (this._mode === "lasso-draw") {
+        if (this._didDrag) this.finishLassoDraw();
+        else this.cancelPolygonDraw();
+        this.engine.trigger("regionchanged", {});
+        return;
+      }
+
+      if (this._mode === "brush-draw") {
+        if (this._didDrag) this.finishBrushDraw();
+        else this.cancelPolygonDraw();
+        this.engine.trigger("regionchanged", {});
+        return;
+      }
+
       if (this._mode === "circle-draw" && this._start && this._didDrag) {
         const pt = ev.changedTouches ? ev.changedTouches[0] : ev;
         const loc = this.clientToNorm(pt.clientX, pt.clientY);
@@ -489,6 +638,7 @@ class RegionInteractionLayer {
       this._dragKind = null;
       this._start = null;
       this._preview = null;
+      this._strokePath = null;
       this.renderer.renderRegions();
       this.engine.trigger("regionchanged", {});
     };

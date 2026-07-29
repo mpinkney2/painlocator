@@ -40,11 +40,21 @@ See [JSON_SCHEMA.md](./JSON_SCHEMA.md).
 
 ### Clinical overlays
 
-- Ship reference overlay PNG assets under `public/anatomy/overlays/`
-- Muscle, skeleton, nerve, and organ plates per view
-- Overlay availability surfaced in Clinical Analysis visualization panel
+- ✅ Vector schematic overlays for muscle / skeleton / nerve / organ (always available in Clinical Analysis)
+- ✅ Assistive dermatome / myotome / suggested / referred schematic datasets (`src/engine/overlays/overlay-datasets.js`)
+- ✅ Optional SVG reference plates under `public/anatomy/overlays/` (probed at runtime; vector remains primary)
+- High-fidelity atlas PNGs / diagnostic-grade plates remain future work
 
-Infrastructure exists in `src/engine/overlays/visualization-controller.js`; assets are not fully populated.
+### Physician workflow
+
+- ✅ Local review queue with clinical status: logged → ready for review → reviewed → signed off
+- Compare sessions across dates (entry compare exists; cross-session merge still planned)
+- Annotation comments per region
+
+### EHR / FHIR handoff
+
+- ✅ FHIR R4 **document Bundle** export (Composition + Patient + Observations) — portable handoff file, not a live EHR write API
+- Live EHR write / SMART-on-FHIR sync remains long-term
 
 ## Medium Term
 
@@ -69,18 +79,12 @@ Infrastructure exists in `src/engine/overlays/visualization-controller.js`; asse
 
 See [AI_ROADMAP.md](./AI_ROADMAP.md).
 
-### Physician workflow
-
-- Review queue and sign-off states
-- Compare sessions across dates
-- Annotation comments per region
-
 ## Long Term
 
 - **CAE as standalone package** — extract `src/engine/` for reuse in other clinical apps
 - **Collaborative sessions** — optional sync (requires backend; out of scope for current client-only architecture)
-- **EHR integration** — FHIR or PDF handoff patterns
-- **Mobile-optimized capture** — touch-first region tools
+- **Live EHR integration** — SMART-on-FHIR / write-back beyond portable document export
+- **Mobile-optimized capture** — continued touch-first region tools
 
 ## How to Propose Work
 

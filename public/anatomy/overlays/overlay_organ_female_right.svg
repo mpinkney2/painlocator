@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">
+  <!-- Schematic educational overlay — not a diagnostic atlas -->
+  <g transform="translate(0.18 0) scale(0.64 1)">
+  <path d="M0.36,0.26 C0.36,0.22 0.48,0.22 0.48,0.30 C0.48,0.38 0.36,0.40 0.36,0.26 Z" fill="rgba(52,211,153,0.16)" stroke="#34d399" stroke-width="0.006" stroke-opacity="0.55"/>
+  <path d="M0.52,0.26 C0.52,0.22 0.64,0.22 0.64,0.30 C0.64,0.38 0.52,0.40 0.52,0.26 Z" fill="rgba(52,211,153,0.16)" stroke="#34d399" stroke-width="0.006" stroke-opacity="0.55"/>
+  <path d="M0.40,0.40 C0.40,0.36 0.60,0.36 0.60,0.44 C0.60,0.52 0.40,0.52 0.40,0.40 Z" fill="rgba(52,211,153,0.16)" stroke="#34d399" stroke-width="0.006" stroke-opacity="0.55"/>
+  </g>
+</svg>

@@ -688,6 +688,108 @@ body.theme-dark .timeline-panel {
   border-style: dashed;
 }
 
+.entry-card .queue-status,
+.queue-card .queue-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--accent-subtle);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.entry-card.status-ready_for_review .queue-status,
+.queue-card.status-ready_for_review .queue-status {
+  color: var(--warning, #d97706);
+  border-color: color-mix(in srgb, var(--warning, #d97706) 35%, var(--border));
+  background: color-mix(in srgb, var(--warning, #d97706) 12%, transparent);
+}
+
+.entry-card.status-reviewed .queue-status,
+.queue-card.status-reviewed .queue-status {
+  color: var(--accent);
+  border-color: var(--accent-border);
+  background: var(--accent-subtle);
+}
+
+.entry-card.status-signed_off .queue-status,
+.queue-card.status-signed_off .queue-status {
+  color: var(--success, #059669);
+  border-color: color-mix(in srgb, var(--success, #059669) 35%, var(--border));
+  background: color-mix(in srgb, var(--success, #059669) 12%, transparent);
+}
+
+.review-queue-panel {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.review-queue-panel .modal-note {
+  margin: 4px 0 8px;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.review-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.queue-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  padding: 8px;
+}
+
+.queue-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.queue-card-head strong {
+  display: block;
+  font-size: 11px;
+}
+
+.queue-meta {
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.queue-locs,
+.queue-note {
+  margin: 4px 0 0;
+  font-size: 10px;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.queue-note {
+  color: var(--muted);
+}
+
+.queue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
 .entry-card-header {
   display: flex;
   align-items: flex-start;

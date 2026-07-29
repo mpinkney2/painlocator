@@ -99,9 +99,12 @@ Print CSS in `src/layout/styles.css` (`@media print`):
 See [ROADMAP.md](./ROADMAP.md):
 
 - Dedicated PDF layout engine
-- Multi-view anatomy appendix
 - Clinician header/footer customization
-- FHIR DocumentReference compatibility research
+- Live SMART-on-FHIR write-back (beyond portable Bundle export)
+
+### FHIR document export (current)
+
+Clinical Analysis → Report / Export → **EHR handoff (FHIR JSON)** produces a FHIR R4 `Bundle` of type `document` with `Composition`, `Patient`, and pain `Observation` resources. This is a **portable handoff file**, not a live EHR API.
 
 ## Related Documents
 

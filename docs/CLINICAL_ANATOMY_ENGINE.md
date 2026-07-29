@@ -91,21 +91,25 @@ Renders pain regions as SVG overlays aligned to the clinical image frame. Handle
 |------|----------|
 | `standard` | Default anatomy display |
 | `heatmap` | Emphasized pain region saturation |
-| `reference` | Reference overlay image on top of anatomy |
+| `reference` | Reference overlay (vector schematics; optional asset plates) |
 
-### Reference overlays (infrastructure)
+### Reference overlays
 
-Definitions: muscle, skeleton, nerve, organ. Assets expected at:
+Definitions: muscle, skeleton, nerve, organ.
+
+1. **Vector schematics** (primary) — `src/engine/overlays/overlay-datasets.js` draws educational region outlines from `ANATOMY_REGIONS` / dermatome bands. Always available in Clinical Analysis.
+2. **Optional asset plates** — probed at:
 
 ```text
+public/anatomy/overlays/overlay_{id}_{gender}_{view}.svg
 public/anatomy/overlays/overlay_{id}_{gender}_{view}.png
 ```
 
-At runtime, availability is **probed**; missing files are hidden from the UI. Overlay PNGs are a **roadmap item** — see [ROADMAP.md](./ROADMAP.md).
+Schematic SVGs ship for male/female × four views. High-fidelity diagnostic atlases are still a roadmap item — see [ROADMAP.md](./ROADMAP.md).
 
-### AI overlay toggles (UI)
+### AI / assistive overlay toggles
 
-Toggles exist for suggested structures, referred pain, dermatomes, and myotomes. These are **foundation hooks** in the visualization layer; full anatomical datasets are not shipped in v0.1.0.
+Toggles for suggested structures, referred pain, dermatomes, and myotomes render schematic datasets from `overlay-datasets.js`. These are **assistive / educational**, not diagnostic atlases. Label: "Assistive Clinical Observation — Not a Medical Diagnosis."
 
 ## Asset Layout
 
@@ -116,7 +120,7 @@ public/anatomy/
 ├── child/        (v0.1.0: copies adult-male plates)
 ├── teen/
 ├── senior/
-└── overlays/     (reserved for reference plates)
+└── overlays/     schematic SVG reference plates (muscle/skeleton/nerve/organ)
 ```
 
 ## Boundary: CAE vs PainLocator
