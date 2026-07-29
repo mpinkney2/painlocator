@@ -5,13 +5,20 @@ class PainEntryStore {
     this.activeEntryId = null;
     this.selectedRegionIds = [];
     this.activeTool = "circle";
+    this.dirty = false;
     this._history = [];
     this._historyIndex = -1;
     this._listeners = [];
+    this._undoBuffer = null;
+    this._undoTimer = null;
+    this._mutating = false;
   }
 
   onChange(fn) { this._listeners.push(fn); }
   _notify() { this._listeners.forEach(fn => fn(this)); }
+
+  canUndo() { return this._historyIndex > 0; }
+  canRedo() { return this._historyIndex >= 0 && this._historyIndex < this._history.length - 1; }
 
   _snapshot() {
     return JSON.stringify({
@@ -33,39 +40,72 @@ class PainEntryStore {
   }
 
   _pushHistory() {
+    if (this._mutating) return;
     this._history = this._history.slice(0, this._historyIndex + 1);
     this._history.push(this._snapshot());
     if (this._history.length > 50) this._history.shift();
     this._historyIndex = this._history.length - 1;
   }
 
-  undo() {
-    if (this._historyIndex <= 0) return;
-    this._historyIndex--;
-    this._restore(this._history[this._historyIndex]);
-    this.save();
+  beginMutation() {
+    if (!this._mutating) {
+      this._pushHistory();
+      this._mutating = true;
+    }
+  }
+
+  endMutation({ persist = true } = {}) {
+    this._mutating = false;
+    this.dirty = true;
+    if (persist) this.save();
     this._notify();
   }
 
-  redo() {
-    if (this._historyIndex >= this._history.length - 1) return;
-    this._historyIndex++;
+  undo() {
+    if (!this.canUndo()) return false;
+    this._historyIndex--;
     this._restore(this._history[this._historyIndex]);
+    this.dirty = false;
     this.save();
     this._notify();
+    return true;
+  }
+
+  redo() {
+    if (!this.canRedo()) return false;
+    this._historyIndex++;
+    this._restore(this._history[this._historyIndex]);
+    this.dirty = false;
+    this.save();
+    this._notify();
+    return true;
+  }
+
+  _migrateLocalEnvelope(data) {
+    const version = data.schemaVersion || "1.0.0";
+    // 1.0.0 → 1.1.0: add schemaVersion; ensure draft null when empty
+    if (!data.schemaVersion) data.schemaVersion = "1.1.0";
+    if (data.draftEntry && Array.isArray(data.draftEntry.regions) && !data.draftEntry.regions.length
+        && !(data.draftEntry.note || (data.draftEntry.quality || []).length)) {
+      // keep draft if user was mid-edit with intensity only; still valid
+    }
+    data.schemaVersion = LOCAL_SCHEMA_VERSION || "1.1.0";
+    return data;
   }
 
   load() {
     try {
-      const raw = localStorage.getItem(ENTRY_STORAGE_KEY);
+      const key = typeof getEntryStorageKey === "function" ? getEntryStorageKey() : ENTRY_STORAGE_KEY;
+      const raw = localStorage.getItem(key);
       if (raw) {
-        const data = JSON.parse(raw);
+        const data = this._migrateLocalEnvelope(JSON.parse(raw));
         this.entries = (data.entries || []).map(e => createPainEntry(e));
         this.draftEntry = data.draftEntry ? createPainEntry(data.draftEntry) : null;
         this.activeEntryId = data.activeEntryId || null;
         this.selectedRegionIds = data.selectedRegionIds || data.selectedMarkerIds || [];
         this.activeTool = data.activeTool || "circle";
-      } else {
+        if (data.schemaVersion !== (LOCAL_SCHEMA_VERSION || "1.1.0")) this.save();
+      } else if (key === "painlocator_pain_entries" || key.endsWith("pain_entries")) {
         const markersRaw = localStorage.getItem(MARKER_STORAGE_KEY);
         if (markersRaw) {
           this.entries = JSON.parse(markersRaw).map(migrateLegacyMarkerToEntry);
@@ -81,19 +121,23 @@ class PainEntryStore {
     } catch {
       this.entries = [];
     }
+    this.dirty = false;
     this._history = [this._snapshot()];
     this._historyIndex = 0;
     this._notify();
   }
 
   save() {
-    localStorage.setItem(ENTRY_STORAGE_KEY, JSON.stringify({
+    const key = typeof getEntryStorageKey === "function" ? getEntryStorageKey() : ENTRY_STORAGE_KEY;
+    localStorage.setItem(key, JSON.stringify({
+      schemaVersion: LOCAL_SCHEMA_VERSION || "1.1.0",
       entries: this.entries,
       draftEntry: this.draftEntry,
       activeEntryId: this.activeEntryId,
       selectedRegionIds: this.selectedRegionIds,
       activeTool: this.activeTool
     }));
+    this.dirty = false;
   }
 
   setTool(tool) {
@@ -133,21 +177,46 @@ class PainEntryStore {
     return saved;
   }
 
+  hasUnsavedDraft() {
+    const d = this.draftEntry;
+    if (!d) return false;
+    if (d.regions.length) return true;
+    if (String(d.note || "").trim()) return true;
+    if ((d.quality || []).length || (d.triggers || []).length) return true;
+    return false;
+  }
+
   newEntry(patientModel, defaults = {}) {
+    this._pushHistory();
     this.draftEntry = createPainEntry({ patientModel: normalizeModelType(patientModel), ...defaults, regions: [] });
     this.activeEntryId = DRAFT_KEY;
     this.selectedRegionIds = [];
+    this.dirty = true;
+    this.save();
     this._notify();
     return this.draftEntry;
   }
 
+  clearActiveDraft() {
+    this.draftEntry = null;
+    if (this.activeEntryId === DRAFT_KEY) this.activeEntryId = null;
+    this.selectedRegionIds = [];
+    this.save();
+    this._notify();
+  }
+
   ensureActiveEntry(patientModel, defaults = {}) {
     let entry = this.getActiveEntry();
+    const model = normalizeModelType(patientModel);
+    if (entry && normalizeModelType(entry.patientModel) !== model && this.isDraftActive()) {
+      entry.patientModel = model;
+    }
     if (!entry) entry = this.newEntry(patientModel, defaults);
     return entry;
   }
 
   addRegionToActive(partial, physicianMode = false) {
+    this.beginMutation();
     const entry = this.ensureActiveEntry(partial.patientModel);
     if (!this.activeEntryId) this.activeEntryId = entry === this.draftEntry ? DRAFT_KEY : entry.id;
     const mapped = partial.regionId ? partial : {
@@ -158,7 +227,7 @@ class PainEntryStore {
     entry.regions.push(region);
     this.selectedRegionIds = [region.id];
     entry.updatedAt = new Date().toISOString();
-    this._notify();
+    this.endMutation();
     return region;
   }
 
@@ -212,7 +281,8 @@ class PainEntryStore {
     const entry = this.getActiveEntry();
     if (!entry) return null;
     Object.assign(entry, patch, { updatedAt: new Date().toISOString() });
-    if (this.isEntrySaved(entry)) this.save();
+    this.dirty = true;
+    this.save();
     this._notify();
     return entry;
   }
@@ -222,14 +292,24 @@ class PainEntryStore {
     if (!found) return null;
     Object.assign(found.region, patch, { updatedAt: new Date().toISOString() });
     found.entry.updatedAt = new Date().toISOString();
-    if (this.isEntrySaved(found.entry)) this.save();
+    this.dirty = true;
+    this.save();
     this._notify();
     return found.region;
   }
 
-  saveActiveEntry() {
+  /**
+   * @param {{ allowEmpty?: boolean }} options
+   * allowEmpty: user confirmed a symptom-free / zero-pain day
+   */
+  saveActiveEntry(options = {}) {
     const entry = this.getActiveEntry();
-    if (!entry || !entry.regions.length) return null;
+    if (!entry) return null;
+    const empty = typeof isEntryContentEmpty === "function"
+      ? isEntryContentEmpty(entry)
+      : !entry.regions.length;
+    if (empty && !options.allowEmpty) return null;
+    if (!entry.regions.length && !options.allowEmpty) return null;
     entry.updatedAt = new Date().toISOString();
     const existingIdx = this.entries.findIndex(e => e.id === entry.id);
     if (existingIdx >= 0) {
@@ -241,6 +321,7 @@ class PainEntryStore {
       this.draftEntry = null;
     }
     this._pushHistory();
+    this.dirty = false;
     this.save();
     this._notify();
     return entry;
@@ -280,12 +361,14 @@ class PainEntryStore {
   moveRegion(id, x, y, patch = {}) {
     const found = this.findRegion(id);
     if (!found) return null;
+    if (!this._mutating) this.beginMutation();
     const c = getRegionCenter(found.region);
     const dx = x - c.x;
     const dy = y - c.y;
     found.region.anchors = found.region.anchors.map(a => ({ x: clamp01(a.x + dx), y: clamp01(a.y + dy) }));
     Object.assign(found.region, patch, { updatedAt: new Date().toISOString() });
     found.entry.updatedAt = new Date().toISOString();
+    this.dirty = true;
     this._notify();
     return found.region;
   }
@@ -293,6 +376,7 @@ class PainEntryStore {
   resizeRegion(id, x, y) {
     const found = this.findRegion(id);
     if (!found || found.region.shape === "polygon") return null;
+    if (!this._mutating) this.beginMutation();
     const c = getRegionCenter(found.region);
     const rx = Math.abs(x - c.x);
     const ry = Math.abs(y - c.y);
@@ -301,8 +385,14 @@ class PainEntryStore {
     found.region.shape = found.region.radiusY ? "ellipse" : "circle";
     found.region.updatedAt = new Date().toISOString();
     found.entry.updatedAt = new Date().toISOString();
+    this.dirty = true;
     this._notify();
     return found.region;
+  }
+
+  commitGeometry() {
+    if (this._mutating) this.endMutation({ persist: true });
+    else if (this.dirty) this.save();
   }
 
   deleteSelectedRegions() {
@@ -314,7 +404,9 @@ class PainEntryStore {
     };
     prune(this.draftEntry);
     this.entries.forEach(prune);
-    this.entries = this.entries.filter(e => e.regions.length > 0);
+    // Keep empty saved entries only if they were deliberately empty (intensity 0 days);
+    // default: remove entries that lost all regions
+    this.entries = this.entries.filter(e => e.regions.length > 0 || (e.intensity === 0 && e.note));
     if (this.draftEntry && !this.draftEntry.regions.length && this.activeEntryId === DRAFT_KEY) {
       this.draftEntry = null;
       this.activeEntryId = null;
@@ -325,47 +417,122 @@ class PainEntryStore {
     this._notify();
   }
 
+  /**
+   * Soft-delete with temporary undo buffer (~8s).
+   * @returns {{ restored: Function, entry: object|null }|null}
+   */
   deleteEntry(entryId) {
+    let removed = null;
+    let removedFrom = null;
     if (entryId === DRAFT_KEY || (this.draftEntry && this.draftEntry.id === entryId)) {
+      removed = this.draftEntry ? JSON.parse(JSON.stringify(this.draftEntry)) : null;
+      removedFrom = "draft";
       this.draftEntry = null;
       if (this.activeEntryId === DRAFT_KEY) this.activeEntryId = null;
     } else {
-      this.entries = this.entries.filter(e => e.id !== entryId);
+      const idx = this.entries.findIndex(e => e.id === entryId);
+      if (idx >= 0) {
+        removed = JSON.parse(JSON.stringify(this.entries[idx]));
+        removedFrom = "entries";
+        this.entries.splice(idx, 1);
+      }
       if (this.activeEntryId === entryId) this.activeEntryId = null;
     }
     this.selectedRegionIds = [];
     this._pushHistory();
     this.save();
     this._notify();
+
+    if (!removed) return null;
+
+    if (this._undoTimer) clearTimeout(this._undoTimer);
+    this._undoBuffer = { entry: removed, from: removedFrom };
+    this._undoTimer = setTimeout(() => {
+      this._undoBuffer = null;
+      this._undoTimer = null;
+    }, 8000);
+
+    return {
+      entry: removed,
+      restore: () => this.restoreDeletedEntry()
+    };
+  }
+
+  restoreDeletedEntry() {
+    if (!this._undoBuffer) return false;
+    const { entry, from } = this._undoBuffer;
+    this._undoBuffer = null;
+    if (this._undoTimer) {
+      clearTimeout(this._undoTimer);
+      this._undoTimer = null;
+    }
+    const restored = createPainEntry(entry);
+    if (from === "draft") {
+      this.draftEntry = restored;
+      this.activeEntryId = DRAFT_KEY;
+    } else {
+      this.entries.push(restored);
+      this.activeEntryId = restored.id;
+    }
+    this._pushHistory();
+    this.save();
+    this._notify();
+    return true;
   }
 
   clearAll() {
+    this._pushHistory();
+    const snapshot = {
+      entries: JSON.parse(JSON.stringify(this.entries)),
+      draftEntry: this.draftEntry ? JSON.parse(JSON.stringify(this.draftEntry)) : null
+    };
     this.entries = [];
     this.draftEntry = null;
     this.activeEntryId = null;
     this.selectedRegionIds = [];
-    this._pushHistory();
     this.save();
     this._notify();
+    this._undoBuffer = { clearSnapshot: snapshot };
+    this._undoTimer = setTimeout(() => {
+      this._undoBuffer = null;
+      this._undoTimer = null;
+    }, 8000);
+    return {
+      restore: () => {
+        if (!this._undoBuffer?.clearSnapshot) return false;
+        const s = this._undoBuffer.clearSnapshot;
+        this._undoBuffer = null;
+        this.entries = (s.entries || []).map(e => createPainEntry(e));
+        this.draftEntry = s.draftEntry ? createPainEntry(s.draftEntry) : null;
+        this._pushHistory();
+        this.save();
+        this._notify();
+        return true;
+      }
+    };
   }
 
   duplicateRegion(id) {
     const found = this.findRegion(id);
     if (!found) return null;
-    const c = getRegionCenter(found.region);
+    const src = found.region;
+    const c = getRegionCenter(src);
+    const anchors = src.shape === 'polygon' && src.anchors.length >= 3
+      ? src.anchors.map(a => ({ x: clamp01(a.x + 0.02), y: clamp01(a.y + 0.02) }))
+      : [{ x: clamp01(c.x + 0.02), y: clamp01(c.y + 0.02) }];
     return this.addRegionToActive({
       patientModel: found.entry.patientModel,
-      view: found.region.view,
-      shape: found.region.shape,
-      anchors: [{ x: clamp01(c.x + 0.02), y: clamp01(c.y + 0.02) }],
-      radius: found.region.radius,
-      radiusY: found.region.radiusY,
-      regionId: found.region.regionId,
-      patientLabel: found.region.patientLabel,
-      physicianLabel: found.region.physicianLabel,
-      anatomyLayer: found.region.anatomyLayer,
-      structureId: found.region.structureId,
-      structureLabel: found.region.structureLabel
+      view: src.view,
+      shape: src.shape,
+      anchors,
+      radius: src.radius,
+      radiusY: src.radiusY,
+      regionId: src.regionId,
+      patientLabel: src.patientLabel,
+      physicianLabel: src.physicianLabel,
+      anatomyLayer: src.anatomyLayer,
+      structureId: src.structureId,
+      structureLabel: src.structureLabel
     });
   }
 

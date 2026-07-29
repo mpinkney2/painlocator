@@ -2,13 +2,40 @@
  * Pain Markup System — PainEntry + PainRegion, coordinate mapping, undo/redo.
  */
 
-const ENTRY_STORAGE_KEY = "painlocator_pain_entries";
+let ENTRY_STORAGE_KEY = "painlocator_pain_entries";
 const MARKER_STORAGE_KEY = "painlocator_markers";
 const LAYOUT_STORAGE_KEY = "painlocator_layout";
 const LEGACY_STORAGE_KEY = "painlocator_entries";
 const DRAFT_KEY = "__draft__";
+/** Local storage envelope schema (separate from session export schema). */
+const LOCAL_SCHEMA_VERSION = "1.1.0";
+window.PAINLOCATOR_APP_VERSION = "5.4.0";
 
 const REGION_TOOLS = ["select", "point", "circle", "polygon", "brush", "lasso", "eraser"];
+
+function setEntryStorageKey(key) {
+  ENTRY_STORAGE_KEY = key || "painlocator_pain_entries";
+}
+
+function getEntryStorageKey() {
+  return ENTRY_STORAGE_KEY;
+}
+
+function isEntryContentEmpty(entry) {
+  if (!entry) return true;
+  if (entry.regions && entry.regions.length) return false;
+  if ((entry.quality || []).length) return false;
+  if ((entry.triggers || []).length) return false;
+  if ((entry.easesAfter || []).length) return false;
+  if (String(entry.note || "").trim()) return false;
+  if ((entry.intensity ?? 5) === 0) return false;
+  return true;
+}
+
+window.setEntryStorageKey = setEntryStorageKey;
+window.getEntryStorageKey = getEntryStorageKey;
+window.LOCAL_SCHEMA_VERSION = LOCAL_SCHEMA_VERSION;
+window.isEntryContentEmpty = isEntryContentEmpty;
 
 function normalizeModelType(modelType) {
   const map = { male: "adult-male", female: "adult-female", child: "child", teen: "teen", senior: "senior" };

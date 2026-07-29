@@ -5,6 +5,21 @@ All notable changes to PainLocator are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).  
 Versioning: [Semantic Versioning](https://semver.org/) for application releases; git tags (e.g. `v0.1.0`) mark foundation milestones.
 
+## [5.4.0] — 2026-07-29
+
+### Demo-ready polish
+
+- Stabilized Capture → Review → Clinical Report workflow labels and empty states
+- Draft lifecycle: no auto-created blank Entry #1 on load; local schema `1.1.0`
+- Save validation with inline guidance and optional zero-pain / symptom-free day confirmation
+- Accessible toasts/status, soft-delete undo, annotation undo/redo controls
+- Demo Mode with isolated storage, three fictional scenarios, and guided walkthrough
+- Integrated feedback form + `/api/feedback` Vercel function with local download fallback
+- Recovery timeline range/region filters and deterministic trend-summary service
+- Clinician report refinements (patient-reported framing, trends, print fix outside `.app`)
+- Privacy/help panel, first-use welcome, anatomy tip, analytics abstraction (off by default)
+- Automated Node tests for entries, trends, demo isolation, and feedback validation
+
 ## [v0.1.0] — 2026-07-07
 
 **Initial Clinical Anatomy Engine foundation**

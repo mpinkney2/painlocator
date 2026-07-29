@@ -21,13 +21,15 @@ function updateEntryList() {
   const all = draft ? [...saved, draft] : saved;
 
   if (!all.length) {
-    list.innerHTML = '<p class="entry-list-empty">No pain entries yet. Mark regions on the anatomy to start.</p>';
+    list.innerHTML = state.workflowMode === 'review'
+      ? '<p class="entry-list-empty">No entries match this view. Switch to Capture to log a pain entry, or clear filters.</p>'
+      : '<p class="entry-list-empty">No pain entries yet. Mark regions on the anatomy or choose <strong>New Entry</strong> to start.</p>';
     return;
   }
 
   const activeId = entryStore.getActiveEntry()?.id;
   list.innerHTML = all.map((entry, i) => {
-    const num = i + 1;
+    const num = entryStore.getEntryNumber(entry) || (i + 1);
     const summary = entryStore.getEntrySummary(entry, num, useClinicalLabels());
     const isDraft = entry === entryStore.draftEntry && !entryStore.isEntrySaved(entry);
     const isActive = entry.id === activeId;
@@ -35,19 +37,19 @@ function updateEntryList() {
     const regionItems = entry.regions.map((r, ri) => {
       const selected = entryStore.selectedRegionIds.includes(r.id);
       const onView = r.view === state.view;
-      return `<button type="button" class="entry-marker-chip${selected ? ' selected' : ''}${onView ? '' : ' other-view'}" data-region-id="${r.id}" data-entry-id="${entry.id}">
-        ${useClinicalLabels() ? `${regionLabel(num, ri)} ` : ''}${getRegionDisplay(r)}${useClinicalLabels() ? ` <span class="chip-view">${r.view}</span>` : ''}
+      return `<button type="button" class="entry-marker-chip${selected ? ' selected' : ''}${onView ? '' : ' other-view'}" data-region-id="${escapeAttr(r.id)}" data-entry-id="${escapeAttr(entry.id)}">
+        ${useClinicalLabels() ? `${escapeHtml(regionLabel(num, ri))} ` : ''}${escapeHtml(getRegionDisplay(r))}${useClinicalLabels() ? ` <span class="chip-view">${escapeHtml(r.view)}</span>` : ''}
       </button>`;
     }).join('');
 
-    return `<div class="entry-card${isActive ? ' active' : ''}${isDraft ? ' draft' : ''}" data-entry-id="${isDraft ? DRAFT_KEY : entry.id}">
+    return `<div class="entry-card${isActive ? ' active' : ''}${isDraft ? ' draft' : ''}" data-entry-id="${isDraft ? DRAFT_KEY : escapeAttr(entry.id)}">
       <button type="button" class="entry-card-header">
-        <span class="entry-dot" style="background:${PAIN_COLORS[entry.intensity]}"></span>
+        <span class="entry-dot" style="background:${PAIN_COLORS[entry.intensity]}" aria-hidden="true"></span>
         <span class="entry-card-title">
-          <strong>Entry #${num}${isDraft ? ' (unsaved)' : ''}</strong>
-          <span class="entry-card-meta">${summary.regionCount} region${summary.regionCount !== 1 ? 's' : ''} · Intensity ${summary.intensity}${summary.triggers ? ' · ' + summary.triggers : ''}</span>
-          <span class="entry-card-regions">${summary.regions}</span>
-          <span class="entry-card-time">${summary.time}${regionsOnView.length ? ` · ${regionsOnView.length} on this view` : ''}</span>
+          <strong>${isDraft ? 'Draft' : `Entry #${num}`}${isDraft ? ' (unsaved)' : ''}</strong>
+          <span class="entry-card-meta">${summary.regionCount} region${summary.regionCount !== 1 ? 's' : ''} · Intensity ${summary.intensity}${summary.triggers ? ' · ' + escapeHtml(summary.triggers) : ''}</span>
+          <span class="entry-card-regions">${escapeHtml(summary.regions)}</span>
+          <span class="entry-card-time">${escapeHtml(summary.time)}${regionsOnView.length ? ` · ${regionsOnView.length} on this view` : ''}</span>
         </span>
       </button>
       <div class="entry-marker-chips">${regionItems || '<span class="entry-no-markers">No regions yet</span>'}</div>
@@ -90,24 +92,33 @@ function initRegionTools() {
 
 function updateTrendSummary() {
   const box = document.getElementById('trendSummaryBox');
-  if (!box || state.workflowMode !== 'review') return;
+  if (!box) return;
+  if (state.workflowMode !== 'review' && state.workflowMode !== 'clinical') return;
   const model = normalizeModelType(state.modelType);
-  const entries = entryStore.entries.filter(e => normalizeModelType(e.patientModel) === model);
-  if (!entries.length) {
+  let entries = entryStore.entries.filter(e => normalizeModelType(e.patientModel) === model);
+  entries = typeof filterEntriesByRange === 'function'
+    ? filterEntriesByRange(entries, state.timelineRange ?? 'all')
+    : entries;
+  entries = typeof filterEntriesByRegion === 'function'
+    ? filterEntriesByRegion(entries, state.timelineRegion || 'all')
+    : entries;
+
+  if (typeof generateTrendSummary !== 'function') {
     box.innerHTML = '<p>Log entries in Capture to see patterns here.</p>';
     return;
   }
-  const sorted = [...entries].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  const avg = entries.reduce((s, e) => s + e.intensity, 0) / entries.length;
-  const latest = sorted[sorted.length - 1];
-  const earliest = sorted[0];
-  const delta = latest.intensity - earliest.intensity;
-  const trend = delta > 0.5 ? 'worsening' : delta < -0.5 ? 'improving' : 'stable';
-  box.innerHTML = `<ul>
-    <li>${entries.length} entries logged · average ${avg.toFixed(1)}/10</li>
-    <li>Latest: ${latest.intensity}/10 on ${new Date(latest.createdAt).toLocaleDateString()}</li>
-    <li>Overall trend: <strong>${trend}</strong> (${delta >= 0 ? '+' : ''}${delta.toFixed(1)} since first entry)</li>
-  </ul>`;
+
+  const result = generateTrendSummary(entries, {
+    rangeDays: state.timelineRange ?? 'all',
+    regionLabel: state.timelineRegion || 'all'
+  });
+
+  const list = result.observations.map(o => `<li>${escapeHtml(o)}</li>`).join('');
+  box.innerHTML = `
+    <p class="assistive-disclaimer">${escapeHtml(result.disclaimer)}</p>
+    <ul>${list}</ul>
+    ${result.stats.count >= 2 ? `<p class="trend-stats">Range: ${result.stats.min}–${result.stats.max}/10 · average ${result.stats.avg.toFixed(1)}</p>` : ''}
+  `;
 }
 
 function updateComparePanel() {

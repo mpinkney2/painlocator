@@ -17,6 +17,8 @@ const state = {
   physicianMode: false,
   reviewEditMode: false,
   entryFilter: 'all',
+  timelineRange: 'all',
+  timelineRegion: 'all',
   compareVisible: false,
   chart: null,
   chartEntries: [],

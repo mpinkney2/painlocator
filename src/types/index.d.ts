@@ -58,6 +58,8 @@ export interface AppState {
   physicianMode: boolean;
   reviewEditMode: boolean;
   entryFilter: string;
+  timelineRange: number | "all";
+  timelineRegion: string;
   compareVisible: boolean;
   chart: unknown;
   chartEntries: PainEntry[];
