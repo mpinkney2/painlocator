@@ -91,7 +91,8 @@ function getRegionRadii(region, intensity = 5) {
 
 function getRegionOpacity(region, intensity = 5) {
   if (region.opacity != null) return region.opacity;
-  return 0.25 + intensity * 0.045;
+  // Strong clinical visibility: ~0.62 (mild) → ~0.96 (extreme)
+  return Math.min(0.96, 0.62 + intensity * 0.034);
 }
 
 function migrateMarkerToRegion(marker, entryId) {
