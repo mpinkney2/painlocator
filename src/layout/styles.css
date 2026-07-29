@@ -19,6 +19,78 @@ body.wf-capture .capture-tools { display: flex !important; }
 body.wf-clinical .review-tools { display: none !important; }
 body.wf-clinical .capture-tools { display: flex !important; }
 
+.mobile-only { display: none !important; }
+.label-short { display: none; }
+.label-full { display: inline; }
+
+.btn-icon {
+  min-width: 40px;
+  justify-content: center;
+  padding-inline: 10px;
+}
+
+.assistive-disclaimer {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+}
+
+.body-settings {
+  border: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.body-settings > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.body-settings > summary::-webkit-details-marker { display: none; }
+.body-settings-summary {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-secondary);
+}
+.body-settings-summary .chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+.body-settings:not([open]) .body-settings-summary .chevron {
+  transform: rotate(-90deg);
+}
+.cae-sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  height: 100%;
+}
+
+.quick-view-bar {
+  display: none;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  flex: none;
+}
+
 .wf-capture .region-editor-row {
   grid-template-columns: 1fr;
 }
@@ -1479,6 +1551,13 @@ body.theme-dark .btn-share:hover {
   .report-figure { text-align: center; margin: 12px 0; }
   .report-figure img { max-width: 420px; width: 100%; border: 1px solid var(--border-strong); border-radius: 8px; }
   .report-figure figcaption { font-size: 9pt; color: var(--text-muted); margin-top: 6px; }
+  .report-anatomy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .report-anatomy-grid .report-figure img { max-width: 100%; }
+  .report-brief p { font-size: 11pt; margin-bottom: 8px; }
   .report-muted { color: var(--text-muted); font-style: italic; }
   .report-disclaimer { font-size: 8pt; color: var(--text-muted); margin-top: 16px; padding-top: 10px; border-top: 1px solid var(--border); }
   .report-ai-notice { background: var(--surface-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
@@ -1494,31 +1573,48 @@ body.theme-dark .btn-share:hover {
   body { overflow: auto; height: auto; }
   .app { height: auto; min-height: 100vh; }
 
+  .mobile-only { display: grid !important; }
+  .desktop-only { display: none !important; }
+  .label-short { display: inline; }
+  .label-full { display: none; }
+
   .header {
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     padding: 10px 12px;
   }
+  .brand-title { font-size: 1.1rem; }
   .mode-toggle-group {
     order: 3;
     width: 100%;
     justify-content: stretch;
   }
   .mode-toggle-group .toggle-buttons { flex: 1; }
-  .btn-toggle { flex: 1; text-align: center; padding: 8px 10px; }
-  .header-actions { margin-left: auto; }
+  .btn-toggle {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  .header-actions {
+    margin-left: auto;
+    gap: 6px;
+  }
+  .header-actions .btn {
+    min-height: 40px;
+  }
 
   .layout {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     height: auto;
     overflow-y: auto;
     padding: 10px;
   }
   .col-resizer { display: none; }
 
-  /* Anatomy stays primary on small screens */
+  /* Anatomy first, then log pain, then optional body settings */
   .panel-center,
   .center-panel {
     order: 1;
@@ -1527,6 +1623,7 @@ body.theme-dark .btn-share:hover {
     height: auto;
     max-height: none;
     min-height: 0;
+    padding: 10px;
   }
   .panel-right {
     order: 2;
@@ -1542,11 +1639,30 @@ body.theme-dark .btn-share:hover {
     max-width: none !important;
     height: auto;
     max-height: none;
+    padding: 8px;
+  }
+
+  .body-settings {
+    height: auto;
+  }
+  .body-settings-summary {
+    display: flex;
+  }
+  .cae-sidebar-inner {
+    margin-top: 8px;
+    height: auto;
+  }
+  body.wf-capture .cae-sidebar:not(:focus-within) .future-placeholders {
+    display: none !important;
   }
 
   .center-workspace {
     min-height: 0;
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .quick-view-bar {
+    display: grid !important;
   }
 
   /* Explicit stage height — % heights collapse when the page is auto-sized */
@@ -1559,8 +1675,8 @@ body.theme-dark .btn-share:hover {
   .wf-clinical .avatar-wrap,
   .wf-clinical .anatomy-viewer {
     flex: none !important;
-    height: min(62vh, 560px);
-    min-height: 420px;
+    height: min(58vh, 520px);
+    min-height: 380px;
   }
   .avatar-stage,
   .cae-viewport-wrapper,
@@ -1568,18 +1684,37 @@ body.theme-dark .btn-share:hover {
     height: 100%;
     min-height: 0;
   }
-  .wf-capture .timeline-panel,
+
+  /* Capture: keep timeline quiet so logging stays simple */
+  .wf-capture .timeline-panel {
+    height: 120px !important;
+    min-height: 110px;
+    max-height: none;
+    flex: none;
+  }
   .wf-review .timeline-panel,
   .wf-clinical .timeline-panel,
   .timeline-panel {
-    height: 180px !important;
+    height: 170px !important;
     max-height: none;
-    min-height: 160px;
+    min-height: 150px;
     flex: none;
   }
   .region-tools {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    max-width: calc(100% - 16px);
+    max-width: calc(100% - 12px);
+    gap: 2px;
+    padding: 3px;
+  }
+  .region-tool {
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+  .clinical-doc-title {
+    font-size: 14px;
+  }
+  .intensity-hero {
+    margin-bottom: 8px;
   }
 }
