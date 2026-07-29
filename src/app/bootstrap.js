@@ -57,15 +57,20 @@ function init() {
     });
   });
 
-  document.querySelectorAll('#viewSelector .view-btn').forEach(btn => {
+  document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#viewSelector .view-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.view = btn.dataset.view;
-      state.engine.update({ viewType: state.view });
-      state.vizController?.refreshAvailability(state.modelType, state.view);
-      refreshUI();
+      setBodyView(btn.dataset.view);
     });
+  });
+
+  const bodySettings = document.getElementById('bodySettings');
+  if (bodySettings && window.matchMedia('(max-width: 900px)').matches) {
+    bodySettings.open = false;
+  }
+  window.matchMedia('(max-width: 900px)').addEventListener('change', (e) => {
+    const el = document.getElementById('bodySettings');
+    if (!el) return;
+    el.open = !e.matches;
   });
 
   document.querySelectorAll('input[name="body_detail"]').forEach(radio => {
@@ -132,13 +137,19 @@ function init() {
 
   document.getElementById('btnExport').addEventListener('click', openExportModal);
   ['btnExportPdf', 'btnExportPdfModal'].forEach(id => {
-    document.getElementById(id)?.addEventListener('click', () => { printClinicalReport(); document.getElementById('exportModal')?.close(); });
+    document.getElementById(id)?.addEventListener('click', async () => {
+      await printClinicalReport();
+      document.getElementById('exportModal')?.close();
+    });
   });
   ['btnExportJson', 'btnExportJsonModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => { exportSessionJson(); document.getElementById('exportModal')?.close(); });
   });
   ['btnExportPng', 'btnExportPngModal'].forEach(id => {
-    document.getElementById(id)?.addEventListener('click', () => { captureClinicalSnapshot(); document.getElementById('exportModal')?.close(); });
+    document.getElementById(id)?.addEventListener('click', async () => {
+      await captureClinicalSnapshot();
+      document.getElementById('exportModal')?.close();
+    });
   });
   ['btnImport', 'btnImportSidebar'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', openImportSessionPicker);
@@ -176,18 +187,38 @@ function init() {
   initSpeech();
   initChart();
   updateChartTheme();
-  const themeBtn = document.getElementById('btnThemeToggle');
-  if (themeBtn) {
-    const isDark = document.body.classList.contains('theme-dark');
-    themeBtn.innerHTML = isDark ? '<i data-lucide="sun"></i> Light Mode' : '<i data-lucide="moon"></i> Dark Mode';
-  }
+  syncThemeToggleLabel();
   refreshUI();
   if (window.lucide) lucide.createIcons();
 }
 
 document.addEventListener('DOMContentLoaded', init);
 
+function setBodyView(view) {
+  if (!view) return;
+  document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  state.view = view;
+  state.engine?.update({ viewType: state.view });
+  state.vizController?.refreshAvailability(state.modelType, state.view);
+  refreshUI();
+}
+
+function syncThemeToggleLabel() {
+  const themeBtn = document.getElementById('btnThemeToggle');
+  if (!themeBtn) return;
+  const isDark = document.body.classList.contains('theme-dark');
+  themeBtn.innerHTML = isDark
+    ? '<i data-lucide="sun"></i><span class="btn-label desktop-only"> Light Mode</span>'
+    : '<i data-lucide="moon"></i><span class="btn-label desktop-only"> Dark Mode</span>';
+  themeBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  if (window.lucide) lucide.createIcons();
+}
+
 function toggleTheme() {
   applyTheme(document.body.classList.contains('theme-dark') ? 'light' : 'dark');
+  syncThemeToggleLabel();
 }
 window.toggleTheme = toggleTheme;
+window.setBodyView = setBodyView;

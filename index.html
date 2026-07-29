@@ -15,8 +15,8 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.3.1">
-  <link rel="stylesheet" href="src/layout/styles.css?v=5.3.1">
+  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.4">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.4">
 </head>
 <body class="wf-capture">
   <div class="app" id="app">
@@ -29,25 +29,25 @@
           <p class="brand-title">
             <span class="brand-pain">Pain</span><span class="brand-locator">Locator</span>
           </p>
-          <p class="brand-tagline">Powered by Clinical Anatomy Engine</p>
+          <p class="brand-tagline desktop-only">Powered by Clinical Anatomy Engine</p>
         </div>
       </div>
       
       <!-- WORKFLOW STAGES -->
       <div class="mode-toggle-group workflow-toggle">
-        <span class="toggle-label-sm">Workflow:</span>
-        <div class="toggle-buttons">
+        <span class="toggle-label-sm desktop-only">Workflow:</span>
+        <div class="toggle-buttons" role="tablist" aria-label="Workflow">
           <button type="button" class="btn btn-toggle active" id="btnCaptureWF" onclick="setWorkflowMode('capture')">Capture</button>
           <button type="button" class="btn btn-toggle" id="btnReviewWF" onclick="setWorkflowMode('review')">Review</button>
-          <button type="button" class="btn btn-toggle" id="btnClinicalWF" onclick="setWorkflowMode('clinical')">Clinical Analysis</button>
+          <button type="button" class="btn btn-toggle" id="btnClinicalWF" onclick="setWorkflowMode('clinical')"><span class="label-full">Clinical Analysis</span><span class="label-short">Clinical</span></button>
         </div>
       </div>
 
       <div class="header-actions">
-        <button type="button" class="btn btn-ghost" id="btnThemeToggle" onclick="toggleTheme()"><i data-lucide="moon"></i> Dark Mode</button>
-        <button type="button" class="btn btn-ghost" id="btnClear" title="Clear all entries">Clear Data</button>
-        <button type="button" class="btn btn-ghost show-clinical" id="btnInsights" aria-label="Open AI pattern analysis">AI Analysis</button>
-        <button type="button" class="btn btn-primary show-clinical" id="btnExport" aria-label="Export session or report">Export</button>
+        <button type="button" class="btn btn-ghost btn-icon" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle theme"><i data-lucide="moon"></i><span class="btn-label desktop-only"> Dark Mode</span></button>
+        <button type="button" class="btn btn-ghost desktop-only" id="btnClear" title="Clear all entries">Clear Data</button>
+        <button type="button" class="btn btn-ghost show-clinical" id="btnInsights" aria-label="Open assistive pattern notes">Patterns</button>
+        <button type="button" class="btn btn-primary show-review-or-clinical" id="btnExport" aria-label="Share clinical report">Share</button>
         <button type="button" class="btn btn-ghost show-clinical" id="btnImport" aria-label="Import session from JSON">Import</button>
       </div>
     </header>
@@ -57,7 +57,13 @@
 
       <!-- LEFT COLUMN: CLINICAL ANATOMY COMMAND CENTER -->
       <aside class="panel panel-left command-center cae-sidebar" id="caeSidebar">
-        <h2 class="command-center-title"><i data-lucide="sliders"></i> CAE Command Center</h2>
+        <details class="body-settings" id="bodySettings" open>
+          <summary class="body-settings-summary">
+            <span><i data-lucide="sliders"></i> Body &amp; view</span>
+            <i data-lucide="chevron-down" class="chevron" aria-hidden="true"></i>
+          </summary>
+          <div class="cae-sidebar-inner">
+        <h2 class="command-center-title desktop-only"><i data-lucide="sliders"></i> CAE Command Center</h2>
         <div class="cae-sidebar-content">
         
         <!-- ACCORDION 1: PATIENT MODEL -->
@@ -168,10 +174,10 @@
           </div>
         </div>
 
-        <!-- AI OVERLAYS (Clinical) -->
+        <!-- ASSISTIVE OVERLAYS (Clinical) -->
         <div class="accordion collapsed show-clinical" id="accAIOverlays">
           <button type="button" class="accordion-header" onclick="toggleAccordion('accAIOverlays')">
-            <span><i data-lucide="sparkles"></i> AI Overlays</span>
+            <span><i data-lucide="layers"></i> Assistive overlays</span>
             <i data-lucide="chevron-down" class="chevron"></i>
           </button>
           <div class="accordion-content">
@@ -198,14 +204,22 @@
             </div>
           </div>
         </div>
-      </div>
-    </aside>
+        </div>
+          </div>
+        </details>
+      </aside>
 
       <div class="col-resizer" id="leftResizeHandle" title="Drag to resize sidebar" aria-label="Resize left panel"></div>
 
       <!-- CENTER COLUMN: ANATOMY + TIMELINE -->
       <section class="panel panel-center center-panel">
         <div class="center-workspace">
+        <div class="quick-view-bar mobile-only" id="quickViewBar" aria-label="Body view">
+          <button type="button" class="view-btn active" data-view="front">Front</button>
+          <button type="button" class="view-btn" data-view="back">Back</button>
+          <button type="button" class="view-btn" data-view="left">Left</button>
+          <button type="button" class="view-btn" data-view="right">Right</button>
+        </div>
         <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
           <div class="region-tools review-tools show-review" id="reviewTools">
             <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
@@ -218,12 +232,10 @@
             <button type="button" class="region-tool" data-tool="point" title="Mark a pain point">Point</button>
             <button type="button" class="region-tool active" data-tool="circle" title="Click-drag to mark a pain region">Region</button>
             <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Click vertices · double-click or close on first point">Polygon</button>
-            <button type="button" class="region-tool show-clinical" data-tool="brush" disabled title="Coming soon">Brush</button>
-            <button type="button" class="region-tool show-clinical" data-tool="lasso" disabled title="Coming soon">Lasso</button>
             <button type="button" class="region-tool" data-tool="eraser" title="Remove region">Eraser</button>
           </div>
           <div class="avatar-stage" id="avatarStage"></div>
-          <p class="avatar-hint" id="avatarHint">Select Point or Region · mark where it hurts before saving</p>
+          <p class="avatar-hint" id="avatarHint">Tap the body · mark where it hurts · then save</p>
         </div>
 
         <section class="timeline-panel" id="timelinePanel">
@@ -434,37 +446,38 @@
 
           <div class="accordion collapsed show-clinical" id="accInsight">
             <button type="button" class="accordion-header" onclick="toggleAccordion('accInsight')">
-              <span><i data-lucide="sparkles"></i> AI Clinical Insight</span>
+              <span><i data-lucide="list-checks"></i> Pattern notes</span>
               <i data-lucide="chevron-down" class="chevron"></i>
             </button>
             <div class="accordion-content">
+              <p class="assistive-disclaimer">Assistive Clinical Observation — Not a Medical Diagnosis.</p>
               <div class="insight-box" id="insightBox">
-                <p>Log multiple entries to unlock pattern recognition for intensity, location, and triggers.</p>
+                <p>Log a few entries to see simple pattern notes for intensity, location, and triggers.</p>
               </div>
             </div>
           </div>
 
           <div class="accordion collapsed show-clinical" id="accExport">
             <button type="button" class="accordion-header" onclick="toggleAccordion('accExport')">
-              <span><i data-lucide="share-2"></i> Report / Export</span>
+              <span><i data-lucide="share-2"></i> Share with clinician</span>
               <i data-lucide="chevron-down" class="chevron"></i>
             </button>
             <div class="accordion-content">
               <div class="export-actions">
                 <button type="button" class="btn btn-primary btn-block" id="btnExportPdf">
-                  <i data-lucide="file-text"></i> Export Clinical Report (PDF)
-                </button>
-                <button type="button" class="btn btn-secondary btn-block" id="btnExportJson">
-                  <i data-lucide="braces"></i> Export Session (JSON)
+                  <i data-lucide="file-text"></i> Clinical report (PDF)
                 </button>
                 <button type="button" class="btn btn-secondary btn-block" id="btnExportPng">
-                  <i data-lucide="image"></i> Export Clinical Snapshot (PNG)
+                  <i data-lucide="image"></i> Anatomy snapshot (PNG)
+                </button>
+                <button type="button" class="btn btn-ghost btn-block" id="btnExportJson">
+                  <i data-lucide="braces"></i> Session file (JSON)
                 </button>
                 <button type="button" class="btn btn-ghost btn-block" id="btnImportSidebar">
-                  <i data-lucide="upload"></i> Import Session
+                  <i data-lucide="upload"></i> Import session
                 </button>
               </div>
-              <p class="modal-note export-note">Reports print as PDF from your browser. Sessions are portable JSON files you can re-import later.</p>
+              <p class="modal-note export-note">Share the PDF at your visit. Everything stays on this device until you save or send a file.</p>
             </div>
           </div>
 
@@ -484,29 +497,32 @@
     <!-- Insights modal -->
     <dialog class="modal" id="insightsModal">
       <div class="modal-head">
-        <h3>Pattern Analysis</h3>
+        <h3>Pattern notes</h3>
         <button type="button" class="modal-close" data-close>&times;</button>
       </div>
-      <div class="modal-body" id="insightsModalBody"></div>
+      <div class="modal-body">
+        <p class="assistive-disclaimer">Assistive Clinical Observation — Not a Medical Diagnosis.</p>
+        <div id="insightsModalBody"></div>
+      </div>
     </dialog>
 
     <!-- Export modal -->
     <dialog class="modal" id="exportModal" aria-labelledby="exportModalTitle">
       <div class="modal-head">
-        <h3 id="exportModalTitle">Export</h3>
+        <h3 id="exportModalTitle">Share with clinician</h3>
         <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-note">Choose an export format. All data stays on your device until you save or share a file.</p>
+        <p class="modal-note">Give your clinician a clear pain map and timeline. Nothing leaves this device until you save or share a file.</p>
         <div class="export-actions">
           <button type="button" class="btn btn-primary btn-block" id="btnExportPdfModal">
-            <i data-lucide="file-text"></i> Export Clinical Report (PDF)
-          </button>
-          <button type="button" class="btn btn-secondary btn-block" id="btnExportJsonModal">
-            <i data-lucide="braces"></i> Export Session (JSON)
+            <i data-lucide="file-text"></i> Clinical report (PDF)
           </button>
           <button type="button" class="btn btn-secondary btn-block" id="btnExportPngModal">
-            <i data-lucide="image"></i> Export Clinical Snapshot (PNG)
+            <i data-lucide="image"></i> Anatomy snapshot (PNG)
+          </button>
+          <button type="button" class="btn btn-ghost btn-block" id="btnExportJsonModal">
+            <i data-lucide="braces"></i> Session file (JSON)
           </button>
         </div>
       </div>
@@ -544,35 +560,35 @@
     <div id="printReport" class="print-only"></div>
   </div>
 
-  <script src="src/utils/env.js?v=5.3"></script>
-  <script src="src/utils/dev-mode.js?v=5.3"></script>
+  <script src="src/utils/env.js?v=5.4"></script>
+  <script src="src/utils/dev-mode.js?v=5.4"></script>
   <!-- Clinical Anatomy Engine -->
-  <script src="src/engine/anatomy/regions.js?v=5.3"></script>
-  <script src="src/engine/annotations/pain-models.js?v=5.3.2"></script>
-  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.3"></script>
-  <script src="src/engine/annotations/pain-entry-store.js?v=5.3"></script>
-  <script src="src/layout/panel-resizers.js?v=5.3"></script>
-  <script src="src/engine/anatomy/asset-paths.js?v=5.3"></script>
-  <script src="src/engine/anatomy/pain-colors.js?v=5.3"></script>
-  <script src="src/engine/overlays/visualization-controller.js?v=5.3"></script>
-  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.3"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.3.2"></script>
+  <script src="src/engine/anatomy/regions.js?v=5.4"></script>
+  <script src="src/engine/annotations/pain-models.js?v=5.4"></script>
+  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.4"></script>
+  <script src="src/engine/annotations/pain-entry-store.js?v=5.4"></script>
+  <script src="src/layout/panel-resizers.js?v=5.4"></script>
+  <script src="src/engine/anatomy/asset-paths.js?v=5.4"></script>
+  <script src="src/engine/anatomy/pain-colors.js?v=5.4"></script>
+  <script src="src/engine/overlays/visualization-controller.js?v=5.4"></script>
+  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.4"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.4"></script>
 
   <!-- PainLocator app -->
-  <script src="src/utils/theme-tokens.js?v=5.3"></script>
-  <script src="src/state/app-state.js?v=5.3"></script>
-  <script src="src/utils/forms.js?v=5.3"></script>
-  <script src="src/features/capture/entry-crud.js?v=5.3"></script>
-  <script src="src/features/review/timeline.js?v=5.3"></script>
-  <script src="src/features/clinical-analysis/insights.js?v=5.3"></script>
-  <script src="src/features/review/history-ui.js?v=5.3"></script>
-  <script src="src/engine/reporting/session-schema.js?v=5.3"></script>
-  <script src="src/engine/reporting/clinical-report.js?v=5.3"></script>
-  <script src="src/engine/reporting/session-io.js?v=5.3"></script>
-  <script src="src/engine/reporting/reports.js?v=5.3"></script>
-  <script src="src/ui/context-menu.js?v=5.3"></script>
-  <script src="src/features/capture/speech.js?v=5.3"></script>
-  <script src="src/state/workflow.js?v=5.3"></script>
-  <script src="src/app/bootstrap.js?v=5.3"></script>
+  <script src="src/utils/theme-tokens.js?v=5.4"></script>
+  <script src="src/state/app-state.js?v=5.4"></script>
+  <script src="src/utils/forms.js?v=5.4"></script>
+  <script src="src/features/capture/entry-crud.js?v=5.4"></script>
+  <script src="src/features/review/timeline.js?v=5.4"></script>
+  <script src="src/features/clinical-analysis/insights.js?v=5.4"></script>
+  <script src="src/features/review/history-ui.js?v=5.4"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.4"></script>
+  <script src="src/engine/reporting/clinical-report.js?v=5.4"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.4"></script>
+  <script src="src/engine/reporting/reports.js?v=5.4"></script>
+  <script src="src/ui/context-menu.js?v=5.4"></script>
+  <script src="src/features/capture/speech.js?v=5.4"></script>
+  <script src="src/state/workflow.js?v=5.4"></script>
+  <script src="src/app/bootstrap.js?v=5.4"></script>
 </body>
 </html>

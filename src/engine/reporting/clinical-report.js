@@ -2,25 +2,40 @@
  * Clinical consultation report — printable PDF via browser print.
  */
 
-function captureAnatomyMapDataUrl(options = {}) {
-  const img = document.querySelector('.cae-anatomy-image');
-  if (!img?.complete || !img.naturalWidth) return null;
+function loadAnatomyImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Failed to load anatomy plate'));
+    img.src = src;
+  });
+}
 
-  const model = normalizeModelType(state.modelType);
+async function captureAnatomyMapDataUrl(options = {}) {
+  const model = normalizeModelType(options.model || state.modelType);
   const view = options.view || state.view;
-  const regions = entryStore.getRegionsForView(model, view);
   const size = options.size || 512;
+  const regions = entryStore.getRegionsForView(model, view);
+
+  let img = null;
+  if (view === state.view && normalizeModelType(state.modelType) === model) {
+    const live = document.querySelector('.cae-anatomy-image');
+    if (live?.complete && live.naturalWidth) img = live;
+  }
+  if (!img) {
+    try {
+      img = await loadAnatomyImage(getAssetPath(model, view));
+    } catch {
+      return null;
+    }
+  }
+
   const canvas = document.createElement('canvas');
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext('2d');
 
-  const stageBg = getThemeToken('--anatomy-stage-bg') || getThemeToken('--background');
-  if (stageBg.startsWith('radial')) {
-    ctx.fillStyle = getThemeToken('--background') || '#0f172a';
-  } else {
-    ctx.fillStyle = stageBg || '#0f172a';
-  }
+  ctx.fillStyle = getThemeToken('--background') || '#0f172a';
   ctx.fillRect(0, 0, size, size);
   ctx.drawImage(img, 0, 0, size, size);
 
@@ -34,7 +49,7 @@ function captureAnatomyMapDataUrl(options = {}) {
     const x = c.x * size;
     const y = c.y * size;
     ctx.save();
-    ctx.globalAlpha = opacity;
+    ctx.globalAlpha = Math.min(0.95, opacity + 0.1);
     if (isPolygon) {
       ctx.fillStyle = baseColor;
       ctx.beginPath();
@@ -51,7 +66,7 @@ function captureAnatomyMapDataUrl(options = {}) {
       const ryPx = ry * size;
       const grad = ctx.createRadialGradient(x, y, 0, x, y, Math.max(rxPx, ryPx));
       grad.addColorStop(0, baseColor);
-      grad.addColorStop(0.5, baseColor);
+      grad.addColorStop(0.45, baseColor);
       grad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -79,11 +94,33 @@ function summarizeTriggers(entries) {
   return Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} (${v})`);
 }
 
-function buildClinicalReportHtml() {
+async function buildAnnotatedViewFigures(session) {
+  const model = session.patient.model;
+  const views = ['front', 'back', 'left', 'right'].filter(view =>
+    entryStore.getRegionsForView(model, view).length > 0
+  );
+  const targetViews = views.length ? views : [session.patient.view || 'front'];
+  const figures = [];
+  for (const view of targetViews) {
+    const mapUrl = await captureAnatomyMapDataUrl({ model, view, size: 480 });
+    if (!mapUrl) continue;
+    figures.push(`
+      <figure class="report-figure">
+        <img src="${mapUrl}" alt="Annotated anatomy — ${view} view" />
+        <figcaption>${formatPatientModelLabel(model)} — ${view} view</figcaption>
+      </figure>`);
+  }
+  if (!figures.length) {
+    return '<p class="report-muted">Anatomy map unavailable at time of export.</p>';
+  }
+  return `<div class="report-anatomy-grid">${figures.join('')}</div>`;
+}
+
+async function buildClinicalReportHtml() {
   const session = buildSessionExport(state, entryStore);
   const entries = [...session.entries].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const visitDate = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  const mapUrl = captureAnatomyMapDataUrl();
+  const anatomyFigures = await buildAnnotatedViewFigures(session);
   const insights = generateInsights();
   const avgIntensity = entries.length
     ? (entries.reduce((s, e) => s + e.intensity, 0) / entries.length).toFixed(1)
@@ -137,14 +174,14 @@ function buildClinicalReportHtml() {
         </tr>`).join('')
     : '<tr><td colspan="4">No timeline data.</td></tr>';
 
-  const aiBlock = insights.alerts.length || insights.html
-    ? `<div class="report-ai-notice">
-        <p><strong>AI Observations (non-diagnostic):</strong></p>
+  const aiBlock = `
+      <div class="report-ai-notice">
+        <p><strong>Assistive pattern notes — not a medical diagnosis</strong></p>
+        <p class="report-muted">${insights.brief || ''}</p>
         ${insights.alerts.length ? `<ul>${insights.alerts.map(a => `<li>${a}</li>`).join('')}</ul>` : ''}
         <div class="report-ai-body">${insights.html.replace(/<div class="insight-alert">/g, '<p class="report-alert">').replace(/<\/div>/g, '</p>')}</div>
-        <p class="report-disclaimer">These observations are generated from logged symptom patterns only. They do not constitute a medical diagnosis, treatment plan, or clinical decision.</p>
-      </div>`
-    : '<p class="report-muted">Insufficient data for AI pattern observations.</p>';
+        <p class="report-disclaimer">These notes summarize patient-reported patterns only. They do not constitute a medical diagnosis, treatment plan, or clinical decision.</p>
+      </div>`;
 
   return `
     <article class="clinical-report">
@@ -154,29 +191,28 @@ function buildClinicalReportHtml() {
           <span class="report-brand-sub">Powered by Clinical Anatomy Engine</span>
         </div>
         <h1>Clinical Pain Consultation Report</h1>
-        <p class="report-meta-line">Visit Date: ${visitDate}</p>
+        <p class="report-meta-line">Prepared for clinician review · ${visitDate}</p>
       </header>
 
-      <section class="report-section">
-        <h2>Patient &amp; Session</h2>
+      <section class="report-section report-brief">
+        <h2>Clinician brief</h2>
+        <p>${insights.brief || 'No entries logged.'}</p>
         <table class="report-table report-table-meta">
           <tr><th>Patient Model</th><td>${formatPatientModelLabel(session.patient.model)}</td></tr>
-          <tr><th>Current View</th><td>${session.patient.view}</td></tr>
-          <tr><th>Workflow</th><td>${session.workflow.mode}</td></tr>
-          <tr><th>Total Entries</th><td>${entries.length}</td></tr>
-          <tr><th>Total Regions</th><td>${session.regions.length}</td></tr>
+          <tr><th>Entries / Regions</th><td>${entries.length} / ${session.regions.length}</td></tr>
+          <tr><th>Average / Peak</th><td>${avgIntensity}/10 · ${peakIntensity}/10</td></tr>
+          <tr><th>Top qualities</th><td>${qualities.slice(0, 3).join(', ') || '—'}</td></tr>
+          <tr><th>Top triggers</th><td>${triggers.slice(0, 3).join(', ') || '—'}</td></tr>
         </table>
       </section>
 
       <section class="report-section">
-        <h2>Annotated Anatomy</h2>
-        ${mapUrl
-          ? `<figure class="report-figure"><img src="${mapUrl}" alt="Annotated anatomy — ${session.patient.view} view" /><figcaption>${formatPatientModelLabel(session.patient.model)} — ${session.patient.view} view with pain regions</figcaption></figure>`
-          : '<p class="report-muted">Anatomy map unavailable at time of export.</p>'}
+        <h2>Annotated anatomy</h2>
+        ${anatomyFigures}
       </section>
 
       <section class="report-section">
-        <h2>Pain Summary</h2>
+        <h2>Pain summary</h2>
         <table class="report-table report-table-meta">
           <tr><th>Average Intensity</th><td>${avgIntensity}/10</td></tr>
           <tr><th>Peak Intensity</th><td>${peakIntensity}/10</td></tr>
@@ -186,7 +222,7 @@ function buildClinicalReportHtml() {
       </section>
 
       <section class="report-section">
-        <h2>Pain Regions</h2>
+        <h2>Pain regions</h2>
         <table class="report-table">
           <thead><tr><th>ID</th><th>Patient Label</th><th>Clinical Label</th><th>View</th><th>Shape</th></tr></thead>
           <tbody>${regionRows}</tbody>
@@ -194,7 +230,7 @@ function buildClinicalReportHtml() {
       </section>
 
       <section class="report-section">
-        <h2>Pain Timeline</h2>
+        <h2>Pain timeline</h2>
         <table class="report-table">
           <thead><tr><th>Entry</th><th>Date/Time</th><th>Intensity</th><th>Regions</th></tr></thead>
           <tbody>${timelineRows}</tbody>
@@ -202,22 +238,22 @@ function buildClinicalReportHtml() {
       </section>
 
       <section class="report-section">
-        <h2>Clinical Notes</h2>
+        <h2>Clinical notes</h2>
         <p>${session.notes.aggregate || 'No clinical notes recorded.'}</p>
       </section>
 
       <section class="report-section">
-        <h2>Entry Detail</h2>
+        <h2>Entry detail</h2>
         ${entryBlocks}
       </section>
 
       <section class="report-section">
-        <h2>AI Observations</h2>
+        <h2>Assistive pattern notes</h2>
         ${aiBlock}
       </section>
 
       <footer class="report-footer">
-        <h2>Session Metadata</h2>
+        <h2>Session metadata</h2>
         <table class="report-table report-table-meta">
           <tr><th>Generated</th><td>${new Date().toLocaleString()}</td></tr>
           <tr><th>Schema Version</th><td>${session.schemaVersion}</td></tr>
@@ -231,8 +267,8 @@ function buildClinicalReportHtml() {
     </article>`;
 }
 
-function printClinicalReport() {
-  document.getElementById('printReport').innerHTML = buildClinicalReportHtml();
+async function printClinicalReport() {
+  document.getElementById('printReport').innerHTML = await buildClinicalReportHtml();
   window.print();
 }
 
