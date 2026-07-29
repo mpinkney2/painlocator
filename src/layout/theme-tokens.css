@@ -114,9 +114,13 @@ body.theme-dark {
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
   --overlay-backdrop: rgba(0, 0, 0, 0.65);
+  --focus-ring: 0 0 0 2px var(--background), 0 0 0 4px var(--accent);
 
   --control-bg: rgba(15, 23, 42, 0.55);
+  --control-border: var(--border);
   --toggle-track: rgba(0, 0, 0, 0.35);
+  --slider-thumb: var(--primary-contrast);
+  --slider-track: var(--accent);
 
   --chart-line: var(--accent);
   --chart-fill: rgba(34, 211, 238, 0.12);
@@ -131,18 +135,33 @@ body.theme-dark {
   --brand-pain: var(--text-primary);
   --brand-locator: var(--accent);
   --brand-tagline: var(--text-muted);
+
+  /* Legacy aliases must be re-declared so they re-resolve against dark tokens */
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
 }
 
 .high-contrast-active {
   --background: #000000;
   --surface: #0a0f1d;
   --surface-secondary: #151f32;
+  --surface-elevated: #1a2438;
   --border: #ffffff;
   --border-strong: #ffffff;
   --text-primary: #ffffff;
   --text-secondary: #e2e8f0;
   --text-muted: #cbd5e1;
   --header-bg: var(--surface);
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
 }
 
 .colorblind-active {

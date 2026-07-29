@@ -511,12 +511,17 @@ class ClinicalMarkupRenderer {
     this.viewport = null;
     this.frame = null;
     this.tooltip = null;
+    this._onResize = () => this.syncLayout();
+    this._resizeObserver = null;
   }
 
   render(container) {
     this.fallbackActive = false;
     this.loadStatus = "loading";
     const imgPath = getAssetPath(this.engine.modelType, this.engine.viewType);
+
+    window.removeEventListener("resize", this._onResize);
+    this._resizeObserver?.disconnect();
 
     container.innerHTML = `
       <div class="cae-clinical-viewport">
@@ -555,7 +560,10 @@ class ClinicalMarkupRenderer {
       this.fallbackActive = false;
       this.layers.image.show();
       if (placeholder) placeholder.style.display = "none";
-      this.syncLayout();
+      requestAnimationFrame(() => {
+        this.syncLayout();
+        requestAnimationFrame(() => this.syncLayout());
+      });
       this.renderRegions();
       this.applyVisualizationClasses();
       this.injectDebugLabel(container, imgPath);
@@ -575,7 +583,11 @@ class ClinicalMarkupRenderer {
     img.onerror = handleError;
     img.src = imgPath + "?v=" + Date.now();
 
-    window.addEventListener("resize", () => this.syncLayout());
+    window.addEventListener("resize", this._onResize);
+    if (typeof ResizeObserver !== "undefined" && this.viewport) {
+      this._resizeObserver = new ResizeObserver(() => this.syncLayout());
+      this._resizeObserver.observe(this.viewport);
+    }
     this.injectDebugLabel(container, imgPath);
   }
 
