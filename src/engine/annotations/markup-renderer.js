@@ -9,12 +9,12 @@ function intensityBaseColor(intensity) {
 
 function painGradientStops(intensity, opacity) {
   const base = intensityBaseColor(intensity);
-  const o = opacity ?? 0.5;
+  const o = opacity ?? 0.7;
   return `
-    <stop offset="0%" stop-color="${base}" stop-opacity="${Math.min(0.95, o + 0.3)}"/>
-    <stop offset="45%" stop-color="${base}" stop-opacity="${o}"/>
-    <stop offset="75%" stop-color="${base}" stop-opacity="${o * 0.45}"/>
-    <stop offset="100%" stop-color="${base}" stop-opacity="0"/>`;
+    <stop offset="0%" stop-color="${base}" stop-opacity="${Math.min(1, o + 0.18)}"/>
+    <stop offset="40%" stop-color="${base}" stop-opacity="${o}"/>
+    <stop offset="72%" stop-color="${base}" stop-opacity="${Math.min(0.85, o * 0.72)}"/>
+    <stop offset="100%" stop-color="${base}" stop-opacity="${Math.min(0.2, o * 0.18)}"/>`;
 }
 
 function polygonPoints(anchors) {
@@ -160,7 +160,7 @@ class PainRegionLayer {
       const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
       poly.setAttribute("points", polygonPoints(p.vertices));
       poly.setAttribute("fill", color);
-      poly.setAttribute("fill-opacity", "0.25");
+      poly.setAttribute("fill-opacity", "0.55");
       poly.setAttribute("stroke", color);
       poly.setAttribute("stroke-width", "0.003");
       poly.setAttribute("stroke-dasharray", "0.008 0.005");
@@ -184,7 +184,7 @@ class PainRegionLayer {
     el.setAttribute("rx", String(Math.max(p.rx, 0.01)));
     el.setAttribute("ry", String(Math.max(p.ry || p.rx, 0.01)));
     el.setAttribute("fill", color);
-    el.setAttribute("fill-opacity", "0.35");
+    el.setAttribute("fill-opacity", "0.7");
     el.setAttribute("stroke", color);
     el.setAttribute("stroke-width", "0.003");
     el.setAttribute("stroke-dasharray", "0.008 0.005");
@@ -227,7 +227,7 @@ class PainRegionLayer {
       shape.setAttribute("class", "pain-region-fill");
       shape.setAttribute("points", polygonPoints(region.anchors));
       shape.setAttribute("fill", baseColor);
-      shape.setAttribute("fill-opacity", String(Math.min(0.75, opacity + 0.15)));
+      shape.setAttribute("fill-opacity", String(Math.min(0.9, opacity + 0.12)));
     } else {
       shape = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
       shape.setAttribute("class", "pain-region-fill");
@@ -238,7 +238,7 @@ class PainRegionLayer {
       shape.setAttribute("fill", `url(#${gradId})`);
     }
     shape.setAttribute("stroke", selected ? "#22d3ee" : baseColor);
-    shape.setAttribute("stroke-opacity", selected ? "1" : "0.55");
+    shape.setAttribute("stroke-opacity", selected ? "1" : "0.8");
     shape.setAttribute("stroke-width", selected ? "0.004" : "0.002");
     g.appendChild(shape);
 
