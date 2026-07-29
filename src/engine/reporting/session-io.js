@@ -23,8 +23,8 @@ function exportSessionJsonString() {
   return JSON.stringify(buildSessionExport(state, entryStore), null, 2);
 }
 
-function captureClinicalSnapshot() {
-  const dataUrl = captureAnatomyMapDataUrl({ allViews: true });
+async function captureClinicalSnapshot() {
+  const dataUrl = await captureAnatomyMapDataUrl({ view: state.view });
   if (!dataUrl) {
     alert('Anatomy image is not ready. Wait for the clinical plate to load, then try again.');
     return null;

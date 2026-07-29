@@ -78,9 +78,9 @@ function applyWorkflowMode(mode) {
   if (titleEl) titleEl.textContent = titles[mode];
 
   const hints = {
-    capture: 'Select Point or Region · mark where it hurts before saving',
-    review: 'Select an entry from the timeline or list to review patterns',
-    clinical: 'Advanced annotation, overlays, and reporting tools enabled'
+    capture: 'Tap the body · mark where it hurts · then save',
+    review: 'Select an entry from the timeline to review patterns',
+    clinical: 'Clinical tools for annotation, pattern notes, and clinician sharing'
   };
   const hint = document.getElementById('avatarHint');
   if (hint) hint.textContent = hints[mode];
