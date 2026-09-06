@@ -19,3 +19,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+---
+
+## PainLocator vendor pin (runtime)
+
+Vendored runtime files in this directory:
+
+| File | Role | Three.js revision |
+| --- | --- | --- |
+| `three.module.min.js` | Runtime Three.js ESM (`REVISION` / build id **170**) | **r170** / npm `three@0.170.0` |
+| `GLTFLoader.js` | Runtime GLTF/GLB loader (ESM; resolves `three` via import map) | **r170** companion from `three@0.170.0` examples |
+
+**Runtime source of truth:** these vendored files (loaded only when Spatial mode is
+selected). Do **not** add `three` as an application runtime dependency.
+
+**Build-time only:** `three@0.170.0` is a **devDependency** so
+`scripts/generate-exterior-glb.mjs` can regenerate the interim exterior GLB via
+`GLTFExporter` on a clean checkout. Keep the npm pin aligned with this vendor
+revision (r170).

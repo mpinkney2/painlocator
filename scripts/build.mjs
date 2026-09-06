@@ -29,6 +29,13 @@ if (!existsSync(anatomyFront)) {
   process.exit(1);
 }
 
+const spatialGlb = join(dist, 'anatomy', 'spatial', 'adult-male', 'exterior-lod0.glb');
+const spatialManifest = join(dist, 'anatomy', 'spatial', 'manifest.json');
+if (!existsSync(spatialGlb) || !existsSync(spatialManifest)) {
+  console.error('Build verification failed: missing spatial exterior assets');
+  process.exit(1);
+}
+
 console.log('Build complete → dist/');
 console.log('  index.html');
 console.log('  src/');

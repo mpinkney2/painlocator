@@ -1,6 +1,6 @@
 /**
- * Three.js scene graph for Phase 1 spatial anatomy.
- * Placeholder body is procedural (public/anatomy/spatial/LICENSE.md).
+ * Three.js scene graph for Spatial anatomy (Phase 2 Slice 1).
+ * Exterior body loads from Spatial Manifest + GLB (not procedural placeholder).
  */
 (function (global) {
   const MAX_DPR = 2;
@@ -20,6 +20,9 @@
       this._yaw = 0;
       this._targetYaw = 0;
       this._snapping = false;
+      this._exterior = null;
+      this.modelId = null;
+      this.provenance = null;
 
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -37,7 +40,7 @@
       const w = Math.max(1, mountEl.clientWidth || 320);
       const h = Math.max(1, mountEl.clientHeight || 480);
       this.camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
-      this.camera.position.set(0, 1.0, 4.2);
+      this.camera.position.set(0, 1.0, 4.0);
       this.camera.lookAt(0, 0.95, 0);
 
       this.scene = new THREE.Scene();
@@ -59,8 +62,20 @@
 
       this.raycastMeshes = [];
       this.meshByUuid = new Map();
-      this.meshByName = new Map();
-      this._buildPlaceholderBody();
+      /** @type {Map<string, import('three').Mesh>} stable meshId → Mesh */
+      this.meshById = new Map();
+      /** Alias for remount: meshId / mesh.name → Mesh */
+      this.meshByName = this.meshById;
+
+      const ground = new THREE.Mesh(
+        new THREE.CircleGeometry(0.55, 32),
+        new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.12 })
+      );
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.y = 0;
+      ground.name = "ground";
+      ground.raycast = () => {};
+      this.scene.add(ground);
 
       this.raycaster = new THREE.Raycaster();
       this._pointer = new THREE.Vector2();
@@ -90,78 +105,48 @@
       return this._reduceMotion;
     }
 
-    _buildPlaceholderBody() {
-      const THREE = this.THREE;
-      const skin = new THREE.MeshStandardMaterial({
-        color: 0xb8c0cc,
-        roughness: 0.65,
-        metalness: 0.05
-      });
-      const accent = new THREE.MeshStandardMaterial({
-        color: 0x8e9aab,
-        roughness: 0.7,
-        metalness: 0.04
-      });
+    /**
+     * Lazy-load catalog + exterior GLB via SpatialManifestLoader.
+     * Must succeed before the scene is considered ready for interaction.
+     */
+    async loadExteriorBody(modelId) {
+      if (this.disposed) throw new Error("Scene disposed");
+      if (typeof SpatialManifestLoader !== "function") {
+        throw new Error("SpatialManifestLoader unavailable");
+      }
 
-      const add = (mesh, name) => {
-        mesh.name = name;
-        mesh.userData.spatialBody = true;
-        this.bodyRoot.add(mesh);
+      const loader = new SpatialManifestLoader();
+      const exterior = await loader.loadExteriorSurface(this.THREE, modelId);
+      if (this.disposed) {
+        exterior.dispose?.();
+        throw new Error("Scene disposed during exterior load");
+      }
+
+      this._clearBodyMeshes();
+      this._exterior = exterior;
+      this.modelId = exterior.modelId;
+      this.provenance = exterior.provenance;
+
+      this.bodyRoot.add(exterior.root);
+      for (const [meshId, mesh] of exterior.meshById) {
         this.raycastMeshes.push(mesh);
         this.meshByUuid.set(mesh.uuid, mesh);
-        if (name) this.meshByName.set(name, mesh);
-        return mesh;
-      };
+        this.meshById.set(meshId, mesh);
+      }
 
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 24, 18), skin);
-      head.position.set(0, 1.72, 0);
-      add(head, "head");
+      this.requestFrame();
+      return exterior;
+    }
 
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.12, 16), accent);
-      neck.position.set(0, 1.52, 0);
-      add(neck, "neck");
-
-      const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.28, 0.55, 8, 16), skin);
-      torso.position.set(0, 1.12, 0);
-      add(torso, "torso");
-
-      const pelvis = new THREE.Mesh(new THREE.SphereGeometry(0.24, 20, 14), accent);
-      pelvis.scale.set(1.15, 0.7, 0.9);
-      pelvis.position.set(0, 0.72, 0);
-      add(pelvis, "pelvis");
-
-      const makeLimb = (name, x, y, len, radius) => {
-        const limb = new THREE.Mesh(new THREE.CapsuleGeometry(radius, len, 6, 12), skin);
-        limb.position.set(x, y, 0);
-        add(limb, name);
-      };
-
-      makeLimb("armL", -0.42, 1.18, 0.45, 0.065);
-      makeLimb("armR", 0.42, 1.18, 0.45, 0.065);
-      const handL = new THREE.Mesh(new THREE.SphereGeometry(0.07, 12, 10), accent);
-      handL.position.set(-0.42, 0.86, 0);
-      add(handL, "handL");
-      const handR = new THREE.Mesh(new THREE.SphereGeometry(0.07, 12, 10), accent);
-      handR.position.set(0.42, 0.86, 0);
-      add(handR, "handR");
-
-      makeLimb("legL", -0.14, 0.32, 0.55, 0.09);
-      makeLimb("legR", 0.14, 0.32, 0.55, 0.09);
-      const footL = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.06, 0.22), accent);
-      footL.position.set(-0.14, 0.02, 0.04);
-      add(footL, "footL");
-      const footR = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.06, 0.22), accent);
-      footR.position.set(0.14, 0.02, 0.04);
-      add(footR, "footR");
-
-      const ground = new THREE.Mesh(
-        new THREE.CircleGeometry(0.7, 32),
-        new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.15 })
-      );
-      ground.rotation.x = -Math.PI / 2;
-      ground.position.y = 0;
-      ground.name = "ground";
-      this.scene.add(ground);
+    _clearBodyMeshes() {
+      if (this._exterior) {
+        this._exterior.root?.parent?.remove(this._exterior.root);
+        this._exterior.dispose?.();
+        this._exterior = null;
+      }
+      this.raycastMeshes = [];
+      this.meshByUuid.clear();
+      this.meshById.clear();
     }
 
     getYaw() {
@@ -223,7 +208,6 @@
         if (!this._snapping) this._needsFrame = false;
       }
 
-      // Schedule next frame only if still alive (avoids orphaned rAF after dispose).
       if (this.disposed) return;
       this._raf = requestAnimationFrame(this._tick);
     }
@@ -252,6 +236,7 @@
       this._mq?.removeEventListener?.("change", this._onMotion);
       this._ro?.disconnect();
       this._ro = null;
+      this._clearBodyMeshes();
       this.scene.traverse((obj) => {
         if (obj.geometry) obj.geometry.dispose?.();
         if (obj.material) {
@@ -267,7 +252,7 @@
       this.canvas = null;
       this.raycastMeshes = [];
       this.meshByUuid.clear();
-      this.meshByName.clear();
+      this.meshById.clear();
     }
   }
 

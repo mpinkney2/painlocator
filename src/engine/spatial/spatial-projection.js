@@ -86,10 +86,14 @@
       THREE.Triangle.getBarycentricCoordinates(hit.point, a, b, c, bary);
       barycentric = { a: bary.x, b: bary.y, c: bary.z };
     }
+    const meshId = mesh.userData?.meshId || mesh.name || null;
     return {
       kind: "spatialSurface",
+      // Three UUID is runtime-only — remount binding uses meshId.
       meshUuid: mesh.uuid,
-      meshName: mesh.name || "body",
+      meshId,
+      meshName: meshId || mesh.name || "body",
+      structureId: mesh.userData?.structureId || null,
       localPoint: { x: localPoint.x, y: localPoint.y, z: localPoint.z },
       face,
       faceIndex: hit.faceIndex ?? null,
@@ -102,15 +106,21 @@
     if (!attachment) return null;
     const byUuid = meshByUuid?.get?.(attachment.meshUuid);
     if (byUuid) return byUuid;
-    // Remounts mint new Three.js UUIDs; stable meshName survives plate↔spatial.
-    const byName =
-      (attachment.meshName && meshByName?.get?.(attachment.meshName)) ||
-      (attachment.meshName &&
-        [...(meshByUuid?.values?.() || [])].find((m) => m.name === attachment.meshName)) ||
+
+    // Prefer stable manifest meshId (Phase 2). meshName kept for Phase 1 session maps.
+    const stableId = attachment.meshId || attachment.meshName;
+    const byId =
+      (stableId && meshByName?.get?.(stableId)) ||
+      (stableId &&
+        [...(meshByUuid?.values?.() || [])].find(
+          (m) => m.userData?.meshId === stableId || m.name === stableId
+        )) ||
       null;
-    if (byName) {
-      attachment.meshUuid = byName.uuid;
-      return byName;
+    if (byId) {
+      attachment.meshUuid = byId.uuid;
+      attachment.meshId = byId.userData?.meshId || byId.name || attachment.meshId;
+      if (byId.userData?.structureId) attachment.structureId = byId.userData.structureId;
+      return byId;
     }
     return attachment.mesh || null;
   }
