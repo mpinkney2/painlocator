@@ -169,8 +169,8 @@ body.shell-patient .anatomy-viewer {
   align-items: stretch;
   width: 100%;
   min-width: 0;
-  /* Clear fixed tool dock + locate CTA */
-  padding-bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+  /* Clear tool dock + stacked locate CTA (prompt + button + hint) */
+  padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
 }
 
@@ -247,8 +247,9 @@ body.shell-patient .capture-tools .region-tool[data-tool="polygon"] {
 body.shell-patient .region-tools.capture-tools,
 body.shell-patient .capture-tools {
   top: auto;
-  /* Sit above the fixed locate CTA — avoid overlap / “dragging” hit targets */
-  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  /* Clear stacked locate CTA (prompt + button + hint + safe area) */
+  bottom: calc(168px + env(safe-area-inset-bottom, 0px));
+  z-index: 95;
   left: 50%;
   transform: translateX(-50%);
   flex-wrap: wrap;
@@ -257,7 +258,6 @@ body.shell-patient .capture-tools {
   padding: 6px;
   border-radius: 999px;
   gap: 4px;
-  /* Solid surface — backdrop-filter feels laggy on mobile */
   background: var(--surface, #fff);
   box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.1));
   backdrop-filter: none;
@@ -301,25 +301,27 @@ body.shell-patient .quick-view-bar .view-btn {
   font-weight: 700;
 }
 
-/* Sticky locate CTA bar */
-#patientLocateCta {
+/* Sticky locate CTA — stacked column so prompt/button/hint never collide on phones */
+#patientLocateCta,
+.patient-locate-cta {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 90;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 8px;
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
   background: var(--surface, #fff);
   border-top: 1px solid var(--border);
-  /* No backdrop-filter — major mobile jank source */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
   touch-action: manipulation;
+  box-sizing: border-box;
 }
 
 body.shell-patient:not(.patient-step-locate) #patientLocateCta,
@@ -327,31 +329,70 @@ body.shell-patient #patientLocateCta[hidden] {
   display: none !important;
 }
 
-#patientLocateCta .patient-locate-prompt,
-#patientLocateCta .patient-locate-copy {
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  line-height: 1.35;
+#patientLocateCta > * {
+  position: static;
+  float: none;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-#patientLocateCta .btn {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 10px 20px;
+#patientLocateCta .patient-locate-prompt,
+#patientLocateCta .patient-locate-copy {
+  flex: 0 0 auto;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+}
+
+#patientLocateCta .btn,
+#patientLocateCta .patient-locate-continue {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.2;
   border-radius: 999px;
-  flex-shrink: 0;
+  white-space: nowrap;
   touch-action: manipulation;
+}
+
+#patientLocateCta .patient-locate-hint,
+#patientLocateCta #patientLocateHint {
+  flex: 0 0 auto;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 /* Hide validation hint once Continue is enabled */
 body.shell-patient #btnPatientNextDescribe:not(:disabled) ~ .patient-locate-hint,
-body.shell-patient #patientLocateCta.has-location .patient-locate-hint {
+body.shell-patient #patientLocateCta.has-location .patient-locate-hint,
+body.shell-patient #patientLocateCta.has-location #patientLocateHint {
   display: none !important;
 }
 
@@ -930,12 +971,18 @@ body.shell-consult.shell-clinician #accAIOverlays {
     left: 50%;
     transform: translateX(-50%);
     border-radius: var(--radius-sheet, 20px) var(--radius-sheet, 20px) 0 0;
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 
 
 /* ---- Product Experience V1 ID aliases / describe-step form surfacing ---- */
-body.shell-patient.patient-step-locate #patientLocateCta { display: flex; }
+body.shell-patient.patient-step-locate #patientLocateCta {
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+}
 body.shell-patient #patientLocateCta[hidden] { display: none !important; }
 body.shell-patient #patientSheet[hidden],
 body.shell-patient #patientSheetBackdrop[hidden] { display: none !important; }
@@ -1226,12 +1273,6 @@ body.shell-patient .patient-save-confirm {
   margin: 10px 0 0;
   color: var(--success, #059669);
   font-weight: 700;
-}
-body.shell-patient .patient-locate-hint {
-  margin: 6px 0 0;
-  font-size: 12px;
-  color: var(--text-muted);
-  text-align: center;
 }
 body.shell-patient #btnPatientNextDescribe:disabled + .patient-locate-hint,
 body.shell-patient #btnPatientNextDescribe:disabled ~ .patient-locate-hint {

@@ -288,8 +288,8 @@
         <!-- PATIENT SHELL: step chrome + locate CTA + describe/review sheet (outside anatomy flex row) -->
         <div id="patientLocateCta" class="patient-locate-cta shell-only-patient" hidden>
           <p class="patient-locate-prompt">Where does it hurt? Tap the body to mark pain.</p>
-          <button type="button" class="btn btn-primary" id="btnPatientNextDescribe" disabled>Continue to Describe</button>
-          <p class="patient-locate-hint" id="patientLocateHint">Mark at least one pain location to continue.</p>
+          <button type="button" class="btn btn-primary patient-locate-continue" id="btnPatientNextDescribe" disabled>Continue to Describe</button>
+          <p class="patient-locate-hint" id="patientLocateHint" role="status">Mark at least one pain location to continue.</p>
         </div>
         <div id="patientDescribeBar" class="patient-describe-bar shell-only-patient" hidden>
           <button type="button" class="btn btn-primary btn-block" id="btnPatientDescribeReview">Review entry</button>
