@@ -13,7 +13,15 @@ const state = {
   engine: null,
   view: 'front',
   modelType: 'male',
+  /** Internal clinical workflow — orthogonal to presentationMode */
   workflowMode: 'capture',
+  /**
+   * Product shell: patient | clinician | consult
+   * Does not live in the CAE; see src/state/presentation.js
+   */
+  presentationMode: 'patient',
+  /** Patient shell step within capture: locate | describe | review */
+  patientStep: 'locate',
   physicianMode: false,
   reviewEditMode: false,
   entryFilter: 'all',

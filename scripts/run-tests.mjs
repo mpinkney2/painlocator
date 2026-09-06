@@ -650,5 +650,64 @@ console.log('PainLocator tests\n');
   });
 }
 
+// --- Product Experience V1: presentation mode ---
+{
+  const sandbox = createSandbox();
+  loadScript('src/state/presentation.js', sandbox);
+
+  test('presentation: normalizeMode maps aliases', () => {
+    const n = sandbox.PresentationMode.normalizeMode;
+    assert.equal(n('patient'), 'patient');
+    assert.equal(n('clinician'), 'clinician');
+    assert.equal(n('clinical'), 'clinician');
+    assert.equal(n('consult'), 'consult');
+    assert.equal(n('nope'), 'patient');
+  });
+
+  test('presentation: nav labels differ by shell', () => {
+    const patient = sandbox.PresentationMode.navLabels('patient');
+    const clinician = sandbox.PresentationMode.navLabels('clinician');
+    assert.equal(patient.capture.label, 'Locate');
+    assert.equal(patient.clinical.label, 'Describe');
+    assert.equal(patient.review.label, 'Review');
+    assert.equal(clinician.capture.label, 'Anatomy');
+    assert.equal(clinician.review.label, 'History');
+    assert.equal(clinician.clinical.label, 'Report');
+  });
+
+  test('presentation: persist preference to localStorage', () => {
+    sandbox.PresentationMode.writeStored('clinician');
+    assert.equal(sandbox.localStorage.getItem(sandbox.PresentationMode.STORAGE_KEY), 'clinician');
+    assert.equal(sandbox.PresentationMode.readStored(), 'clinician');
+    sandbox.PresentationMode.writeStored('patient');
+    assert.equal(sandbox.PresentationMode.readStored(), 'patient');
+  });
+}
+
+// --- Product Experience V1: patient steps ---
+{
+  const sandbox = createSandbox();
+  sandbox.state = { presentationMode: 'patient', patientStep: 'locate', workflowMode: 'capture' };
+  sandbox.entryStore = {
+    getActiveEntry: () => null,
+    onChange: () => {},
+    updateActiveEntry: () => {}
+  };
+  loadScript('src/features/shell/patient-flow.js', sandbox);
+
+  test('patient flow: PatientSteps contract', () => {
+    assert.deepEqual([...sandbox.PatientSteps], ['locate', 'describe', 'review']);
+  });
+
+  test('patient flow: setPatientStep updates state', () => {
+    sandbox.setPatientStep('describe');
+    assert.equal(sandbox.state.patientStep, 'describe');
+    sandbox.setPatientStep('review');
+    assert.equal(sandbox.state.patientStep, 'review');
+    sandbox.setPatientStep('locate');
+    assert.equal(sandbox.state.patientStep, 'locate');
+  });
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

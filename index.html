@@ -15,8 +15,9 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.6">
-  <link rel="stylesheet" href="src/layout/styles.css?v=5.6">
+  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.7">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.7">
+  <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.7">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -26,7 +27,7 @@
   }
   </script>
 </head>
-<body class="wf-capture">
+<body class="wf-capture shell-patient">
   <a class="skip-link" href="#avatarStage">Skip to anatomy</a>
   <div class="app" id="app">
 
@@ -38,7 +39,7 @@
           <p class="brand-title">
             <span class="brand-pain">Pain</span><span class="brand-locator">Locator</span>
           </p>
-          <p class="brand-tagline desktop-only">Powered by Clinical Anatomy Engine</p>
+          <p class="brand-tagline desktop-only shell-only-clinician">Powered by Clinical Anatomy Engine</p>
         </div>
         <span class="demo-badge" id="demoModeBadge" hidden>Demo Mode · Fictional data</span>
       </div>
@@ -64,11 +65,20 @@
         <button type="button" class="btn btn-ghost btn-sm" id="btnHeaderDemo" aria-label="Try demo">Demo</button>
         <button type="button" class="btn btn-ghost btn-sm" id="btnFeedback" aria-label="Send feedback">Feedback</button>
         <button type="button" class="btn btn-ghost btn-icon" id="btnHelpMenu" aria-label="Help and safety"><i data-lucide="circle-help"></i></button>
+        <div class="presentation-menu-wrap shell-dev-switch">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnPresentationMenu" aria-haspopup="true" aria-expanded="false" title="Switch product experience">
+            <span id="presentationSwitcherLabel">Patient</span>
+          </button>
+          <div class="presentation-menu" id="presentationMenu" role="menu" hidden>
+            <button type="button" role="menuitem" data-presentation-option="patient" class="active">Patient experience</button>
+            <button type="button" role="menuitem" data-presentation-option="clinician">Clinician console</button>
+          </div>
+        </div>
         <button type="button" class="btn btn-ghost btn-icon" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle theme"><i data-lucide="moon"></i><span class="btn-label desktop-only"> Dark Mode</span></button>
-        <button type="button" class="btn btn-ghost desktop-only" id="btnClear" title="Clear all entries">Clear Data</button>
-        <button type="button" class="btn btn-ghost show-clinical" id="btnInsights" aria-label="Open assistive pattern notes">Patterns</button>
-        <button type="button" class="btn btn-primary show-review-or-clinical" id="btnExport" aria-label="Share clinical report">Share</button>
-        <button type="button" class="btn btn-ghost show-clinical" id="btnImport" aria-label="Import session from JSON">Import</button>
+        <button type="button" class="shell-only-clinician btn btn-ghost desktop-only" id="btnClear" title="Clear all entries">Clear Data</button>
+        <button type="button" class="shell-only-clinician btn btn-ghost show-clinical" id="btnInsights" aria-label="Open assistive pattern notes">Patterns</button>
+        <button type="button" class="shell-only-clinician btn btn-primary show-review-or-clinical" id="btnExport" aria-label="Share clinical report">Share</button>
+        <button type="button" class="shell-only-clinician btn btn-ghost show-clinical" id="btnImport" aria-label="Import session from JSON">Import</button>
       </div>
     </header>
 
@@ -83,7 +93,7 @@
             <i data-lucide="chevron-down" class="chevron" aria-hidden="true"></i>
           </summary>
           <div class="cae-sidebar-inner">
-        <h2 class="command-center-title desktop-only"><i data-lucide="sliders"></i> CAE Command Center</h2>
+        <h2 class="command-center-title desktop-only shell-only-clinician"><i data-lucide="sliders"></i> Anatomy</h2>
         <div class="cae-sidebar-content">
         
         <!-- ACCORDION 1: PATIENT MODEL -->
@@ -260,11 +270,55 @@
             <span class="region-tool-divider" aria-hidden="true"></span>
             <div class="display-mode-toggle" id="displayModeToggle" role="group" aria-label="Anatomy display mode">
               <button type="button" class="region-tool display-mode-btn active" id="btnPlateMode" data-display="plate" title="2D clinical plate (default)" aria-pressed="true">2D</button>
-              <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Spatial body (Phase 1 preview)" aria-pressed="false">Spatial</button>
+              <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="false">Spatial</button>
             </div>
           </div>
           <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Anatomy map — mark pain locations"></div>
-          <p class="avatar-hint" id="avatarHint">Choose a tool, mark where you feel pain, then describe intensity and symptoms</p>
+          <p class="avatar-hint" id="avatarHint">Where does it hurt? Tap the body to mark pain.</p>
+
+        <!-- PATIENT SHELL: locate CTA + describe/review sheet -->
+        <div id="patientLocateCta" class="patient-locate-cta shell-only-patient" hidden>
+          <p class="patient-locate-prompt">Tap the body where you feel pain</p>
+          <button type="button" class="btn btn-primary" id="btnPatientNextDescribe" disabled>Continue to Describe</button>
+        </div>
+        <div id="patientDescribeBar" class="patient-describe-bar shell-only-patient" hidden>
+          <button type="button" class="btn btn-primary btn-block" id="btnPatientDescribeReview">Review entry</button>
+        </div>
+        <div id="patientSheetBackdrop" class="patient-sheet-backdrop shell-only-patient" hidden></div>
+        <aside id="patientSheet" class="patient-sheet shell-only-patient" hidden aria-live="polite">
+          <div class="patient-sheet-handle" aria-hidden="true"></div>
+          <div class="patient-sheet-pane" data-pane="describe" id="patientDescribePane">
+            <header class="patient-sheet-head">
+              <h3>How does it feel?</h3>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnPatientBackLocate">Back</button>
+            </header>
+            <div class="patient-sheet-body" id="patientDescribeMount">
+              <!-- Intensity + quality controls are mirrored via CSS show of capture form fields -->
+              <p class="patient-sheet-hint">Intensity, quality, and timing stay in sync with your pain entry.</p>
+            </div>
+            <footer class="patient-sheet-foot">
+              <button type="button" class="btn btn-primary btn-block" id="btnPatientToReview">Review entry</button>
+            </footer>
+          </div>
+          <div class="patient-sheet-pane" data-pane="review" id="patientReviewPane" hidden>
+            <header class="patient-sheet-head">
+              <h3>Review &amp; save</h3>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnPatientBackDescribe">Back</button>
+            </header>
+            <div class="patient-sheet-body">
+              <div id="patientReviewSummary" class="patient-review-summary"></div>
+              <div class="patient-review-actions">
+                <button type="button" class="btn btn-ghost" id="btnPatientEditLocation">Edit location</button>
+                <button type="button" class="btn btn-ghost" id="btnPatientEditDescribe">Edit description</button>
+              </div>
+              <p id="patientSaveConfirm" class="patient-save-confirm" hidden>Saved. You can mark another area anytime.</p>
+            </div>
+            <footer class="patient-sheet-foot">
+              <button type="button" class="btn btn-primary btn-block" id="btnPatientSave">Save Pain Entry</button>
+            </footer>
+          </div>
+        </aside>
+
         </div>
 
         <section class="timeline-panel" id="timelinePanel" aria-labelledby="timelineTitle">
@@ -299,6 +353,10 @@
 
       <!-- RIGHT COLUMN: PAIN ENTRY / REGION DETAILS -->
       <aside class="panel panel-right clinical-doc-panel">
+        <div id="clinicianContextHeader" class="clinician-context-header shell-only-clinician">
+          <p class="clinician-rail-label">Patient-reported pain</p>
+          <p class="clinician-context-sub">Anatomical context available in a later release</p>
+        </div>
         <h2 class="clinical-doc-title" id="clinicalDocTitle">Capture — Log Pain</h2>
         <p class="workflow-progress-hint" id="workflowProgressHint">Step 1 of 3 — Mark pain, set intensity, then save</p>
         <p class="save-status" id="saveStatus" aria-live="polite" hidden></p>
@@ -707,6 +765,8 @@
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.5"></script>
-  <script src="src/app/bootstrap.js?v=5.5"></script>
+  <script src="src/state/presentation.js?v=5.7"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.7"></script>
+  <script src="src/app/bootstrap.js?v=5.7"></script>
 </body>
 </html>

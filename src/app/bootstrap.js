@@ -266,6 +266,12 @@ function init() {
   initChart();
   updateChartTheme();
   syncThemeToggleLabel();
+
+  if (typeof initPresentationMode === 'function') initPresentationMode();
+  else if (typeof window.initPresentationMode === 'function') window.initPresentationMode();
+  if (typeof initPatientFlow === 'function') initPatientFlow();
+  else if (typeof window.initPatientFlow === 'function') window.initPatientFlow();
+
   refreshUI();
   maybeShowWelcome?.();
   if (!demoMode?.isActive?.() && !entryStore.entries.length) showAnatomyTip?.();

@@ -886,3 +886,121 @@ body.shell-consult.shell-clinician #accAIOverlays {
     border-radius: var(--radius-sheet, 20px) var(--radius-sheet, 20px) 0 0;
   }
 }
+
+
+/* ---- Product Experience V1 ID aliases / describe-step form surfacing ---- */
+body.shell-patient.patient-step-locate #patientLocateCta { display: flex; }
+body.shell-patient #patientLocateCta[hidden] { display: none !important; }
+body.shell-patient #patientSheet[hidden],
+body.shell-patient #patientSheetBackdrop[hidden] { display: none !important; }
+
+/* During describe, surface the existing capture form fields in a bottom sheet layout */
+body.shell-patient.patient-step-describe .clinical-doc-panel,
+body.shell-patient.patient-describe-open .clinical-doc-panel {
+  display: flex !important;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  height: min(58vh, 520px);
+  z-index: 60;
+  border-radius: var(--radius-sheet, 20px) var(--radius-sheet, 20px) 0 0;
+  box-shadow: var(--shadow-sheet, 0 -8px 32px rgba(28,25,23,0.12));
+  overflow: auto;
+}
+body.shell-patient.patient-step-describe .clinical-doc-panel .show-review,
+body.shell-patient.patient-step-describe .clinical-doc-panel .show-clinical,
+body.shell-patient.patient-step-describe #clinicianContextHeader,
+body.shell-patient.patient-step-describe #workflowProgressHint {
+  display: none !important;
+}
+body.shell-patient.patient-step-review #patientSheet {
+  display: block !important;
+}
+
+/* Patient describe step — compact continue bar above the form sheet */
+body.shell-patient #patientDescribeBar {
+  display: none;
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(min(58vh, 520px) + 8px);
+  z-index: 61;
+  padding: 0;
+  pointer-events: none;
+}
+body.shell-patient.patient-step-describe #patientDescribeBar:not([hidden]) {
+  display: block;
+  pointer-events: auto;
+}
+body.shell-patient #patientDescribeBar .btn {
+  min-height: 48px;
+  width: 100%;
+  pointer-events: auto;
+  box-shadow: var(--shadow-md);
+}
+
+/* Clinician declutter — hide future placeholders & engineering framing */
+body.shell-clinician .future-placeholders,
+body.shell-clinician .command-center-title {
+  display: none !important;
+}
+body.shell-clinician .shell-only-clinician.command-center-title {
+  display: block !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 8px 10px 4px;
+}
+body.shell-patient .capture-tools .region-tool[data-tool="select"],
+body.shell-patient .capture-tools .region-tool[data-tool="polygon"] {
+  display: none !important;
+}
+body.shell-patient .brand-tagline,
+body.shell-patient .shell-only-clinician {
+  display: none !important;
+}
+body.shell-clinician .shell-only-patient {
+  display: none !important;
+}
+.presentation-menu-wrap { position: relative; }
+.presentation-menu[hidden] { display: none !important; }
+.presentation-menu.open,
+.presentation-menu:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 200px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  padding: 6px;
+  z-index: 80;
+}
+.presentation-menu button {
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.presentation-menu button.active,
+.presentation-menu button[aria-pressed="true"] {
+  background: var(--accent-subtle, rgba(15,118,110,0.12));
+  color: var(--accent, #0f766e);
+}
+.patient-summary-card { display: grid; gap: 10px; }
+.patient-summary-row { display: flex; justify-content: space-between; gap: 12px; }
+.patient-summary-row span { color: var(--text-muted); }
+.patient-save-confirm { color: var(--success, #059669); font-weight: 600; }
+.clinician-context-header { margin-bottom: 8px; }
+.clinician-rail-label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); margin: 0; }
+.clinician-context-sub { margin: 4px 0 0; font-size: 12px; color: var(--text-muted); }
