@@ -3,7 +3,7 @@
 **Date:** 2026-09-06  
 **Slice:** Phase 2 Slice 4 (architecture + offline prototype)  
 **Base:** `main` after PR #11 merge  
-**Status:** Decision record — **does not replace production runtime**
+**Status:** Decision record (Slice 4) + runtime hook (Slice 5 feature-flagged, default OFF) — see [`SPATIAL_PHASE2_SLICE5_CANONICAL_FRAME.md`](./SPATIAL_PHASE2_SLICE5_CANONICAL_FRAME.md)
 
 **Companion docs:**  
 [`SPATIAL_PHASE2_SLICE3_REGISTRATION.md`](./SPATIAL_PHASE2_SLICE3_REGISTRATION.md) ·  

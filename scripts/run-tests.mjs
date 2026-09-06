@@ -1404,6 +1404,232 @@ console.log('PainLocator tests\n');
 }
 
 
+// --- Phase 2 Slice 5: canonical frame flag + global exterior conformer ---
+{
+  const sandbox = {
+    console,
+    Math,
+    Object,
+    Number,
+    Array,
+    Map,
+    Set,
+    JSON,
+    Error,
+    Promise,
+    URLSearchParams,
+    window: {},
+    document: {},
+    location: { search: '' }
+  };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/spatial/canonical-body-flag.js', sandbox);
+  loadScript('src/engine/spatial/exterior-canonical-conformer.js', sandbox);
+  loadScript('src/engine/spatial/spatial-layer-loader.js', sandbox);
+  const Flag = sandbox.CanonicalBodyFlag;
+  const Conf = sandbox.ExteriorCanonicalConformer;
+  const L = sandbox.SpatialLayerLoader;
+
+  test('canonical flag: default OFF', () => {
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '' }), false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?foo=1' }), false);
+  });
+
+  test('canonical flag: query enables mode', () => {
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=true' }), true);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=1' }), true);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalFrame=1' }), true);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=false' }), false);
+  });
+
+  test('canonical flag: shoulder registration URL switches with mode', () => {
+    assert.equal(
+      Flag.shoulderRegistrationUrlForMode(false),
+      Flag.LEGACY_SHOULDER_REGISTRATION_URL
+    );
+    assert.equal(
+      Flag.shoulderRegistrationUrlForMode(true),
+      Flag.IDENTITY_SHOULDER_REGISTRATION_URL
+    );
+    assert.equal(L.DEFAULT_REGISTRATION_URL, Flag.LEGACY_SHOULDER_REGISTRATION_URL);
+    assert.equal(L.IDENTITY_REGISTRATION_URL, Flag.IDENTITY_SHOULDER_REGISTRATION_URL);
+  });
+
+  test('canonical conformer: validates transform and stop condition', () => {
+    const ok = Conf.validateConformerConfig({
+      transform: { scale: 0.96, translation: [0, -0.05, 0.08], rotationEuler: [0, 0, 0] },
+      validation: { status: 'pass-preview', stopConditionTriggered: false }
+    });
+    assert.equal(ok.transform.scale, 0.96);
+    assert.throws(
+      () =>
+        Conf.validateConformerConfig({
+          transform: { scale: 1, translation: [0, 0, 0] },
+          validation: { status: 'GLOBAL CONFORMER FAILED', globalConformerFailed: true, stopConditionTriggered: true }
+        }),
+      /GLOBAL CONFORMER FAILED/
+    );
+  });
+
+  test('canonical conformer: shipped artifact is pass-preview (not failed)', () => {
+    const cfg = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/registration/exterior-to-canonical-v1.json'), 'utf8')
+    );
+    Conf.validateConformerConfig(cfg);
+    assert.equal(cfg.validation.globalConformerFailed, false);
+    assert.equal(cfg.validation.stopConditionTriggered, false);
+    assert.equal(cfg.validation.status, 'pass-preview');
+    assert.equal(cfg.regionalPatches, false);
+    assert.ok(cfg.derivation.landmarksUsed.length >= 8);
+    assert.ok(cfg.validation.metrics.meanAlignmentErrorMeters < 0.12);
+    assert.ok(cfg.validation.metrics.maxAlignmentErrorMeters < 0.15);
+    const report = Conf.buildAlignmentReport(cfg);
+    assert.equal(report.clinicalRegistrationClaimed, false);
+    assert.equal(report.landmarkDistances.length, cfg.derivation.landmarksUsed.length);
+  });
+
+  test('canonical identity shoulder registration is identity transform', () => {
+    const cfg = JSON.parse(
+      readFileSync(
+        join(root, 'public/anatomy/spatial/registration/bp3d-shoulder-canonical-identity.json'),
+        'utf8'
+      )
+    );
+    L.validateRegistrationConfig(cfg);
+    assert.equal(cfg.transform.scale, 1);
+    assert.deepEqual(cfg.transform.translation, [0, 0, 0]);
+    assert.deepEqual(cfg.transform.rotationEuler, [0, 0, 0]);
+    assert.equal(cfg.coordinateFrameVersion, 'painlocator-bp3d-canonical-v1');
+  });
+
+  test('canonical: legacy Slice 3 registration still present for flag OFF', () => {
+    const cfg = JSON.parse(
+      readFileSync(
+        join(root, 'public/anatomy/spatial/registration/bp3d-shoulder-adult-male.json'),
+        'utf8'
+      )
+    );
+    L.validateRegistrationConfig(cfg);
+    assert.equal(cfg.transform.scale, 1.00875);
+    assert.ok(Math.abs(cfg.transform.translation[0] + 0.08792) < 1e-9);
+  });
+
+  test('canonical: adult-male manifest declares frame metadata', () => {
+    const man = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    assert.equal(man.coordinateFrame.frameId, 'painlocator-bp3d-canonical-v1');
+    assert.equal(man.canonicalBridge.enabledByDefault, false);
+    assert.equal(man.canonicalBridge.featureFlag, 'canonicalBodyMode');
+  });
+
+  test('canonical: PainRegion schema still lacks canonicalBodyXYZ persistence fields', () => {
+    const schema = readFileSync(join(root, 'docs/JSON_SCHEMA.md'), 'utf8');
+    // Design may mention the field; persisted required region fields must remain view/anchors/anatomyLayer.
+    assert.ok(schema.includes('anchors') || schema.includes('PainRegion'));
+    const storeSrc = readFileSync(join(root, 'src/engine/annotations/pain-entry-store.js'), 'utf8');
+    assert.equal(storeSrc.includes('canonicalBodyXYZ'), false);
+    const rendererSrc = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    assert.ok(rendererSrc.includes('Runtime-only canonical projection'));
+    assert.ok(rendererSrc.includes('persisted: false'));
+  });
+
+  test('canonical: patient shell cannot expose canonical body via layer packs', () => {
+    assert.equal(L.isPatientBlocked('patient'), true);
+    const pending = L.loadLayerPack({}, 'muscle', {
+      presentationMode: 'patient',
+      registrationUrl: L.IDENTITY_REGISTRATION_URL
+    });
+    pending.then(
+      () => {
+        throw new Error('patient must not load packs in canonical mode either');
+      },
+      (err) => {
+        assert.match(String(err && err.message), /clinician-only/);
+      }
+    );
+  });
+
+  test('canonical: Plate / default Spatial scripts do not auto-reference fetch of canonical GLB', () => {
+    const engineSrc = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    assert.equal(engineSrc.includes('prototype-bp3d-fullbody'), false);
+    assert.equal(engineSrc.includes('canonical-body.glb'), false);
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('canonical-body-flag.js'));
+    assert.ok(html.includes('canonical-body-frame.js'));
+    // Scripts are present but loads are gated inside CanonicalBodyFrame / flag.
+    const flagSrc = readFileSync(join(root, 'src/engine/spatial/canonical-body-flag.js'), 'utf8');
+    const frameSrc = readFileSync(join(root, 'src/engine/spatial/canonical-body-frame.js'), 'utf8');
+    assert.ok(flagSrc.includes('canonical-body.glb'));
+    assert.ok(frameSrc.includes('root.visible = false'));
+    assert.ok(frameSrc.includes('this.bodyUrl'));
+  });
+
+  test('canonical: projection helper returns raw + optional nearest fields', () => {
+    // Pure math path via conformer transform (no WebGL).
+    const fakeTHREE = {
+      Matrix4: class {
+        compose(pos, _q, scale) {
+          this.elements = [
+            scale.x, 0, 0, 0,
+            0, scale.y, 0, 0,
+            0, 0, scale.z, 0,
+            pos.x, pos.y, pos.z, 1
+          ];
+          return this;
+        }
+      },
+      Vector3: class {
+        constructor(x = 0, y = 0, z = 0) {
+          this.x = x;
+          this.y = y;
+          this.z = z;
+        }
+        clone() {
+          return new fakeTHREE.Vector3(this.x, this.y, this.z);
+        }
+        applyMatrix4(m) {
+          const e = m.elements;
+          const x = this.x;
+          const y = this.y;
+          const z = this.z;
+          const w = e[3] * x + e[7] * y + e[11] * z + e[15] || 1;
+          this.x = (e[0] * x + e[4] * y + e[8] * z + e[12]) / w;
+          this.y = (e[1] * x + e[5] * y + e[9] * z + e[13]) / w;
+          this.z = (e[2] * x + e[6] * y + e[10] * z + e[14]) / w;
+          return this;
+        }
+      },
+      Quaternion: class {
+        setFromEuler() {
+          return this;
+        }
+      },
+      Euler: class {
+        constructor() {}
+      }
+    };
+    const cfg = {
+      transform: { scale: 2, translation: [1, 2, 3], rotationEuler: [0, 0, 0], rotationOrder: 'XYZ' }
+    };
+    const out = Conf.transformPointByConformer(fakeTHREE, cfg, { x: 0.5, y: 0.25, z: 0.1 });
+    assert.ok(Math.abs(out.x - 2) < 1e-9);
+    assert.ok(Math.abs(out.y - 2.5) < 1e-9);
+    assert.ok(Math.abs(out.z - 3.2) < 1e-9);
+  });
+
+  test('canonical: index wires Slice 5 modules before Spatial renderer', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const flagIdx = html.indexOf('canonical-body-flag.js');
+    const confIdx = html.indexOf('exterior-canonical-conformer.js');
+    const frameIdx = html.indexOf('canonical-body-frame.js');
+    const rendIdx = html.indexOf('spatial-anatomy-renderer.js');
+    assert.ok(flagIdx > 0 && confIdx > flagIdx && frameIdx > confIdx && rendIdx > frameIdx);
+  });
+}
+
 // --- BodyParts3D Phase 2 Slice 2 prototype integrity (offline pack) ---
 {
   const { spawnSync } = await import('node:child_process');

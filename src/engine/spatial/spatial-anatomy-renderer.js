@@ -28,6 +28,10 @@
       this.scene = null;
       this.annotations = null;
       this.layerController = null;
+      this.canonicalFrame = null;
+      this.canonicalBodyMode = false;
+      this.canonicalAlignmentValidation = false;
+      this._canonicalPerf = null;
       this.THREE = null;
       this.ready = false;
       this.disposed = false;
@@ -36,6 +40,9 @@
       /** @type {Map<string, object>} regionId → runtime surface attachment (session) */
       if (!engine.spatialAttachments) engine.spatialAttachments = new Map();
       this._attachments = engine.spatialAttachments;
+      /** @type {Map<string, object>} regionId → runtime-only canonical projection (session) */
+      if (!engine.spatialCanonicalDebug) engine.spatialCanonicalDebug = new Map();
+      this._canonicalDebug = engine.spatialCanonicalDebug;
       this._drag = null;
       this._bound = false;
       this._onStoreChange = null;
@@ -74,6 +81,12 @@
 
         this.scene = new SpatialSceneController(this.mountEl, this.THREE);
         await this.scene.loadExteriorBody();
+        if (this.disposed || generation !== this._mountGeneration) {
+          this._teardownMount({ keepAttachments: true });
+          return false;
+        }
+
+        await this._initCanonicalFrameIfEnabled();
         if (this.disposed || generation !== this._mountGeneration) {
           this._teardownMount({ keepAttachments: true });
           return false;
@@ -142,6 +155,19 @@
       return this._attachments.get(regionId) || null;
     }
 
+    /** Runtime-only canonical projection debug (never persisted). */
+    getCanonicalDebug(regionId) {
+      return this._canonicalDebug.get(regionId) || null;
+    }
+
+    isCanonicalBodyMode() {
+      return !!this.canonicalBodyMode && !!this.canonicalFrame?.ready;
+    }
+
+    getCanonicalAlignmentReport() {
+      return this.canonicalFrame?.getAlignmentReport?.() || null;
+    }
+
     _teardownMount({ keepAttachments = false } = {}) {
       this._unbindPointer();
       if (this._onStoreChange && this.store?.offChange) {
@@ -150,6 +176,11 @@
       this._onStoreChange = null;
       this.layerController?.dispose?.();
       this.layerController = null;
+      this.canonicalFrame?.dispose?.();
+      this.canonicalFrame = null;
+      this.canonicalBodyMode = false;
+      this._canonicalPerf = null;
+      this._disposeCanonicalValidationHelpers();
       const accordion = document.getElementById("accAnatomyDepth");
       if (accordion) accordion.hidden = true;
       const controls = document.getElementById("clinicianLayerControls");
@@ -171,7 +202,152 @@
       this.container?.querySelectorAll?.(".cae-spatial-viewport, .cae-spatial-canvas")?.forEach((el) => {
         el.remove();
       });
-      if (!keepAttachments) this._attachments.clear();
+      if (!keepAttachments) {
+        this._attachments.clear();
+        this._canonicalDebug.clear();
+      }
+    }
+
+    /**
+     * Feature-flagged canonical frame: hidden BP3D body + global exterior conformer.
+     * Failures fall back to normal Spatial (flag effectively off for this mount).
+     */
+    async _initCanonicalFrameIfEnabled() {
+      this.canonicalBodyMode = false;
+      this.canonicalAlignmentValidation = false;
+      this.canonicalFrame = null;
+      this._canonicalPerf = null;
+
+      if (typeof CanonicalBodyFlag === "undefined") return;
+      const enabled = CanonicalBodyFlag.resolveCanonicalBodyMode();
+      if (!enabled) return;
+
+      this.canonicalAlignmentValidation =
+        CanonicalBodyFlag.resolveCanonicalAlignmentValidation() &&
+        this._presentationMode() !== "patient";
+
+      if (typeof CanonicalBodyFrame !== "function" || typeof ExteriorCanonicalConformer === "undefined") {
+        console.warn("[CAE Spatial] canonical mode requested but modules missing — continuing without it");
+        return;
+      }
+
+      const t0 =
+        typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+      let frame = null;
+      try {
+        frame = new CanonicalBodyFrame(this.THREE, this.scene);
+        await frame.load();
+        if (this.disposed) {
+          frame.dispose();
+          return;
+        }
+        const exteriorRoot = this.scene._exterior?.root;
+        if (!exteriorRoot) throw new Error("Exterior root missing for conformer");
+        const bak = {
+          position: exteriorRoot.position.clone(),
+          quaternion: exteriorRoot.quaternion.clone(),
+          scale: exteriorRoot.scale.clone()
+        };
+        try {
+          frame.applyExteriorConformer(exteriorRoot);
+        } catch (applyErr) {
+          exteriorRoot.position.copy(bak.position);
+          exteriorRoot.quaternion.copy(bak.quaternion);
+          exteriorRoot.scale.copy(bak.scale);
+          exteriorRoot.updateMatrixWorld(true);
+          throw applyErr;
+        }
+        this.scene.requestFrame?.();
+
+        this.canonicalFrame = frame;
+        this.canonicalBodyMode = true;
+        this._canonicalPerf = {
+          loadMs: frame.getMeta().loadMs,
+          byteLength: frame.getMeta().byteLength,
+          totalMs:
+            (typeof performance !== "undefined" && performance.now ? performance.now() : Date.now()) -
+            t0
+        };
+
+        if (this.canonicalAlignmentValidation) {
+          this._enableCanonicalAlignmentValidation();
+        } else {
+          // Ensure patient / normal clinician never see the registration body.
+          frame.setReferenceVisible(false);
+        }
+
+        if (typeof console !== "undefined" && console.info) {
+          console.info("[CAE Spatial] canonicalBodyMode ON", {
+            ...frame.getMeta(),
+            perf: this._canonicalPerf,
+            alignment: frame.getAlignmentReport()?.status || null
+          });
+        }
+      } catch (err) {
+        console.warn(
+          "[CAE Spatial] canonical frame failed — continuing in normal Spatial mode",
+          err
+        );
+        const exteriorRoot = this.scene?._exterior?.root;
+        if (exteriorRoot && (this.canonicalBodyMode || frame?.conformer)) {
+          exteriorRoot.position.set(0, 0, 0);
+          exteriorRoot.rotation.set(0, 0, 0);
+          exteriorRoot.scale.set(1, 1, 1);
+          exteriorRoot.updateMatrixWorld(true);
+        }
+        try {
+          frame?.dispose?.();
+        } catch (_) {
+          /* ignore */
+        }
+        this.canonicalFrame = null;
+        this.canonicalBodyMode = false;
+      }
+    }
+
+    _enableCanonicalAlignmentValidation() {
+      if (!this.canonicalFrame?.ready) return;
+      this.canonicalFrame.setReferenceVisible(true, { wireframe: true, opacity: 0.2 });
+      this._disposeCanonicalValidationHelpers();
+      const THREE = this.THREE;
+      const helpers = new THREE.Group();
+      helpers.name = "canonicalAlignmentHelpers";
+      const axes = new THREE.AxesHelper(0.35);
+      axes.position.set(0, 0.9, 0);
+      helpers.add(axes);
+
+      const report = this.canonicalFrame.getAlignmentReport();
+      const landmarks = report?.landmarkDistances || [];
+      for (const lm of landmarks) {
+        const g = new THREE.SphereGeometry(0.012, 10, 8);
+        const m = new THREE.MeshBasicMaterial({ color: 0xc45c48 });
+        const mesh = new THREE.Mesh(g, m);
+        const p = lm.targetMeters || lm.mappedMeters;
+        if (!p) continue;
+        mesh.position.set(p[0], p[1], p[2]);
+        mesh.name = `canonical-landmark-${lm.id}`;
+        mesh.raycast = () => {};
+        helpers.add(mesh);
+      }
+      this.scene.bodyRoot.add(helpers);
+      this._canonicalValidationHelpers = helpers;
+      this.scene.requestFrame?.();
+      if (typeof console !== "undefined" && console.info) {
+        console.info("[CAE Spatial] canonical-frame alignment report", report);
+      }
+    }
+
+    _disposeCanonicalValidationHelpers() {
+      if (!this._canonicalValidationHelpers) return;
+      this._canonicalValidationHelpers.parent?.remove(this._canonicalValidationHelpers);
+      this._canonicalValidationHelpers.traverse?.((obj) => {
+        if (obj.geometry) obj.geometry.dispose?.();
+        if (obj.material) {
+          if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+          else obj.material.dispose?.();
+        }
+      });
+      this._canonicalValidationHelpers = null;
     }
 
     _bindPointer() {
@@ -354,6 +530,23 @@
       if (!region) return;
 
       this._attachments.set(region.id, attachment);
+
+      // Runtime-only canonical projection — never written to PainRegion / storage.
+      if (this.canonicalBodyMode && this.canonicalFrame?.ready) {
+        const projection = this.canonicalFrame.projectHitToCanonical(hit);
+        if (projection) {
+          const debug = {
+            ...projection,
+            regionId: region.id,
+            persisted: false,
+            note: "runtime-only; PainEntry schema unchanged"
+          };
+          this._canonicalDebug.set(region.id, debug);
+          // Attach parallel debug field on the session attachment map value (not schema).
+          attachment.canonicalDebug = debug;
+        }
+      }
+
       this.annotations.upsertSpatial(region.id, attachment, { selected: true });
       this.engine.trigger?.("regionplaced", { entry: this.store.getActiveEntry?.() });
       this._syncFromStore();
@@ -466,10 +659,16 @@
 
       const params = new URLSearchParams(location.search || "");
       const validationMode = params.get("spatialLayerValidation") === "1";
+      const registrationUrl =
+        typeof CanonicalBodyFlag !== "undefined"
+          ? CanonicalBodyFlag.shoulderRegistrationUrlForMode(this.canonicalBodyMode)
+          : undefined;
 
       this.layerController = new SpatialLayerController(this.scene, this.THREE, {
         presentationMode: this._presentationMode(),
         validationMode,
+        canonicalBodyMode: this.canonicalBodyMode,
+        registrationUrl,
         onChange: (evt) => this._onLayerChange(evt),
         onError: (err) => this._onLayerError(err)
       });
