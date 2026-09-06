@@ -11,17 +11,24 @@ import vm from 'node:vm';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 let passed = 0;
 let failed = 0;
+/** @type {Promise<void>} */
+let testQueue = Promise.resolve();
 
 function test(name, fn) {
-  try {
-    fn();
-    passed += 1;
-    console.log(`  ✓ ${name}`);
-  } catch (err) {
-    failed += 1;
-    console.error(`  ✗ ${name}`);
-    console.error(`    ${err.message}`);
-  }
+  testQueue = testQueue.then(async () => {
+    try {
+      const result = fn();
+      if (result && typeof result.then === 'function') {
+        await result;
+      }
+      passed += 1;
+      console.log(`  ✓ ${name}`);
+    } catch (err) {
+      failed += 1;
+      console.error(`  ✗ ${name}`);
+      console.error(`    ${err && err.message ? err.message : err}`);
+    }
+  });
 }
 
 function loadScript(rel, sandbox) {
@@ -1107,7 +1114,295 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('spatial-layer-loader.js'));
     assert.ok(html.includes('spatial-layer-controller.js'));
   });
+
+  function makeColor(hex = 0xffffff) {
+    return {
+      _hex: hex,
+      setHex(h) {
+        this._hex = h;
+      },
+      clone() {
+        return makeColor(this._hex);
+      },
+      copy(other) {
+        this._hex = other._hex;
+        return this;
+      }
+    };
+  }
+
+  function makeFakeTHREE() {
+    return {
+      Group: class {
+        constructor() {
+          this.children = [];
+          this.name = '';
+          this.visible = true;
+          this.userData = {};
+          this.parent = null;
+        }
+        add(child) {
+          if (child.parent?.remove) child.parent.remove(child);
+          child.parent = this;
+          if (!this.children.includes(child)) this.children.push(child);
+        }
+        remove(child) {
+          const i = this.children.indexOf(child);
+          if (i >= 0) this.children.splice(i, 1);
+          if (child.parent === this) child.parent = null;
+        }
+      },
+      MeshStandardMaterial: class {
+        constructor(opts = {}) {
+          this.opacity = opts.opacity ?? 1;
+          this.transparent = !!opts.transparent;
+          this.depthWrite = opts.depthWrite !== false;
+          this.roughness = opts.roughness ?? 0.5;
+          this.metalness = opts.metalness ?? 0;
+          this.emissiveIntensity = opts.emissiveIntensity ?? 0;
+          this.color = makeColor(opts.color ?? 0xffffff);
+          this.emissive = makeColor(opts.emissive ?? 0x000000);
+          this.needsUpdate = false;
+          this._disposed = false;
+        }
+        dispose() {
+          this._disposed = true;
+        }
+      },
+      MeshBasicMaterial: class {
+        constructor(opts) {
+          Object.assign(this, opts);
+        }
+      },
+      BufferGeometry: class {
+        setFromPoints() {
+          return this;
+        }
+        dispose() {
+          this._disposed = true;
+        }
+      },
+      LineBasicMaterial: class {},
+      Line: class {},
+      Vector2: class {
+        constructor(x = 0, y = 0) {
+          this.x = x;
+          this.y = y;
+        }
+      },
+      Vector3: class {
+        constructor(x = 0, y = 0, z = 0) {
+          this.x = x;
+          this.y = y;
+          this.z = z;
+        }
+        clone() {
+          return new this.constructor(this.x, this.y, this.z);
+        }
+      }
+    };
+  }
+
+  function makeFakeScene(THREE) {
+    const bodyRoot = new THREE.Group();
+    return {
+      bodyRoot,
+      markerRoot: new THREE.Group(),
+      canvas: { getBoundingClientRect: () => ({ left: 0, top: 0, width: 100, height: 100 }) },
+      camera: {},
+      raycaster: { setFromCamera() {}, intersectObjects: () => [] },
+      _pointer: { x: 0, y: 0 },
+      requestFrame() {},
+      _exterior: null
+    };
+  }
+
+  function makePack(THREE, layerId, meshIds) {
+    const root = new THREE.Group();
+    root.name = `spatial-layer-${layerId}`;
+    const meshById = new Map();
+    const metaById = new Map();
+    for (const meshId of meshIds) {
+      const mesh = {
+        isMesh: true,
+        name: meshId,
+        material: new THREE.MeshStandardMaterial({ color: 0x111111, opacity: 1 }),
+        visible: true,
+        userData: { meshId, spatialLayer: layerId },
+        geometry: {
+          _disposed: false,
+          dispose() {
+            this._disposed = true;
+          }
+        }
+      };
+      meshById.set(meshId, mesh);
+      metaById.set(meshId, {
+        meshId,
+        structureId: `FMA:${meshId}`,
+        structureName: meshId,
+        clinicalName: meshId,
+        layer: layerId,
+        laterality: 'left'
+      });
+      root.add(mesh);
+    }
+    return { layerId, root, meshById, metaById, byteLength: 1000 };
+  }
+
+  test('spatial layers: exterior materials fully restore across depth cycles', async () => {
+    loadScript('src/engine/spatial/spatial-layer-controller.js', sandbox);
+    const C = sandbox.SpatialLayerController;
+    const L = sandbox.SpatialLayerLoader;
+    const THREE = makeFakeTHREE();
+    const scene = makeFakeScene(THREE);
+
+    const exteriorMat = new THREE.MeshStandardMaterial({
+      color: 0x8899aa,
+      opacity: 1,
+      transparent: false,
+      depthWrite: true,
+      roughness: 0.42,
+      metalness: 0.11,
+      emissive: 0x010203,
+      emissiveIntensity: 0.07
+    });
+    const exteriorMesh = { isMesh: true, material: exteriorMat, userData: {}, visible: true };
+    const exteriorRoot = new THREE.Group();
+    exteriorRoot.traverse = (fn) => fn(exteriorMesh);
+    scene._exterior = { root: exteriorRoot };
+
+    const orig = {
+      opacity: exteriorMat.opacity,
+      transparent: exteriorMat.transparent,
+      depthWrite: exteriorMat.depthWrite,
+      color: exteriorMat.color._hex,
+      roughness: exteriorMat.roughness,
+      metalness: exteriorMat.metalness,
+      emissive: exteriorMat.emissive._hex,
+      emissiveIntensity: exteriorMat.emissiveIntensity
+    };
+
+    const muscle = makePack(THREE, 'muscle', ['deltoid', 'supraspinatus']);
+    const skeletal = makePack(THREE, 'skeletal', ['humerus']);
+    const fetches = { muscle: 0, skeletal: 0 };
+    const cache = new Map();
+    const origLoad = L.loadLayerPack;
+    const origHas = L.hasCachedPack;
+    const origDetach = L.detachPack;
+
+    try {
+      L.hasCachedPack = (id) => cache.has(id);
+      L.loadLayerPack = async (_T, layerId) => {
+        fetches[layerId] += 1;
+        const pack = layerId === 'muscle' ? muscle : skeletal;
+        cache.set(layerId, pack);
+        return pack;
+      };
+      L.detachPack = (pack) => {
+        pack.root.visible = false;
+        pack.root.parent?.remove(pack.root);
+      };
+
+      const ctrl = new C(scene, THREE, { presentationMode: 'clinician' });
+      for (const d of ['muscle', 'skeletal', 'muscle', 'surface', 'muscle', 'surface']) {
+        const r = await ctrl.setDepth(d);
+        assert.equal(r.ok, true, `setDepth(${d}) failed`);
+        assert.equal(ctrl.getDepth(), d);
+      }
+      assert.equal(fetches.muscle, 1);
+      assert.equal(fetches.skeletal, 1);
+      assert.equal(exteriorMat.opacity, orig.opacity);
+      assert.equal(exteriorMat.transparent, orig.transparent);
+      assert.equal(exteriorMat.depthWrite, orig.depthWrite);
+      assert.equal(exteriorMat.color._hex, orig.color);
+      assert.equal(exteriorMat.roughness, orig.roughness);
+      assert.equal(exteriorMat.metalness, orig.metalness);
+      assert.equal(exteriorMat.emissive._hex, orig.emissive);
+      assert.equal(exteriorMat.emissiveIntensity, orig.emissiveIntensity);
+
+      await ctrl.setDepth('muscle');
+      ctrl.selectMeshId('deltoid');
+      assert.equal(ctrl.selectedMeshId, 'deltoid');
+      assert.equal(
+        muscle.meshById.get('deltoid').material.emissiveIntensity,
+        C.MATERIALS.selected.emissiveIntensity
+      );
+      ctrl.selectMeshId('supraspinatus');
+      assert.equal(muscle.meshById.get('deltoid').material.emissiveIntensity, 0);
+      ctrl.clearSelection();
+      assert.equal(ctrl.selectedMeshId, null);
+      assert.equal(muscle.meshById.get('supraspinatus').material.emissiveIntensity, 0);
+
+      await ctrl.setDepth('skeletal');
+      assert.equal(ctrl.selectedMeshId, null);
+      const rayNames = ctrl.layerRaycastMeshes().map((m) => m.userData.meshId || m.name);
+      assert.equal(rayNames.join(','), 'humerus');
+
+      ctrl.dispose();
+      assert.equal(muscle.root.parent, null);
+      assert.equal(muscle.meshById.get('deltoid').geometry._disposed, false);
+      assert.equal(cache.has('muscle'), true);
+
+      let failOnce = true;
+      let errors = 0;
+      L.loadLayerPack = async (_T, layerId) => {
+        if (layerId === 'skeletal' && failOnce) {
+          failOnce = false;
+          throw Object.assign(new Error('network'), { code: 'LOAD_FAILED' });
+        }
+        fetches[layerId] += 1;
+        const pack = layerId === 'muscle' ? muscle : skeletal;
+        cache.set(layerId, pack);
+        return pack;
+      };
+      const scene2 = makeFakeScene(THREE);
+      scene2._exterior = { root: exteriorRoot };
+      const ctrl2 = new C(scene2, THREE, {
+        presentationMode: 'clinician',
+        onError: () => {
+          errors += 1;
+        }
+      });
+      const bad = await ctrl2.setDepth('skeletal');
+      assert.equal(bad.ok, false);
+      assert.equal(ctrl2.getDepth(), 'surface');
+      assert.equal(ctrl2.loading, false);
+      assert.equal(errors, 1);
+      assert.equal(exteriorMat.opacity, orig.opacity);
+      const ok = await ctrl2.setDepth('skeletal');
+      assert.equal(ok.ok, true);
+      assert.equal(ctrl2.getDepth(), 'skeletal');
+      ctrl2.dispose();
+    } finally {
+      L.loadLayerPack = origLoad;
+      L.hasCachedPack = origHas;
+      L.detachPack = origDetach;
+    }
+  });
+
+  test('spatial layers: loader ownership exports and pass-preview label', () => {
+    assert.equal(L.SINGLE_ACTIVE_SPATIAL_RENDERER === true, true);
+    assert.equal(typeof L.detachPack, 'function');
+    assert.equal(typeof L.disposePackResources, 'function');
+    // Ensure prior test stubs were restored before checking real cache helpers.
+    assert.equal(typeof L.hasCachedPack, 'function');
+    L.clearPackCache();
+    assert.equal(L.hasCachedPack('muscle'), false);
+    const reg = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/registration/bp3d-shoulder-adult-male.json'), 'utf8')
+    );
+    assert.equal(reg.validation.status, 'pass-preview');
+    const blob = JSON.stringify(reg).toLowerCase();
+    assert.ok(!blob.includes('clinical-grade'));
+    assert.ok(!blob.includes('clinically registered'));
+    assert.ok(!blob.includes('precision aligned'));
+  });
+
+  
+
 }
+
 
 // --- BodyParts3D Phase 2 Slice 2 prototype integrity (offline pack) ---
 {
@@ -1127,5 +1422,6 @@ console.log('PainLocator tests\n');
   }
 }
 
+await testQueue;
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

@@ -17,6 +17,16 @@ Patient-reported pain → exterior body → clinician selects Muscle/Skeletal �
 
 Patient (`presentationMode === "patient"`) never constructs the controller and cannot fetch packs.
 
+### Cache / ownership (runtime invariant)
+
+PainLocator mounts **at most one** active `SpatialAnatomyRenderer` at a time (plate ↔ spatial remount tears down the prior spatial mount first).
+
+- **Loader cache** owns pack templates: GLTF scene graphs, geometries, registration + manifest metadata, and in-flight pack promises.
+- **Controller** borrows packs: parents `root` into its layer group, may replace mesh **materials** for preview styling, and on dispose **detaches** only (`SpatialLayerLoader.detachPack`) — it must not free shared geometries.
+- Failed loads delete their promise entry so a later retry can fetch again.
+- `clearPackCache()` is for intentional session wipe / tests only.
+
+
 ## Registration
 
 See [`SPATIAL_PHASE2_SLICE3_REGISTRATION.md`](./SPATIAL_PHASE2_SLICE3_REGISTRATION.md).  

@@ -2,6 +2,19 @@
  * SpatialLayerLoader — lazy optional anatomy pack loader (CAE Spatial).
  * Clinician-only. Caches packs in-session. Never invoked for Patient shell.
  * Registration lives in JSON; this module applies it — UI must not hardcode transforms.
+ *
+ * Ownership / cache invariant
+ * ---------------------------
+ * PainLocator mounts at most one active SpatialAnatomyRenderer at a time
+ * (plate ↔ spatial remounts tear down the prior spatial mount first).
+ *
+ * The loader cache owns pack *templates*: GLTF scene graphs, geometries, and
+ * registration/manifest metadata. Controllers borrow packs by parenting `root`
+ * into their layer group and may replace mesh materials for preview styling.
+ *
+ * Controllers MUST call `detachPack(pack)` on teardown — never free geometries
+ * while the pack remains cached. Failed loads clear their promise so retry is
+ * allowed. Call `clearPackCache()` only for intentional session wipe / tests.
  */
 (function (global) {
   const DEFAULT_PACK_BASE = "/anatomy/spatial/prototype-bp3d";
@@ -170,6 +183,24 @@
     return { meshById, metaById };
   }
 
+  function detachPack(pack) {
+    if (!pack?.root) return;
+    pack.root.visible = false;
+    pack.root.parent?.remove(pack.root);
+  }
+
+  function disposePackResources(pack) {
+    if (!pack?.root) return;
+    detachPack(pack);
+    pack.root.traverse((obj) => {
+      if (obj.geometry) obj.geometry.dispose?.();
+      if (obj.material) {
+        if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+        else obj.material.dispose?.();
+      }
+    });
+  }
+
   /**
    * @param {typeof import('three')} THREE
    * @param {'muscle'|'skeletal'} layerId
@@ -234,17 +265,9 @@
         metaById: bound.metaById,
         manifest,
         registration,
+        /** @deprecated Prefer SpatialLayerLoader.detachPack — do not free shared cache. */
         dispose() {
-          root.parent?.remove(root);
-          root.traverse((obj) => {
-            if (obj.geometry) obj.geometry.dispose?.();
-            if (obj.material) {
-              if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
-              else obj.material.dispose?.();
-            }
-          });
-          packCache.delete(layerId);
-          packPromises.delete(layerId);
+          detachPack(packed);
         }
       };
       packCache.set(layerId, packed);
@@ -269,7 +292,7 @@
   function clearPackCache() {
     for (const pack of [...packCache.values()]) {
       try {
-        pack.dispose?.();
+        disposePackResources(pack);
       } catch (_) { /* ignore */ }
     }
     packCache.clear();
@@ -282,12 +305,16 @@
     getCachedPack,
     hasCachedPack,
     clearPackCache,
+    detachPack,
+    disposePackResources,
     applyRegistrationTransform,
     validateRegistrationConfig,
     isPatientBlocked,
     joinUrl,
     DEFAULT_PACK_BASE,
     DEFAULT_REGISTRATION_URL,
-    LAYER_FILES
+    LAYER_FILES,
+    /** App invariant: at most one active SpatialAnatomyRenderer. */
+    SINGLE_ACTIVE_SPATIAL_RENDERER: true
   };
 })(typeof window !== "undefined" ? window : globalThis);

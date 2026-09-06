@@ -268,41 +268,49 @@
     }
 
     _tap(clientX, clientY) {
-      // Clinician layer structure pick takes priority when Muscle/Skeletal is active.
+      const tool = this.store?.activeTool || "point";
+
+      // Pain markers retain priority over anatomy-structure picking for select/eraser.
+      if (tool === "eraser" || tool === "select") {
+        const markerId = this._pickMarker(clientX, clientY);
+        if (markerId) {
+          this.layerController?.clearSelection?.();
+          this._updateAnatomyContextPanel(null);
+          if (tool === "eraser") {
+            this.store.selectRegion?.(markerId);
+            this.store.deleteSelectedRegions?.();
+            this._attachments.delete(markerId);
+            this.annotations.remove(markerId);
+            this.engine.trigger?.("regionchanged", {});
+            this._syncFromStore();
+            return;
+          }
+          this.store.selectRegion?.(markerId);
+          this.engine.trigger?.("regionselected", {
+            region: this.store.findRegion?.(markerId)?.region
+          });
+          this._syncFromStore();
+          return;
+        }
+        if (tool === "select") return;
+        return;
+      }
+
+      // Clinician layer structure pick (active depth meshes only).
       if (this.layerController && this.layerController.getDepth() !== "surface") {
-        const picked = this.layerController.pickStructure(clientX, clientY);
-        if (picked) return;
-        // Empty layer click clears selection; still allow exterior pain placement below.
+        // If a pain marker sits under the cursor, do not resolve it as anatomy.
+        if (this._pickMarker(clientX, clientY)) {
+          this.layerController.clearSelection?.();
+          this._updateAnatomyContextPanel(null);
+        } else {
+          const picked = this.layerController.pickStructure(clientX, clientY);
+          if (picked) return;
+          // Empty layer click clears selection; still allow exterior pain placement below.
+        }
       }
 
       const hit = this.scene.raycastClient(clientX, clientY);
       if (!hit) return;
-
-      const tool = this.store?.activeTool || "point";
-      if (tool === "eraser") {
-        const id = this._pickMarker(clientX, clientY);
-        if (id) {
-          this.store.selectRegion?.(id);
-          this.store.deleteSelectedRegions?.();
-          this._attachments.delete(id);
-          this.annotations.remove(id);
-          this.engine.trigger?.("regionchanged", {});
-          this._syncFromStore();
-        }
-        return;
-      }
-
-      if (tool === "select") {
-        const id = this._pickMarker(clientX, clientY);
-        if (id) {
-          this.store.selectRegion?.(id);
-          this.engine.trigger?.("regionselected", {
-            region: this.store.findRegion?.(id)?.region
-          });
-          this._syncFromStore();
-        }
-        return;
-      }
 
       this._place(hit);
     }

@@ -2,6 +2,18 @@
  * SpatialLayerController — clinician anatomy depth (surface / muscle / skeletal).
  * Lazy-loads BP3D packs, ghosts the exterior, supports structure picking + dispose.
  * Patient presentation must never construct or call this controller.
+ *
+ * Material ownership
+ * ------------------
+ * Exterior meshes: per-material snapshots (opacity, transparent, depthWrite, color,
+ * roughness, metalness, emissive, emissiveIntensity) taken once before first ghost;
+ * fully restored on Surface / dispose.
+ * Layer pack meshes: controller replaces materials for preview styling; selection
+ * highlight mutates in place then is reset via focus/subdued re-apply — never left
+ * sticky after clear / depth change / Surface.
+ *
+ * Pack ownership: see SpatialLayerLoader — this controller borrows cached packs and
+ * detaches on dispose without freeing shared geometries.
  */
 (function (global) {
   const DEPTHS = Object.freeze(["surface", "muscle", "skeletal"]);
@@ -21,6 +33,34 @@
       metalness: 0.05
     }
   });
+
+  function snapshotMaterial(mat) {
+    return {
+      opacity: mat.opacity,
+      transparent: !!mat.transparent,
+      depthWrite: mat.depthWrite !== false,
+      color: mat.color?.clone?.() || null,
+      roughness: mat.roughness,
+      metalness: mat.metalness,
+      emissive: mat.emissive?.clone?.() || null,
+      emissiveIntensity: mat.emissiveIntensity
+    };
+  }
+
+  function restoreMaterial(mat, bak) {
+    if (!mat || !bak) return;
+    mat.opacity = bak.opacity;
+    mat.transparent = bak.transparent;
+    mat.depthWrite = bak.depthWrite;
+    if (bak.color && mat.color?.copy) mat.color.copy(bak.color);
+    if (bak.roughness != null && "roughness" in mat) mat.roughness = bak.roughness;
+    if (bak.metalness != null && "metalness" in mat) mat.metalness = bak.metalness;
+    if (bak.emissive && mat.emissive?.copy) mat.emissive.copy(bak.emissive);
+    if (bak.emissiveIntensity != null && "emissiveIntensity" in mat) {
+      mat.emissiveIntensity = bak.emissiveIntensity;
+    }
+    mat.needsUpdate = true;
+  }
 
   class SpatialLayerController {
     /**
@@ -122,7 +162,7 @@
         presentationMode: this.presentationMode
       });
       if (this._disposed) {
-        pack.dispose?.();
+        SpatialLayerLoader.detachPack(pack);
         throw new Error("Layer controller disposed during load");
       }
       this._stylePack(pack, layerId);
@@ -176,7 +216,6 @@
       const active = focus ? focusMat : subMat;
       for (const [meshId, mesh] of pack.meshById) {
         if (!mesh.material) continue;
-        if (focus && this.selectedMeshId === meshId) continue;
         mesh.material.color.setHex(active.color);
         mesh.material.opacity = active.opacity;
         mesh.material.transparent = active.opacity < 0.99;
@@ -207,26 +246,18 @@
         const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
         for (const mat of mats) {
           if (!this._exteriorMaterialBackup.has(mat)) {
-            this._exteriorMaterialBackup.set(mat, {
-              opacity: mat.opacity,
-              transparent: !!mat.transparent,
-              depthWrite: mat.depthWrite !== false,
-              color: mat.color?.clone?.() || null
-            });
+            this._exteriorMaterialBackup.set(mat, snapshotMaterial(mat));
           }
           const bak = this._exteriorMaterialBackup.get(mat);
           if (!ghost) {
-            mat.opacity = bak.opacity;
-            mat.transparent = bak.transparent;
-            mat.depthWrite = bak.depthWrite;
-            if (bak.color && mat.color) mat.color.copy(bak.color);
+            restoreMaterial(mat, bak);
           } else {
             mat.transparent = true;
             mat.opacity = ghost.opacity;
             mat.depthWrite = false;
             if (mat.color) mat.color.setHex(ghost.color);
+            mat.needsUpdate = true;
           }
-          mat.needsUpdate = true;
         }
       });
     }
@@ -242,11 +273,13 @@
       return null;
     }
 
-    clearSelection() {
+    clearSelection(opts = {}) {
+      const emit = opts.emit !== false;
       this.selectedMeshId = null;
       this.selectedMeta = null;
-      this._applySelectionHighlight();
-      this._emit();
+      // Re-apply focus/subdued so prior highlight does not stick.
+      this._refreshMaterialsForSelection();
+      if (emit) this._emit();
     }
 
     selectMeshId(meshId) {
@@ -261,9 +294,26 @@
       }
       this.selectedMeshId = meshId;
       this.selectedMeta = meta;
-      this._applySelectionHighlight();
+      this._refreshMaterialsForSelection();
       this._emit();
       return this.getSelectedStructure();
+    }
+
+    _refreshMaterialsForSelection() {
+      if (this._disposed) return;
+      const musclePack = this._packs.get("muscle");
+      const skeletalPack = this._packs.get("skeletal");
+      if (musclePack) {
+        const focus = this.depth === "muscle";
+        const subdued = this.depth === "skeletal";
+        if (focus || subdued) this._setPackMaterialState(musclePack, "muscle", focus, subdued);
+      }
+      if (skeletalPack) {
+        const focus = this.depth === "skeletal";
+        const subdued = this.depth === "muscle";
+        if (focus || subdued) this._setPackMaterialState(skeletalPack, "skeletal", focus, subdued);
+      }
+      this._applySelectionHighlight();
     }
 
     _lookupMeta(meshId) {
@@ -382,22 +432,27 @@
       this.selectedMeshId = null;
       this.selectedMeta = null;
       this.depth = "surface";
+      this.loading = false;
       try {
         this._applyExteriorGhost();
       } catch (_) { /* ignore */ }
       for (const pack of this._packs.values()) {
         try {
-          pack.dispose?.();
+          // Detach only — leave cached geometries/materials intact for remount.
+          SpatialLayerLoader.detachPack(pack);
         } catch (_) { /* ignore */ }
       }
       this._packs.clear();
       this._layerRoot?.parent?.remove(this._layerRoot);
       this._layerRoot = null;
+      this._orientationMarkers = null;
       this._exteriorMaterialBackup.clear();
     }
   }
 
   SpatialLayerController.DEPTHS = DEPTHS;
   SpatialLayerController.MATERIALS = MATERIALS;
+  SpatialLayerController.snapshotMaterial = snapshotMaterial;
+  SpatialLayerController.restoreMaterial = restoreMaterial;
   global.SpatialLayerController = SpatialLayerController;
 })(typeof window !== "undefined" ? window : globalThis);
