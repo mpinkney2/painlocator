@@ -40,6 +40,19 @@
         roughness: 0.35,
         metalness: 0.15
       });
+      // Clinical pain chroma — always dominant over ghosted anatomy.
+      this._matSpatial.depthTest = true;
+      this._matSpatial.depthWrite = true;
+      this._matSelected.depthTest = true;
+      this._haloGeo = new THREE.SphereGeometry(0.055, 12, 10);
+      this._matHalo = new THREE.MeshBasicMaterial({
+        color: 0xef4444,
+        transparent: true,
+        opacity: 0.28,
+        depthTest: false,
+        depthWrite: false
+      });
+      this._depthBoost = false;
     }
 
     clear() {
@@ -96,6 +109,14 @@
         marker.name = `spatial-marker-${regionId}`;
         marker.userData.regionId = regionId;
         marker.userData.markerKind = "spatial";
+        marker.renderOrder = 10;
+        const halo = new THREE.Mesh(this._haloGeo, this._matHalo);
+        halo.name = `spatial-marker-halo-${regionId}`;
+        halo.userData.markerKind = "spatial-halo";
+        halo.renderOrder = 9;
+        halo.raycast = () => {};
+        marker.add(halo);
+        marker.userData.halo = halo;
         // Parent to the hit mesh so attachment survives bodyRoot yaw as true
         // surface binding (not merely shared rotation via markerRoot).
         mesh.add(marker);
@@ -178,13 +199,35 @@
       return this._entries.get(regionId) || null;
     }
 
+    setPainMarkerDepthBoost(enabled) {
+      this._depthBoost = !!enabled;
+      // When anatomy layers ghost the exterior, keep marks readable above depth complexity.
+      const depthTest = !this._depthBoost;
+      this._matSpatial.depthTest = depthTest;
+      this._matSelected.depthTest = depthTest;
+      this._matHalo.depthTest = false;
+      this._matSpatial.depthWrite = depthTest;
+      this._matSelected.depthWrite = depthTest;
+      for (const entry of this._entries.values()) {
+        if (entry.kind !== "spatial") continue;
+        entry.marker.renderOrder = this._depthBoost ? 12 : 10;
+        if (entry.marker.userData.halo) {
+          entry.marker.userData.halo.visible = true;
+          entry.marker.userData.halo.renderOrder = this._depthBoost ? 11 : 9;
+        }
+      }
+      this.scene.requestFrame?.();
+    }
+
     dispose() {
       this.clear();
       this._sphereGeo.dispose();
       this._legacyGeo.dispose();
+      this._haloGeo?.dispose?.();
       this._matSpatial.dispose();
       this._matLegacy.dispose();
       this._matSelected.dispose();
+      this._matHalo?.dispose?.();
     }
   }
 

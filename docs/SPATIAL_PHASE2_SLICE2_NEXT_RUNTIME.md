@@ -13,7 +13,11 @@ See also: [`BODYPARTS3D_SOURCE_PROVENANCE.md`](./BODYPARTS3D_SOURCE_PROVENANCE.m
 - FMA-mapped PainLocator manifest + Meshopt GLBs
 - Integrity tests (manifest↔GLB, checksums, production catalog untouched)
 
-## Recommended next slice — runtime layer integration
+## Slice 3 status
+
+**Shipped:** clinician Surface / Muscle / Skeletal preview — see [`SPATIAL_PHASE2_SLICE3_CLINICIAN_LAYERS.md`](./SPATIAL_PHASE2_SLICE3_CLINICIAN_LAYERS.md).
+
+## Original recommended next slice — runtime layer integration
 
 Do **not** replace the patient exterior path yet. Integrate as clinician opt-in layers on top of the existing adult-male exterior.
 
