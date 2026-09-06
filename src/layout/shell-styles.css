@@ -389,6 +389,11 @@ body.shell-patient #patientLocateCta[hidden] {
   overflow-wrap: break-word;
 }
 
+#patientLocateCta .patient-locate-hint[hidden],
+#patientLocateCta #patientLocateHint[hidden] {
+  display: none !important;
+}
+
 /* Hide validation hint once Continue is enabled */
 body.shell-patient #btnPatientNextDescribe:not(:disabled) ~ .patient-locate-hint,
 body.shell-patient #patientLocateCta.has-location .patient-locate-hint,
