@@ -1,8 +1,14 @@
 {
-  "generatedAt": "2026-09-06T20:07:24Z",
+  "generatedAt": "2026-09-06T20:38:50Z",
   "modelId": "bp3d-prototype-shoulder",
   "structureCount": 12,
   "sourceObjBytes": 3401212,
+  "tooling": {
+    "pythonVersion": "3.12.3",
+    "trimeshVersion": "5.1.0",
+    "numpyVersion": "2.4.4",
+    "gltfTransformVersion": "4.1.1"
+  },
   "layers": {
     "skeletal": {
       "file": "skeletal.glb",
@@ -53,6 +59,11 @@
           1336.52
         ]
       ],
+      "sourceCentroidMm": [
+        191.4142898669111,
+        -70.1781250681643,
+        1186.7534527554935
+      ],
       "boundsMeters": [
         [
           -0.24076,
@@ -65,9 +76,13 @@
           0.100229
         ]
       ],
+      "centroidMeters": [
+        -0.19141428986691117,
+        1.1867534527554888,
+        0.0701781250681643
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -91,6 +106,11 @@
           1349.86
         ]
       ],
+      "sourceCentroidMm": [
+        107.80369302380365,
+        -32.862954704123155,
+        1287.3985158152109
+      ],
       "boundsMeters": [
         [
           -0.166464,
@@ -103,9 +123,13 @@
           0.102845
         ]
       ],
+      "centroidMeters": [
+        -0.10780369302380388,
+        1.2873985158152095,
+        0.03286295470412322
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -129,6 +153,11 @@
           1355.18
         ]
       ],
+      "sourceCentroidMm": [
+        77.16438580158218,
+        -102.75090310527983,
+        1336.8698858816188
+      ],
       "boundsMeters": [
         [
           -0.14394200000000001,
@@ -141,9 +170,13 @@
           0.14707800000000001
         ]
       ],
+      "centroidMeters": [
+        -0.07716438580158223,
+        1.336869885881618,
+        0.10275090310527979
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -167,6 +200,11 @@
           1355.39
         ]
       ],
+      "sourceCentroidMm": [
+        159.53147996221668,
+        -100.33290697293239,
+        1306.1729255698647
+      ],
       "boundsMeters": [
         [
           -0.203619,
@@ -179,9 +217,13 @@
           0.12133100000000001
         ]
       ],
+      "centroidMeters": [
+        -0.15953147996221603,
+        1.3061729255698629,
+        0.1003329069729325
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -205,6 +247,11 @@
           1349.22
         ]
       ],
+      "sourceCentroidMm": [
+        198.61917250622304,
+        -74.78083109832848,
+        1296.492588271961
+      ],
       "boundsMeters": [
         [
           -0.227228,
@@ -217,9 +264,13 @@
           0.10333700000000001
         ]
       ],
+      "centroidMeters": [
+        -0.19861917250622294,
+        1.296492588271958,
+        0.07478083109832824
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -243,6 +294,11 @@
           1339.84
         ]
       ],
+      "sourceCentroidMm": [
+        176.3447323916303,
+        -34.34702951857844,
+        1279.1814286459166
+      ],
       "boundsMeters": [
         [
           -0.219171,
@@ -255,9 +311,13 @@
           0.079253
         ]
       ],
+      "centroidMeters": [
+        -0.17634473239163054,
+        1.2791814286459182,
+        0.03434702951857843
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -281,6 +341,11 @@
           1342.37
         ]
       ],
+      "sourceCentroidMm": [
+        125.7833453332305,
+        -49.83710505807086,
+        1327.9351263682263
+      ],
       "boundsMeters": [
         [
           -0.18844300000000003,
@@ -293,9 +358,13 @@
           0.0919013
         ]
       ],
+      "centroidMeters": [
+        -0.12578334533323038,
+        1.327935126368227,
+        0.049837105058070916
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -319,6 +388,11 @@
           1330.98
         ]
       ],
+      "sourceCentroidMm": [
+        114.81385299665044,
+        -22.446669715534657,
+        1280.2718369779132
+      ],
       "boundsMeters": [
         [
           -0.18905000000000002,
@@ -331,9 +405,13 @@
           0.077087
         ]
       ],
+      "centroidMeters": [
+        -0.11481385299665041,
+        1.2802718369779122,
+        0.022446669715534617
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -357,6 +435,11 @@
           1324.8
         ]
       ],
+      "sourceCentroidMm": [
+        103.16236136667617,
+        -41.36448067641704,
+        1278.2226193606616
+      ],
       "boundsMeters": [
         [
           -0.166117,
@@ -369,9 +452,13 @@
           0.099955
         ]
       ],
+      "centroidMeters": [
+        -0.1031623613666765,
+        1.2782226193606578,
+        0.041364480676417056
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -395,6 +482,11 @@
           1339.42
         ]
       ],
+      "sourceCentroidMm": [
+        200.496245545413,
+        -89.57097278141049,
+        1164.8153517317496
+      ],
       "boundsMeters": [
         [
           -0.22986,
@@ -407,9 +499,13 @@
           0.10929300000000002
         ]
       ],
+      "centroidMeters": [
+        -0.2004962455454128,
+        1.164815351731751,
+        0.08957097278141063
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -433,6 +529,11 @@
           1327.76
         ]
       ],
+      "sourceCentroidMm": [
+        179.34125536668046,
+        -91.7546103279617,
+        1179.206767676932
+      ],
       "boundsMeters": [
         [
           -0.21239,
@@ -445,9 +546,13 @@
           0.109102
         ]
       ],
+      "centroidMeters": [
+        -0.17934125536668064,
+        1.1792067676769322,
+        0.09175461032796163
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
@@ -471,6 +576,11 @@
           1300.75
         ]
       ],
+      "sourceCentroidMm": [
+        177.83168037253947,
+        -40.98888920979606,
+        1166.8103170277495
+      ],
       "boundsMeters": [
         [
           -0.216462,
@@ -483,21 +593,337 @@
           0.0641021
         ]
       ],
+      "centroidMeters": [
+        -0.17783168037253946,
+        1.16681031702775,
+        0.04098888920979607
+      ],
       "watertight": false,
       "windingConsistent": true,
-      "volume": null,
       "warnings": [
         "non-watertight (common for open anatomical surfaces; not auto-repaired)"
       ]
     }
   ],
+  "fmaVerification": {
+    "structures": [
+      {
+        "meshId": "bone.humerus.left",
+        "structureId": "FMA:23131",
+        "sourceConceptId": "FMA23131",
+        "sourceRepresentationId": "BP9191",
+        "sourceElementFileId": "FJ3262",
+        "preferredName": "left humerus",
+        "laterality": "left",
+        "layer": "skeletal",
+        "verification": "ok"
+      },
+      {
+        "meshId": "bone.scapula.left",
+        "structureId": "FMA:13396",
+        "sourceConceptId": "FMA13396",
+        "sourceRepresentationId": "BP9121",
+        "sourceElementFileId": "FJ3279",
+        "preferredName": "left scapula",
+        "laterality": "left",
+        "layer": "skeletal",
+        "verification": "ok"
+      },
+      {
+        "meshId": "bone.clavicle.left",
+        "structureId": "FMA:13323",
+        "sourceConceptId": "FMA13323",
+        "sourceRepresentationId": "BP8841",
+        "sourceElementFileId": "FJ3237",
+        "preferredName": "left clavicle",
+        "laterality": "left",
+        "layer": "skeletal",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.deltoid.clavicular.left",
+        "structureId": "FMA:34681",
+        "sourceConceptId": "FMA34681",
+        "sourceRepresentationId": "BP8259",
+        "sourceElementFileId": "FJ1468M",
+        "preferredName": "clavicular part of left deltoid",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.deltoid.acromial.left",
+        "structureId": "FMA:34683",
+        "sourceConceptId": "FMA34683",
+        "sourceRepresentationId": "BP9075",
+        "sourceElementFileId": "FJ1467M",
+        "preferredName": "acromial part of left deltoid",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.deltoid.spinal.left",
+        "structureId": "FMA:34685",
+        "sourceConceptId": "FMA34685",
+        "sourceRepresentationId": "BP8151",
+        "sourceElementFileId": "FJ1513M",
+        "preferredName": "spinal part of left deltoid",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.supraspinatus.left",
+        "structureId": "FMA:32545",
+        "sourceConceptId": "FMA32545",
+        "sourceRepresentationId": "BP8376",
+        "sourceElementFileId": "FJ1506M",
+        "preferredName": "left supraspinatus",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.infraspinatus.left",
+        "structureId": "FMA:32548",
+        "sourceConceptId": "FMA32548",
+        "sourceRepresentationId": "BP8965",
+        "sourceElementFileId": "FJ1500M",
+        "preferredName": "left infraspinatus muscle",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.subscapularis.left",
+        "structureId": "FMA:13415",
+        "sourceConceptId": "FMA13415",
+        "sourceRepresentationId": "BP8214",
+        "sourceElementFileId": "FJ1504M",
+        "preferredName": "left subscapularis",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.biceps_brachii.long_head.left",
+        "structureId": "FMA:37687",
+        "sourceConceptId": "FMA37687",
+        "sourceRepresentationId": "BP8816",
+        "sourceElementFileId": "FJ1478M",
+        "preferredName": "long head of left biceps brachii",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.biceps_brachii.short_head.left",
+        "structureId": "FMA:37685",
+        "sourceConceptId": "FMA37685",
+        "sourceRepresentationId": "BP9153",
+        "sourceElementFileId": "FJ1512M",
+        "preferredName": "short head of left biceps brachii",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      },
+      {
+        "meshId": "muscle.triceps_brachii.long_head.left",
+        "structureId": "FMA:37700",
+        "sourceConceptId": "FMA37700",
+        "sourceRepresentationId": "BP8344",
+        "sourceElementFileId": "FJ1479M",
+        "preferredName": "long head of left triceps brachii",
+        "laterality": "left",
+        "layer": "muscle",
+        "verification": "ok"
+      }
+    ]
+  },
+  "orientation": {
+    "transform": {
+      "description": "(-x_mm, z_mm, -y_mm) * 0.001",
+      "matrixRows": [
+        [
+          -0.001,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0.001
+        ],
+        [
+          0,
+          -0.001,
+          0
+        ]
+      ],
+      "source": "BodyParts3D mm / Z-up / +X anatomical left",
+      "target": "PainLocator meters / Y-up / +X anatomical right",
+      "canonical": true
+    },
+    "checks": {
+      "leftShoulderOnNegativeX": {
+        "pass": true,
+        "humerusCentroidX": -0.19141428986691117,
+        "expected": "x < 0 (anatomical left when +X is right)"
+      },
+      "superiorOnPositiveY": {
+        "pass": true,
+        "humerusCentroidY": 1.1867534527554888,
+        "expected": "y > 0.5 m (upper limb height)"
+      },
+      "anteriorHeuristicOnPositiveZ": {
+        "pass": true,
+        "humerusCentroidZ": 0.0701781250681643,
+        "expected": "z > 0 after remap for this shoulder pack"
+      }
+    },
+    "pass": true
+  },
+  "registration": {
+    "skeletal": {
+      "boundsMeters": {
+        "min": [
+          -0.24076,
+          1.02921,
+          -0.0050764
+        ],
+        "max": [
+          -0.00837873,
+          1.35518,
+          0.14707800000000001
+        ]
+      },
+      "centroidRangeMeters": {
+        "min": [
+          -0.19141428986691117,
+          1.1867534527554888,
+          0.03286295470412322
+        ],
+        "max": [
+          -0.07716438580158223,
+          1.336869885881618,
+          0.10275090310527979
+        ],
+        "mean": [
+          -0.1254607895640991,
+          1.2703406181507721,
+          0.06859732762585577
+        ]
+      },
+      "meshCentroids": {
+        "bone.humerus.left": [
+          -0.19141428986691117,
+          1.1867534527554888,
+          0.0701781250681643
+        ],
+        "bone.scapula.left": [
+          -0.10780369302380388,
+          1.2873985158152095,
+          0.03286295470412322
+        ],
+        "bone.clavicle.left": [
+          -0.07716438580158223,
+          1.336869885881618,
+          0.10275090310527979
+        ]
+      }
+    },
+    "muscle": {
+      "boundsMeters": {
+        "min": [
+          -0.22986,
+          0.9940720000000001,
+          -0.00366613
+        ],
+        "max": [
+          -0.060258400000000004,
+          1.35539,
+          0.12133100000000001
+        ]
+      },
+      "centroidRangeMeters": {
+        "min": [
+          -0.2004962455454128,
+          1.164815351731751,
+          0.022446669715534617
+        ],
+        "max": [
+          -0.1031623613666765,
+          1.327935126368227,
+          0.1003329069729325
+        ],
+        "mean": [
+          -0.1595471250934733,
+          1.2532343290701078,
+          0.06060261059544779
+        ]
+      },
+      "meshCentroids": {
+        "muscle.deltoid.clavicular.left": [
+          -0.15953147996221603,
+          1.3061729255698629,
+          0.1003329069729325
+        ],
+        "muscle.deltoid.acromial.left": [
+          -0.19861917250622294,
+          1.296492588271958,
+          0.07478083109832824
+        ],
+        "muscle.deltoid.spinal.left": [
+          -0.17634473239163054,
+          1.2791814286459182,
+          0.03434702951857843
+        ],
+        "muscle.supraspinatus.left": [
+          -0.12578334533323038,
+          1.327935126368227,
+          0.049837105058070916
+        ],
+        "muscle.infraspinatus.left": [
+          -0.11481385299665041,
+          1.2802718369779122,
+          0.022446669715534617
+        ],
+        "muscle.subscapularis.left": [
+          -0.1031623613666765,
+          1.2782226193606578,
+          0.041364480676417056
+        ],
+        "muscle.biceps_brachii.long_head.left": [
+          -0.2004962455454128,
+          1.164815351731751,
+          0.08957097278141063
+        ],
+        "muscle.biceps_brachii.short_head.left": [
+          -0.17934125536668064,
+          1.1792067676769322,
+          0.09175461032796163
+        ],
+        "muscle.triceps_brachii.long_head.left": [
+          -0.17783168037253946,
+          1.16681031702775,
+          0.04098888920979607
+        ]
+      }
+    },
+    "layerCentroidSeparationMeters": 0.038966894876659476,
+    "pass": true,
+    "note": "Bones and muscles share BodyParts3D world space; after identical normalization they should remain co-located (separation << body scale)."
+  },
   "notes": [
-    "GLB sizes here are pre-Meshopt; run node tools/bp3d-ingest/optimize.mjs next.",
-    "Production adult-male exterior catalog intentionally unchanged."
+    "GLB sizes here are pre-Meshopt; optimize.mjs updates optimization section.",
+    "raw-pre-meshopt/ is a local regenerable artifact (not committed).",
+    "Production adult-male Spatial catalog intentionally unchanged."
   ],
   "optimization": {
     "method": "meshopt",
     "tool": "@gltf-transform/cli@4.1.1",
+    "resolvedBin": "/workspace/node_modules/.bin/gltf-transform",
     "layers": {
       "skeletal.glb": {
         "beforeBytes": 600820,
@@ -528,7 +954,7 @@
         ]
       }
     },
-    "rawCopies": "./raw-pre-meshopt/",
+    "rawCopies": "./raw-pre-meshopt/ (local regenerable; not committed)",
     "notes": [
       "No geometric join/simplify — meshopt compression only.",
       "No additional decimation beyond BodyParts3D 99% pack.",

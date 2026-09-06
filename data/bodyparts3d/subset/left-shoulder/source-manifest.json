@@ -7,7 +7,7 @@
   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
   "licensePageUrl": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
   "licensePageUpdated": "2025-02-27",
-  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
   "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
   "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
   "archiveChecksum": {
@@ -17,7 +17,7 @@
   "mappingTables": {
     "isaPartsList": {
       "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_parts_list_e.txt",
-      "path": "../../mapping/isa_parts_list_e.txt",
+      "cacheFile": "isa_parts_list_e.txt",
       "checksum": {
         "algorithm": "sha256",
         "value": "ab7796deedd49205e77f3609a1cb8c53e2bbee14ecb5c9a6ca05227469780513"
@@ -25,7 +25,7 @@
     },
     "isaElementParts": {
       "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_element_parts.txt",
-      "path": "../../mapping/isa_element_parts.txt",
+      "cacheFile": "isa_element_parts.txt",
       "checksum": {
         "algorithm": "sha256",
         "value": "a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf"
@@ -53,7 +53,11 @@
       "sourceConceptId": "FMA23131",
       "sourceRepresentationId": "BP9191",
       "sourceElementFileId": "FJ3262",
-      "sourceFile": "./obj/FJ3262.obj"
+      "sourceFile": "./obj/FJ3262.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4a07066d7c7f17dfeb61797dc31c529d0d6fd3fda8136912ebd8a92ccc1ac6fc"
+      }
     },
     {
       "meshId": "bone.scapula.left",
@@ -66,7 +70,11 @@
       "sourceConceptId": "FMA13396",
       "sourceRepresentationId": "BP9121",
       "sourceElementFileId": "FJ3279",
-      "sourceFile": "./obj/FJ3279.obj"
+      "sourceFile": "./obj/FJ3279.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e63a5675c6cdbe942322305920241b4a63762d7a65879572400f444fa3d42739"
+      }
     },
     {
       "meshId": "bone.clavicle.left",
@@ -79,7 +87,11 @@
       "sourceConceptId": "FMA13323",
       "sourceRepresentationId": "BP8841",
       "sourceElementFileId": "FJ3237",
-      "sourceFile": "./obj/FJ3237.obj"
+      "sourceFile": "./obj/FJ3237.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2491009d53eaed99ccb2a802b29402eec715eb8d207fb819fad67b0720195cf2"
+      }
     },
     {
       "meshId": "muscle.deltoid.clavicular.left",
@@ -93,7 +105,11 @@
       "sourceConceptId": "FMA34681",
       "sourceRepresentationId": "BP8259",
       "sourceElementFileId": "FJ1468M",
-      "sourceFile": "./obj/FJ1468M.obj"
+      "sourceFile": "./obj/FJ1468M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "75340ac9157ea6c64baaa74c0bbfd6173114dcff0d30ea814702c288b002f104"
+      }
     },
     {
       "meshId": "muscle.deltoid.acromial.left",
@@ -106,7 +122,11 @@
       "sourceConceptId": "FMA34683",
       "sourceRepresentationId": "BP9075",
       "sourceElementFileId": "FJ1467M",
-      "sourceFile": "./obj/FJ1467M.obj"
+      "sourceFile": "./obj/FJ1467M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a523b5f2ab862ad6505787f4936098fbcfe3f28a3742b57aac34307fe752f8eb"
+      }
     },
     {
       "meshId": "muscle.deltoid.spinal.left",
@@ -119,7 +139,11 @@
       "sourceConceptId": "FMA34685",
       "sourceRepresentationId": "BP8151",
       "sourceElementFileId": "FJ1513M",
-      "sourceFile": "./obj/FJ1513M.obj"
+      "sourceFile": "./obj/FJ1513M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a806a9a20b68009f0071c22411b009f4baef3de118f00a37cc4a3be8cdf7ce2e"
+      }
     },
     {
       "meshId": "muscle.supraspinatus.left",
@@ -132,7 +156,11 @@
       "sourceConceptId": "FMA32545",
       "sourceRepresentationId": "BP8376",
       "sourceElementFileId": "FJ1506M",
-      "sourceFile": "./obj/FJ1506M.obj"
+      "sourceFile": "./obj/FJ1506M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "6d6741ab840272a59d50c59cd87ccfa676e1f72fa9b600bba06bf9c24d1e01fe"
+      }
     },
     {
       "meshId": "muscle.infraspinatus.left",
@@ -145,7 +173,11 @@
       "sourceConceptId": "FMA32548",
       "sourceRepresentationId": "BP8965",
       "sourceElementFileId": "FJ1500M",
-      "sourceFile": "./obj/FJ1500M.obj"
+      "sourceFile": "./obj/FJ1500M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9013158a3c598eb6dbf95dcaf72da439721dec4d3ebc37f660db9c2748f1e42e"
+      }
     },
     {
       "meshId": "muscle.subscapularis.left",
@@ -158,7 +190,11 @@
       "sourceConceptId": "FMA13415",
       "sourceRepresentationId": "BP8214",
       "sourceElementFileId": "FJ1504M",
-      "sourceFile": "./obj/FJ1504M.obj"
+      "sourceFile": "./obj/FJ1504M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "926fe07c8cf1056aa3aedda2f3a02a5027f4ef24cc5d41ba1359c53eedce1bc6"
+      }
     },
     {
       "meshId": "muscle.biceps_brachii.long_head.left",
@@ -171,7 +207,11 @@
       "sourceConceptId": "FMA37687",
       "sourceRepresentationId": "BP8816",
       "sourceElementFileId": "FJ1478M",
-      "sourceFile": "./obj/FJ1478M.obj"
+      "sourceFile": "./obj/FJ1478M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "10189f1d7b5220df3baef2b259ae9855ed301c1afaadfc2de25af3222c5a08fc"
+      }
     },
     {
       "meshId": "muscle.biceps_brachii.short_head.left",
@@ -184,7 +224,11 @@
       "sourceConceptId": "FMA37685",
       "sourceRepresentationId": "BP9153",
       "sourceElementFileId": "FJ1512M",
-      "sourceFile": "./obj/FJ1512M.obj"
+      "sourceFile": "./obj/FJ1512M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "6b0ed7b70973b3a2e08de4ea5ce59c05a4ddce2b90212ff734326be2726d1293"
+      }
     },
     {
       "meshId": "muscle.triceps_brachii.long_head.left",
@@ -197,7 +241,12 @@
       "sourceConceptId": "FMA37700",
       "sourceRepresentationId": "BP8344",
       "sourceElementFileId": "FJ1479M",
-      "sourceFile": "./obj/FJ1479M.obj"
+      "sourceFile": "./obj/FJ1479M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4b8315f9134a213f45c3af830270f4526e705d0a149894516d3f5fba98878f15"
+      }
     }
-  ]
+  ],
+  "licenseNote": "Embedded OBJ headers contain historical CC BY-SA 2.1 Japan text. PainLocator's use of this archive is based on the current official DBCLS archive license page (CC BY 4.0), verified on 2026-09-06. Commercial release should retain contemporaneous license evidence in product compliance records. This is a provenance fact record, not legal advice."
 }

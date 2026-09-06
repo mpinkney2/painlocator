@@ -1,3 +1,5 @@
-40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e  isa_BP3D_4.0_obj_99.zip  # https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip
-ab7796deedd49205e77f3609a1cb8c53e2bbee14ecb5c9a6ca05227469780513  isa_parts_list_e.txt  # https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_parts_list_e.txt
-a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf  isa_element_parts.txt  # https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_element_parts.txt
+# PainLocator BodyParts3D pin — SHA-256 is the immutable identifier.
+# Official LATEST URLs may move; refuse content that does not match these digests.
+40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e  isa_BP3D_4.0_obj_99.zip
+ab7796deedd49205e77f3609a1cb8c53e2bbee14ecb5c9a6ca05227469780513  isa_parts_list_e.txt
+a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf  isa_element_parts.txt

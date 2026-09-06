@@ -11,12 +11,15 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/run-tests.mjs",
+    "bp3d:fetch": "node tools/bp3d-ingest/fetch-source.mjs",
     "bp3d:verify": "python3 tools/bp3d-ingest/verify_source.py",
     "bp3d:ingest": "python3 tools/bp3d-ingest/ingest.py",
     "bp3d:optimize": "node tools/bp3d-ingest/optimize.mjs",
-    "bp3d:test": "node tools/bp3d-ingest/test-integrity.mjs"
+    "bp3d:test": "node tools/bp3d-ingest/test-integrity.mjs",
+    "bp3d:build": "node tools/bp3d-ingest/build.mjs"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "4.1.1",
     "three": "0.170.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"

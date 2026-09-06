@@ -28,7 +28,8 @@
         0.0
       ]
     ],
-    "description": "(-x_mm, z_mm, -y_mm) * 0.001 \u2192 meters Y-up +X right"
+    "description": "(-x_mm, z_mm, -y_mm) * 0.001 \u2192 meters Y-up +X right",
+    "canonical": true
   },
   "provenance": {
     "source": "BodyParts3D",
@@ -37,10 +38,13 @@
     "archiveSha256": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e",
     "license": "CC-BY-4.0",
     "licenseRef": "./LICENSE.md",
+    "licensePageUrl": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+    "licensePageVerifiedOn": "2026-09-06",
     "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
     "provenanceDoc": "docs/BODYPARTS3D_SOURCE_PROVENANCE.md",
+    "licenseNote": "Embedded OBJ headers contain historical CC BY-SA 2.1 Japan text. PainLocator's use of this archive is based on the current official DBCLS archive license page (CC BY 4.0), verified on 2026-09-06. Commercial release should retain contemporaneous license evidence in product compliance records.",
     "region": "left-shoulder",
-    "generatedAt": "2026-09-06T20:07:24Z"
+    "generatedAt": "2026-09-06T20:38:50Z"
   },
   "layers": {
     "skeletal": {

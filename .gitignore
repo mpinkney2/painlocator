@@ -1,3 +1,9 @@
 node_modules/
 dist/
 .vercel/
+
+# BodyParts3D upstream cache / regenerable intermediates (not committed)
+data/bodyparts3d/cache/
+data/bodyparts3d/mapping/
+data/bodyparts3d/subset/*/obj/
+public/anatomy/spatial/prototype-bp3d/raw-pre-meshopt/

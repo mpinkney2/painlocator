@@ -1,0 +1,4 @@
+# Exact versions used to generate the checked-in left-shoulder prototype
+# (recorded also in public/anatomy/spatial/prototype-bp3d/build-report.json).
+trimesh==5.1.0
+numpy==2.4.4

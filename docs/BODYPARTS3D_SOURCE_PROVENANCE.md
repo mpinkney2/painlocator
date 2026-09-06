@@ -44,7 +44,7 @@ PainLocator uses the official **DBCLS LSDB Archive** distribution. Do **not** pi
 | --- | --- |
 | License | **Creative Commons Attribution 4.0 International (CC BY 4.0)** |
 | License page updated | **2025-02-27** |
-| ShareAlike | **No** on the official LATEST license (older mirrors / embedded OBJ headers may still mention CC BY-SA 2.1 JP — **do not trust those**) |
+| ShareAlike | **No** on the official LATEST license page |
 | Commercial use | Permitted under CC BY 4.0 with attribution |
 | PainLocator decision | Redistributable in product builds **when attribution + provenance are retained** |
 
@@ -55,9 +55,15 @@ PainLocator uses the official **DBCLS LSDB Archive** distribution. Do **not** pi
 
 Also cite Mitsuhashi et al. (2009) in documentation and LICENSE files shipped beside derived GLBs.
 
-### Important license caveat
+### Historical header vs current archive license
 
-Individual `.obj` files inside `isa_BP3D_4.0_obj_99.zip` still contain **outdated** header comments referencing CC BY-SA 2.1 Japan. The **authoritative** license is the archive license page (CC BY 4.0 as of 2025-02-27). PainLocator LICENSE files for derived assets must cite CC BY 4.0 and must not copy the stale OBJ header text as current terms.
+Individual `.obj` files inside `isa_BP3D_4.0_obj_99.zip` still contain **historical** header comments referencing CC BY-SA 2.1 Japan. Those embedded headers reflect older licensing text.
+
+PainLocator's use of this archive is based on the **current official DBCLS archive license page** (CC BY 4.0), verified on **2026-09-06**:
+
+https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html
+
+PainLocator derived-asset LICENSE files cite CC BY 4.0 and retain archive URL, license URL, verification date, attribution, citation, and source checksums. Commercial release should retain contemporaneous license evidence in product compliance records. This note records provenance facts; it is not legal advice.
 
 ---
 
@@ -84,21 +90,32 @@ English names in the IS-A parts list are preferred FMA names assigned by BodyPar
 
 ## Source file inventory (pinned)
 
-Committed / expected for this prototype:
+### Committed in git
 
 | Path | Purpose |
 | --- | --- |
-| `data/bodyparts3d/ARCHIVE.sha256` | SHA-256 of official zip + mapping tables |
-| `data/bodyparts3d/mapping/isa_parts_list_e.txt` | Full IS-A concept map (official) |
-| `data/bodyparts3d/mapping/isa_element_parts.txt` | Full concept→element map (official) |
-| `data/bodyparts3d/subset/left-shoulder/source-manifest.json` | Curated prototype subset |
-| `data/bodyparts3d/subset/left-shoulder/obj/*.obj` | Extracted elemental OBJs only |
-| `data/bodyparts3d/subset/left-shoulder/obj.sha256` | Per-OBJ checksums |
+| `data/bodyparts3d/ARCHIVE.sha256` | SHA-256 pins for zip + mapping tables |
+| `data/bodyparts3d/subset/left-shoulder/source-manifest.json` | Curated subset + FMA ids + per-OBJ checksums |
+| `data/bodyparts3d/subset/left-shoulder/obj.sha256` | Per-OBJ checksum list |
+| `data/bodyparts3d/subset/left-shoulder/fma-verification.json` | Generated FMA verification table |
+| `public/anatomy/spatial/prototype-bp3d/{skeletal,muscle}.glb` | Optimized layer packs |
+| `public/anatomy/spatial/prototype-bp3d/manifest.json` | PainLocator prototype manifest |
+| `public/anatomy/spatial/prototype-bp3d/LICENSE.md` | CC BY 4.0 attribution |
+| `public/anatomy/spatial/prototype-bp3d/build-report.json` | Build/validation report |
+| `public/anatomy/spatial/prototype-bp3d/orientation-check.json` | Orientation validation summary |
 
-Full zip is **not** committed (≈136 MB). Re-fetch with:
+### Fetched / regenerated locally (not committed)
+
+| Path | Purpose |
+| --- | --- |
+| `data/bodyparts3d/cache/isa_BP3D_4.0_obj_99.zip` | Official archive (~136 MB) |
+| `data/bodyparts3d/cache/isa_*.txt` | Official mapping tables |
+| `data/bodyparts3d/cache/subset/left-shoulder/obj/*.obj` | Extracted subset OBJs |
+| `public/anatomy/spatial/prototype-bp3d/raw-pre-meshopt/` | Pre-meshopt GLBs |
 
 ```bash
-node tools/bp3d-ingest/fetch-source.mjs
+npm run bp3d:fetch   # download + checksum + extract subset only
+npm run bp3d:build   # full clean rebuild
 ```
 
 ---

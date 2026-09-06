@@ -1,0 +1,136 @@
+{
+  "structures": [
+    {
+      "meshId": "bone.humerus.left",
+      "structureId": "FMA:23131",
+      "sourceConceptId": "FMA23131",
+      "sourceRepresentationId": "BP9191",
+      "sourceElementFileId": "FJ3262",
+      "preferredName": "left humerus",
+      "laterality": "left",
+      "layer": "skeletal",
+      "verification": "ok"
+    },
+    {
+      "meshId": "bone.scapula.left",
+      "structureId": "FMA:13396",
+      "sourceConceptId": "FMA13396",
+      "sourceRepresentationId": "BP9121",
+      "sourceElementFileId": "FJ3279",
+      "preferredName": "left scapula",
+      "laterality": "left",
+      "layer": "skeletal",
+      "verification": "ok"
+    },
+    {
+      "meshId": "bone.clavicle.left",
+      "structureId": "FMA:13323",
+      "sourceConceptId": "FMA13323",
+      "sourceRepresentationId": "BP8841",
+      "sourceElementFileId": "FJ3237",
+      "preferredName": "left clavicle",
+      "laterality": "left",
+      "layer": "skeletal",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.deltoid.clavicular.left",
+      "structureId": "FMA:34681",
+      "sourceConceptId": "FMA34681",
+      "sourceRepresentationId": "BP8259",
+      "sourceElementFileId": "FJ1468M",
+      "preferredName": "clavicular part of left deltoid",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.deltoid.acromial.left",
+      "structureId": "FMA:34683",
+      "sourceConceptId": "FMA34683",
+      "sourceRepresentationId": "BP9075",
+      "sourceElementFileId": "FJ1467M",
+      "preferredName": "acromial part of left deltoid",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.deltoid.spinal.left",
+      "structureId": "FMA:34685",
+      "sourceConceptId": "FMA34685",
+      "sourceRepresentationId": "BP8151",
+      "sourceElementFileId": "FJ1513M",
+      "preferredName": "spinal part of left deltoid",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.supraspinatus.left",
+      "structureId": "FMA:32545",
+      "sourceConceptId": "FMA32545",
+      "sourceRepresentationId": "BP8376",
+      "sourceElementFileId": "FJ1506M",
+      "preferredName": "left supraspinatus",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.infraspinatus.left",
+      "structureId": "FMA:32548",
+      "sourceConceptId": "FMA32548",
+      "sourceRepresentationId": "BP8965",
+      "sourceElementFileId": "FJ1500M",
+      "preferredName": "left infraspinatus muscle",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.subscapularis.left",
+      "structureId": "FMA:13415",
+      "sourceConceptId": "FMA13415",
+      "sourceRepresentationId": "BP8214",
+      "sourceElementFileId": "FJ1504M",
+      "preferredName": "left subscapularis",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.biceps_brachii.long_head.left",
+      "structureId": "FMA:37687",
+      "sourceConceptId": "FMA37687",
+      "sourceRepresentationId": "BP8816",
+      "sourceElementFileId": "FJ1478M",
+      "preferredName": "long head of left biceps brachii",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.biceps_brachii.short_head.left",
+      "structureId": "FMA:37685",
+      "sourceConceptId": "FMA37685",
+      "sourceRepresentationId": "BP9153",
+      "sourceElementFileId": "FJ1512M",
+      "preferredName": "short head of left biceps brachii",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    },
+    {
+      "meshId": "muscle.triceps_brachii.long_head.left",
+      "structureId": "FMA:37700",
+      "sourceConceptId": "FMA37700",
+      "sourceRepresentationId": "BP8344",
+      "sourceElementFileId": "FJ1479M",
+      "preferredName": "long head of left triceps brachii",
+      "laterality": "left",
+      "layer": "muscle",
+      "verification": "ok"
+    }
+  ]
+}

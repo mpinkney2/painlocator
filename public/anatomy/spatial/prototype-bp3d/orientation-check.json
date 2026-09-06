@@ -1,0 +1,65 @@
+{
+  "devOnly": true,
+  "notWiredToProductionViewer": true,
+  "orientation": {
+    "transform": {
+      "description": "(-x_mm, z_mm, -y_mm) * 0.001",
+      "matrixRows": [
+        [
+          -0.001,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0.001
+        ],
+        [
+          0,
+          -0.001,
+          0
+        ]
+      ],
+      "source": "BodyParts3D mm / Z-up / +X anatomical left",
+      "target": "PainLocator meters / Y-up / +X anatomical right",
+      "canonical": true
+    },
+    "checks": {
+      "leftShoulderOnNegativeX": {
+        "pass": true,
+        "humerusCentroidX": -0.19141428986691117,
+        "expected": "x < 0 (anatomical left when +X is right)"
+      },
+      "superiorOnPositiveY": {
+        "pass": true,
+        "humerusCentroidY": 1.1867534527554888,
+        "expected": "y > 0.5 m (upper limb height)"
+      },
+      "anteriorHeuristicOnPositiveZ": {
+        "pass": true,
+        "humerusCentroidZ": 0.0701781250681643,
+        "expected": "z > 0 after remap for this shoulder pack"
+      }
+    },
+    "pass": true
+  },
+  "registration": {
+    "layerCentroidSeparationMeters": 0.038966894876659476,
+    "pass": true
+  },
+  "markers": {
+    "LEFT": "negative X",
+    "RIGHT": "positive X",
+    "SUPERIOR": "positive Y",
+    "INFERIOR": "negative Y",
+    "ANTERIOR": "positive Z (heuristic for this pack)",
+    "POSTERIOR": "negative Z"
+  },
+  "humerusCentroidMeters": [
+    -0.19141428986691117,
+    1.1867534527554888,
+    0.0701781250681643
+  ],
+  "svgPreview": "tools/bp3d-ingest/dev/orientation-preview.svg"
+}

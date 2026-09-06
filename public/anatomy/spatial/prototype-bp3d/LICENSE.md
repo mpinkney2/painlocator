@@ -22,13 +22,17 @@ Mitsuhashi N, Fujieda K, Tamura T, Kawamoto S, Takagi T, Okubo K.
 BodyParts3D: 3D structure database for anatomical concepts.
 Nucleic Acids Research. 2009. PMID: 18835852.
 
+## Provenance note
+
+Embedded OBJ headers contain historical CC BY-SA 2.1 Japan text. PainLocator's use of this archive is based on the current official DBCLS archive license page (CC BY 4.0), verified on 2026-09-06. Commercial release should retain contemporaneous license evidence in product compliance records.
+
 ## PainLocator modifications
 
-- Subset selection (left shoulder skeletal + muscle)
+- Left-shoulder subset selection (skeletal + muscle)
 - Coordinate normalization to PainLocator meters / Y-up / +X anatomical right
 - Degenerate-face cleanup only (no silent hole-filling)
-- GLB packaging + Meshopt optimization
-- Stable `meshId` / `FMA:` `structureId` metadata via PainLocator manifest
+- GLB packaging + Meshopt compression
+- Stable meshId / FMA: structureId metadata via PainLocator manifest
 
 ## Status
 
