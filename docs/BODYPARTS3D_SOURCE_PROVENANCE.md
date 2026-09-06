@@ -57,13 +57,11 @@ Also cite Mitsuhashi et al. (2009) in documentation and LICENSE files shipped be
 
 ### Historical header vs current archive license
 
-Individual `.obj` files inside `isa_BP3D_4.0_obj_99.zip` still contain **historical** header comments referencing CC BY-SA 2.1 Japan. Those embedded headers reflect older licensing text.
-
-PainLocator's use of this archive is based on the **current official DBCLS archive license page** (CC BY 4.0), verified on **2026-09-06**:
+The embedded OBJ headers reflect historical licensing text (CC BY-SA 2.1 Japan). PainLocator's use of this archive is based on the current official DBCLS archive license page, verified on **2026-09-06** (CC BY 4.0):
 
 https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html
 
-PainLocator derived-asset LICENSE files cite CC BY 4.0 and retain archive URL, license URL, verification date, attribution, citation, and source checksums. Commercial release should retain contemporaneous license evidence in product compliance records. This note records provenance facts; it is not legal advice.
+Derived-asset LICENSE files cite CC BY 4.0 and retain archive URL, license URL, verification date, attribution, citation, and source checksums. Commercial release should retain contemporaneous license evidence in product compliance records. This note records provenance facts; it is not a legal determination or legal advice.
 
 ---
 

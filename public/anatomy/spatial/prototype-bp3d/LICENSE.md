@@ -24,7 +24,7 @@ Nucleic Acids Research. 2009. PMID: 18835852.
 
 ## Provenance note
 
-Embedded OBJ headers contain historical CC BY-SA 2.1 Japan text. PainLocator's use of this archive is based on the current official DBCLS archive license page (CC BY 4.0), verified on 2026-09-06. Commercial release should retain contemporaneous license evidence in product compliance records. This is a provenance fact record, not legal advice.
+The embedded OBJ headers reflect historical licensing text (CC BY-SA 2.1 Japan). PainLocator's use of this archive is based on the current official DBCLS archive license page, verified on 2026-09-06 (CC BY 4.0). Commercial release should retain contemporaneous license evidence in product compliance records. This is a provenance fact record, not a legal determination or legal advice.
 
 ## PainLocator modifications
 
