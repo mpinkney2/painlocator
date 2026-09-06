@@ -65,8 +65,8 @@
         <button type="button" class="btn btn-ghost btn-sm" id="btnHeaderDemo" aria-label="Try demo">Demo</button>
         <button type="button" class="btn btn-ghost btn-sm" id="btnFeedback" aria-label="Send feedback">Feedback</button>
         <button type="button" class="btn btn-ghost btn-icon" id="btnHelpMenu" aria-label="Help and safety"><i data-lucide="circle-help"></i></button>
-        <div class="presentation-menu-wrap shell-dev-switch">
-          <button type="button" class="btn btn-ghost btn-sm" id="btnPresentationMenu" aria-haspopup="true" aria-expanded="false" title="Switch product experience">
+        <div class="presentation-menu-wrap shell-dev-switch" hidden>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnPresentationMenu" aria-haspopup="true" aria-expanded="false" title="Developer: switch product experience">
             <span id="presentationSwitcherLabel">Patient</span>
           </button>
           <div class="presentation-menu" id="presentationMenu" role="menu" hidden>
@@ -277,9 +277,18 @@
           <p class="avatar-hint" id="avatarHint">Where does it hurt? Tap the body to mark pain.</p>
 
         <!-- PATIENT SHELL: locate CTA + describe/review sheet -->
+        <nav id="patientStepIndicator" class="patient-step-indicator shell-only-patient" aria-label="Pain entry steps" hidden>
+          <span class="sr-only" id="patientStepStatus">Step 1 of 3: locate</span>
+          <ol class="patient-step-list">
+            <li data-patient-step="locate" class="is-current" aria-current="step"><span>1</span> Locate</li>
+            <li data-patient-step="describe"><span>2</span> Describe</li>
+            <li data-patient-step="review"><span>3</span> Review</li>
+          </ol>
+        </nav>
         <div id="patientLocateCta" class="patient-locate-cta shell-only-patient" hidden>
-          <p class="patient-locate-prompt">Tap the body where you feel pain</p>
+          <p class="patient-locate-prompt">Where does it hurt? Tap the body to mark pain.</p>
           <button type="button" class="btn btn-primary" id="btnPatientNextDescribe" disabled>Continue to Describe</button>
+          <p class="patient-locate-hint" id="patientLocateHint">Mark at least one pain location to continue.</p>
         </div>
         <div id="patientDescribeBar" class="patient-describe-bar shell-only-patient" hidden>
           <button type="button" class="btn btn-primary btn-block" id="btnPatientDescribeReview">Review entry</button>
@@ -287,14 +296,13 @@
         <div id="patientSheetBackdrop" class="patient-sheet-backdrop shell-only-patient" hidden></div>
         <aside id="patientSheet" class="patient-sheet shell-only-patient" hidden aria-live="polite">
           <div class="patient-sheet-handle" aria-hidden="true"></div>
-          <div class="patient-sheet-pane" data-pane="describe" id="patientDescribePane">
+          <div class="patient-sheet-pane" data-pane="describe" id="patientDescribePane" hidden>
             <header class="patient-sheet-head">
-              <h3>How does it feel?</h3>
-              <button type="button" class="btn btn-ghost btn-sm" id="btnPatientBackLocate">Back</button>
+              <h3 id="patientDescribeTitle">How does it feel?</h3>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnPatientBackLocate">Back to body</button>
             </header>
             <div class="patient-sheet-body" id="patientDescribeMount">
-              <!-- Intensity + quality controls are mirrored via CSS show of capture form fields -->
-              <p class="patient-sheet-hint">Intensity, quality, and timing stay in sync with your pain entry.</p>
+              <!-- Filled by patient-flow.js with dedicated patient describe controls -->
             </div>
             <footer class="patient-sheet-foot">
               <button type="button" class="btn btn-primary btn-block" id="btnPatientToReview">Review entry</button>
@@ -302,7 +310,7 @@
           </div>
           <div class="patient-sheet-pane" data-pane="review" id="patientReviewPane" hidden>
             <header class="patient-sheet-head">
-              <h3>Review &amp; save</h3>
+              <h3 id="patientReviewTitle">Review &amp; save</h3>
               <button type="button" class="btn btn-ghost btn-sm" id="btnPatientBackDescribe">Back</button>
             </header>
             <div class="patient-sheet-body">
@@ -311,7 +319,7 @@
                 <button type="button" class="btn btn-ghost" id="btnPatientEditLocation">Edit location</button>
                 <button type="button" class="btn btn-ghost" id="btnPatientEditDescribe">Edit description</button>
               </div>
-              <p id="patientSaveConfirm" class="patient-save-confirm" hidden>Saved. You can mark another area anytime.</p>
+              <p id="patientSaveConfirm" class="patient-save-confirm" role="status" hidden>Pain entry saved.</p>
             </div>
             <footer class="patient-sheet-foot">
               <button type="button" class="btn btn-primary btn-block" id="btnPatientSave">Save Pain Entry</button>
@@ -476,6 +484,8 @@
                 <button type="button" class="pill" data-value="Ache">Ache</button>
                 <button type="button" class="pill" data-value="Cramping">Cramping</button>
                 <button type="button" class="pill" data-value="Stabbing">Stabbing</button>
+                <button type="button" class="pill" data-value="Tingling">Tingling</button>
+                <button type="button" class="pill" data-value="Numbness">Numbness</button>
               </div>
             </div>
           </div>
@@ -690,6 +700,12 @@
           <li>Automated summaries are observations about your recorded entries only.</li>
         </ul>
         <p class="welcome-safety">PainLocator is not for emergencies. Seek immediate medical care for severe or sudden symptoms.</p>
+        <h4>Developer / demo</h4>
+        <p class="modal-note">Experience mode is for development and demos. Production routing should choose Patient or Clinician from role or session context — patients should not pick a product mode.</p>
+        <div class="help-presentation-switch" role="group" aria-label="Experience mode">
+          <button type="button" class="btn btn-secondary btn-sm" data-presentation-option="patient">Patient experience</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-presentation-option="clinician">Clinician console</button>
+        </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-ghost" id="btnRestartWalkthrough">Restart walkthrough</button>
           <button type="button" class="btn btn-secondary" data-close>Close</button>

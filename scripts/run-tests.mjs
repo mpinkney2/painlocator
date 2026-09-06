@@ -76,8 +76,15 @@ function createSandbox() {
     location: { pathname: '/', hash: '', hostname: 'localhost', protocol: 'http:', href: 'http://localhost/' },
     setTimeout,
     clearTimeout,
-    URL: { createObjectURL: () => 'blob:test', revokeObjectURL() {} }
+    URL: { createObjectURL: () => 'blob:test', revokeObjectURL() {} },
+    CustomEvent: class CustomEvent {
+      constructor(type, init = {}) {
+        this.type = type;
+        this.detail = init.detail;
+      }
+    }
   };
+  sandbox.document.dispatchEvent = () => {};
   sandbox.window = sandbox;
   sandbox.globalThis = sandbox;
   vm.createContext(sandbox);
@@ -684,28 +691,243 @@ console.log('PainLocator tests\n');
   });
 }
 
-// --- Product Experience V1: patient steps ---
+// --- Product Experience V1: patient steps + save correctness ---
 {
-  const sandbox = createSandbox();
-  sandbox.state = { presentationMode: 'patient', patientStep: 'locate', workflowMode: 'capture' };
-  sandbox.entryStore = {
-    getActiveEntry: () => null,
-    onChange: () => {},
-    updateActiveEntry: () => {}
-  };
-  loadScript('src/features/shell/patient-flow.js', sandbox);
+  function makePatientSandbox(entry) {
+    const sandbox = createSandbox();
+    sandbox.state = { presentationMode: 'patient', patientStep: 'locate', workflowMode: 'capture' };
+    let active = entry;
+    sandbox.entryStore = {
+      getActiveEntry: () => active,
+      updateActiveEntry: (patch) => {
+        active = { ...(active || {}), ...patch };
+        return active;
+      },
+      ensureActiveEntry: () => {
+        if (!active) active = { regions: [], intensity: 5, quality: [], triggers: [], easesAfter: [], note: '' };
+        return active;
+      },
+      onChange: () => {}
+    };
+    sandbox.showToast = () => {};
+    loadScript('src/features/shell/patient-flow.js', sandbox);
+    return sandbox;
+  }
 
   test('patient flow: PatientSteps contract', () => {
+    const sandbox = makePatientSandbox({ regions: [{ id: 'r1', patientLabel: 'Left shoulder' }] });
     assert.deepEqual([...sandbox.PatientSteps], ['locate', 'describe', 'review']);
   });
 
-  test('patient flow: setPatientStep updates state', () => {
+  test('patient flow: setPatientStep updates state when regions exist', () => {
+    const sandbox = makePatientSandbox({
+      regions: [{ id: 'r1', patientLabel: 'Left shoulder' }],
+      intensity: 5,
+      quality: [],
+      triggers: [],
+      easesAfter: [],
+      note: ''
+    });
     sandbox.setPatientStep('describe');
     assert.equal(sandbox.state.patientStep, 'describe');
     sandbox.setPatientStep('review');
     assert.equal(sandbox.state.patientStep, 'review');
     sandbox.setPatientStep('locate');
     assert.equal(sandbox.state.patientStep, 'locate');
+  });
+
+  test('patient flow: cannot advance without a marked location', () => {
+    const sandbox = makePatientSandbox(null);
+    sandbox.setPatientStep('describe');
+    assert.equal(sandbox.state.patientStep, 'locate');
+    sandbox.setPatientStep('review');
+    assert.equal(sandbox.state.patientStep, 'locate');
+  });
+
+  test('patient save: success only when saveCurrentEntry returns an entry', async () => {
+    const sandbox = makePatientSandbox({
+      regions: [{ id: 'r1', patientLabel: 'Knee' }],
+      intensity: 6,
+      quality: ['Sharp'],
+      triggers: [],
+      easesAfter: [],
+      note: ''
+    });
+    sandbox.state.patientStep = 'review';
+    sandbox.document.getElementById = (id) => {
+      if (id === 'btnPatientSave') {
+        return { disabled: false, textContent: 'Save Pain Entry' };
+      }
+      if (id === 'patientSaveConfirm') {
+        return { hidden: true, textContent: '' };
+      }
+      return null;
+    };
+    let calls = 0;
+    sandbox.saveCurrentEntry = async () => {
+      calls += 1;
+      return { id: 'saved-1', intensity: 6 };
+    };
+    const saved = await sandbox.savePatientEntry();
+    assert.ok(saved);
+    assert.equal(saved.id, 'saved-1');
+    assert.equal(calls, 1);
+  });
+
+  test('patient save: failed/null save stays on review and shows no success', async () => {
+    const sandbox = makePatientSandbox({
+      regions: [{ id: 'r1', patientLabel: 'Knee' }],
+      intensity: 4,
+      quality: [],
+      triggers: [],
+      easesAfter: [],
+      note: ''
+    });
+    sandbox.state.patientStep = 'review';
+    const confirm = { hidden: true, textContent: '' };
+    sandbox.document.getElementById = (id) => {
+      if (id === 'btnPatientSave') return { disabled: false, textContent: 'Save Pain Entry' };
+      if (id === 'patientSaveConfirm') return confirm;
+      return null;
+    };
+    sandbox.saveCurrentEntry = async () => null;
+    const saved = await sandbox.savePatientEntry();
+    assert.equal(saved, null);
+    assert.equal(sandbox.state.patientStep, 'review');
+    assert.equal(confirm.hidden, true);
+    assert.notEqual(confirm.textContent, 'Pain entry saved.');
+  });
+
+  test('patient save: duplicate click prevention while saving', async () => {
+    const sandbox = makePatientSandbox({
+      regions: [{ id: 'r1', patientLabel: 'Back' }],
+      intensity: 7,
+      quality: [],
+      triggers: [],
+      easesAfter: [],
+      note: ''
+    });
+    sandbox.state.patientStep = 'review';
+    sandbox.document.getElementById = (id) => {
+      if (id === 'btnPatientSave') return { disabled: false, textContent: 'Save Pain Entry' };
+      if (id === 'patientSaveConfirm') return { hidden: true, textContent: '' };
+      return null;
+    };
+    let calls = 0;
+    let release;
+    const gate = new Promise((resolve) => {
+      release = resolve;
+    });
+    sandbox.saveCurrentEntry = async () => {
+      calls += 1;
+      await gate;
+      return { id: 'saved-2' };
+    };
+    const p1 = sandbox.savePatientEntry();
+    const p2 = sandbox.savePatientEntry();
+    release({ id: 'saved-2' });
+    const [a, b] = await Promise.all([p1, p2]);
+    assert.equal(calls, 1);
+    assert.ok(a);
+    assert.equal(b, null);
+  });
+
+  test('patient describe chips map to store quality values', () => {
+    const sandbox = makePatientSandbox({
+      regions: [{ id: 'r1', patientLabel: 'Shoulder' }],
+      intensity: 5,
+      quality: [],
+      triggers: [],
+      easesAfter: [],
+      note: ''
+    });
+    const values = sandbox.__patientDescribe.QUALITY_CHIPS.map((c) => c.value);
+    assert.ok(values.includes('Ache'));
+    assert.ok(values.includes('Burning'));
+    assert.ok(values.includes('Sharp'));
+    assert.ok(values.includes('Throbbing'));
+    assert.ok(values.includes('Tingling'));
+    assert.ok(values.includes('Numbness'));
+    assert.ok(values.includes('Pressure'));
+  });
+
+  test('patient describe pushToFormAndStore updates shared entryStore', () => {
+    const sandbox = makePatientSandbox({
+      regions: [{ id: 'r1', patientLabel: 'Hip' }],
+      intensity: 5,
+      quality: [],
+      triggers: [],
+      easesAfter: [],
+      note: ''
+    });
+    // Minimal DOM: selected quality chip + intensity + note
+    const selected = { classList: { contains: () => true } };
+    sandbox.document.querySelector = (sel) => {
+      if (String(sel).includes('data-patient-quality="Sharp"')) return selected;
+      if (String(sel).includes('[data-patient-quality')) return selected;
+      return null;
+    };
+    sandbox.document.querySelectorAll = () => [];
+    const fields = {
+      patientIntensitySlider: { value: '8' },
+      intensitySlider: { value: '5' },
+      patientNoteInput: { value: 'Started after walking' },
+      notesInput: { value: '' },
+      occurrenceSelect: { value: '' },
+      durationSelect: { value: '' }
+    };
+    sandbox.document.getElementById = (id) => fields[id] || null;
+    sandbox.setActivePills = () => {};
+    sandbox.updateIntensityUI = () => {};
+    sandbox.__patientDescribe.pushToFormAndStore();
+    const entry = sandbox.entryStore.getActiveEntry();
+    assert.equal(entry.intensity, 8);
+    assert.ok(Array.isArray(entry.quality));
+    assert.ok(entry.quality.includes('Sharp'));
+    assert.equal(entry.note, 'Started after walking');
+  });
+
+  test('presentation mode switching updates body shell class contract', () => {
+    const sandbox = createSandbox();
+    loadScript('src/state/presentation.js', sandbox);
+    sandbox.state = { presentationMode: 'patient', workflowMode: 'capture' };
+    const body = {
+      classList: {
+        _set: new Set(['shell-patient']),
+        remove(...names) { names.forEach((n) => this._set.delete(n)); },
+        add(...names) { names.forEach((n) => this._set.add(n)); },
+        contains(n) { return this._set.has(n); },
+        toggle(n, on) { if (on) this._set.add(n); else this._set.delete(n); }
+      },
+      dataset: {}
+    };
+    sandbox.document.body = body;
+    sandbox.document.querySelectorAll = () => [];
+    sandbox.document.getElementById = () => null;
+    sandbox.applyPresentationMode('clinician');
+    assert.equal(sandbox.state.presentationMode, 'clinician');
+    assert.ok(body.classList.contains('shell-clinician'));
+    assert.equal(body.classList.contains('shell-patient'), false);
+    sandbox.applyPresentationMode('patient');
+    assert.equal(sandbox.state.presentationMode, 'patient');
+    assert.ok(body.classList.contains('shell-patient'));
+  });
+
+  test('index.html: patient shell does not duplicate IDs; clinician controls marked', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const ids = [...html.matchAll(/id="([^"]+)"/g)].map((m) => m[1]);
+    const counts = ids.reduce((acc, id) => { acc[id] = (acc[id] || 0) + 1; return acc; }, {});
+    const dups = Object.entries(counts).filter(([, n]) => n > 1).map(([id]) => id);
+    assert.deepEqual(dups, []);
+    assert.ok(html.includes('id="patientDescribeMount"'));
+    assert.ok(html.includes('clinical-doc-panel'));
+    assert.ok(html.includes('shell-only-clinician'));
+    assert.ok(html.includes('shell-only-patient'));
+    assert.ok(html.includes('Developer / demo') || html.includes('Experience mode'));
+    // Patient describe should not reuse clinical panel markup as the sheet body
+    const describeMountIdx = html.indexOf('id="patientDescribeMount"');
+    const clinicalIdx = html.indexOf('clinical-doc-panel');
+    assert.ok(describeMountIdx > 0 && clinicalIdx > describeMountIdx);
   });
 }
 

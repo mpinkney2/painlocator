@@ -174,12 +174,18 @@ function confirmEmptyDaySave(entry) {
   });
 }
 
-async function saveCurrentEntry() {
+/**
+ * Persist the active entry.
+ * @param {{ quiet?: boolean }} [options] - quiet: suppress toasts (caller handles UX)
+ * @returns {Promise<object|null>} saved entry or null on cancel/validation/failure
+ */
+async function saveCurrentEntry(options = {}) {
+  const quiet = Boolean(options && options.quiet);
   recordAppAction?.('save_entry');
   syncFormToActiveEntry();
   const entry = entryStore.getActiveEntry();
   if (!entry) {
-    showToast?.('Nothing to save yet. Mark the anatomy or start a new entry.', { type: 'warning' });
+    if (!quiet) showToast?.('Nothing to save yet. Mark the anatomy or start a new entry.', { type: 'warning' });
     return null;
   }
 
@@ -191,13 +197,15 @@ async function saveCurrentEntry() {
       || (entry.triggers || []).length
       || String(entry.note || '').trim();
     if (!intentional) {
-      showToast?.('Mark at least one location on the body before saving.', { type: 'warning', assertive: true });
-      document.getElementById('saveValidationHint')?.focus?.();
+      if (!quiet) {
+        showToast?.('Mark at least one location on the body before saving.', { type: 'warning', assertive: true });
+        document.getElementById('saveValidationHint')?.focus?.();
+      }
       return null;
     }
     allowEmpty = await confirmEmptyDaySave(entry);
     if (!allowEmpty) {
-      showToast?.('Save cancelled. Mark a location or adjust the entry.', { type: 'info' });
+      if (!quiet) showToast?.('Save cancelled. Mark a location or adjust the entry.', { type: 'info' });
       return null;
     }
   }
@@ -206,7 +214,7 @@ async function saveCurrentEntry() {
   const saved = entryStore.saveActiveEntry({ allowEmpty });
   if (saved) {
     const num = entryStore.getEntryNumber(saved);
-    showToast?.(`Pain entry #${num} saved.`, { type: 'success' });
+    if (!quiet) showToast?.(`Pain entry #${num} saved.`, { type: 'success' });
     setSaveStatus?.('saved');
     trackEvent?.('entry_saved');
     entryStore.clearActiveDraft?.();
@@ -217,7 +225,7 @@ async function saveCurrentEntry() {
     showAnatomyTip?.();
   } else {
     setSaveStatus?.('failed');
-    showToast?.('Could not save entry.', { type: 'error', assertive: true });
+    if (!quiet) showToast?.('Could not save entry.', { type: 'error', assertive: true });
   }
   refreshUI();
   return saved;
