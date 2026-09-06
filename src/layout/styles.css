@@ -1067,6 +1067,10 @@ body.theme-dark .timeline-panel {
 .cae-image-frame {
   position: absolute;
   pointer-events: none;
+}
+
+.cae-image-frame.cae-enlarged,
+body.anatomy-enlarged .cae-image-frame {
   will-change: left, top, width, height;
 }
 
@@ -1117,11 +1121,15 @@ body.theme-dark .timeline-panel {
   display: flex;
   gap: 4px;
   padding: 4px;
-  background: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+  background: var(--surface-elevated);
   border: 1px solid var(--border);
   border-radius: 8px;
-  backdrop-filter: blur(8px);
   align-items: center;
+}
+
+body.shell-clinician .region-tools {
+  background: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .region-tool-divider {

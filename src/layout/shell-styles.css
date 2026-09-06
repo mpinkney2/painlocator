@@ -154,6 +154,9 @@ body.shell-patient .center-panel {
 body.shell-patient .center-workspace {
   gap: 8px;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 body.shell-patient .avatar-wrap,
@@ -161,10 +164,29 @@ body.shell-patient .anatomy-viewer {
   flex: 1 1 auto;
   min-height: var(--patient-anatomy-min-height);
   max-height: none;
+  /* Keep silhouette centered — patient chrome lives outside this flex row */
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  /* Clear fixed tool dock + locate CTA */
+  padding-bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
 }
 
 body.shell-patient .avatar-stage {
-  min-height: clamp(320px, 72vh, 860px);
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(280px, 58vh, 760px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.shell-patient .avatar-stage .cae-clinical-viewport,
+body.shell-patient .avatar-stage .cae-image-frame {
+  margin-inline: auto;
 }
 
 /* Simplified header */
@@ -181,6 +203,11 @@ body.shell-patient .toggle-label-sm {
   display: none !important;
 }
 
+/* Patient uses the step indicator as primary nav — hide desktop workflow tabs */
+body.shell-patient .workflow-toggle {
+  display: none !important;
+}
+
 body.shell-patient .workflow-toggle .toggle-buttons {
   border-radius: 999px;
   padding: 3px;
@@ -192,6 +219,14 @@ body.shell-patient .workflow-toggle .btn-toggle {
   font-size: 12px;
   border-radius: 999px;
 }
+
+/* If workflow tabs are re-enabled later, keep Locate → Describe → Review order */
+body.shell-patient .workflow-toggle .toggle-buttons {
+  display: flex;
+}
+body.shell-patient #btnCaptureWF { order: 1; }
+body.shell-patient #btnClinicalWF { order: 2; }
+body.shell-patient #btnReviewWF { order: 3; }
 
 body.shell-patient .header-actions .btn-ghost:not(#btnThemeToggle):not(#btnHelpMenu):not(#btnFeedback):not(#btnHeaderDemo) {
   /* Keep theme, help, feedback; hide less-used desktop chrome */
@@ -209,9 +244,11 @@ body.shell-patient .capture-tools .region-tool[data-tool="polygon"] {
   display: none !important;
 }
 
+body.shell-patient .region-tools.capture-tools,
 body.shell-patient .capture-tools {
   top: auto;
-  bottom: 12px;
+  /* Sit above the fixed locate CTA — avoid overlap / “dragging” hit targets */
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   flex-wrap: wrap;
@@ -220,6 +257,12 @@ body.shell-patient .capture-tools {
   padding: 6px;
   border-radius: 999px;
   gap: 4px;
+  /* Solid surface — backdrop-filter feels laggy on mobile */
+  background: var(--surface, #fff);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.1));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  touch-action: manipulation;
 }
 
 body.shell-patient .capture-tools .region-tool {
@@ -270,19 +313,25 @@ body.shell-patient .quick-view-bar .view-btn {
   justify-content: space-between;
   gap: 12px;
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  background: var(--surface, #fff);
   border-top: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+  /* No backdrop-filter — major mobile jank source */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+  touch-action: manipulation;
 }
 
-body.shell-patient:not(.patient-step-locate) #patientLocateCta {
+body.shell-patient:not(.patient-step-locate) #patientLocateCta,
+body.shell-patient #patientLocateCta[hidden] {
   display: none !important;
 }
 
+#patientLocateCta .patient-locate-prompt,
 #patientLocateCta .patient-locate-copy {
   flex: 1;
   min-width: 0;
+  margin: 0;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
@@ -297,6 +346,13 @@ body.shell-patient:not(.patient-step-locate) #patientLocateCta {
   font-weight: 700;
   border-radius: 999px;
   flex-shrink: 0;
+  touch-action: manipulation;
+}
+
+/* Hide validation hint once Continue is enabled */
+body.shell-patient #btnPatientNextDescribe:not(:disabled) ~ .patient-locate-hint,
+body.shell-patient #patientLocateCta.has-location .patient-locate-hint {
+  display: none !important;
 }
 
 /* Bottom sheet — describe & review steps */
@@ -307,7 +363,7 @@ body.shell-patient:not(.patient-step-locate) #patientLocateCta {
   background: var(--overlay-backdrop);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.24s ease;
+  transition: opacity 0.16s ease;
 }
 
 body.shell-patient.patient-step-describe #patientSheetBackdrop,
@@ -330,7 +386,7 @@ body.shell-patient.patient-step-review #patientSheetBackdrop {
   border-top-right-radius: var(--radius-sheet, 20px);
   box-shadow: var(--shadow-sheet);
   transform: translateY(100%);
-  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow: hidden;
 }
 
@@ -841,19 +897,9 @@ body.shell-consult.shell-clinician #accAIOverlays {
     display: none;
   }
 
+  /* Workflow tabs stay hidden — step indicator is patient nav */
   body.shell-patient .workflow-toggle {
-    flex: 1;
-    justify-content: center;
-  }
-
-  body.shell-patient .workflow-toggle .toggle-buttons {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  body.shell-patient .workflow-toggle .btn-toggle {
-    flex: 1;
-    padding-inline: 8px;
+    display: none !important;
   }
 
   body.shell-patient #patientSheet {
@@ -989,8 +1035,12 @@ body.shell-clinician .shell-only-patient {
 /* ---- Patient native Describe / Review sheet (Product Experience V1 harden) ---- */
 body.shell-patient #patientStepIndicator:not([hidden]) {
   display: block;
-  margin: 0 0 8px;
-  padding: 0 4px;
+  flex: 0 0 auto;
+  width: 100%;
+  margin: 4px 0 8px;
+  padding: 0 8px;
+  position: relative;
+  z-index: 2;
 }
 body.shell-patient .patient-step-list {
   display: flex;

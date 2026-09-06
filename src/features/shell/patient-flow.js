@@ -486,7 +486,14 @@
     }
 
     if (locateCta) locateCta.hidden = step !== 'locate';
-    if (nextDescribe) nextDescribe.disabled = !activeHasLocations();
+    var hasLocations = activeHasLocations();
+    if (nextDescribe) nextDescribe.disabled = !hasLocations;
+    if (locateCta) locateCta.classList.toggle('has-location', hasLocations);
+    var locateHint = document.getElementById('patientLocateHint');
+    if (locateHint) {
+      locateHint.hidden = hasLocations;
+      locateHint.setAttribute('aria-hidden', hasLocations ? 'true' : 'false');
+    }
     if (describeBar) describeBar.hidden = step !== 'describe';
 
     var showSheet = step === 'describe' || step === 'review';
