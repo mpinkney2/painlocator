@@ -198,6 +198,8 @@ Covered in `scripts/run-tests.mjs`:
 - `canonicalBodyXYZ` not persisted yet (intentional)  
 - Camera framing not re-tuned for conformed AABB (minor)
 
+**Hardening follow-up:** see [`SPATIAL_PHASE2_SLICE5_HARDENING.md`](./SPATIAL_PHASE2_SLICE5_HARDENING.md) for remount stability (0 mm), region error table, ownership model, rejected landmark-conformer v2, and Slice 6 recommendation.
+
 ---
 
 ## Verdict

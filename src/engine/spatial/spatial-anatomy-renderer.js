@@ -204,8 +204,10 @@
       });
       if (!keepAttachments) {
         this._attachments.clear();
-        this._canonicalDebug.clear();
       }
+      // Canonical debug is mount-session only — always clear on teardown so remounts
+      // cannot leave stale XYZ attached to prior region ids.
+      this._canonicalDebug.clear();
     }
 
     /**
@@ -226,18 +228,23 @@
         CanonicalBodyFlag.resolveCanonicalAlignmentValidation() &&
         this._presentationMode() !== "patient";
 
-      if (typeof CanonicalBodyFrame !== "function" || typeof ExteriorCanonicalConformer === "undefined") {
+      if (
+        typeof CanonicalBodyFrame !== "function" ||
+        typeof ExteriorCanonicalConformer === "undefined" ||
+        typeof CanonicalBodyLoader === "undefined"
+      ) {
         console.warn("[CAE Spatial] canonical mode requested but modules missing — continuing without it");
         return;
       }
 
+      const mountToken = this._mountGeneration;
       const t0 =
         typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
       let frame = null;
       try {
-        frame = new CanonicalBodyFrame(this.THREE, this.scene);
+        frame = new CanonicalBodyFrame(this.THREE, this.scene, { mountToken });
         await frame.load();
-        if (this.disposed) {
+        if (this.disposed || mountToken !== this._mountGeneration) {
           frame.dispose();
           return;
         }
@@ -257,6 +264,14 @@
           exteriorRoot.updateMatrixWorld(true);
           throw applyErr;
         }
+        if (this.disposed || mountToken !== this._mountGeneration) {
+          exteriorRoot.position.copy(bak.position);
+          exteriorRoot.quaternion.copy(bak.quaternion);
+          exteriorRoot.scale.copy(bak.scale);
+          exteriorRoot.updateMatrixWorld(true);
+          frame.dispose();
+          return;
+        }
         this.scene.requestFrame?.();
 
         this.canonicalFrame = frame;
@@ -264,6 +279,7 @@
         this._canonicalPerf = {
           loadMs: frame.getMeta().loadMs,
           byteLength: frame.getMeta().byteLength,
+          fromCache: frame.getMeta().fromCache,
           totalMs:
             (typeof performance !== "undefined" && performance.now ? performance.now() : Date.now()) -
             t0
@@ -302,6 +318,7 @@
         }
         this.canonicalFrame = null;
         this.canonicalBodyMode = false;
+        this._canonicalDebug.clear();
       }
     }
 
