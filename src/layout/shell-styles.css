@@ -1368,3 +1368,88 @@ body.shell-patient .patient-summary-dl dt { color: var(--text-muted); font-weigh
 body.shell-patient .patient-summary-dl dd { margin: 0; text-align: right; font-weight: 700; }
 body.shell-patient .patient-optional { font-weight: 500; color: var(--text-muted); }
 body.shell-patient .patient-empty { color: var(--text-muted); }
+
+
+/* —— Clinician Spatial anatomy depth (Slice 3) —— */
+.anatomy-depth-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0 0 8px;
+}
+.anatomy-depth-btn {
+  appearance: none;
+  border: 1px solid var(--border-subtle, #cbd5e1);
+  background: var(--surface-elevated, #fff);
+  color: var(--text-primary, #0f172a);
+  border-radius: 6px;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.anatomy-depth-btn.is-active,
+.anatomy-depth-btn[aria-checked="true"] {
+  border-color: var(--accent-border, #64748b);
+  background: var(--accent-soft, #e2e8f0);
+  color: var(--text-primary, #0f172a);
+  box-shadow: inset 0 0 0 1px var(--accent-border, #94a3b8);
+}
+.anatomy-depth-btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.anatomy-depth-status {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--text-muted, #64748b);
+}
+.anatomy-depth-note {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--text-muted, #64748b);
+}
+.anatomy-context-block {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle, #e2e8f0);
+}
+.anatomy-context-heading {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted, #64748b);
+}
+.anatomy-context-empty,
+.anatomy-context-meta,
+.anatomy-context-disclaimer {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted, #64748b);
+  line-height: 1.35;
+}
+.anatomy-context-name {
+  margin: 0 0 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+}
+.anatomy-context-disclaimer {
+  margin-top: 6px;
+  font-style: italic;
+}
+body.theme-dark .anatomy-depth-btn {
+  background: var(--surface-elevated, #1e293b);
+  border-color: var(--border-subtle, #334155);
+  color: var(--text-primary, #e2e8f0);
+}
+body.theme-dark .anatomy-depth-btn.is-active,
+body.theme-dark .anatomy-depth-btn[aria-checked="true"] {
+  background: #334155;
+  border-color: #94a3b8;
+}

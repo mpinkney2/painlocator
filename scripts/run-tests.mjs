@@ -931,6 +931,184 @@ console.log('PainLocator tests\n');
   });
 }
 
+
+// --- Phase 2 Slice 3: clinician spatial layers ---
+{
+  const sandbox = {
+    console,
+    Math,
+    Object,
+    Number,
+    Array,
+    Map,
+    Set,
+    JSON,
+    Error,
+    Promise,
+    window: {},
+    document: {}
+  };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/spatial/spatial-layer-loader.js', sandbox);
+  const L = sandbox.SpatialLayerLoader;
+
+  test('spatial layers: patient presentation is blocked from pack loads', () => {
+    assert.equal(L.isPatientBlocked('patient'), true);
+    assert.equal(L.isPatientBlocked('clinician'), false);
+    // Async rejection is expected; attach handler and rely on the sync gate above.
+    const pending = L.loadLayerPack({}, 'muscle', { presentationMode: 'patient' });
+    pending.then(
+      () => {
+        throw new Error('patient pack load should reject');
+      },
+      (err) => {
+        assert.match(String(err && err.message), /clinician-only/);
+      }
+    );
+    assert.equal(typeof L.loadLayerPack, 'function');
+  });
+
+  test('spatial layers: registration config requires rigid transform', () => {
+    assert.throws(() => L.validateRegistrationConfig(null), /missing/);
+    assert.throws(
+      () => L.validateRegistrationConfig({ sourceModelId: 'a', targetModelId: 'b' }),
+      /scale/
+    );
+    const ok = L.validateRegistrationConfig({
+      sourceModelId: 'bp3d-prototype-shoulder',
+      targetModelId: 'adult-male',
+      transform: { scale: 1.00875, translation: [-0.08, 0.08, -0.07], rotationEuler: [0, 0, 0] },
+      validation: { status: 'pass-preview', stopConditionTriggered: false }
+    });
+    assert.equal(ok.transform.scale, 1.00875);
+  });
+
+  test('spatial layers: REGISTRATION FAILED stop condition', () => {
+    assert.throws(
+      () =>
+        L.validateRegistrationConfig({
+          sourceModelId: 'bp3d-prototype-shoulder',
+          targetModelId: 'adult-male',
+          transform: { scale: 1, translation: [0, 0, 0] },
+          validation: { status: 'fail', stopConditionTriggered: true }
+        }),
+      /REGISTRATION FAILED/
+    );
+  });
+
+  test('spatial layers: shipped registration + prototype assets exist', () => {
+    const reg = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/registration/bp3d-shoulder-adult-male.json'), 'utf8')
+    );
+    L.validateRegistrationConfig(reg);
+    assert.equal(reg.sourceModelId, 'bp3d-prototype-shoulder');
+    assert.equal(reg.targetModelId, 'adult-male');
+    assert.equal(reg.validation.status, 'pass-preview');
+    assert.equal(reg.validation.stopConditionTriggered, false);
+    assert.ok(reg.transform.scale > 0.9 && reg.transform.scale < 1.2);
+
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/prototype-bp3d/manifest.json'), 'utf8')
+    );
+    assert.equal(manifest.modelId, 'bp3d-prototype-shoulder');
+    assert.ok(manifest.layers.muscle.meshes.some((m) => m.structureId === 'FMA:34683'));
+    assert.ok(manifest.layers.skeletal.meshes.some((m) => m.structureId === 'FMA:23131'));
+
+    const muscle = statSync(join(root, 'public/anatomy/spatial/prototype-bp3d/muscle.glb')).size;
+    const skeletal = statSync(join(root, 'public/anatomy/spatial/prototype-bp3d/skeletal.glb')).size;
+    assert.ok(muscle > 10_000 && muscle < 500_000, `muscle payload unexpected: ${muscle}`);
+    assert.ok(skeletal > 10_000 && skeletal < 500_000, `skeletal payload unexpected: ${skeletal}`);
+
+    const catalog = JSON.parse(readFileSync(join(root, 'public/anatomy/spatial/manifest.json'), 'utf8'));
+    assert.equal(catalog.defaultModelId, 'adult-male');
+    assert.ok(!JSON.stringify(catalog).includes('prototype-bp3d'));
+  });
+
+  test('spatial layers: pack cache helpers start empty', () => {
+    L.clearPackCache();
+    assert.equal(L.hasCachedPack('muscle'), false);
+    assert.equal(L.getCachedPack('skeletal'), null);
+    assert.deepEqual(Object.keys(L.LAYER_FILES).sort(), ['muscle', 'skeletal']);
+  });
+
+  test('spatial layers: controller patient guard defaults to surface', () => {
+    loadScript('src/engine/spatial/spatial-layer-controller.js', sandbox);
+    const C = sandbox.SpatialLayerController;
+    const fakeScene = {
+      bodyRoot: { add() {}, children: [] },
+      markerRoot: {},
+      canvas: { getBoundingClientRect: () => ({ left: 0, top: 0, width: 100, height: 100 }) },
+      camera: {},
+      raycaster: { setFromCamera() {}, intersectObjects: () => [] },
+      _pointer: { x: 0, y: 0 },
+      requestFrame() {},
+      _exterior: null
+    };
+    const fakeTHREE = {
+      Group: class {
+        constructor() {
+          this.children = [];
+          this.name = '';
+          this.visible = true;
+          this.userData = {};
+        }
+        add() {}
+      },
+      MeshStandardMaterial: class {
+        constructor(opts) {
+          Object.assign(this, opts);
+          this.color = { setHex() {} };
+          this.emissive = { setHex() {} };
+        }
+      },
+      MeshBasicMaterial: class {
+        constructor(opts) {
+          Object.assign(this, opts);
+        }
+      },
+      BufferGeometry: class {
+        setFromPoints() {
+          return this;
+        }
+      },
+      LineBasicMaterial: class {},
+      Line: class {},
+      Vector2: class {
+        constructor(x = 0, y = 0) {
+          this.x = x;
+          this.y = y;
+        }
+      },
+      Vector3: class {
+        constructor(x = 0, y = 0, z = 0) {
+          this.x = x;
+          this.y = y;
+          this.z = z;
+        }
+        clone() {
+          return new fakeTHREE.Vector3(this.x, this.y, this.z);
+        }
+      }
+    };
+    const ctrl = new C(fakeScene, fakeTHREE, { presentationMode: 'patient' });
+    assert.equal(ctrl.getDepth(), 'surface');
+  });
+
+  test('index.html: clinician layer controls are shell-gated', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('id="clinicianLayerControls"'));
+    assert.ok(html.includes('shell-only-clinician'));
+    assert.ok(html.includes('data-anatomy-depth="muscle"'));
+    assert.ok(html.includes('data-anatomy-depth="skeletal"'));
+    assert.ok(/Anatomical context only/i.test(html));
+    assert.ok(!/Likely pain source|Probable structure|Diagnosis:/i.test(html));
+    assert.ok(html.includes('spatial-layer-loader.js'));
+    assert.ok(html.includes('spatial-layer-controller.js'));
+  });
+}
+
 // --- BodyParts3D Phase 2 Slice 2 prototype integrity (offline pack) ---
 {
   const { spawnSync } = await import('node:child_process');

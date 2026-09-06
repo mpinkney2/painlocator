@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.0.0",
+  "registrationId": "bp3d-prototype-shoulder→adult-male",
+  "sourceModelId": "bp3d-prototype-shoulder",
+  "targetModelId": "adult-male",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "targetAssetVersion": "painlocator-interim-exterior-2026-09-06",
+  "method": "rigid-uniform-scale-rotation-translation",
+  "units": "meters",
+  "coordinateSystem": "y-up-right-handed",
+  "transform": {
+    "scale": 1.00875,
+    "rotationEuler": [0, 0, 0],
+    "rotationOrder": "XYZ",
+    "translation": [-0.08792, 0.08678, -0.0763]
+  },
+  "derivation": {
+    "summary": "Rigid alignment of the BP3D left-shoulder prototype to the interim adult-male exterior using humerus length for uniform scale and shoulder/upper-arm centroids for translation. No nonlinear warp.",
+    "landmarks": {
+      "sourcePrimary": {
+        "meshId": "bone.humerus.left",
+        "structureId": "FMA:23131",
+        "centroidMeters": [-0.19042, 1.18286, 0.07564],
+        "sizeMeters": [0.1007, 0.30731, 0.04918]
+      },
+      "targetPrimary": {
+        "meshIds": ["surface.shoulderL", "surface.upperArmL"],
+        "midCentroidMeters": [-0.28, 1.28, 0],
+        "combinedRegion": {
+          "center": [-0.27194, 1.2325, 0],
+          "size": [0.18387, 0.415, 0.12]
+        }
+      }
+    },
+    "scaleRule": "uniformScale = target.surface.upperArmL.size.y / source.bone.humerus.left.size.y ≈ 0.31000 / 0.30731",
+    "translationRule": "translation = target.shoulderArmMidCentroid - (source.humerusCentroid * uniformScale)",
+    "rotationRule": "Identity — both packs are already Y-up, +X anatomical right after Slice 2 orientation normalization.",
+    "derivedAt": "2026-09-06T21:10:00Z"
+  },
+  "validation": {
+    "status": "pass-preview",
+    "credibleForClinicianPreview": true,
+    "clinicalPrecisionClaimed": false,
+    "stopConditionTriggered": false,
+    "checks": [
+      {
+        "id": "laterality-left",
+        "pass": true,
+        "detail": "Transformed skeletal centroid X remains negative (left)."
+      },
+      {
+        "id": "humerus-length-scale",
+        "pass": true,
+        "detail": "Uniform scale within 1% of exterior upper-arm length."
+      },
+      {
+        "id": "shoulder-region-overlap",
+        "pass": true,
+        "detail": "Transformed skeletal AABB overlaps exterior shoulder+upperArm region with humerus centroid mapped to shoulder/arm midpoint."
+      },
+      {
+        "id": "clavicle-scapula-relationship",
+        "pass": true,
+        "detail": "After transform, clavicle remains superior/medial to humerus; scapula posterior-medial — anatomically plausible on the interim mannequin."
+      }
+    ],
+    "metrics": {
+      "transformedSkeletalAabb": {
+        "min": [-0.33079, 1.125, -0.08142],
+        "max": [-0.09637, 1.45383, 0.07206],
+        "center": [-0.21358, 1.28941, -0.00468],
+        "size": [0.23442, 0.32883, 0.15349]
+      },
+      "targetShoulderRegionAabb": {
+        "min": [-0.36387, 1.025, -0.06],
+        "max": [-0.18, 1.44, 0.06],
+        "center": [-0.27194, 1.2325, 0],
+        "size": [0.18387, 0.415, 0.12]
+      },
+      "humerusCentroidDistanceToShoulderArmMidMeters": 0,
+      "payloadBytes": {
+        "muscleGlb": 89904,
+        "skeletalGlb": 115888
+      }
+    },
+    "warnings": [
+      "Target exterior is an interim procedural mannequin, not a BodyParts3D-derived surface — expect silhouette/soft-tissue mismatch.",
+      "Rigid registration cannot correct mannequin limb proportions vs cadaveric BP3D geometry.",
+      "Z depth of the interim exterior is shallow relative to scapular thickness; some posterior muscle may sit slightly outside the ghost silhouette.",
+      "Do not claim clinical-precision co-registration or diagnostic localization from this transform."
+    ],
+    "reportRef": "./bp3d-shoulder-adult-male.validation.json",
+    "docsRef": "docs/SPATIAL_PHASE2_SLICE3_REGISTRATION.md"
+  }
+}

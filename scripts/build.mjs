@@ -36,6 +36,16 @@ if (!existsSync(spatialGlb) || !existsSync(spatialManifest)) {
   process.exit(1);
 }
 
+const layerMuscle = join(dist, 'anatomy', 'spatial', 'prototype-bp3d', 'muscle.glb');
+const layerSkeletal = join(dist, 'anatomy', 'spatial', 'prototype-bp3d', 'skeletal.glb');
+const layerManifest = join(dist, 'anatomy', 'spatial', 'prototype-bp3d', 'manifest.json');
+const layerReg = join(dist, 'anatomy', 'spatial', 'registration', 'bp3d-shoulder-adult-male.json');
+if (![layerMuscle, layerSkeletal, layerManifest, layerReg].every((p) => existsSync(p))) {
+  console.error('Build verification failed: missing clinician BP3D layer packs / registration');
+  process.exit(1);
+}
+
+
 console.log('Build complete → dist/');
 console.log('  index.html');
 console.log('  src/');

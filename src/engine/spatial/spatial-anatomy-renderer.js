@@ -27,6 +27,7 @@
       this.mountEl = null;
       this.scene = null;
       this.annotations = null;
+      this.layerController = null;
       this.THREE = null;
       this.ready = false;
       this.disposed = false;
@@ -79,6 +80,7 @@
         }
 
         this.annotations = new SpatialAnnotationLayer(this.scene, this.THREE);
+        this._initLayerController();
         this._bindPointer();
         if (this.store?.onChange) {
           this._onStoreChange = () => {
@@ -146,6 +148,13 @@
         this.store.offChange(this._onStoreChange);
       }
       this._onStoreChange = null;
+      this.layerController?.dispose?.();
+      this.layerController = null;
+      const accordion = document.getElementById("accAnatomyDepth");
+      if (accordion) accordion.hidden = true;
+      const controls = document.getElementById("clinicianLayerControls");
+      if (controls) controls.hidden = true;
+      this._updateAnatomyContextPanel(null);
       this.annotations?.dispose?.();
       this.scene?.dispose?.();
       this.annotations = null;
@@ -259,6 +268,13 @@
     }
 
     _tap(clientX, clientY) {
+      // Clinician layer structure pick takes priority when Muscle/Skeletal is active.
+      if (this.layerController && this.layerController.getDepth() !== "surface") {
+        const picked = this.layerController.pickStructure(clientX, clientY);
+        if (picked) return;
+        // Empty layer click clears selection; still allow exterior pain placement below.
+      }
+
       const hit = this.scene.raycastClient(clientX, clientY);
       if (!hit) return;
 
@@ -425,6 +441,145 @@
         });
       }
     }
+
+    _presentationMode() {
+      if (typeof state !== "undefined" && state.presentationMode) {
+        return state.presentationMode === "patient" ? "patient" : "clinician";
+      }
+      if (document.body.classList.contains("shell-patient")) return "patient";
+      return "clinician";
+    }
+
+    _initLayerController() {
+      this.layerController?.dispose?.();
+      this.layerController = null;
+      if (this._presentationMode() === "patient") return;
+      if (typeof SpatialLayerController !== "function") return;
+
+      const params = new URLSearchParams(location.search || "");
+      const validationMode = params.get("spatialLayerValidation") === "1";
+
+      this.layerController = new SpatialLayerController(this.scene, this.THREE, {
+        presentationMode: this._presentationMode(),
+        validationMode,
+        onChange: (evt) => this._onLayerChange(evt),
+        onError: (err) => this._onLayerError(err)
+      });
+
+      const accordion = document.getElementById("accAnatomyDepth");
+      if (accordion) accordion.hidden = false;
+      const controls = document.getElementById("clinicianLayerControls");
+      if (controls) controls.hidden = false;
+      this._bindLayerControlUi();
+      this._syncLayerControlUi("surface", false);
+      this._updateAnatomyContextPanel(null);
+    }
+
+    _bindLayerControlUi() {
+      if (this._layerUiBound) return;
+      this._layerUiBound = true;
+      const controls = document.getElementById("clinicianLayerControls");
+      controls?.addEventListener("click", (e) => {
+        const btn = e.target.closest?.("[data-anatomy-depth]");
+        if (!btn) return;
+        const depth = btn.getAttribute("data-anatomy-depth");
+        if (!depth) return;
+        this.setAnatomyDepth(depth);
+      });
+      document.getElementById("btnClearAnatomySelection")?.addEventListener("click", () => {
+        this.layerController?.clearSelection?.();
+        this._updateAnatomyContextPanel(null);
+      });
+    }
+
+    _onLayerChange(evt) {
+      this._syncLayerControlUi(evt.depth, !!evt.loading);
+      this._updateAnatomyContextPanel(evt.selected || null);
+      this.annotations?.setPainMarkerDepthBoost?.(evt.depth !== "surface");
+      this.scene?.requestFrame?.();
+    }
+
+    _onLayerError(err) {
+      console.warn("[CAE Spatial] layer pack failed — reverting to Surface", err);
+      const msg =
+        err?.code === "REGISTRATION_FAILED"
+          ? "Anatomy layer registration failed. Showing surface only."
+          : "Anatomy layer unavailable. Showing surface only.";
+      if (typeof showToast === "function") showToast(msg, { tone: "warning" });
+      this._syncLayerControlUi("surface", false);
+      this._updateAnatomyContextPanel(null);
+    }
+
+    async setAnatomyDepth(depth) {
+      if (!this.layerController) return { ok: false, reason: "unavailable" };
+      return this.layerController.setDepth(depth);
+    }
+
+    getAnatomyDepth() {
+      return this.layerController?.getDepth?.() || "surface";
+    }
+
+    _syncLayerControlUi(depth, loading = false) {
+      const root = document.getElementById("clinicianLayerControls");
+      if (!root) return;
+      root.dataset.loading = loading ? "true" : "false";
+      root.querySelectorAll("[data-anatomy-depth]").forEach((btn) => {
+        const on = btn.getAttribute("data-anatomy-depth") === depth;
+        btn.classList.toggle("is-active", on);
+        btn.setAttribute("aria-checked", on ? "true" : "false");
+        btn.disabled = !!loading && !on;
+      });
+      const live = document.getElementById("clinicianLayerStatus");
+      if (live) {
+        live.textContent = loading
+          ? "Loading anatomy layer…"
+          : depth === "surface"
+            ? "Surface"
+            : depth === "muscle"
+              ? "Muscle layer"
+              : "Skeletal layer";
+      }
+    }
+
+    _updateAnatomyContextPanel(selected) {
+      const empty = document.getElementById("anatomyContextEmpty");
+      const detail = document.getElementById("anatomyContextDetail");
+      const nameEl = document.getElementById("anatomyContextName");
+      const metaEl = document.getElementById("anatomyContextMeta");
+      const clearBtn = document.getElementById("btnClearAnatomySelection");
+      if (!detail || !empty) return;
+
+      if (!selected) {
+        empty.hidden = false;
+        detail.hidden = true;
+        if (clearBtn) clearBtn.hidden = true;
+        return;
+      }
+
+      empty.hidden = true;
+      detail.hidden = false;
+      if (clearBtn) clearBtn.hidden = false;
+      if (nameEl) {
+        nameEl.textContent =
+          selected.clinicalName || selected.structureName || selected.meshId || "Structure";
+      }
+      if (metaEl) {
+        const bits = [];
+        if (selected.structureId) bits.push(selected.structureId);
+        if (selected.layer) bits.push(selected.layer);
+        if (selected.laterality) bits.push(selected.laterality);
+        if (selected.meshId) bits.push(selected.meshId);
+        if (selected.sourceRepresentationId) bits.push(selected.sourceRepresentationId);
+        metaEl.textContent = bits.join(" · ");
+      }
+      const announce = document.getElementById("anatomyContextAnnounce");
+      if (announce) {
+        announce.textContent =
+          "Anatomical context: " +
+          (selected.clinicalName || selected.structureName || selected.meshId || "");
+      }
+    }
+
   }
 
   global.SpatialAnatomyRenderer = SpatialAnatomyRenderer;

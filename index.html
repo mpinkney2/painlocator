@@ -142,6 +142,24 @@
           </div>
         </div>
 
+
+        <!-- CLINICIAN ANATOMY DEPTH (Spatial) -->
+        <div class="accordion shell-only-clinician" id="accAnatomyDepth" hidden>
+          <button type="button" class="accordion-header" onclick="toggleAccordion('accAnatomyDepth')">
+            <span><i data-lucide="layers-2"></i> Anatomy depth</span>
+            <i data-lucide="chevron-down" class="chevron"></i>
+          </button>
+          <div class="accordion-content">
+            <div id="clinicianLayerControls" class="anatomy-depth-controls" role="radiogroup" aria-label="Anatomy depth" hidden>
+              <button type="button" class="anatomy-depth-btn is-active" role="radio" data-anatomy-depth="surface" aria-checked="true">Surface</button>
+              <button type="button" class="anatomy-depth-btn" role="radio" data-anatomy-depth="muscle" aria-checked="false">Muscle</button>
+              <button type="button" class="anatomy-depth-btn" role="radio" data-anatomy-depth="skeletal" aria-checked="false">Skeletal</button>
+            </div>
+            <p id="clinicianLayerStatus" class="anatomy-depth-status" aria-live="polite">Surface</p>
+            <p class="anatomy-depth-note">Clinician preview — left shoulder. Anatomical context only, not a diagnosis.</p>
+          </div>
+        </div>
+
         <!-- VISUALIZATION -->
         <div class="accordion" id="accVisualization">
           <button type="button" class="accordion-header" onclick="toggleAccordion('accVisualization')">
@@ -362,7 +380,18 @@
       <aside class="panel panel-right clinical-doc-panel">
         <div id="clinicianContextHeader" class="clinician-context-header shell-only-clinician">
           <p class="clinician-rail-label">Patient-reported pain</p>
-          <p class="clinician-context-sub">Anatomical context available in a later release</p>
+          <p class="clinician-context-sub">Marks stay on the exterior surface the patient indicated.</p>
+          <div class="anatomy-context-block" aria-labelledby="anatomyContextHeading">
+            <h3 id="anatomyContextHeading" class="anatomy-context-heading">Anatomical context</h3>
+            <p id="anatomyContextEmpty" class="anatomy-context-empty">Select Muscle or Skeletal, then click a structure.</p>
+            <div id="anatomyContextDetail" class="anatomy-context-detail" hidden>
+              <p id="anatomyContextName" class="anatomy-context-name"></p>
+              <p id="anatomyContextMeta" class="anatomy-context-meta"></p>
+              <p class="anatomy-context-disclaimer">Anatomical context only — not a diagnosis.</p>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnClearAnatomySelection" hidden>Clear selection</button>
+            </div>
+            <span id="anatomyContextAnnounce" class="sr-only" aria-live="polite"></span>
+          </div>
         </div>
         <h2 class="clinical-doc-title" id="clinicalDocTitle">Capture — Log Pain</h2>
         <p class="workflow-progress-hint" id="workflowProgressHint">Step 1 of 3 — Mark pain, set intensity, then save</p>
@@ -754,9 +783,11 @@
   <script src="src/engine/spatial/spatial-projection.js?v=5.7"></script>
   <script src="src/engine/spatial/spatial-three-loader.js?v=5.7"></script>
   <script src="src/engine/spatial/spatial-manifest-loader.js?v=5.7"></script>
-  <script src="src/engine/spatial/spatial-scene-controller.js?v=5.7"></script>
-  <script src="src/engine/spatial/spatial-annotation-layer.js?v=5.7"></script>
-  <script src="src/engine/spatial/spatial-anatomy-renderer.js?v=5.7"></script>
+  <script src="src/engine/spatial/spatial-layer-loader.js?v=5.8"></script>
+  <script src="src/engine/spatial/spatial-layer-controller.js?v=5.8"></script>
+  <script src="src/engine/spatial/spatial-scene-controller.js?v=5.8"></script>
+  <script src="src/engine/spatial/spatial-annotation-layer.js?v=5.8"></script>
+  <script src="src/engine/spatial/spatial-anatomy-renderer.js?v=5.8"></script>
 
   <!-- PainLocator app -->
   <script src="src/utils/theme-tokens.js?v=5.5"></script>
