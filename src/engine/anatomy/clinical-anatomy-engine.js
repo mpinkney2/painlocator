@@ -52,7 +52,9 @@ class ClinicalAnatomyEngine {
       markermoved: [],
       regionplaced: [],
       regionselected: [],
-      regionchanged: []
+      regionchanged: [],
+      displaymodechanged: [],
+      viewchanged: []
     };
 
     this.markerStore = config.markerStore || null;
@@ -64,8 +66,16 @@ class ClinicalAnatomyEngine {
     }
     this.prototypeRenderer = new PrototypeBodyRenderer(this);
 
+    /** @type {"plate"|"spatial"} plate remains default/fallback */
+    this.displayMode = config.displayMode === "spatial" ? "spatial" : "plate";
+    this.spatialRenderer = null;
+
     this.initDOM();
-    this.render();
+    if (this.displayMode === "spatial") {
+      this.setDisplayMode("spatial");
+    } else {
+      this.render();
+    }
   }
 
   on(event, callback) {
@@ -91,6 +101,23 @@ class ClinicalAnatomyEngine {
     if (config.activeLayers) this.activeLayers = { ...this.activeLayers, ...config.activeLayers };
     if (config.visualization) this.visualization = { ...this.visualization, ...config.visualization };
 
+    if (config.displayMode === "spatial" || config.displayMode === "plate") {
+      this.setDisplayMode(config.displayMode);
+      return;
+    }
+
+    // Spatial path: update in place — do not tear down WebGL with plate render().
+    if (this.displayMode === "spatial" && this.spatialRenderer?.ready) {
+      if (config.viewType) {
+        this.spatialRenderer.setView(this.viewType, { animate: true });
+      }
+      this.spatialRenderer.setAnnotations?.(
+        this._regionsForSpatial(),
+        this.markerStore?.selectedRegionIds || []
+      );
+      return;
+    }
+
     this.render();
     if (this.clinicalRenderer.syncLayout) {
       this.clinicalRenderer.syncLayout();
@@ -100,6 +127,72 @@ class ClinicalAnatomyEngine {
       this.clinicalRenderer.renderMarkers?.();
       this.clinicalRenderer.applyVisualizationClasses?.();
     }
+  }
+
+  /**
+   * Opt-in display mode. Plate remains default/fallback.
+   * @param {"plate"|"spatial"} mode
+   * @returns {Promise<boolean>}
+   */
+  async setDisplayMode(mode) {
+    if (mode === "spatial") return this.enableSpatialMode();
+    return this.enablePlateMode();
+  }
+
+  isSpatialMode() {
+    return this.displayMode === "spatial" && !!this.spatialRenderer?.ready;
+  }
+
+  async enableSpatialMode() {
+    if (!window.SpatialAnatomyRenderer) {
+      console.warn("[CAE] SpatialAnatomyRenderer not loaded — staying on plate");
+      return this.enablePlateMode("spatial-unavailable");
+    }
+    try {
+      this.spatialRenderer?.dispose?.();
+      this.spatialRenderer = new SpatialAnatomyRenderer(this, {
+        onFallback: (_reason, err) => {
+          console.warn("[CAE] Spatial fallback to plate", _reason, err);
+          this.enablePlateMode(_reason || "spatial-fallback");
+        }
+      });
+      this.displayMode = "spatial";
+      this.stage.innerHTML = "";
+      const ok = await this.spatialRenderer.mount(this.stage);
+      if (!ok) {
+        return this.enablePlateMode("spatial-mount-failed");
+      }
+      this.trigger("displaymodechanged", { displayMode: "spatial" });
+      return true;
+    } catch (err) {
+      console.warn("[CAE] enableSpatialMode failed", err);
+      return this.enablePlateMode("spatial-exception");
+    }
+  }
+
+  enablePlateMode(reason) {
+    this.spatialRenderer?.dispose?.();
+    this.spatialRenderer = null;
+    this.displayMode = "plate";
+    this.render();
+    this.trigger("displaymodechanged", { displayMode: "plate", reason: reason || null });
+    return true;
+  }
+
+  _regionsForSpatial() {
+    if (!this.markerStore) return [];
+    const model =
+      typeof normalizeModelType === "function"
+        ? normalizeModelType(this.modelType)
+        : this.modelType;
+    const map = new Map();
+    const push = (entry) => {
+      (entry?.regions || []).forEach((r) => map.set(r.id, r));
+    };
+    (this.markerStore.getAllEntries?.(model) || []).forEach(push);
+    const active = this.markerStore.getActiveEntry?.();
+    if (active) push(active);
+    return [...map.values()];
   }
 
   isEnlarged() {
@@ -146,6 +239,10 @@ class ClinicalAnatomyEngine {
   }
 
   render() {
+    if (this.displayMode === "spatial" && this.spatialRenderer?.ready) {
+      this.spatialRenderer.render(this.stage);
+      return;
+    }
     if (this.rendererMode === "clinical") {
       this.clinicalRenderer.render(this.stage);
     } else {

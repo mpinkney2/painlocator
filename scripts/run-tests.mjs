@@ -366,5 +366,80 @@ console.log('PainLocator tests\n');
   });
 }
 
+
+// --- Spatial projection helpers ---
+{
+  const sandbox = { console, Math, Object, Number, window: {}, document: {} };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/spatial/spatial-projection.js', sandbox);
+  const P = sandbox.SpatialProjection;
+
+  test('spatial projection: yaw snaps to four orthographic views', () => {
+    assert.equal(P.nearestSnapView(0), 'front');
+    assert.equal(P.nearestSnapView(Math.PI), 'back');
+    assert.equal(P.nearestSnapView(Math.PI / 2), 'right');
+    assert.equal(P.nearestSnapView(-Math.PI / 2), 'left');
+    assert.equal(P.nearestSnapView(0.2), 'front');
+    assert.equal(P.nearestSnapView(Math.PI - 0.1), 'back');
+  });
+
+  test('spatial projection: yawForView matches VIEW_YAW table', () => {
+    assert.equal(P.yawForView('front'), 0);
+    assert.equal(P.yawForView('back'), Math.PI);
+    assert.equal(P.yawForView('right'), Math.PI / 2);
+    assert.equal(P.yawForView('left'), -Math.PI / 2);
+  });
+
+  test('spatial projection: normalizeYaw wraps to (-π, π]', () => {
+    assert.ok(Math.abs(P.normalizeYaw(3 * Math.PI) - Math.PI) < 1e-9);
+    assert.ok(Math.abs(P.normalizeYaw(-3 * Math.PI) - (-Math.PI)) < 1e-9 || Math.abs(P.normalizeYaw(-3 * Math.PI) - Math.PI) < 1e-9);
+  });
+
+  test('spatial projection: attachment round-trip keeps localPoint', () => {
+    // Minimal fake hit/mesh without Three.js
+    const fakeTHREE = {
+      Vector3: class {
+        constructor(x = 0, y = 0, z = 0) { this.x = x; this.y = y; this.z = z; }
+        clone() { return new fakeTHREE.Vector3(this.x, this.y, this.z); }
+        fromBufferAttribute() { return this; }
+        set() { return this; }
+        addScaledVector() { return this; }
+      },
+      Triangle: { getBarycentricCoordinates() {} }
+    };
+    const mesh = {
+      uuid: 'mesh-1',
+      name: 'torso',
+      worldToLocal(v) { return v; },
+      localToWorld(v) { return v; },
+      geometry: null
+    };
+    const hit = {
+      object: mesh,
+      point: { clone() { return { x: 0.1, y: 1.2, z: 0.3, clone() { return this; } }; }, x: 0.1, y: 1.2, z: 0.3 },
+      face: null,
+      faceIndex: null,
+      barycoord: null
+    };
+    // attachmentFromIntersection expects THREE.Vector3-like point with clone
+    hit.point = new fakeTHREE.Vector3(0.1, 1.2, 0.3);
+    mesh.worldToLocal = (v) => new fakeTHREE.Vector3(v.x, v.y, v.z);
+    mesh.localToWorld = (v) => new fakeTHREE.Vector3(v.x, v.y, v.z);
+    const att = P.attachmentFromIntersection(fakeTHREE, hit);
+    assert.equal(att.meshUuid, 'mesh-1');
+    assert.equal(att.localPoint.x, 0.1);
+    assert.equal(att.localPoint.y, 1.2);
+    const map = new Map([[mesh.uuid, mesh]]);
+    const world = P.resolveAttachmentWorldPoint(fakeTHREE, att, map);
+    assert.ok(world);
+    assert.equal(world.x, 0.1);
+    assert.equal(world.y, 1.2);
+    assert.equal(world.z, 0.3);
+  });
+}
+
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

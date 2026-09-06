@@ -113,11 +113,65 @@ function initAnatomyZoom() {
   const btn = document.getElementById('btnEnlargeAnatomy');
   if (!btn) return;
   btn.addEventListener('click', () => {
+    if (state.engine?.isSpatialMode?.()) return;
     const enlarged = state.engine?.toggleEnlarge?.();
     syncEnlargeButton(enlarged);
   });
   state.engine?.onZoomChange?.(({ enlarged }) => syncEnlargeButton(enlarged));
   syncEnlargeButton(state.engine?.isEnlarged?.());
+}
+
+function syncDisplayModeButtons(mode) {
+  const plate = document.getElementById('btnPlateMode');
+  const spatial = document.getElementById('btnSpatialMode');
+  const enlarge = document.getElementById('btnEnlargeAnatomy');
+  const isSpatial = mode === 'spatial';
+  plate?.classList.toggle('active', !isSpatial);
+  spatial?.classList.toggle('active', isSpatial);
+  plate?.setAttribute('aria-pressed', (!isSpatial).toString());
+  spatial?.setAttribute('aria-pressed', isSpatial.toString());
+  if (enlarge) {
+    enlarge.disabled = isSpatial;
+    enlarge.title = isSpatial
+      ? 'Enlarge is available in 2D plate mode'
+      : 'Enlarge silhouette for precise marking';
+  }
+  document.getElementById('avatarWrap')?.classList.toggle('display-spatial', isSpatial);
+  const hint = document.getElementById('avatarHint');
+  if (hint && isSpatial) {
+    hint.textContent = 'Spatial mode — drag to rotate, tap to mark. Marks stay on the surface.';
+    hint.classList.remove('hidden');
+  }
+}
+
+function initDisplayModeToggle() {
+  const plate = document.getElementById('btnPlateMode');
+  const spatial = document.getElementById('btnSpatialMode');
+  if (!plate || !spatial) return;
+
+  plate.addEventListener('click', () => {
+    state.engine?.setDisplayMode?.('plate');
+  });
+  spatial.addEventListener('click', async () => {
+    spatial.disabled = true;
+    spatial.textContent = 'Loading…';
+    try {
+      const ok = await state.engine?.setDisplayMode?.('spatial');
+      if (!ok) {
+        showToast?.('Spatial mode unavailable — staying on 2D plate', 'warning');
+      }
+    } finally {
+      spatial.disabled = false;
+      spatial.textContent = 'Spatial';
+    }
+  });
+
+  state.engine?.on?.('displaymodechanged', ({ displayMode }) => {
+    syncDisplayModeButtons(displayMode);
+    if (displayMode === 'plate') syncEnlargeButton(state.engine?.isEnlarged?.());
+    refreshUI?.();
+  });
+  syncDisplayModeButtons(state.engine?.displayMode || 'plate');
 }
 
 function updateTrendSummary() {
