@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1.0.0",
+  "prototypeId": "bp3d-fullbody-skin-canonical-v0",
+  "status": "offline-architecture-prototype",
+  "wiredToRuntime": false,
+  "role": "canonical-registration-body",
+  "recommendedProductUse": "Hidden or clinician-only registration/reference body; not default patient exterior",
+  "source": {
+    "database": "BodyParts3D 4.0",
+    "conceptId": "FMA7163",
+    "representationId": "BP9115",
+    "elementFileId": "FJ2810",
+    "englishName": "skin",
+    "license": "CC BY 4.0",
+    "licenseRef": "./LICENSE.md",
+    "provenanceDoc": "docs/BODYPARTS3D_SOURCE_PROVENANCE.md"
+  },
+  "coordinateFrame": {
+    "frameId": "painlocator-bp3d-canonical-v1",
+    "units": "meters",
+    "up": "+Y",
+    "handedness": "right",
+    "anterior": "+Z",
+    "anatomicalRight": "+X",
+    "transformFromBp3dObjMm": "(-x, z, -y) * 0.001"
+  },
+  "geometry": {
+    "sourceVertices": 102467,
+    "sourceFaces": 203382,
+    "watertight": false,
+    "boundsMeters": {
+      "min": [
+        -0.332825,
+        -0.0781112,
+        -0.0452476
+      ],
+      "max": [
+        0.334119,
+        1.64136,
+        0.246783
+      ],
+      "extents": [
+        0.666944,
+        1.7194712,
+        0.2920306
+      ],
+      "center": [
+        0.000647,
+        0.7816244,
+        0.1007677
+      ],
+      "heightMeters": 1.7194712,
+      "widthMeters": 0.666944,
+      "depthMeters": 0.2920306
+    },
+    "files": {
+      "canonicalBodyGlb": "./canonical-body.glb",
+      "canonicalBodyLod1Glb": "./canonical-body-lod1.glb",
+      "exteriorCandidateGlb": "./exterior-candidate.glb"
+    },
+    "byteLength": {
+      "canonicalBodyGlb": 360564,
+      "canonicalBodyLod1Glb": 130692,
+      "exteriorCandidateGlb": 360564
+    }
+  },
+  "validationRef": "./validation.json",
+  "warnings": [
+    "BP3D skin AP depth (~0.29 m) is shallow vs living soft tissue",
+    "Skin mesh is not watertight",
+    "Appearance is anatomical/cadaveric \u2014 not patient-ready without stylization",
+    "Prototype is offline-only; not wired into Patient or Clinician runtime"
+  ]
+}

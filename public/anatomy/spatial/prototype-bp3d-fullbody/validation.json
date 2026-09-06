@@ -1,0 +1,90 @@
+{
+  "prototypeId": "bp3d-fullbody-skin-canonical-v0",
+  "frameId": "painlocator-bp3d-canonical-v1",
+  "method": "Pre-compression vertex AABB from FJ2810 remap + Slice 2/3 landmarks",
+  "skinAabbMeters": {
+    "min": [
+      -0.332825,
+      -0.0781112,
+      -0.0452476
+    ],
+    "max": [
+      0.334119,
+      1.64136,
+      0.246783
+    ],
+    "extents": [
+      0.666944,
+      1.7194712,
+      0.2920306
+    ],
+    "center": [
+      0.000647,
+      0.7816244,
+      0.1007677
+    ],
+    "heightMeters": 1.7194712,
+    "widthMeters": 0.666944,
+    "depthMeters": 0.2920306
+  },
+  "humerusLandmark": {
+    "meshId": "bone.humerus.left",
+    "structureId": "FMA:23131",
+    "centroidMeters": [
+      -0.19042,
+      1.18286,
+      0.07564
+    ],
+    "lengthMeters": 0.30731
+  },
+  "humerusCentroidInsideSkinAabb": true,
+  "shoulderPacksShareFrame": true,
+  "identityRegistrationVsCanonicalSkin": {
+    "required": false,
+    "scale": 1.0,
+    "rotationEuler": [
+      0,
+      0,
+      0
+    ],
+    "translation": [
+      0,
+      0,
+      0
+    ],
+    "note": "Shoulder muscle/skeletal packs were ingested with the same (-x,z,-y)*0.001 remap."
+  },
+  "currentRegionalTransformVsInterimExterior": {
+    "scale": 1.00875,
+    "rotationEuler": [
+      0,
+      0,
+      0
+    ],
+    "rotationOrder": "XYZ",
+    "translation": [
+      -0.08792,
+      0.08678,
+      -0.0763
+    ]
+  },
+  "conclusion": "Co-displaying the existing left-shoulder packs with BP3D FMA7163 skin needs no regional transform. Slice 3 scale\u22481.00875 and translation\u2248[-0.088,0.087,-0.076] exist only to adapt BP3D content onto the interim procedural mannequin. Moving runtime to the BP3D canonical frame retires that adapter.",
+  "passPreview": true,
+  "clinicalPrecisionClaimed": false,
+  "warnings": [
+    "BP3D skin AP depth (~0.29 m) is shallow vs living soft tissue",
+    "Skin mesh is not watertight",
+    "Appearance is anatomical/cadaveric \u2014 not patient-ready without stylization",
+    "Prototype is offline-only; not wired into Patient or Clinician runtime"
+  ],
+  "files": {
+    "canonicalBodyGlb": "./canonical-body.glb",
+    "canonicalBodyLod1Glb": "./canonical-body-lod1.glb",
+    "exteriorCandidateGlb": "./exterior-candidate.glb",
+    "bytes": {
+      "canonicalBodyGlb": 360564,
+      "canonicalBodyLod1Glb": 130692,
+      "exteriorCandidateGlb": 360564
+    }
+  }
+}
