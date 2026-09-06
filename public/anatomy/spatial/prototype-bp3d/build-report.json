@@ -1,0 +1,538 @@
+{
+  "generatedAt": "2026-09-06T20:07:24Z",
+  "modelId": "bp3d-prototype-shoulder",
+  "structureCount": 12,
+  "sourceObjBytes": 3401212,
+  "layers": {
+    "skeletal": {
+      "file": "skeletal.glb",
+      "bytes": 600820,
+      "sha256": "c80ad55f8d9617e5a5ec8eac0139886a99d80101cf2f5d7986d82e33357a37ac",
+      "meshCount": 3,
+      "meshIds": [
+        "bone.humerus.left",
+        "bone.scapula.left",
+        "bone.clavicle.left"
+      ]
+    },
+    "muscle": {
+      "file": "muscle.glb",
+      "bytes": 337588,
+      "sha256": "7436d8a4c14b82a23333f1a9bde2d36bd2ff74e5aa68769f72d258d0544b2e54",
+      "meshCount": 9,
+      "meshIds": [
+        "muscle.deltoid.clavicular.left",
+        "muscle.deltoid.acromial.left",
+        "muscle.deltoid.spinal.left",
+        "muscle.supraspinatus.left",
+        "muscle.infraspinatus.left",
+        "muscle.subscapularis.left",
+        "muscle.biceps_brachii.long_head.left",
+        "muscle.biceps_brachii.short_head.left",
+        "muscle.triceps_brachii.long_head.left"
+      ]
+    }
+  },
+  "validation": [
+    {
+      "meshId": "bone.humerus.left",
+      "structureId": "FMA:23131",
+      "sourceVertices": 2073,
+      "sourceTriangles": 3844,
+      "vertices": 2073,
+      "triangles": 3844,
+      "sourceBoundsMm": [
+        [
+          140.073,
+          -100.229,
+          1029.21
+        ],
+        [
+          240.76,
+          -51.0559,
+          1336.52
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.24076,
+          1.02921,
+          0.0510559
+        ],
+        [
+          -0.140073,
+          1.33652,
+          0.100229
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "bone.scapula.left",
+      "structureId": "FMA:13396",
+      "sourceVertices": 14068,
+      "sourceTriangles": 28106,
+      "vertices": 14068,
+      "triangles": 28106,
+      "sourceBoundsMm": [
+        [
+          57.0614,
+          -102.845,
+          1183.95
+        ],
+        [
+          166.464,
+          5.0764,
+          1349.86
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.166464,
+          1.18395,
+          -0.0050764
+        ],
+        [
+          -0.0570614,
+          1.3498599999999998,
+          0.102845
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "bone.clavicle.left",
+      "structureId": "FMA:13323",
+      "sourceVertices": 602,
+      "sourceTriangles": 1176,
+      "vertices": 602,
+      "triangles": 1176,
+      "sourceBoundsMm": [
+        [
+          8.37873,
+          -147.078,
+          1308.53
+        ],
+        [
+          143.942,
+          -54.3875,
+          1355.18
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.14394200000000001,
+          1.30853,
+          0.054387500000000005
+        ],
+        [
+          -0.00837873,
+          1.35518,
+          0.14707800000000001
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.deltoid.clavicular.left",
+      "structureId": "FMA:34681",
+      "sourceVertices": 2604,
+      "sourceTriangles": 2206,
+      "vertices": 2604,
+      "triangles": 2206,
+      "sourceBoundsMm": [
+        [
+          88.555,
+          -121.331,
+          1203.85
+        ],
+        [
+          203.619,
+          -75.1252,
+          1355.39
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.203619,
+          1.2038499999999999,
+          0.0751252
+        ],
+        [
+          -0.08855500000000001,
+          1.35539,
+          0.12133100000000001
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.deltoid.acromial.left",
+      "structureId": "FMA:34683",
+      "sourceVertices": 918,
+      "sourceTriangles": 1300,
+      "vertices": 918,
+      "triangles": 1300,
+      "sourceBoundsMm": [
+        [
+          146.586,
+          -103.337,
+          1205.09
+        ],
+        [
+          227.228,
+          -40.8371,
+          1349.22
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.227228,
+          1.20509,
+          0.0408371
+        ],
+        [
+          -0.14658600000000002,
+          1.34922,
+          0.10333700000000001
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.deltoid.spinal.left",
+      "structureId": "FMA:34685",
+      "sourceVertices": 1678,
+      "sourceTriangles": 1900,
+      "vertices": 1678,
+      "triangles": 1900,
+      "sourceBoundsMm": [
+        [
+          82.8341,
+          -79.253,
+          1187.75
+        ],
+        [
+          219.171,
+          -2.72512,
+          1339.84
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.219171,
+          1.18775,
+          0.00272512
+        ],
+        [
+          -0.08283410000000001,
+          1.33984,
+          0.079253
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.supraspinatus.left",
+      "structureId": "FMA:32545",
+      "sourceVertices": 842,
+      "sourceTriangles": 878,
+      "vertices": 842,
+      "triangles": 878,
+      "sourceBoundsMm": [
+        [
+          63.876,
+          -91.9013,
+          1307.34
+        ],
+        [
+          188.443,
+          -12.9613,
+          1342.37
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.18844300000000003,
+          1.30734,
+          0.0129613
+        ],
+        [
+          -0.063876,
+          1.3423699999999998,
+          0.0919013
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.infraspinatus.left",
+      "structureId": "FMA:32548",
+      "sourceVertices": 738,
+      "sourceTriangles": 866,
+      "vertices": 738,
+      "triangles": 866,
+      "sourceBoundsMm": [
+        [
+          60.2584,
+          -77.087,
+          1206.53
+        ],
+        [
+          189.05,
+          3.66613,
+          1330.98
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.18905000000000002,
+          1.20653,
+          -0.00366613
+        ],
+        [
+          -0.060258400000000004,
+          1.33098,
+          0.077087
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.subscapularis.left",
+      "structureId": "FMA:13415",
+      "sourceVertices": 2759,
+      "sourceTriangles": 2092,
+      "vertices": 2759,
+      "triangles": 2092,
+      "sourceBoundsMm": [
+        [
+          63.1822,
+          -99.955,
+          1195.16
+        ],
+        [
+          166.117,
+          -2.75783,
+          1324.8
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.166117,
+          1.19516,
+          0.0027578299999999997
+        ],
+        [
+          -0.06318220000000001,
+          1.3248,
+          0.099955
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.biceps_brachii.long_head.left",
+      "structureId": "FMA:37687",
+      "sourceVertices": 1039,
+      "sourceTriangles": 1426,
+      "vertices": 1039,
+      "triangles": 1426,
+      "sourceBoundsMm": [
+        [
+          135.268,
+          -109.293,
+          994.072
+        ],
+        [
+          229.86,
+          -67.8089,
+          1339.42
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.22986,
+          0.9940720000000001,
+          0.06780889999999999
+        ],
+        [
+          -0.135268,
+          1.33942,
+          0.10929300000000002
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.biceps_brachii.short_head.left",
+      "structureId": "FMA:37685",
+      "sourceVertices": 1743,
+      "sourceTriangles": 1856,
+      "vertices": 1743,
+      "triangles": 1856,
+      "sourceBoundsMm": [
+        [
+          135.237,
+          -109.102,
+          1065.22
+        ],
+        [
+          212.39,
+          -75.9581,
+          1327.76
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.21239,
+          1.06522,
+          0.0759581
+        ],
+        [
+          -0.135237,
+          1.32776,
+          0.109102
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    },
+    {
+      "meshId": "muscle.triceps_brachii.long_head.left",
+      "structureId": "FMA:37700",
+      "sourceVertices": 1109,
+      "sourceTriangles": 1588,
+      "vertices": 1109,
+      "triangles": 1588,
+      "sourceBoundsMm": [
+        [
+          134.691,
+          -64.1021,
+          1035.24
+        ],
+        [
+          216.462,
+          -18.7596,
+          1300.75
+        ]
+      ],
+      "boundsMeters": [
+        [
+          -0.216462,
+          1.03524,
+          0.018759599999999998
+        ],
+        [
+          -0.134691,
+          1.30075,
+          0.0641021
+        ]
+      ],
+      "watertight": false,
+      "windingConsistent": true,
+      "volume": null,
+      "warnings": [
+        "non-watertight (common for open anatomical surfaces; not auto-repaired)"
+      ]
+    }
+  ],
+  "notes": [
+    "GLB sizes here are pre-Meshopt; run node tools/bp3d-ingest/optimize.mjs next.",
+    "Production adult-male exterior catalog intentionally unchanged."
+  ],
+  "optimization": {
+    "method": "meshopt",
+    "tool": "@gltf-transform/cli@4.1.1",
+    "layers": {
+      "skeletal.glb": {
+        "beforeBytes": 600820,
+        "afterBytes": 115888,
+        "ratio": 0.1929,
+        "meshCount": 3,
+        "meshIds": [
+          "bone.humerus.left",
+          "bone.scapula.left",
+          "bone.clavicle.left"
+        ]
+      },
+      "muscle.glb": {
+        "beforeBytes": 337588,
+        "afterBytes": 89904,
+        "ratio": 0.2663,
+        "meshCount": 9,
+        "meshIds": [
+          "muscle.deltoid.clavicular.left",
+          "muscle.deltoid.acromial.left",
+          "muscle.deltoid.spinal.left",
+          "muscle.supraspinatus.left",
+          "muscle.infraspinatus.left",
+          "muscle.subscapularis.left",
+          "muscle.biceps_brachii.long_head.left",
+          "muscle.biceps_brachii.short_head.left",
+          "muscle.triceps_brachii.long_head.left"
+        ]
+      }
+    },
+    "rawCopies": "./raw-pre-meshopt/",
+    "notes": [
+      "No geometric join/simplify — meshopt compression only.",
+      "No additional decimation beyond BodyParts3D 99% pack.",
+      "Meshopt preferred over Draco for this prototype."
+    ]
+  }
+}

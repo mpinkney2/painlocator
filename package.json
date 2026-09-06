@@ -10,7 +10,11 @@
     "build": "node scripts/build.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "node scripts/run-tests.mjs"
+    "test": "node scripts/run-tests.mjs",
+    "bp3d:verify": "python3 tools/bp3d-ingest/verify_source.py",
+    "bp3d:ingest": "python3 tools/bp3d-ingest/ingest.py",
+    "bp3d:optimize": "node tools/bp3d-ingest/optimize.mjs",
+    "bp3d:test": "node tools/bp3d-ingest/test-integrity.mjs"
   },
   "devDependencies": {
     "three": "0.170.0",

@@ -1,0 +1,203 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licensePageUrl": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "licensePageUpdated": "2025-02-27",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "mappingTables": {
+    "isaPartsList": {
+      "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_parts_list_e.txt",
+      "path": "../../mapping/isa_parts_list_e.txt",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "ab7796deedd49205e77f3609a1cb8c53e2bbee14ecb5c9a6ca05227469780513"
+      }
+    },
+    "isaElementParts": {
+      "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_element_parts.txt",
+      "path": "../../mapping/isa_element_parts.txt",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf"
+      }
+    }
+  },
+  "region": "left-shoulder",
+  "regionRationale": "Bounded shoulder girdle tests bone + rotator cuff + deltoid + proximal arm muscle adjacency with stable left-sided FMA concepts (1 element file each).",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left",
+    "notes": "Taken from BodyParts3D OBJ bound headers and empirical left-humerus extents."
+  },
+  "structures": [
+    {
+      "meshId": "bone.humerus.left",
+      "structureId": "FMA:23131",
+      "preferredName": "left humerus",
+      "clinicalName": "Left humerus",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA23131",
+      "sourceRepresentationId": "BP9191",
+      "sourceElementFileId": "FJ3262",
+      "sourceFile": "./obj/FJ3262.obj"
+    },
+    {
+      "meshId": "bone.scapula.left",
+      "structureId": "FMA:13396",
+      "preferredName": "left scapula",
+      "clinicalName": "Left scapula",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA13396",
+      "sourceRepresentationId": "BP9121",
+      "sourceElementFileId": "FJ3279",
+      "sourceFile": "./obj/FJ3279.obj"
+    },
+    {
+      "meshId": "bone.clavicle.left",
+      "structureId": "FMA:13323",
+      "preferredName": "left clavicle",
+      "clinicalName": "Left clavicle",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA13323",
+      "sourceRepresentationId": "BP8841",
+      "sourceElementFileId": "FJ3237",
+      "sourceFile": "./obj/FJ3237.obj"
+    },
+    {
+      "meshId": "muscle.deltoid.clavicular.left",
+      "structureId": "FMA:34681",
+      "preferredName": "clavicular part of left deltoid",
+      "clinicalName": "Left deltoid (clavicular part)",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": "FMA:34676",
+      "parentStructureNote": "Parent is BodyParts3D 'zone of deltoid' (FMA34676); elemental left deltoid ships as three parts.",
+      "sourceConceptId": "FMA34681",
+      "sourceRepresentationId": "BP8259",
+      "sourceElementFileId": "FJ1468M",
+      "sourceFile": "./obj/FJ1468M.obj"
+    },
+    {
+      "meshId": "muscle.deltoid.acromial.left",
+      "structureId": "FMA:34683",
+      "preferredName": "acromial part of left deltoid",
+      "clinicalName": "Left deltoid (acromial part)",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": "FMA:34676",
+      "sourceConceptId": "FMA34683",
+      "sourceRepresentationId": "BP9075",
+      "sourceElementFileId": "FJ1467M",
+      "sourceFile": "./obj/FJ1467M.obj"
+    },
+    {
+      "meshId": "muscle.deltoid.spinal.left",
+      "structureId": "FMA:34685",
+      "preferredName": "spinal part of left deltoid",
+      "clinicalName": "Left deltoid (spinal part)",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": "FMA:34676",
+      "sourceConceptId": "FMA34685",
+      "sourceRepresentationId": "BP8151",
+      "sourceElementFileId": "FJ1513M",
+      "sourceFile": "./obj/FJ1513M.obj"
+    },
+    {
+      "meshId": "muscle.supraspinatus.left",
+      "structureId": "FMA:32545",
+      "preferredName": "left supraspinatus",
+      "clinicalName": "Left supraspinatus",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA32545",
+      "sourceRepresentationId": "BP8376",
+      "sourceElementFileId": "FJ1506M",
+      "sourceFile": "./obj/FJ1506M.obj"
+    },
+    {
+      "meshId": "muscle.infraspinatus.left",
+      "structureId": "FMA:32548",
+      "preferredName": "left infraspinatus muscle",
+      "clinicalName": "Left infraspinatus",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA32548",
+      "sourceRepresentationId": "BP8965",
+      "sourceElementFileId": "FJ1500M",
+      "sourceFile": "./obj/FJ1500M.obj"
+    },
+    {
+      "meshId": "muscle.subscapularis.left",
+      "structureId": "FMA:13415",
+      "preferredName": "left subscapularis",
+      "clinicalName": "Left subscapularis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA13415",
+      "sourceRepresentationId": "BP8214",
+      "sourceElementFileId": "FJ1504M",
+      "sourceFile": "./obj/FJ1504M.obj"
+    },
+    {
+      "meshId": "muscle.biceps_brachii.long_head.left",
+      "structureId": "FMA:37687",
+      "preferredName": "long head of left biceps brachii",
+      "clinicalName": "Left biceps brachii (long head)",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA37687",
+      "sourceRepresentationId": "BP8816",
+      "sourceElementFileId": "FJ1478M",
+      "sourceFile": "./obj/FJ1478M.obj"
+    },
+    {
+      "meshId": "muscle.biceps_brachii.short_head.left",
+      "structureId": "FMA:37685",
+      "preferredName": "short head of left biceps brachii",
+      "clinicalName": "Left biceps brachii (short head)",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA37685",
+      "sourceRepresentationId": "BP9153",
+      "sourceElementFileId": "FJ1512M",
+      "sourceFile": "./obj/FJ1512M.obj"
+    },
+    {
+      "meshId": "muscle.triceps_brachii.long_head.left",
+      "structureId": "FMA:37700",
+      "preferredName": "long head of left triceps brachii",
+      "clinicalName": "Left triceps brachii (long head)",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "sourceConceptId": "FMA37700",
+      "sourceRepresentationId": "BP8344",
+      "sourceElementFileId": "FJ1479M",
+      "sourceFile": "./obj/FJ1479M.obj"
+    }
+  ]
+}

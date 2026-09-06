@@ -931,5 +931,23 @@ console.log('PainLocator tests\n');
   });
 }
 
+// --- BodyParts3D Phase 2 Slice 2 prototype integrity (offline pack) ---
+{
+  const { spawnSync } = await import('node:child_process');
+  const r = spawnSync(process.execPath, [join(root, 'tools/bp3d-ingest/test-integrity.mjs')], {
+    cwd: root,
+    encoding: 'utf8'
+  });
+  if (r.status === 0) {
+    passed += 1;
+    console.log('ok - bp3d prototype integrity suite');
+  } else {
+    failed += 1;
+    console.error('not ok - bp3d prototype integrity suite');
+    if (r.stdout) console.error(r.stdout);
+    if (r.stderr) console.error(r.stderr);
+  }
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);
