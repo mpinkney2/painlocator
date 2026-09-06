@@ -34,8 +34,19 @@
     if (!Array.isArray(surface.meshes) || !surface.meshes.length) {
       throw new Error("layers.surface.meshes[] required");
     }
+    const seen = new Set();
     for (const entry of surface.meshes) {
       if (!entry.meshId) throw new Error("mesh entry missing meshId");
+      if (seen.has(entry.meshId)) {
+        throw new Error(`Duplicate meshId in manifest: ${entry.meshId}`);
+      }
+      seen.add(entry.meshId);
+      // PL:surface.* are PainLocator-local interim IDs — not FMA identifiers.
+      if (entry.structureId && !String(entry.structureId).startsWith("PL:")) {
+        throw new Error(
+          `structureId must use PL: prefix for interim Slice 1 IDs (got ${entry.structureId})`
+        );
+      }
     }
     return manifest;
   }
@@ -45,10 +56,43 @@
     const byMeshId = new Map();
     for (const [layerId, layer] of Object.entries(manifest.layers || {})) {
       for (const entry of layer.meshes || []) {
+        if (byMeshId.has(entry.meshId)) {
+          throw new Error(`Duplicate meshId across layers: ${entry.meshId}`);
+        }
         byMeshId.set(entry.meshId, { ...entry, layerId, file: layer.file, lod: layer.lod ?? 0 });
       }
     }
     return byMeshId;
+  }
+
+  /**
+   * Manifest is authoritative. Every surface meshId must appear exactly once in the
+   * GLB naming set, and the GLB must not introduce unknown body meshes.
+   * @param {Iterable<string>} manifestMeshIds
+   * @param {Iterable<string>} glbMeshIds
+   */
+  function assertManifestGlbIntegrity(manifestMeshIds, glbMeshIds) {
+    const expected = [...manifestMeshIds];
+    const actual = [...glbMeshIds];
+    const expectedSet = new Set(expected);
+    const actualSet = new Set(actual);
+
+    if (expected.length !== expectedSet.size) {
+      throw new Error("Manifest contains duplicate meshId values");
+    }
+    if (actual.length !== actualSet.size) {
+      throw new Error("GLB contains duplicate mesh names/meshIds");
+    }
+
+    const missing = expected.filter((id) => !actualSet.has(id));
+    const unknown = actual.filter((id) => !expectedSet.has(id));
+    if (missing.length || unknown.length) {
+      const parts = [];
+      if (missing.length) parts.push(`manifest meshIds missing from GLB: ${missing.join(", ")}`);
+      if (unknown.length) parts.push(`GLB meshes missing from manifest: ${unknown.join(", ")}`);
+      throw new Error(`Manifest↔GLB identity mismatch — ${parts.join("; ")}`);
+    }
+    return true;
   }
 
   class SpatialManifestLoader {
@@ -116,13 +160,19 @@
       /** @type {Map<string, import('three').Mesh>} */
       const meshById = new Map();
       const known = packed.meshIndex;
+      /** @type {string[]} */
+      const glbMeshIds = [];
 
       root.updateMatrixWorld(true);
       root.traverse((obj) => {
         if (!obj.isMesh) return;
         const meshId = obj.name || obj.userData?.meshId;
-        if (!meshId) return;
+        if (!meshId) {
+          throw new Error("GLB body mesh is missing a stable name/meshId");
+        }
+        glbMeshIds.push(meshId);
         const meta = known.get(meshId);
+        // Binding still applied after integrity check; unknown IDs fail below.
         obj.name = meshId;
         obj.userData.meshId = meshId;
         obj.userData.structureId = meta?.structureId || null;
@@ -144,7 +194,7 @@
         meshById.set(meshId, obj);
       });
 
-      if (!meshById.size) throw new Error("GLB contained no mapped surface meshes");
+      assertManifestGlbIntegrity(known.keys(), glbMeshIds);
 
       return {
         modelId: packed.modelId,
@@ -173,6 +223,7 @@
     validateCatalog,
     validateModelManifest,
     indexMeshes,
+    assertManifestGlbIntegrity,
     DEFAULT_CATALOG_URL
   };
 })(typeof window !== "undefined" ? window : globalThis);

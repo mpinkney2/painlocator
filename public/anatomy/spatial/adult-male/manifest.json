@@ -6,11 +6,12 @@
   "coordinateSystem": "y-up-right-handed",
   "units": "meters",
   "provenance": {
-    "source": "PainLocator interim exterior mannequin",
+    "source": "PainLocator interim exterior mannequin (procedural, not medically validated)",
     "licenseRef": "./LICENSE.md",
     "retrievedAt": "2026-09-06",
     "status": "interim",
-    "notes": "Placeholder for a future BodyParts3D-derived exterior. Authored for Slice 1 so CAE can bind stable meshIds without waiting on BP3D conversion."
+    "structureIdScheme": "PL:surface.* (PainLocator-local temporary IDs; not FMA)",
+    "notes": "Placeholder for a future BodyParts3D-derived exterior. Authored for Slice 1 so CAE can bind stable meshIds without waiting on BP3D conversion. Future FMA/BP3D mapping replaces or maps PL:structureId values through this manifest contract."
   },
   "layers": {
     "surface": {

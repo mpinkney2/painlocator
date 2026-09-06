@@ -569,7 +569,68 @@ console.log('PainLocator tests\n');
     assert.throws(() => U.validateCatalog({ schemaVersion: '1', defaultModelId: 'x' }), /models/);
   });
 
-  test('spatial manifest: shipped catalog + GLB path exist', () => {
+  test('spatial manifest: rejects duplicate meshIds and non-PL structureIds', () => {
+    assert.throws(
+      () =>
+        U.validateModelManifest({
+          schemaVersion: '1',
+          modelId: 'x',
+          layers: {
+            surface: {
+              file: './a.glb',
+              meshes: [
+                { meshId: 'surface.head', structureId: 'PL:surface.head' },
+                { meshId: 'surface.head', structureId: 'PL:surface.head' }
+              ]
+            }
+          }
+        }),
+      /Duplicate meshId/
+    );
+    assert.throws(
+      () =>
+        U.validateModelManifest({
+          schemaVersion: '1',
+          modelId: 'x',
+          layers: {
+            surface: {
+              file: './a.glb',
+              meshes: [{ meshId: 'surface.head', structureId: 'FMA:123' }]
+            }
+          }
+        }),
+      /PL:/
+    );
+  });
+
+  test('spatial manifest: assertManifestGlbIntegrity enforces authoritative mesh set', () => {
+    U.assertManifestGlbIntegrity(['a', 'b'], ['b', 'a']);
+    assert.throws(() => U.assertManifestGlbIntegrity(['a', 'b'], ['a']), /missing from GLB/);
+    assert.throws(() => U.assertManifestGlbIntegrity(['a'], ['a', 'extra']), /missing from manifest/);
+    assert.throws(() => U.assertManifestGlbIntegrity(['a', 'a'], ['a']), /duplicate meshId/);
+    assert.throws(() => U.assertManifestGlbIntegrity(['a'], ['a', 'a']), /duplicate mesh/);
+  });
+
+  /** Collect GLB body mesh names (nodes that reference a mesh). Root groups without meshes are ignored. */
+  function listGlbBodyMeshNames(glbPath) {
+    const buf = readFileSync(glbPath);
+    const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+    if (buf.toString('utf8', 0, 4) !== 'glTF') throw new Error('Not a GLB');
+    const chunkLen = dv.getUint32(12, true);
+    const chunkType = dv.getUint32(16, true);
+    if (chunkType !== 0x4e4f534a) throw new Error('GLB JSON chunk missing');
+    const json = buf.subarray(20, 20 + chunkLen).toString('utf8');
+    const gltf = JSON.parse(json);
+    const names = [];
+    for (const node of gltf.nodes || []) {
+      if (node.mesh == null) continue;
+      if (!node.name) throw new Error('GLB mesh node missing name');
+      names.push(node.name);
+    }
+    return names;
+  }
+
+  test('spatial manifest: shipped catalog + GLB meshIds match 1:1', () => {
     const catalog = JSON.parse(readFileSync(join(root, 'public/anatomy/spatial/manifest.json'), 'utf8'));
     U.validateCatalog(catalog);
     const modelPath = join(root, 'public/anatomy/spatial/adult-male/manifest.json');
@@ -579,6 +640,13 @@ console.log('PainLocator tests\n');
     const size = statSync(glb).size;
     assert.ok(size > 50_000, `GLB too small: ${size}`);
     assert.ok(size < 5_000_000, `GLB exceeds 5MB target: ${size}`);
+
+    const manifestIds = model.layers.surface.meshes.map((m) => m.meshId);
+    const glbIds = listGlbBodyMeshNames(glb);
+    U.assertManifestGlbIntegrity(manifestIds, glbIds);
+    for (const entry of model.layers.surface.meshes) {
+      assert.ok(String(entry.structureId).startsWith('PL:'), `structureId must be PL-local: ${entry.structureId}`);
+    }
   });
 }
 

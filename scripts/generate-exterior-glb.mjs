@@ -1,5 +1,10 @@
 /**
- * Build interim adult-male exterior GLB (PainLocator-authored).
+ * Build interim adult-male exterior GLB (PainLocator-authored procedural geometry).
+ *
+ * Build-time only — requires the npm **devDependency** `three@0.170.0`.
+ * Runtime Spatial mode uses vendored `public/vendor/three.module.min.js` (r170),
+ * not this package import.
+ *
  * Usage: node scripts/generate-exterior-glb.mjs
  */
 import fs from "node:fs";
