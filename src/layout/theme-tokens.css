@@ -170,3 +170,217 @@ body.theme-dark {
   --chart-line: #3b82f6;
   --chart-fill: rgba(59, 130, 246, 0.14);
 }
+
+/* ==========================================================================
+   PRODUCT EXPERIENCE V1 — SHELL-SCOPED TOKEN OVERRIDES
+   Applied via body.shell-patient | body.shell-clinician (+ theme-dark)
+   ========================================================================== */
+
+/* Patient shell — light (default patient experience) */
+body.shell-patient {
+  --background: #f7f5f2;
+  --surface: #fffdf9;
+  --surface-secondary: #f0ebe4;
+  --surface-elevated: #fffdf9;
+  --border: rgba(28, 25, 23, 0.1);
+  --border-strong: rgba(28, 25, 23, 0.18);
+
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-muted: #78716c;
+
+  --primary: #0f766e;
+  --primary-hover: #0d635c;
+  --primary-contrast: #ffffff;
+  --accent: #0f766e;
+  --accent-dim: #0d635c;
+  --accent-subtle: rgba(15, 118, 110, 0.12);
+  --accent-border: rgba(15, 118, 110, 0.32);
+
+  --pain-low: #fbbf24;
+  --pain-mid: #f97316;
+  --pain-high: #dc2626;
+
+  --header-bg: var(--surface);
+  --header-border: var(--border);
+  --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.06);
+  --shadow-md: 0 6px 20px rgba(28, 25, 23, 0.08);
+  --overlay-backdrop: rgba(28, 25, 23, 0.42);
+
+  --control-bg: var(--surface-secondary);
+  --toggle-track: #ebe5dd;
+
+  --anatomy-stage-bg: radial-gradient(
+    ellipse 90% 80% at 50% 42%,
+    #faf6f0 0%,
+    #ebe4d9 55%,
+    #ddd4c8 100%
+  );
+
+  --radius-sheet: 20px;
+  --radius-control: 12px;
+  --shadow-sheet: 0 -8px 32px rgba(28, 25, 23, 0.12), 0 -2px 8px rgba(28, 25, 23, 0.06);
+
+  --brand-pain: var(--text-primary);
+  --brand-locator: var(--accent);
+  --brand-tagline: var(--text-muted);
+
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
+}
+
+/* Patient shell — warm dark (not sci-fi) */
+body.shell-patient.theme-dark {
+  --background: #1a1714;
+  --surface: #252119;
+  --surface-secondary: #2f2a24;
+  --surface-elevated: #2c2720;
+  --border: rgba(250, 245, 235, 0.1);
+  --border-strong: rgba(250, 245, 235, 0.16);
+
+  --text-primary: #f5f0e8;
+  --text-secondary: #c9bfb3;
+  --text-muted: #9a9086;
+
+  --primary: #2dd4bf;
+  --primary-hover: #14b8a6;
+  --primary-contrast: #1a1714;
+  --accent: #2dd4bf;
+  --accent-dim: #14b8a6;
+  --accent-subtle: rgba(45, 212, 191, 0.14);
+  --accent-border: rgba(45, 212, 191, 0.35);
+
+  --pain-low: #fbbf24;
+  --pain-mid: #fb923c;
+  --pain-high: #f87171;
+
+  --header-bg: rgba(26, 23, 20, 0.96);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --overlay-backdrop: rgba(0, 0, 0, 0.58);
+
+  --control-bg: rgba(47, 42, 36, 0.75);
+  --toggle-track: rgba(0, 0, 0, 0.28);
+
+  --anatomy-stage-bg: radial-gradient(
+    ellipse 90% 80% at 50% 42%,
+    #2a2520 0%,
+    #1f1b17 55%,
+    #14110e 100%
+  );
+
+  --radius-sheet: 20px;
+  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.45), 0 -2px 8px rgba(0, 0, 0, 0.25);
+
+  --brand-pain: var(--text-primary);
+  --brand-locator: var(--accent);
+  --brand-tagline: var(--text-muted);
+
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
+}
+
+/* Clinician shell — light */
+body.shell-clinician {
+  --background: #f4f6f8;
+  --surface: #ffffff;
+  --surface-secondary: #eef2f6;
+  --surface-elevated: #ffffff;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #64748b;
+
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-contrast: #ffffff;
+  --accent: #0d9488;
+  --accent-dim: #0f766e;
+  --accent-subtle: rgba(13, 148, 136, 0.1);
+  --accent-border: rgba(13, 148, 136, 0.3);
+
+  --header-bg: var(--surface);
+  --header-border: var(--border);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+
+  --control-bg: var(--surface-secondary);
+  --toggle-track: #e2e8f0;
+
+  --anatomy-stage-bg: radial-gradient(ellipse at center, #e8edf2 0%, #d5dde6 100%);
+
+  --radius-sheet: 14px;
+  --radius-control: 8px;
+  --shadow-sheet: 0 -4px 20px rgba(15, 23, 42, 0.1);
+
+  --left-panel-width: 210px;
+  --right-panel-width: 300px;
+
+  --brand-pain: var(--text-primary);
+  --brand-locator: var(--accent);
+  --brand-tagline: var(--text-muted);
+
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
+}
+
+/* Clinician shell — clinical slate dark (restrained, not neon) */
+body.shell-clinician.theme-dark {
+  --background: #0b1220;
+  --surface: #1f2937;
+  --surface-secondary: #111827;
+  --surface-elevated: #243044;
+  --border: rgba(229, 231, 235, 0.1);
+  --border-strong: rgba(229, 231, 235, 0.16);
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #9ca3af;
+
+  --primary: #2dd4bf;
+  --primary-hover: #14b8a6;
+  --primary-contrast: #0b1220;
+  --accent: #2dd4bf;
+  --accent-dim: #14b8a6;
+  --accent-subtle: rgba(45, 212, 191, 0.1);
+  --accent-border: rgba(45, 212, 191, 0.28);
+
+  --header-bg: rgba(11, 18, 32, 0.97);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --overlay-backdrop: rgba(0, 0, 0, 0.62);
+
+  --control-bg: rgba(17, 24, 39, 0.65);
+  --toggle-track: rgba(0, 0, 0, 0.35);
+
+  --anatomy-stage-bg: radial-gradient(ellipse at center, #151f2e 0%, #0b1220 100%);
+
+  --radius-sheet: 14px;
+  --shadow-sheet: 0 -6px 24px rgba(0, 0, 0, 0.4);
+
+  --brand-pain: var(--text-primary);
+  --brand-locator: var(--accent);
+  --brand-tagline: var(--text-muted);
+
+  /* Legacy aliases — re-resolve against clinician dark tokens */
+  --bg: var(--background);
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --panel: var(--surface);
+  --card: var(--surface-secondary);
+  --sidebar-bg: var(--surface);
+}

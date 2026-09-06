@@ -1,0 +1,888 @@
+/* ==========================================================================
+   PRODUCT EXPERIENCE V1 — DUAL SHELL STYLES
+   Patient capture shell | Clinician console shell
+   Tokens: theme-tokens.css (shell-scoped overrides)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   SHARED — Shell visibility utilities & presentation switcher
+   -------------------------------------------------------------------------- */
+
+.shell-only-patient,
+.shell-only-clinician {
+  display: none;
+}
+
+body.shell-patient .shell-only-patient {
+  display: revert;
+}
+
+body.shell-clinician .shell-only-clinician {
+  display: revert;
+}
+
+body.shell-patient .shell-only-clinician {
+  display: none !important;
+}
+
+body.shell-clinician .shell-only-patient {
+  display: none !important;
+}
+
+/* Presentation mode dropdown (header) */
+.presentation-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.presentation-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 168px;
+  padding: 6px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control, 8px);
+  box-shadow: var(--shadow-md);
+  z-index: 120;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.presentation-menu.open {
+  display: flex;
+}
+
+.presentation-menu [data-presentation-option] {
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-radius: 6px;
+}
+
+.presentation-menu [data-presentation-option].active {
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+
+.presentation-menu-label {
+  display: block;
+  padding: 6px 10px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Focus rings — reuse semantic token */
+body.shell-patient :focus-visible,
+body.shell-clinician :focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Reduced motion — sheet / overlay transitions */
+@media (prefers-reduced-motion: reduce) {
+  body.shell-patient #patientSheet,
+  body.shell-patient #patientSheetBackdrop,
+  body.shell-patient #patientLocateCta,
+  body.shell-clinician .clinical-doc-panel,
+  body.shell-clinician #caeSidebar {
+    transition: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PATIENT SHELL — Mobile-first capture funnel
+   -------------------------------------------------------------------------- */
+
+body.shell-patient {
+  --patient-anatomy-min-height: 70vh;
+}
+
+/* Permanent hide of clinical-only chrome in patient shell */
+body.shell-patient .show-clinical {
+  display: none !important;
+}
+
+/* Clinician-only header actions */
+body.shell-patient #btnExport,
+body.shell-patient #btnImport,
+body.shell-patient #btnInsights,
+body.shell-patient #btnClear {
+  display: none !important;
+}
+
+/* Collapse side panels & timeline — single-column anatomy focus */
+body.shell-patient #caeSidebar,
+body.shell-patient .cae-sidebar,
+body.shell-patient .panel-left,
+body.shell-patient #leftResizeHandle,
+body.shell-patient #rightResizeHandle,
+body.shell-patient .clinical-doc-panel,
+body.shell-patient .panel-right,
+body.shell-patient #timelinePanel {
+  display: none !important;
+}
+
+/* Single-column layout grid */
+body.shell-patient .layout {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: unset;
+  gap: 0;
+  padding: 8px 10px 0;
+  min-height: 0;
+}
+
+body.shell-patient .panel-center,
+body.shell-patient .center-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  background: transparent;
+}
+
+body.shell-patient .center-workspace {
+  gap: 8px;
+  min-height: 0;
+}
+
+body.shell-patient .avatar-wrap,
+body.shell-patient .anatomy-viewer {
+  flex: 1 1 auto;
+  min-height: var(--patient-anatomy-min-height);
+  max-height: none;
+}
+
+body.shell-patient .avatar-stage {
+  min-height: clamp(320px, 72vh, 860px);
+}
+
+/* Simplified header */
+body.shell-patient .header {
+  padding: 10px 14px;
+  gap: 8px;
+}
+
+body.shell-patient .brand-tagline {
+  display: none !important;
+}
+
+body.shell-patient .toggle-label-sm {
+  display: none !important;
+}
+
+body.shell-patient .workflow-toggle .toggle-buttons {
+  border-radius: 999px;
+  padding: 3px;
+}
+
+body.shell-patient .workflow-toggle .btn-toggle {
+  min-height: 36px;
+  padding: 8px 16px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+
+body.shell-patient .header-actions .btn-ghost:not(#btnThemeToggle):not(#btnHelpMenu):not(#btnFeedback):not(#btnHeaderDemo) {
+  /* Keep theme, help, feedback; hide less-used desktop chrome */
+}
+
+body.shell-patient #btnResetDemo,
+body.shell-patient #btnExitDemo,
+body.shell-patient .demo-scenario-select {
+  /* Demo controls remain when visible via JS */
+}
+
+/* Capture tools — patient subset only */
+body.shell-patient .capture-tools .region-tool[data-tool="select"],
+body.shell-patient .capture-tools .region-tool[data-tool="polygon"] {
+  display: none !important;
+}
+
+body.shell-patient .capture-tools {
+  top: auto;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: calc(100% - 24px);
+  padding: 6px;
+  border-radius: 999px;
+  gap: 4px;
+}
+
+body.shell-patient .capture-tools .region-tool {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+body.shell-patient .capture-tools .region-tool-divider {
+  display: none;
+}
+
+body.shell-patient .capture-tools .display-mode-toggle {
+  margin-left: 0;
+}
+
+body.shell-patient .avatar-hint {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0 16px 8px;
+  line-height: 1.45;
+}
+
+body.shell-patient .quick-view-bar {
+  display: grid !important;
+  margin-bottom: 4px;
+}
+
+body.shell-patient .quick-view-bar .view-btn {
+  min-height: 44px;
+  font-weight: 700;
+}
+
+/* Sticky locate CTA bar */
+#patientLocateCta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+}
+
+body.shell-patient:not(.patient-step-locate) #patientLocateCta {
+  display: none !important;
+}
+
+#patientLocateCta .patient-locate-copy {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+#patientLocateCta .btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+/* Bottom sheet — describe & review steps */
+#patientSheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: var(--overlay-backdrop);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+
+body.shell-patient.patient-step-describe #patientSheetBackdrop,
+body.shell-patient.patient-step-review #patientSheetBackdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#patientSheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  max-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-top-left-radius: var(--radius-sheet, 20px);
+  border-top-right-radius: var(--radius-sheet, 20px);
+  box-shadow: var(--shadow-sheet);
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow: hidden;
+}
+
+body.shell-patient.patient-step-describe #patientSheet:not([hidden]),
+body.shell-patient.patient-step-review #patientSheet:not([hidden]) {
+  transform: translateY(0);
+}
+
+#patientSheet .patient-sheet-handle {
+  flex-shrink: 0;
+  width: 40px;
+  height: 4px;
+  margin: 10px auto 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+#patientSheet .patient-sheet-head {
+  flex-shrink: 0;
+  padding: 4px 18px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+#patientSheet .patient-sheet-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+#patientSheet .patient-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+  -webkit-overflow-scrolling: touch;
+}
+
+#patientSheet .patient-sheet-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 10px;
+  padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+#patientSheet .patient-sheet-actions .btn {
+  flex: 1;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius-control, 12px);
+}
+
+/* Step panes inside sheet */
+#patientDescribePane,
+#patientReviewPane {
+  display: none;
+}
+
+body.shell-patient.patient-step-describe #patientDescribePane {
+  display: block;
+}
+
+body.shell-patient.patient-step-review #patientReviewPane {
+  display: block;
+}
+
+/* Patient empty states & summary cards */
+.patient-empty {
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.patient-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control, 12px);
+}
+
+.patient-summary-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.patient-summary-row span {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.patient-summary-row strong {
+  color: var(--text-primary);
+  text-align: right;
+  font-weight: 600;
+}
+
+#patientSaveConfirm {
+  margin-top: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--success);
+  background: var(--success-subtle);
+  border: 1px solid color-mix(in srgb, var(--success) 35%, transparent);
+  border-radius: var(--radius-control, 12px);
+  text-align: center;
+}
+
+/* Large touch targets for patient form controls inside sheet */
+body.shell-patient #patientSheet .slider-hero {
+  min-height: 44px;
+}
+
+body.shell-patient #patientSheet .pill,
+body.shell-patient #patientSheet .quality-pill,
+body.shell-patient #patientSheet .btn {
+  min-height: 44px;
+}
+
+body.shell-patient #patientSheet .intensity-hero {
+  border-radius: var(--radius-control, 12px);
+  padding: 16px;
+}
+
+body.shell-patient #patientSheet .intensity-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* Reserve space above fixed chrome when locate CTA visible */
+body.shell-patient.patient-step-locate .layout {
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+
+body.shell-patient.patient-step-describe .avatar-wrap,
+body.shell-patient.patient-step-review .avatar-wrap {
+  min-height: clamp(240px, 38vh, 480px);
+  opacity: 0.92;
+}
+
+/* --------------------------------------------------------------------------
+   CLINICIAN SHELL — Desktop / tablet console grid
+   -------------------------------------------------------------------------- */
+
+body.shell-clinician {
+  --clinician-rail-width: 210px;
+  --clinician-context-width: 300px;
+  --clinician-timeline-height: clamp(120px, 14vh, 160px);
+}
+
+/* Console grid: left rail | center (anatomy + timeline) | right context */
+body.shell-clinician .layout {
+  display: grid;
+  grid-template-columns:
+    var(--clinician-rail-width)
+    6px
+    minmax(0, 1fr)
+    6px
+    var(--clinician-context-width);
+  grid-template-rows: 1fr;
+  gap: 0 10px;
+  padding: 10px;
+  align-items: stretch;
+}
+
+body.shell-clinician #caeSidebar,
+body.shell-clinician .cae-sidebar,
+body.shell-clinician .panel-left {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+body.shell-clinician #leftResizeHandle {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+body.shell-clinician .panel-center,
+body.shell-clinician .center-panel {
+  grid-column: 3;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body.shell-clinician #rightResizeHandle {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+body.shell-clinician .clinical-doc-panel,
+body.shell-clinician .panel-right {
+  grid-column: 5;
+  grid-row: 1;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+body.shell-clinician .center-workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Center column: anatomy dominates, timeline anchored below */
+body.shell-clinician .avatar-wrap,
+body.shell-clinician .anatomy-viewer {
+  flex: 1 1 55%;
+  min-height: 50%;
+}
+
+body.shell-clinician #timelinePanel,
+body.shell-clinician .timeline-panel {
+  flex: 0 0 var(--clinician-timeline-height);
+  height: var(--clinician-timeline-height);
+  min-height: 120px;
+  max-height: 160px;
+}
+
+/* Hide command-center noise & future placeholders */
+body.shell-clinician .command-center-title,
+body.shell-clinician .future-placeholders {
+  display: none !important;
+}
+
+/* De-emphasize report settings / rendering engine accordion when collapsed */
+body.shell-clinician #accDetail.collapsed .accordion-content {
+  /* stays collapsed by default — no extra chrome */
+}
+
+body.shell-clinician .cae-sidebar-content .accordion.show-clinical {
+  /* visible in clinical workflow via existing .show-clinical rules */
+}
+
+/* Compact left rail typography */
+.clinician-rail-label {
+  display: block;
+  padding: 8px 10px 4px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+body.shell-clinician .cae-sidebar .accordion-header {
+  font-size: 11px;
+  padding: 8px 10px;
+}
+
+body.shell-clinician .cae-sidebar .accordion-content {
+  padding: 6px 10px 10px;
+}
+
+body.shell-clinician .body-settings-summary {
+  font-size: 11px;
+}
+
+/* Right context panel header */
+#clinicianContextHeader {
+  flex-shrink: 0;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+#clinicianContextHeader .context-heading {
+  margin: 0 0 4px;
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+#clinicianContextHeader .context-subheading {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+#clinicianContextHeader .context-disclaimer {
+  margin: 6px 0 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+body.shell-clinician .clinical-doc-title {
+  font-size: 12px;
+}
+
+body.shell-clinician .clinical-doc-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control, 8px);
+}
+
+/* Clinician header — show full action set */
+body.shell-clinician .brand-tagline {
+  display: block;
+}
+
+body.shell-clinician .header {
+  padding: 10px 16px;
+}
+
+body.shell-clinician .workflow-toggle .btn-toggle {
+  min-height: 34px;
+  font-size: 11px;
+}
+
+/* Consult shell reuses clinician density */
+body.shell-consult.shell-clinician .layout {
+  --clinician-rail-width: 180px;
+  --clinician-context-width: 260px;
+}
+
+body.shell-consult.shell-clinician .future-placeholders,
+body.shell-consult.shell-clinician #accDetail,
+body.shell-consult.shell-clinician #accAIOverlays {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   CLINICIAN — Responsive: tablet icon rail & mobile stack
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  body.shell-clinician {
+    --clinician-rail-width: 56px;
+  }
+
+  body.shell-clinician .layout {
+    grid-template-columns: 56px 0 minmax(0, 1fr) 0 var(--clinician-context-width);
+    gap: 0 8px;
+  }
+
+  body.shell-clinician #leftResizeHandle,
+  body.shell-clinician #rightResizeHandle {
+    display: none;
+  }
+
+  body.shell-clinician #caeSidebar .command-center-title,
+  body.shell-clinician #caeSidebar .accordion-header span,
+  body.shell-clinician #caeSidebar .radio-option span,
+  body.shell-clinician #caeSidebar .check-option span,
+  body.shell-clinician #caeSidebar .view-btn,
+  body.shell-clinician #caeSidebar .meta-field > span,
+  body.shell-clinician #caeSidebar .placeholder-title,
+  body.shell-clinician #caeSidebar .placeholder-tag {
+    /* Text hidden — icons remain in accordion headers */
+    font-size: 0;
+    line-height: 0;
+  }
+
+  body.shell-clinician #caeSidebar .accordion-header span i,
+  body.shell-clinician #caeSidebar .body-settings-summary span i {
+    font-size: initial;
+    width: 18px;
+    height: 18px;
+  }
+
+  body.shell-clinician #caeSidebar .accordion-header {
+    justify-content: center;
+    padding: 10px 6px;
+  }
+
+  body.shell-clinician #caeSidebar .accordion-header .chevron {
+    display: none;
+  }
+
+  body.shell-clinician #caeSidebar .accordion-content {
+    position: absolute;
+    left: 56px;
+    top: 0;
+    width: 240px;
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    z-index: 80;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-control, 8px);
+    box-shadow: var(--shadow-md);
+    padding: 10px;
+  }
+
+  body.shell-clinician #caeSidebar .accordion:not(.open) .accordion-content {
+    display: none;
+  }
+
+  body.shell-clinician #caeSidebar,
+  body.shell-clinician .cae-sidebar {
+    position: relative;
+    overflow: visible;
+  }
+
+  body.shell-clinician .clinical-doc-panel {
+    --clinician-context-width: 260px;
+  }
+}
+
+@media (max-width: 800px) {
+  body.shell-clinician .layout {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 8px;
+  }
+
+  body.shell-clinician #caeSidebar,
+  body.shell-clinician .panel-left {
+    order: 2;
+    width: 100%;
+    max-height: none;
+    flex: none;
+  }
+
+  body.shell-clinician #caeSidebar .accordion-content {
+    position: static;
+    width: auto;
+    max-height: none;
+    box-shadow: none;
+    border: none;
+    padding: 6px 10px 10px;
+  }
+
+  body.shell-clinician #caeSidebar .accordion-header span,
+  body.shell-clinician #caeSidebar .radio-option span,
+  body.shell-clinician #caeSidebar .check-option span,
+  body.shell-clinician #caeSidebar .view-btn {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  body.shell-clinician .panel-center {
+    order: 1;
+    min-height: 55vh;
+  }
+
+  body.shell-clinician .clinical-doc-panel,
+  body.shell-clinician .panel-right {
+    order: 3;
+    width: 100%;
+    max-height: 42vh;
+    position: relative;
+  }
+
+  body.shell-clinician #timelinePanel {
+    flex: 0 0 auto;
+    height: clamp(140px, 22vh, 200px);
+    max-height: none;
+  }
+
+  body.shell-clinician .header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  body.shell-clinician .workflow-toggle {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  body.shell-clinician .header-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PATIENT — Small viewport refinements
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  body.shell-patient .header-actions #btnFeedback,
+  body.shell-patient .header-actions #btnHeaderDemo {
+    display: none;
+  }
+
+  body.shell-patient .workflow-toggle {
+    flex: 1;
+    justify-content: center;
+  }
+
+  body.shell-patient .workflow-toggle .toggle-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  body.shell-patient .workflow-toggle .btn-toggle {
+    flex: 1;
+    padding-inline: 8px;
+  }
+
+  body.shell-patient #patientSheet {
+    max-height: 62vh;
+  }
+}
+
+@media (min-width: 900px) {
+  body.shell-patient .layout {
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  body.shell-patient #patientSheet {
+    left: 50%;
+    right: auto;
+    width: min(720px, 100%);
+    transform: translate(-50%, 100%);
+  }
+
+  body.shell-patient.patient-step-describe #patientSheet:not([hidden]),
+  body.shell-patient.patient-step-review #patientSheet:not([hidden]) {
+    transform: translate(-50%, 0);
+  }
+
+  body.shell-patient #patientLocateCta {
+    max-width: 720px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: var(--radius-sheet, 20px) var(--radius-sheet, 20px) 0 0;
+  }
+}
