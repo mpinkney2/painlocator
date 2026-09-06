@@ -15,6 +15,9 @@ class PainEntryStore {
   }
 
   onChange(fn) { this._listeners.push(fn); }
+  offChange(fn) {
+    this._listeners = this._listeners.filter((listener) => listener !== fn);
+  }
   _notify() { this._listeners.forEach(fn => fn(this)); }
 
   canUndo() { return this._historyIndex > 0; }

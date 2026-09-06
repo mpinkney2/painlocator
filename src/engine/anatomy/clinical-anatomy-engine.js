@@ -69,6 +69,10 @@ class ClinicalAnatomyEngine {
     /** @type {"plate"|"spatial"} plate remains default/fallback */
     this.displayMode = config.displayMode === "spatial" ? "spatial" : "plate";
     this.spatialRenderer = null;
+    /** Monotonic token so overlapping plate↔spatial switches discard stale work */
+    this._displayModeToken = 0;
+    /** Runtime-only 3D surface attachments (not persisted / not schema) */
+    this.spatialAttachments = new Map();
 
     this.initDOM();
     if (this.displayMode === "spatial") {
@@ -148,29 +152,38 @@ class ClinicalAnatomyEngine {
       console.warn("[CAE] SpatialAnatomyRenderer not loaded — staying on plate");
       return this.enablePlateMode("spatial-unavailable");
     }
+    const token = ++this._displayModeToken;
     try {
       this.spatialRenderer?.dispose?.();
       this.spatialRenderer = new SpatialAnatomyRenderer(this, {
+        // Mount failures are recovered by the caller via !ok → enablePlateMode.
+        // Avoid double enablePlateMode from both onFallback and the await path.
         onFallback: (_reason, err) => {
-          console.warn("[CAE] Spatial fallback to plate", _reason, err);
-          this.enablePlateMode(_reason || "spatial-fallback");
+          console.warn("[CAE] Spatial mount fallback signal", _reason, err);
         }
       });
-      this.displayMode = "spatial";
       this.stage.innerHTML = "";
       const ok = await this.spatialRenderer.mount(this.stage);
+      if (token !== this._displayModeToken) {
+        this.spatialRenderer?.dispose?.();
+        this.spatialRenderer = null;
+        return this.displayMode === "spatial";
+      }
       if (!ok) {
         return this.enablePlateMode("spatial-mount-failed");
       }
+      this.displayMode = "spatial";
       this.trigger("displaymodechanged", { displayMode: "spatial" });
       return true;
     } catch (err) {
       console.warn("[CAE] enableSpatialMode failed", err);
+      if (token !== this._displayModeToken) return this.displayMode === "spatial";
       return this.enablePlateMode("spatial-exception");
     }
   }
 
   enablePlateMode(reason) {
+    this._displayModeToken += 1;
     this.spatialRenderer?.dispose?.();
     this.spatialRenderer = null;
     this.displayMode = "plate";

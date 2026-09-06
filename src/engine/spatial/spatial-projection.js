@@ -48,6 +48,15 @@
     return best;
   }
 
+  /**
+   * Project a world point through the active spatial camera to 0–1 anchors.
+   *
+   * Phase 1 accuracy note (intentional, not a bug):
+   * Uses the full WebGL canvas NDC → [0,1] mapping. Compatible with the existing
+   * plate schema field shape (anchors[{x,y}]) but only approximately aligned with
+   * the plate renderer's letterboxed image-frame coordinates from
+   * AnatomyCoordinateMapper. True letterbox-aware 3D→2D remapping is deferred.
+   */
   function worldToNormalizedAnchors(THREE, camera, worldPoint) {
     const v = worldPoint.clone().project(camera);
     return {

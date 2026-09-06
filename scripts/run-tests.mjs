@@ -438,6 +438,25 @@ console.log('PainLocator tests\n');
     assert.equal(world.y, 1.2);
     assert.equal(world.z, 0.3);
   });
+
+  test('spatial projection: worldToNormalizedAnchors is camera NDC (not letterbox)', () => {
+    // Phase 1 documents approximate plate compatibility: full-viewport NDC → 0–1.
+    const fakeCamera = {};
+    const fakeTHREE = {};
+    const worldPoint = {
+      clone() {
+        return {
+          project() {
+            return { x: 0, y: 0, z: 0.5 }; // NDC center
+          }
+        };
+      }
+    };
+    const anchors = P.worldToNormalizedAnchors(fakeTHREE, fakeCamera, worldPoint);
+    assert.equal(anchors.x, 0.5);
+    assert.equal(anchors.y, 0.5);
+    assert.equal(anchors.ndcZ, 0.5);
+  });
 }
 
 

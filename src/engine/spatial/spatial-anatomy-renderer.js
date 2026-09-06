@@ -5,7 +5,9 @@
  * Three.js loads only on demand. Failures invoke onFallback → plate renderer.
  *
  * Persisted PainRegion fields remain view + anchors + anatomyLayer.
- * Surface attachment is runtime-only (Map), never written to storage/schema.
+ * Surface attachment is runtime-only (engine.spatialAttachments Map), never written
+ * to storage/schema. Switching plate ↔ spatial within a session keeps the Map so
+ * remount can re-parent markers; a full page reload intentionally loses 3D metadata.
  */
 (function (global) {
   const DRAG_THRESHOLD_PX = 6;
@@ -28,23 +30,29 @@
       this.disposed = false;
       this._regions = [];
       this._selectedIds = new Set();
-      /** @type {Map<string, object>} regionId → runtime surface attachment */
-      this._attachments = new Map();
+      /** @type {Map<string, object>} regionId → runtime surface attachment (session) */
+      if (!engine.spatialAttachments) engine.spatialAttachments = new Map();
+      this._attachments = engine.spatialAttachments;
       this._drag = null;
       this._bound = false;
+      this._onStoreChange = null;
+      this._mountGeneration = 0;
     }
 
     async mount(container) {
       if (this.disposed) return false;
       this.container = container;
+      const generation = ++this._mountGeneration;
       try {
         if (!SpatialThreeLoader.isWebGLAvailable()) {
           throw new Error("WebGL unavailable");
         }
         this.THREE = await SpatialThreeLoader.loadThreeModule();
-        if (this.disposed) return false;
+        if (this.disposed || generation !== this._mountGeneration) return false;
 
-        container.innerHTML = "";
+        // Tear down any prior spatial DOM/listeners before remounting.
+        this._teardownMount({ keepAttachments: true });
+
         container.classList.add("cae-spatial-active");
 
         this.mountEl = document.createElement("div");
@@ -65,9 +73,10 @@
         this.annotations = new SpatialAnnotationLayer(this.scene, this.THREE);
         this._bindPointer();
         if (this.store?.onChange) {
-          this.store.onChange(() => {
+          this._onStoreChange = () => {
             if (this.ready && !this.disposed) this._syncFromStore();
-          });
+          };
+          this.store.onChange(this._onStoreChange);
         }
         this.ready = true;
 
@@ -77,7 +86,7 @@
         return true;
       } catch (err) {
         console.warn("[CAE Spatial] mount failed — falling back to plate renderer", err);
-        this._teardownMount();
+        this._teardownMount({ keepAttachments: true });
         this.onFallback("mount-failed", err);
         return false;
       }
@@ -113,26 +122,37 @@
 
     dispose() {
       this.disposed = true;
-      this._teardownMount();
+      this._mountGeneration += 1;
+      this._teardownMount({ keepAttachments: true });
     }
 
     getRuntimeAttachment(regionId) {
       return this._attachments.get(regionId) || null;
     }
 
-    _teardownMount() {
+    _teardownMount({ keepAttachments = false } = {}) {
       this._unbindPointer();
+      if (this._onStoreChange && this.store?.offChange) {
+        this.store.offChange(this._onStoreChange);
+      }
+      this._onStoreChange = null;
       this.annotations?.dispose?.();
       this.scene?.dispose?.();
       this.annotations = null;
       this.scene = null;
       this.THREE = null;
       this.ready = false;
+      this._drag = null;
       this.container?.classList.remove("cae-spatial-active");
       if (this.mountEl) {
         this.mountEl.remove();
         this.mountEl = null;
       }
+      // Sweep leftover spatial canvases if container was wiped externally.
+      this.container?.querySelectorAll?.(".cae-spatial-viewport, .cae-spatial-canvas")?.forEach((el) => {
+        el.remove();
+      });
+      if (!keepAttachments) this._attachments.clear();
     }
 
     _bindPointer() {
@@ -364,6 +384,10 @@
           this.annotations.remove(id);
           if (!this.store?.findRegion?.(id)) this._attachments.delete(id);
         }
+      }
+      // Drop session attachments for regions that no longer exist.
+      for (const id of [...this._attachments.keys()]) {
+        if (!live.has(id) && !this.store?.findRegion?.(id)) this._attachments.delete(id);
       }
       const view = this.engine.viewType || "front";
       for (const region of this._regions) {

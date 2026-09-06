@@ -204,7 +204,6 @@
 
     _tick() {
       if (this.disposed) return;
-      this._raf = requestAnimationFrame(this._tick);
 
       if (this._snapping) {
         const delta = SpatialProjection.normalizeYaw(this._targetYaw - this._yaw);
@@ -217,9 +216,14 @@
         }
       }
 
-      if (!this._needsFrame) return;
-      this.renderer.render(this.scene, this.camera);
-      if (!this._snapping) this._needsFrame = false;
+      if (this._needsFrame) {
+        this.renderer.render(this.scene, this.camera);
+        if (!this._snapping) this._needsFrame = false;
+      }
+
+      // Schedule next frame only if still alive (avoids orphaned rAF after dispose).
+      if (this.disposed) return;
+      this._raf = requestAnimationFrame(this._tick);
     }
 
     raycastClient(clientX, clientY) {
@@ -241,9 +245,11 @@
       if (this.disposed) return;
       this.disposed = true;
       cancelAnimationFrame(this._raf);
+      this._raf = 0;
       window.removeEventListener("resize", this._onResize);
       this._mq?.removeEventListener?.("change", this._onMotion);
       this._ro?.disconnect();
+      this._ro = null;
       this.scene.traverse((obj) => {
         if (obj.geometry) obj.geometry.dispose?.();
         if (obj.material) {
@@ -251,8 +257,12 @@
           else obj.material.dispose?.();
         }
       });
+      try {
+        this.renderer.forceContextLoss?.();
+      } catch (_) { /* ignore */ }
       this.renderer.dispose();
       this.canvas?.remove();
+      this.canvas = null;
       this.raycastMeshes = [];
       this.meshByUuid.clear();
     }

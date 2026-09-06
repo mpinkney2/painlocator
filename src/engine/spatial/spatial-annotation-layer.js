@@ -1,7 +1,8 @@
 /**
  * Runtime spatial annotation visuals.
- * Native spatial markers stay parented to bodyRoot (surface-attached while rotating).
- * Legacy view2d markers appear only on matching snap views.
+ * Native spatial markers are parented to the raycast hit mesh in mesh-local space
+ * (true surface attachment — not merely co-rotated via bodyRoot).
+ * Legacy view2d markers appear only on matching snap views (bodyRoot-local).
  */
 (function (global) {
   class SpatialAnnotationLayer {
@@ -64,14 +65,23 @@
         entry = null;
       }
 
-      const world = SpatialProjection.resolveAttachmentWorldPoint(
-        THREE,
-        attachment,
-        this.scene.meshByUuid
-      );
-      if (!world) return null;
-
-      const local = this.scene.bodyRoot.worldToLocal(world.clone());
+      // Prefer stored mesh-local point; fall back to resolved world → mesh local.
+      let local = null;
+      if (attachment.localPoint) {
+        local = new THREE.Vector3(
+          attachment.localPoint.x,
+          attachment.localPoint.y,
+          attachment.localPoint.z
+        );
+      } else {
+        const world = SpatialProjection.resolveAttachmentWorldPoint(
+          THREE,
+          attachment,
+          this.scene.meshByUuid
+        );
+        if (!world) return null;
+        local = mesh.worldToLocal(world.clone());
+      }
 
       if (!entry) {
         const marker = new THREE.Mesh(
@@ -81,12 +91,19 @@
         marker.name = `spatial-marker-${regionId}`;
         marker.userData.regionId = regionId;
         marker.userData.markerKind = "spatial";
-        this.scene.markerRoot.add(marker);
-        entry = { kind: "spatial", attachment, marker, regionId };
+        // Parent to the hit mesh so attachment survives bodyRoot yaw as true
+        // surface binding (not merely shared rotation via markerRoot).
+        mesh.add(marker);
+        entry = { kind: "spatial", attachment, marker, regionId, meshUuid: mesh.uuid };
         this._entries.set(regionId, entry);
       } else {
         entry.attachment = attachment;
         entry.marker.material = selected ? this._matSelected : this._matSpatial;
+        if (entry.marker.parent !== mesh) {
+          entry.marker.parent?.remove(entry.marker);
+          mesh.add(entry.marker);
+        }
+        entry.meshUuid = mesh.uuid;
       }
       entry.marker.position.copy(local);
       entry.marker.visible = true;
