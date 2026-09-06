@@ -59,6 +59,7 @@
 
       this.raycastMeshes = [];
       this.meshByUuid = new Map();
+      this.meshByName = new Map();
       this._buildPlaceholderBody();
 
       this.raycaster = new THREE.Raycaster();
@@ -108,6 +109,7 @@
         this.bodyRoot.add(mesh);
         this.raycastMeshes.push(mesh);
         this.meshByUuid.set(mesh.uuid, mesh);
+        if (name) this.meshByName.set(name, mesh);
         return mesh;
       };
 
@@ -265,6 +267,7 @@
       this.canvas = null;
       this.raycastMeshes = [];
       this.meshByUuid.clear();
+      this.meshByName.clear();
     }
   }
 

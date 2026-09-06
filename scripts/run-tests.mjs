@@ -439,6 +439,34 @@ console.log('PainLocator tests\n');
     assert.equal(world.z, 0.3);
   });
 
+  test('spatial projection: resolveMesh remounts via stable meshName', () => {
+    const oldMesh = { uuid: 'uuid-old', name: 'torso', localToWorld(v) { return v; } };
+    const newMesh = { uuid: 'uuid-new', name: 'torso', localToWorld(v) { return v; } };
+    const att = {
+      meshUuid: 'uuid-old',
+      meshName: 'torso',
+      localPoint: { x: 0.2, y: 1.0, z: 0.1 }
+    };
+    const byUuid = new Map([[newMesh.uuid, newMesh]]);
+    const byName = new Map([['torso', newMesh]]);
+    const resolved = P.resolveMesh(att, byUuid, byName);
+    assert.ok(resolved);
+    assert.equal(resolved.uuid, 'uuid-new');
+    assert.equal(att.meshUuid, 'uuid-new');
+    const fakeTHREE = {
+      Vector3: class {
+        constructor(x = 0, y = 0, z = 0) { this.x = x; this.y = y; this.z = z; }
+      }
+    };
+    const world = P.resolveAttachmentWorldPoint(fakeTHREE, att, byUuid, byName);
+    assert.ok(world);
+    assert.equal(world.x, 0.2);
+    assert.equal(world.y, 1.0);
+    assert.equal(world.z, 0.1);
+    // silence unused
+    assert.equal(oldMesh.name, 'torso');
+  });
+
   test('spatial projection: worldToNormalizedAnchors is camera NDC (not letterbox)', () => {
     // Phase 1 documents approximate plate compatibility: full-viewport NDC → 0–1.
     const fakeCamera = {};

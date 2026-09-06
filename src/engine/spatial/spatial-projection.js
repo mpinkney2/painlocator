@@ -98,9 +98,26 @@
     };
   }
 
-  function resolveAttachmentWorldPoint(THREE, attachment, meshByUuid) {
+  function resolveMesh(attachment, meshByUuid, meshByName) {
     if (!attachment) return null;
-    const mesh = meshByUuid?.get?.(attachment.meshUuid) || attachment.mesh || null;
+    const byUuid = meshByUuid?.get?.(attachment.meshUuid);
+    if (byUuid) return byUuid;
+    // Remounts mint new Three.js UUIDs; stable meshName survives plate↔spatial.
+    const byName =
+      (attachment.meshName && meshByName?.get?.(attachment.meshName)) ||
+      (attachment.meshName &&
+        [...(meshByUuid?.values?.() || [])].find((m) => m.name === attachment.meshName)) ||
+      null;
+    if (byName) {
+      attachment.meshUuid = byName.uuid;
+      return byName;
+    }
+    return attachment.mesh || null;
+  }
+
+  function resolveAttachmentWorldPoint(THREE, attachment, meshByUuid, meshByName) {
+    if (!attachment) return null;
+    const mesh = resolveMesh(attachment, meshByUuid, meshByName);
     if (!mesh) return null;
 
     if (attachment.barycentric && attachment.face && mesh.geometry?.attributes?.position) {
@@ -138,6 +155,7 @@
     nearestSnapView,
     worldToNormalizedAnchors,
     attachmentFromIntersection,
+    resolveMesh,
     resolveAttachmentWorldPoint
   };
 })(typeof window !== "undefined" ? window : globalThis);

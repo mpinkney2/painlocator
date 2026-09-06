@@ -107,6 +107,8 @@
       this.scene.snapToView(view, {
         animate: animate && !this.scene.prefersReducedMotion()
       });
+      // Keep persisted view + anchors aligned with button snaps (same as drag-snap).
+      this._reprojectSpatial(view);
       this._refreshLegacy(view);
     }
 
@@ -335,7 +337,8 @@
         const world = SpatialProjection.resolveAttachmentWorldPoint(
           this.THREE,
           attachment,
-          this.scene.meshByUuid
+          this.scene.meshByUuid,
+          this.scene.meshByName
         );
         if (!world) continue;
         const anchors = this.scene.projectWorldToAnchors(world);
@@ -393,8 +396,15 @@
       for (const region of this._regions) {
         const selected = this._selectedIds.has(region.id);
         const attachment = this._attachments.get(region.id);
-        if (attachment) this.annotations.upsertSpatial(region.id, attachment, { selected });
-        else this.annotations.upsertLegacy(region.id, region, view, { selected });
+        if (attachment) {
+          const ok = this.annotations.upsertSpatial(region.id, attachment, { selected });
+          if (!ok) {
+            // Attachment could not bind after remount — show legacy 2D marker.
+            this.annotations.upsertLegacy(region.id, region, view, { selected });
+          }
+        } else {
+          this.annotations.upsertLegacy(region.id, region, view, { selected });
+        }
       }
       this.scene.requestFrame();
     }

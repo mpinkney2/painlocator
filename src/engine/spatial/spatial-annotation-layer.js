@@ -56,7 +56,11 @@
 
     upsertSpatial(regionId, attachment, { selected = false } = {}) {
       const THREE = this.THREE;
-      const mesh = this.scene.meshByUuid.get(attachment.meshUuid);
+      const mesh = SpatialProjection.resolveMesh(
+        attachment,
+        this.scene.meshByUuid,
+        this.scene.meshByName
+      );
       if (!mesh) return null;
 
       let entry = this._entries.get(regionId);
@@ -77,7 +81,8 @@
         const world = SpatialProjection.resolveAttachmentWorldPoint(
           THREE,
           attachment,
-          this.scene.meshByUuid
+          this.scene.meshByUuid,
+          this.scene.meshByName
         );
         if (!world) return null;
         local = mesh.worldToLocal(world.clone());
