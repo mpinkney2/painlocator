@@ -1,13 +1,15 @@
 /**
- * SpatialAnatomyRenderer — Phase 1 CAE spatial display adapter.
+ * SpatialAnatomyRenderer — CAE spatial display adapter (Phase 2 Slice 1).
  *
  * Contract (duck-typed): mount, render, dispose, setView, resize, setAnnotations
- * Three.js loads only on demand. Failures invoke onFallback → plate renderer.
+ * Three.js + exterior GLB load only on demand via SpatialManifestLoader.
+ * Failures invoke onFallback → plate renderer.
  *
  * Persisted PainRegion fields remain view + anchors + anatomyLayer.
  * Surface attachment is runtime-only (engine.spatialAttachments Map), never written
  * to storage/schema. Switching plate ↔ spatial within a session keeps the Map so
- * remount can re-parent markers; a full page reload intentionally loses 3D metadata.
+ * remount can re-parent markers by stable meshId; a full page reload intentionally
+ * loses 3D metadata.
  */
 (function (global) {
   const DRAG_THRESHOLD_PX = 6;
@@ -70,6 +72,12 @@
         this.mountEl.appendChild(hint);
 
         this.scene = new SpatialSceneController(this.mountEl, this.THREE);
+        await this.scene.loadExteriorBody();
+        if (this.disposed || generation !== this._mountGeneration) {
+          this._teardownMount({ keepAttachments: true });
+          return false;
+        }
+
         this.annotations = new SpatialAnnotationLayer(this.scene, this.THREE);
         this._bindPointer();
         if (this.store?.onChange) {

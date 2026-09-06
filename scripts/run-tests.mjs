@@ -2,7 +2,7 @@
  * Minimal Node test runner for PainLocator pure logic.
  * Loads modules by evaluating source with stubs where needed.
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -411,7 +411,8 @@ console.log('PainLocator tests\n');
     };
     const mesh = {
       uuid: 'mesh-1',
-      name: 'torso',
+      name: 'surface.torso',
+      userData: { meshId: 'surface.torso', structureId: 'PL:surface.torso' },
       worldToLocal(v) { return v; },
       localToWorld(v) { return v; },
       geometry: null
@@ -429,6 +430,8 @@ console.log('PainLocator tests\n');
     mesh.localToWorld = (v) => new fakeTHREE.Vector3(v.x, v.y, v.z);
     const att = P.attachmentFromIntersection(fakeTHREE, hit);
     assert.equal(att.meshUuid, 'mesh-1');
+    assert.equal(att.meshId, 'surface.torso');
+    assert.equal(att.structureId, 'PL:surface.torso');
     assert.equal(att.localPoint.x, 0.1);
     assert.equal(att.localPoint.y, 1.2);
     const map = new Map([[mesh.uuid, mesh]]);
@@ -439,32 +442,43 @@ console.log('PainLocator tests\n');
     assert.equal(world.z, 0.3);
   });
 
-  test('spatial projection: resolveMesh remounts via stable meshName', () => {
-    const oldMesh = { uuid: 'uuid-old', name: 'torso', localToWorld(v) { return v; } };
-    const newMesh = { uuid: 'uuid-new', name: 'torso', localToWorld(v) { return v; } };
+  test('spatial projection: resolveMesh remounts via stable meshId', () => {
+    const oldMesh = { uuid: 'uuid-old', name: 'surface.torso', userData: { meshId: 'surface.torso' }, localToWorld(v) { return v; } };
+    const newMesh = { uuid: 'uuid-new', name: 'surface.torso', userData: { meshId: 'surface.torso', structureId: 'PL:surface.torso' }, localToWorld(v) { return v; } };
     const att = {
       meshUuid: 'uuid-old',
-      meshName: 'torso',
+      meshId: 'surface.torso',
+      meshName: 'surface.torso',
       localPoint: { x: 0.2, y: 1.0, z: 0.1 }
     };
     const byUuid = new Map([[newMesh.uuid, newMesh]]);
-    const byName = new Map([['torso', newMesh]]);
-    const resolved = P.resolveMesh(att, byUuid, byName);
+    const byId = new Map([['surface.torso', newMesh]]);
+    const resolved = P.resolveMesh(att, byUuid, byId);
     assert.ok(resolved);
     assert.equal(resolved.uuid, 'uuid-new');
     assert.equal(att.meshUuid, 'uuid-new');
+    assert.equal(att.meshId, 'surface.torso');
+    assert.equal(att.structureId, 'PL:surface.torso');
     const fakeTHREE = {
       Vector3: class {
         constructor(x = 0, y = 0, z = 0) { this.x = x; this.y = y; this.z = z; }
       }
     };
-    const world = P.resolveAttachmentWorldPoint(fakeTHREE, att, byUuid, byName);
+    const world = P.resolveAttachmentWorldPoint(fakeTHREE, att, byUuid, byId);
     assert.ok(world);
     assert.equal(world.x, 0.2);
     assert.equal(world.y, 1.0);
     assert.equal(world.z, 0.1);
-    // silence unused
-    assert.equal(oldMesh.name, 'torso');
+    assert.equal(oldMesh.name, 'surface.torso');
+  });
+
+  test('spatial projection: resolveMesh falls back to meshName (Phase 1 sessions)', () => {
+    const newMesh = { uuid: 'uuid-new', name: 'torso', userData: {}, localToWorld(v) { return v; } };
+    const att = { meshUuid: 'uuid-old', meshName: 'torso', localPoint: { x: 0, y: 1, z: 0 } };
+    const byUuid = new Map([[newMesh.uuid, newMesh]]);
+    const byName = new Map([['torso', newMesh]]);
+    const resolved = P.resolveMesh(att, byUuid, byName);
+    assert.equal(resolved.uuid, 'uuid-new');
   });
 
   test('spatial projection: worldToNormalizedAnchors is camera NDC (not letterbox)', () => {
@@ -487,6 +501,86 @@ console.log('PainLocator tests\n');
   });
 }
 
+// --- Spatial manifest helpers ---
+{
+  const sandbox = { console, Math, Object, Number, Array, Map, JSON, Error, window: {}, document: {} };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/spatial/spatial-manifest-loader.js', sandbox);
+  const U = sandbox.SpatialManifestUtils;
+
+  test('spatial manifest: joinUrl resolves relative asset paths', () => {
+    assert.equal(
+      U.joinUrl('/anatomy/spatial/manifest.json', './adult-male/manifest.json'),
+      '/anatomy/spatial/adult-male/manifest.json'
+    );
+    assert.equal(
+      U.joinUrl('/anatomy/spatial/adult-male/manifest.json', './exterior-lod0.glb'),
+      '/anatomy/spatial/adult-male/exterior-lod0.glb'
+    );
+    assert.equal(U.joinUrl('/a/b.json', '/abs/x.glb'), '/abs/x.glb');
+  });
+
+  test('spatial manifest: validateCatalog requires schema + defaultModelId + models', () => {
+    assert.throws(() => U.validateCatalog(null), /Catalog missing/);
+    assert.throws(() => U.validateCatalog({}), /schemaVersion/);
+    assert.throws(() => U.validateCatalog({ schemaVersion: '1', models: [] }), /defaultModelId/);
+    const ok = U.validateCatalog({
+      schemaVersion: '1.0.0',
+      defaultModelId: 'adult-male',
+      models: [{ modelId: 'adult-male', manifest: './adult-male/manifest.json' }]
+    });
+    assert.equal(ok.defaultModelId, 'adult-male');
+  });
+
+  test('spatial manifest: validateModelManifest requires surface file + meshIds', () => {
+    assert.throws(() => U.validateModelManifest({ schemaVersion: '1', modelId: 'x' }), /layers/);
+    assert.throws(
+      () =>
+        U.validateModelManifest({
+          schemaVersion: '1',
+          modelId: 'x',
+          layers: { surface: { file: './a.glb', meshes: [{}] } }
+        }),
+      /meshId/
+    );
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    const ok = U.validateModelManifest(manifest);
+    assert.equal(ok.modelId, 'adult-male');
+    assert.equal(ok.layers.surface.file, './exterior-lod0.glb');
+  });
+
+  test('spatial manifest: indexMeshes maps stable meshId entries', () => {
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    const index = U.indexMeshes(manifest);
+    assert.ok(index.has('surface.torso'));
+    assert.ok(index.has('surface.upperArmL'));
+    assert.equal(index.get('surface.torso').structureId, 'PL:surface.torso');
+    assert.equal(index.get('surface.head').layer, 'surface');
+    assert.equal(index.size, manifest.layers.surface.meshes.length);
+  });
+
+  test('spatial manifest: validateCatalog failure paths', () => {
+    assert.throws(() => U.validateCatalog({ schemaVersion: '1', defaultModelId: 'x' }), /models/);
+  });
+
+  test('spatial manifest: shipped catalog + GLB path exist', () => {
+    const catalog = JSON.parse(readFileSync(join(root, 'public/anatomy/spatial/manifest.json'), 'utf8'));
+    U.validateCatalog(catalog);
+    const modelPath = join(root, 'public/anatomy/spatial/adult-male/manifest.json');
+    const model = JSON.parse(readFileSync(modelPath, 'utf8'));
+    U.validateModelManifest(model);
+    const glb = join(root, 'public/anatomy/spatial/adult-male/exterior-lod0.glb');
+    const size = statSync(glb).size;
+    assert.ok(size > 50_000, `GLB too small: ${size}`);
+    assert.ok(size < 5_000_000, `GLB exceeds 5MB target: ${size}`);
+  });
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed) process.exit(1);

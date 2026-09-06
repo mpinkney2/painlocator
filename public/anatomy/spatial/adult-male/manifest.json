@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "adult-male",
+  "displayName": "Adult Male",
+  "sex": "male",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "provenance": {
+    "source": "PainLocator interim exterior mannequin",
+    "licenseRef": "./LICENSE.md",
+    "retrievedAt": "2026-09-06",
+    "status": "interim",
+    "notes": "Placeholder for a future BodyParts3D-derived exterior. Authored for Slice 1 so CAE can bind stable meshIds without waiting on BP3D conversion."
+  },
+  "layers": {
+    "surface": {
+      "layerId": "surface",
+      "displayName": "Exterior surface",
+      "file": "./exterior-lod0.glb",
+      "lod": 0,
+      "meshes": [
+        { "meshId": "surface.head", "structureId": "PL:surface.head", "structureName": "Head", "clinicalName": "Head (exterior)", "layer": "surface", "parentStructureId": null },
+        { "meshId": "surface.neck", "structureId": "PL:surface.neck", "structureName": "Neck", "clinicalName": "Neck (exterior)", "layer": "surface", "parentStructureId": "PL:surface.head" },
+        { "meshId": "surface.torso", "structureId": "PL:surface.torso", "structureName": "Torso", "clinicalName": "Torso (exterior)", "layer": "surface", "parentStructureId": null },
+        { "meshId": "surface.pelvis", "structureId": "PL:surface.pelvis", "structureName": "Pelvis", "clinicalName": "Pelvis (exterior)", "layer": "surface", "parentStructureId": "PL:surface.torso" },
+        { "meshId": "surface.shoulderL", "structureId": "PL:surface.shoulderL", "structureName": "Left shoulder", "clinicalName": "Left shoulder (exterior)", "layer": "surface", "parentStructureId": "PL:surface.torso" },
+        { "meshId": "surface.shoulderR", "structureId": "PL:surface.shoulderR", "structureName": "Right shoulder", "clinicalName": "Right shoulder (exterior)", "layer": "surface", "parentStructureId": "PL:surface.torso" },
+        { "meshId": "surface.upperArmL", "structureId": "PL:surface.upperArmL", "structureName": "Left upper arm", "clinicalName": "Left upper arm (exterior)", "layer": "surface", "parentStructureId": "PL:surface.shoulderL" },
+        { "meshId": "surface.upperArmR", "structureId": "PL:surface.upperArmR", "structureName": "Right upper arm", "clinicalName": "Right upper arm (exterior)", "layer": "surface", "parentStructureId": "PL:surface.shoulderR" },
+        { "meshId": "surface.forearmL", "structureId": "PL:surface.forearmL", "structureName": "Left forearm", "clinicalName": "Left forearm (exterior)", "layer": "surface", "parentStructureId": "PL:surface.upperArmL" },
+        { "meshId": "surface.forearmR", "structureId": "PL:surface.forearmR", "structureName": "Right forearm", "clinicalName": "Right forearm (exterior)", "layer": "surface", "parentStructureId": "PL:surface.upperArmR" },
+        { "meshId": "surface.handL", "structureId": "PL:surface.handL", "structureName": "Left hand", "clinicalName": "Left hand (exterior)", "layer": "surface", "parentStructureId": "PL:surface.forearmL" },
+        { "meshId": "surface.handR", "structureId": "PL:surface.handR", "structureName": "Right hand", "clinicalName": "Right hand (exterior)", "layer": "surface", "parentStructureId": "PL:surface.forearmR" },
+        { "meshId": "surface.thighL", "structureId": "PL:surface.thighL", "structureName": "Left thigh", "clinicalName": "Left thigh (exterior)", "layer": "surface", "parentStructureId": "PL:surface.pelvis" },
+        { "meshId": "surface.thighR", "structureId": "PL:surface.thighR", "structureName": "Right thigh", "clinicalName": "Right thigh (exterior)", "layer": "surface", "parentStructureId": "PL:surface.pelvis" },
+        { "meshId": "surface.shinL", "structureId": "PL:surface.shinL", "structureName": "Left shin", "clinicalName": "Left shin (exterior)", "layer": "surface", "parentStructureId": "PL:surface.thighL" },
+        { "meshId": "surface.shinR", "structureId": "PL:surface.shinR", "structureName": "Right shin", "clinicalName": "Right shin (exterior)", "layer": "surface", "parentStructureId": "PL:surface.thighR" },
+        { "meshId": "surface.footL", "structureId": "PL:surface.footL", "structureName": "Left foot", "clinicalName": "Left foot (exterior)", "layer": "surface", "parentStructureId": "PL:surface.shinL" },
+        { "meshId": "surface.footR", "structureId": "PL:surface.footR", "structureName": "Right foot", "clinicalName": "Right foot (exterior)", "layer": "surface", "parentStructureId": "PL:surface.shinR" }
+      ]
+    }
+  }
+}
