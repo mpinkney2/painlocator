@@ -1281,6 +1281,28 @@ body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
   word-break: break-word;
 }
 
+.cae-spatial-status-spinner {
+  width: 28px;
+  height: 28px;
+  margin: 4px auto 0;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-top-color: var(--accent);
+  animation: cae-spatial-spin 0.8s linear infinite;
+}
+
+@keyframes cae-spatial-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cae-spatial-status-spinner {
+    animation: none;
+    border-top-color: color-mix(in srgb, var(--accent) 25%, transparent);
+    opacity: 0.7;
+  }
+}
+
 /* While Spatial-primary is booting / unavailable, never show the plate PNG */
 body.spatial-primary:not(.spatial-ready) .cae-anatomy-image,
 body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {

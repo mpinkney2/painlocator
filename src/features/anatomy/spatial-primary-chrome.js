@@ -44,7 +44,10 @@
   function humanReason(reason) {
     const r = String(reason || "");
     if (/webgl/i.test(r)) {
-      return "This browser preview cannot run WebGL 3D. Open the app in Chrome/Edge, or use an external browser tab.";
+      return "This browser preview cannot run WebGL 3D. Open the app in Chrome/Edge (external tab), then Retry.";
+    }
+    if (/timed out|timeout/i.test(r)) {
+      return "3D loading took too long and was stopped. Check your network, then Retry.";
     }
     if (/three|import/i.test(r)) return "The 3D library failed to load.";
     if (/glb|manifest|exterior|fetch|network/i.test(r)) return "The 3D body model failed to load.";
@@ -57,8 +60,9 @@
    * @param {HTMLElement|null} stage
    * @param {"loading"|"unavailable"} kind
    * @param {string} [reason]
+   * @param {string} [loadingTitle]
    */
-  function renderStageStatus(stage, kind, reason) {
+  function renderStageStatus(stage, kind, reason, loadingTitle) {
     if (!stage) stage = document.getElementById("avatarStage");
     const host =
       stage?.querySelector?.(".cae-stage") ||
@@ -76,12 +80,28 @@
     const loading = kind === "loading";
     target.classList.remove("cae-plate-active", "cae-spatial-active");
     target.classList.add("cae-spatial-staging");
-    target.innerHTML =
-      '<div class="cae-spatial-status" role="status" aria-live="polite">' +
+
+    // Keep an existing Spatial viewport (hidden while loading); replace only status UI.
+    let status = target.querySelector(".cae-spatial-status");
+    if (!status) {
+      status = document.createElement("div");
+      status.className = "cae-spatial-status";
+      status.setAttribute("role", "status");
+      status.setAttribute("aria-live", "polite");
+      target.appendChild(status);
+    }
+    status.style.position = "absolute";
+    status.style.inset = "0";
+    status.style.zIndex = "5";
+
+    status.innerHTML =
       '<div class="cae-spatial-status-card">' +
       (loading
-        ? '<p class="cae-spatial-status-title">Loading 3D body…</p>' +
-          '<p class="cae-spatial-status-copy">Preparing the rotatable model for pain locate.</p>'
+        ? '<p class="cae-spatial-status-title">' +
+          (loadingTitle || "Loading 3D body…") +
+          "</p>" +
+          '<p class="cae-spatial-status-copy">Preparing the rotatable model for pain locate.</p>' +
+          '<div class="cae-spatial-status-spinner" aria-hidden="true"></div>'
         : '<p class="cae-spatial-status-title">3D body unavailable</p>' +
           '<p class="cae-spatial-status-copy">' +
           detail +
@@ -95,17 +115,15 @@
               String(reason).replace(/[<>&]/g, "") +
               "</p>"
             : "")) +
-      "</div></div>";
+      "</div>";
 
     if (!loading) {
-      target.querySelector("#btnRetrySpatial")?.addEventListener("click", () => {
+      status.querySelector("#btnRetrySpatial")?.addEventListener("click", () => {
         const engine = global.state?.engine;
-        renderStageStatus(stage, "loading");
+        renderStageStatus(stage, "loading", null, "Retrying 3D body…");
         engine?.setDisplayMode?.("spatial")?.then((ok) => {
           if (!ok) {
-            const why =
-              engine?.lastSpatialFailure ||
-              "spatial-mount-failed";
+            const why = engine?.lastSpatialFailure || "spatial-mount-failed";
             renderStageStatus(stage, "unavailable", why);
             applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
           } else {
@@ -113,7 +131,7 @@
           }
         });
       });
-      target.querySelector("#btnUsePlateFallback")?.addEventListener("click", () => {
+      status.querySelector("#btnUsePlateFallback")?.addEventListener("click", () => {
         global.state?.engine?.setDisplayMode?.("plate");
         applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
       });

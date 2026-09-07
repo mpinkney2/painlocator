@@ -49,15 +49,31 @@
       this._mountGeneration = 0;
     }
 
-    async mount(container) {
+    async mount(container, options = {}) {
       if (this.disposed) return false;
       this.container = container;
       const generation = ++this._mountGeneration;
+      const onProgress =
+        typeof options.onProgress === "function" ? options.onProgress : () => {};
+      const withTimeout =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
+          ? SpatialBootUtils.withTimeout
+          : (p) => p;
+      const timeouts =
+        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS) || {};
+
       try {
+        onProgress("Checking WebGL…");
         if (!SpatialThreeLoader.isWebGLAvailable()) {
           throw new Error("WebGL unavailable");
         }
-        this.THREE = await SpatialThreeLoader.loadThreeModule();
+
+        onProgress("Loading 3D library…");
+        this.THREE = await withTimeout(
+          SpatialThreeLoader.loadThreeModule(),
+          timeouts.threeMs || 12000,
+          "Three.js"
+        );
         if (this.disposed || generation !== this._mountGeneration) return false;
 
         // Tear down any prior spatial DOM/listeners before remounting.
@@ -68,6 +84,8 @@
         this.mountEl = document.createElement("div");
         this.mountEl.className = "cae-spatial-viewport";
         this.mountEl.dataset.renderer = "spatial";
+        // Keep under any loading overlay; revealed when ready.
+        this.mountEl.style.visibility = "hidden";
         container.appendChild(this.mountEl);
 
         const hint = document.createElement("div");
@@ -79,19 +97,21 @@
           "<i class=\"cae-dot legacy\"></i> Legacy 2D (snap view only)</span>";
         this.mountEl.appendChild(hint);
 
+        onProgress("Starting 3D scene…");
         this.scene = new SpatialSceneController(this.mountEl, this.THREE);
-        await this.scene.loadExteriorBody();
+
+        onProgress("Loading body model…");
+        await withTimeout(
+          this.scene.loadExteriorBody(),
+          timeouts.exteriorMs || 20000,
+          "Exterior body"
+        );
         if (this.disposed || generation !== this._mountGeneration) {
           this._teardownMount({ keepAttachments: true });
           return false;
         }
 
-        await this._initCanonicalFrameIfEnabled();
-        if (this.disposed || generation !== this._mountGeneration) {
-          this._teardownMount({ keepAttachments: true });
-          return false;
-        }
-
+        // Interactive ASAP — do not block on canonical BP3D frame (can hang Meshopt).
         this.annotations = new SpatialAnnotationLayer(this.scene, this.THREE);
         this._initLayerController();
         this._bindPointer();
@@ -102,10 +122,32 @@
           this.store.onChange(this._onStoreChange);
         }
         this.ready = true;
+        this.mountEl.style.visibility = "";
 
         const view = this.engine.viewType || "front";
         this.scene.snapToView(view, { animate: false });
         this._syncFromStore();
+
+        // Canonical frame is enhancement — timeout and continue without it.
+        onProgress("Aligning body frame…");
+        try {
+          await withTimeout(
+            this._initCanonicalFrameIfEnabled(),
+            timeouts.canonicalMs || 15000,
+            "Canonical body frame"
+          );
+        } catch (canonErr) {
+          console.warn(
+            "[CAE Spatial] canonical frame skipped after timeout/error — Spatial remains usable",
+            canonErr
+          );
+        }
+        if (this.disposed || generation !== this._mountGeneration) {
+          this._teardownMount({ keepAttachments: true });
+          return false;
+        }
+
+        onProgress("Ready");
         return true;
       } catch (err) {
         console.warn("[CAE Spatial] mount failed — falling back to plate renderer", err);

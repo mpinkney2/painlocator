@@ -1854,10 +1854,22 @@ console.log('PainLocator tests\n');
     Error,
     Promise,
     URLSearchParams,
+    setTimeout,
+    clearTimeout,
     window: {},
     document: {
       addEventListener() {},
-      getElementById: () => null
+      getElementById: () => null,
+      createElement: () => ({
+        getContext: () => null,
+        style: {},
+        classList: { add() {}, remove() {}, contains() { return false; } },
+        querySelector() { return null; },
+        querySelectorAll() { return []; },
+        appendChild() {},
+        setAttribute() {},
+        addEventListener() {}
+      })
     },
     location: { search: '' }
   };
@@ -1974,6 +1986,29 @@ console.log('PainLocator tests\n');
     assert.ok(docs.includes('fallback'));
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-primary-chrome.js'));
+  });
+
+  test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
+    loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
+    assert.ok(sandbox.SpatialBootUtils);
+    assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
+    let rejected = false;
+    try {
+      await sandbox.SpatialBootUtils.withTimeout(
+        new Promise(() => {}),
+        30,
+        'unit-test'
+      );
+    } catch (err) {
+      rejected = /timed out/i.test(String(err?.message || err));
+    }
+    assert.equal(rejected, true);
+    assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('spatial-boot-utils.js'));
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    assert.ok(renderer.includes('onProgress'));
+    assert.ok(renderer.includes('canonical frame skipped'));
   });
 }
 

@@ -15,7 +15,18 @@
       return Promise.resolve(global.__PAINLOCATOR_THREE__);
     }
     if (pending) return pending;
-    pending = import(/* webpackIgnore: true */ resolveThreeUrl())
+    const withTimeout =
+      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
+        ? SpatialBootUtils.withTimeout
+        : (p) => p;
+    const threeMs =
+      (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.threeMs) || 12000;
+
+    pending = withTimeout(
+      import(/* webpackIgnore: true */ resolveThreeUrl()),
+      threeMs,
+      "Three.js import"
+    )
       .then((mod) => {
         global.__PAINLOCATOR_THREE__ = mod;
         pending = null;
@@ -29,12 +40,15 @@
   }
 
   function isWebGLAvailable() {
+    if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.isWebGLReallyAvailable) {
+      return SpatialBootUtils.isWebGLReallyAvailable();
+    }
     try {
       const canvas = document.createElement("canvas");
       return !!(
-        canvas.getContext("webgl2") ||
-        canvas.getContext("webgl") ||
-        canvas.getContext("experimental-webgl")
+        canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: false }) ||
+        canvas.getContext("webgl", { failIfMajorPerformanceCaveat: false }) ||
+        canvas.getContext("experimental-webgl", { failIfMajorPerformanceCaveat: false })
       );
     } catch (_) {
       return false;

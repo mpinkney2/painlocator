@@ -27,7 +27,8 @@
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
-        powerPreference: "default"
+        powerPreference: "default",
+        failIfMajorPerformanceCaveat: false
       });
       this.renderer.setClearColor(0x000000, 0);
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
