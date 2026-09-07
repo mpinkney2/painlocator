@@ -1,6 +1,9 @@
 /**
  * Lazy-load Three.js only when spatial mode is requested.
- * Dynamic import() keeps classic script boot free of Three.js cost.
+ * Dynamic import keeps classic script boot free of Three.js cost.
+ *
+ * Must not contain a source-level `import()` — Vite rewrites those and injects
+ * ESM into classic <script> tags, which then fail and never define this global.
  */
 (function (global) {
   let pending = null;
@@ -10,6 +13,13 @@
     return "/vendor/three.module.min.js";
   }
 
+  function importEsm(url) {
+    if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importEsm) {
+      return SpatialBootUtils.importEsm(url);
+    }
+    return new Function("u", "return import(u)")(url);
+  }
+
   function importVendor(path) {
     if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule) {
       return SpatialBootUtils.importVendorModule(path);
@@ -17,17 +27,17 @@
     const rel = String(path || "").startsWith("/") ? String(path) : `/${path}`;
     let href = rel;
     try {
-      if (typeof location !== "undefined" && location?.origin) {
+      if (typeof location !== "undefined" && location && location.origin) {
         href = new URL(rel, location.origin).href;
       }
     } catch (_) {
       href = rel;
     }
-    return import(/* @vite-ignore */ /* webpackIgnore: true */ href);
+    return importEsm(href);
   }
 
   function loadThreeModule() {
-    if (global.__PAINLOCATOR_THREE__?.WebGLRenderer) {
+    if (global.__PAINLOCATOR_THREE__ && global.__PAINLOCATOR_THREE__.WebGLRenderer) {
       return Promise.resolve(global.__PAINLOCATOR_THREE__);
     }
     global.__PAINLOCATOR_THREE__ = null;
@@ -37,7 +47,8 @@
         ? SpatialBootUtils.withTimeout
         : (p) => p;
     const threeMs =
-      (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.threeMs) || 12000;
+      (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS && SpatialBootUtils.TIMEOUTS.threeMs) ||
+      12000;
 
     pending = withTimeout(
       (async () => {
@@ -47,7 +58,7 @@
         } catch (urlErr) {
           // Fallback to import-map specifier when absolute URL import is blocked.
           try {
-            mod = await import(/* @vite-ignore */ /* webpackIgnore: true */ "three");
+            mod = await importEsm("three");
           } catch (_) {
             throw urlErr;
           }
@@ -56,7 +67,7 @@
         const THREE =
           mod && typeof mod.WebGLRenderer === "function"
             ? mod
-            : mod?.default && typeof mod.default.WebGLRenderer === "function"
+            : mod && mod.default && typeof mod.default.WebGLRenderer === "function"
               ? mod.default
               : null;
         if (!THREE) {
@@ -97,4 +108,4 @@
     resolveThreeUrl,
     importVendor
   };
-})(window);
+})(typeof window !== "undefined" ? window : globalThis);

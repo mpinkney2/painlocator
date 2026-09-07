@@ -63,6 +63,10 @@
         (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS) || {};
 
       try {
+        if (typeof SpatialThreeLoader === "undefined" || !SpatialThreeLoader.loadThreeModule) {
+          throw new Error("SpatialThreeLoader failed to load (script boot)");
+        }
+
         onProgress("Checking WebGL…");
         const probeOk = SpatialThreeLoader.isWebGLAvailable();
         // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.

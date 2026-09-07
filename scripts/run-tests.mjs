@@ -1992,6 +1992,8 @@ console.log('PainLocator tests\n');
     loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
     assert.ok(sandbox.SpatialBootUtils);
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2010,6 +2012,15 @@ console.log('PainLocator tests\n');
     assert.ok(renderer.includes('onProgress'));
     assert.ok(renderer.includes('canonical frame skipped'));
     assert.ok(renderer.includes('Tear down prior mount BEFORE loading Three'));
+    assert.ok(renderer.includes('SpatialThreeLoader failed to load'));
+    // Classic scripts must not contain source-level import() — Vite rewrites those
+    // into ESM and classic tags then fail, leaving SpatialThreeLoader undefined.
+    const threeLoaderSrc = readFileSync(join(root, 'src/engine/spatial/spatial-three-loader.js'), 'utf8');
+    const bootSrc = readFileSync(join(root, 'src/engine/spatial/spatial-boot-utils.js'), 'utf8');
+    assert.equal(/\bimport\s*\(/.test(threeLoaderSrc), false);
+    assert.equal(/\bimport\s*\(/.test(bootSrc), false);
+    loadScript('src/engine/spatial/spatial-three-loader.js', sandbox);
+    assert.equal(typeof sandbox.SpatialThreeLoader?.loadThreeModule, 'function');
   });
 }
 

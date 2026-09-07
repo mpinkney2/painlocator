@@ -49,9 +49,19 @@
   }
 
   /**
+   * Runtime ESM import that Vite/Rollup must not statically rewrite.
+   * Classic <script> tags cannot survive Vite injecting `import … from "/@vite/client"`.
+   * @param {string} url Absolute or relative module URL
+   * @returns {Promise<object>}
+   */
+  function importEsm(url) {
+    // Built via Function so the `import` keyword is not visible to Vite transform.
+    return new Function("u", "return import(u)")(url);
+  }
+
+  /**
    * Dynamically import a file from /public/vendor.
-   * Vite forbids analyzed imports of JS inside /public — use an absolute URL
-   * plus @vite-ignore so dev server and classic script boot both work.
+   * Use an absolute URL so /public JS is loaded as a static asset, not bundled.
    * @param {string} path e.g. "/vendor/GLTFLoader.js"
    * @returns {Promise<object>}
    */
@@ -59,19 +69,19 @@
     const rel = String(path || "").startsWith("/") ? String(path) : `/${path}`;
     let href = rel;
     try {
-      if (typeof location !== "undefined" && location?.origin) {
+      if (typeof location !== "undefined" && location && location.origin) {
         href = new URL(rel, location.origin).href;
       }
     } catch (_) {
       href = rel;
     }
-    // @vite-ignore: public vendor ESM is served as a static URL, not bundled.
-    return import(/* @vite-ignore */ /* webpackIgnore: true */ href);
+    return importEsm(href);
   }
 
   global.SpatialBootUtils = {
     withTimeout,
     isWebGLReallyAvailable,
+    importEsm,
     importVendorModule,
     TIMEOUTS: {
       threeMs: 12000,
