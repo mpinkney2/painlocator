@@ -69,3 +69,13 @@ Three can succeed while GLTFLoader fails — exactly the production symptom.
 Replace `/public/vendor` runtime imports with **one Vite-managed ESM Spatial chunk** that statically imports `three` + `GLTFLoader` + Meshopt from **npm**, and expose a single bridge to the classic app.
 
 Do not continue patching Function-built `/vendor` imports.
+
+## Safari assessment
+
+Safari is not a separate Spatial boot path after this migration. Compatibility relies on **standard Vite-generated ESM chunks** (hashed `/assets/*.js`) loaded via a tiny `<script type="module">` bootstrap. Do not reintroduce custom Function-built `import()`, import maps, or `/public/vendor` Three modules for Safari.
+
+Supported browsers receive the same module graph Chromium uses. Remaining classic scripts stay classic; only the Spatial dependency graph is ESM/Vite.
+
+## Latent mesh-id issue (exposed after Vite boot succeeded)
+
+Once GLTFLoader worked, integrity/binding could fail when GLB mesh names are undotted (`surfacehead`, `muscledeltoidclavicularleft`) while manifests use dotted ids (`surface.head`, `muscle.deltoid.clavicular.left`). Canonicalization/undot matching is required for exterior and clinician packs — not a substitute for fixing the Vite boot path, but required for end-to-end acceptance.
