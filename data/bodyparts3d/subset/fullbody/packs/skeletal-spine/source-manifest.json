@@ -1,0 +1,2214 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-spine",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-spine",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.thoracic.vertebra",
+      "structureId": "FMA:9139",
+      "preferredName": "thoracic vertebra",
+      "clinicalName": "Thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9139",
+      "sourceRepresentationId": "BP8044",
+      "sourceElementFileId": "FJ3154",
+      "sourceElementFileIds": [
+        "FJ3154",
+        "FJ3155",
+        "FJ3156",
+        "FJ3158",
+        "FJ3160",
+        "FJ3163",
+        "FJ3166",
+        "FJ3169",
+        "FJ3171",
+        "FJ3173",
+        "FJ3174",
+        "FJ3175"
+      ],
+      "sourceFile": "./obj/FJ3154.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "abf073c0206696c3baa5cb389831b28a6ce2c6770091065e834b8e4ef50676b1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3154",
+          "sha256": "abf073c0206696c3baa5cb389831b28a6ce2c6770091065e834b8e4ef50676b1",
+          "bytes": 181674
+        },
+        {
+          "fileId": "FJ3155",
+          "sha256": "1f9c9f6dfcd5585e09abc2cf9a8f54ba1c33df399c6d4dad1a92301d85cd88b3",
+          "bytes": 178070
+        },
+        {
+          "fileId": "FJ3156",
+          "sha256": "ffeebd0dead6ed95395e35c0843888b079acf67543e2820437e99978c69642a0",
+          "bytes": 181653
+        },
+        {
+          "fileId": "FJ3158",
+          "sha256": "aa69c48def3434d6a3e1c56fc78af45f01545931fde5422af17d5f98ce9ed8a3",
+          "bytes": 114175
+        },
+        {
+          "fileId": "FJ3160",
+          "sha256": "20c1322be138314f42bbd1be3e69f3f6b590bbca7a8a3cd3414476f207721300",
+          "bytes": 126573
+        },
+        {
+          "fileId": "FJ3163",
+          "sha256": "3080ed603c54120fa5201816d77695354c81ea57275c599e68543bfb6ecb89c1",
+          "bytes": 130537
+        },
+        {
+          "fileId": "FJ3166",
+          "sha256": "cbd60a450a8b2f3ee90ccc655f79a63b090d8a3abf5e6849cf288a7b2d4207f2",
+          "bytes": 133878
+        },
+        {
+          "fileId": "FJ3169",
+          "sha256": "20c3b1dfed3a2ac5e631838ae924379672dac2047186711cfaa819b9a1db6e5b",
+          "bytes": 147914
+        },
+        {
+          "fileId": "FJ3171",
+          "sha256": "ebee2a07751de0aa0b33974eea0a9228fed9980f740c619776003d5a38c370c5",
+          "bytes": 149091
+        },
+        {
+          "fileId": "FJ3173",
+          "sha256": "3b66eb6444bc7b6ced9e32eacf2518861531b1296eff0e24db41a85bfdbaff66",
+          "bytes": 167615
+        },
+        {
+          "fileId": "FJ3174",
+          "sha256": "531253894a89d60c78a5235bfba826e0c30c21003267258fe1fca244d9090c1a",
+          "bytes": 157442
+        },
+        {
+          "fileId": "FJ3175",
+          "sha256": "34bd592e9f0282eea561a680697beeac655584ca9e4db9232b013535c57e7e61",
+          "bytes": 166118
+        }
+      ]
+    },
+    {
+      "meshId": "bone.first.thoracic.vertebra",
+      "structureId": "FMA:9165",
+      "preferredName": "first thoracic vertebra",
+      "clinicalName": "First thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9165",
+      "sourceRepresentationId": "BP8981",
+      "sourceElementFileId": "FJ3158",
+      "sourceElementFileIds": [
+        "FJ3158"
+      ],
+      "sourceFile": "./obj/FJ3158.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "aa69c48def3434d6a3e1c56fc78af45f01545931fde5422af17d5f98ce9ed8a3"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3158",
+          "sha256": "aa69c48def3434d6a3e1c56fc78af45f01545931fde5422af17d5f98ce9ed8a3",
+          "bytes": 114175
+        }
+      ]
+    },
+    {
+      "meshId": "bone.second.thoracic.vertebra",
+      "structureId": "FMA:9187",
+      "preferredName": "second thoracic vertebra",
+      "clinicalName": "Second thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9187",
+      "sourceRepresentationId": "BP8475",
+      "sourceElementFileId": "FJ3160",
+      "sourceElementFileIds": [
+        "FJ3160"
+      ],
+      "sourceFile": "./obj/FJ3160.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "20c1322be138314f42bbd1be3e69f3f6b590bbca7a8a3cd3414476f207721300"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3160",
+          "sha256": "20c1322be138314f42bbd1be3e69f3f6b590bbca7a8a3cd3414476f207721300",
+          "bytes": 126573
+        }
+      ]
+    },
+    {
+      "meshId": "bone.third.thoracic.vertebra",
+      "structureId": "FMA:9209",
+      "preferredName": "third thoracic vertebra",
+      "clinicalName": "Third thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9209",
+      "sourceRepresentationId": "BP8726",
+      "sourceElementFileId": "FJ3163",
+      "sourceElementFileIds": [
+        "FJ3163"
+      ],
+      "sourceFile": "./obj/FJ3163.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3080ed603c54120fa5201816d77695354c81ea57275c599e68543bfb6ecb89c1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3163",
+          "sha256": "3080ed603c54120fa5201816d77695354c81ea57275c599e68543bfb6ecb89c1",
+          "bytes": 130537
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fourth.thoracic.vertebra",
+      "structureId": "FMA:9248",
+      "preferredName": "fourth thoracic vertebra",
+      "clinicalName": "Fourth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9248",
+      "sourceRepresentationId": "BP9156",
+      "sourceElementFileId": "FJ3166",
+      "sourceElementFileIds": [
+        "FJ3166"
+      ],
+      "sourceFile": "./obj/FJ3166.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cbd60a450a8b2f3ee90ccc655f79a63b090d8a3abf5e6849cf288a7b2d4207f2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3166",
+          "sha256": "cbd60a450a8b2f3ee90ccc655f79a63b090d8a3abf5e6849cf288a7b2d4207f2",
+          "bytes": 133878
+        }
+      ]
+    },
+    {
+      "meshId": "bone.cervical.vertebra",
+      "structureId": "FMA:9915",
+      "preferredName": "cervical vertebra",
+      "clinicalName": "Cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9915",
+      "sourceRepresentationId": "BP7846",
+      "sourceElementFileId": "FJ3161",
+      "sourceElementFileIds": [
+        "FJ3161",
+        "FJ3164",
+        "FJ3167",
+        "FJ3170",
+        "FJ3172",
+        "FJ3176",
+        "FJ3177"
+      ],
+      "sourceFile": "./obj/FJ3161.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8f0de55a4feef85c256501a8afff7bb5aa3f77f4681af4c91801da87b54db103"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3161",
+          "sha256": "8f0de55a4feef85c256501a8afff7bb5aa3f77f4681af4c91801da87b54db103",
+          "bytes": 139572
+        },
+        {
+          "fileId": "FJ3164",
+          "sha256": "a883dd5929817f87eb366a32ca9d82463fd0db40286c49b8adc9e9d1a8cecc34",
+          "bytes": 161492
+        },
+        {
+          "fileId": "FJ3167",
+          "sha256": "b2485c3707b04f1fd455ee4d3a7b69670ec9c85d4ef9a54463e5c6089f1a69a7",
+          "bytes": 158857
+        },
+        {
+          "fileId": "FJ3170",
+          "sha256": "ac100888f7e271851c138e8d41a52168070e4fe5c63e8876a4bcfba08f3b59aa",
+          "bytes": 162032
+        },
+        {
+          "fileId": "FJ3172",
+          "sha256": "43bc0a1f9b3adffd5f45256b61f75affa15b56c85b387fa733b59de310216104",
+          "bytes": 133359
+        },
+        {
+          "fileId": "FJ3176",
+          "sha256": "8ac9ee6d7631edc066a322af278ed508eab4d9c0919e9a77657ead17c14c8a79",
+          "bytes": 148677
+        },
+        {
+          "fileId": "FJ3177",
+          "sha256": "ae446bbf47561c5ff2a2c0a03bfb158ba2581477ae5078ac89cc95b92637adab",
+          "bytes": 161899
+        }
+      ]
+    },
+    {
+      "meshId": "bone.lumbar.vertebra",
+      "structureId": "FMA:9921",
+      "preferredName": "lumbar vertebra",
+      "clinicalName": "Lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9921",
+      "sourceRepresentationId": "BP8134",
+      "sourceElementFileId": "FJ3157",
+      "sourceElementFileIds": [
+        "FJ3157",
+        "FJ3159",
+        "FJ3162",
+        "FJ3165",
+        "FJ3168"
+      ],
+      "sourceFile": "./obj/FJ3157.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "67940f16382935851ebeb7a86c926dbf922070f390c438fdbbb56f7b7fb76057"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3157",
+          "sha256": "67940f16382935851ebeb7a86c926dbf922070f390c438fdbbb56f7b7fb76057",
+          "bytes": 193798
+        },
+        {
+          "fileId": "FJ3159",
+          "sha256": "5e6301d2020ba73167e71c274848ddcbec0f7936d9f26a78f2de8ffa82f095c7",
+          "bytes": 214016
+        },
+        {
+          "fileId": "FJ3162",
+          "sha256": "aa58bbebf75e858d5258926b3f85ef6bc27f765464e87bfc828baf24156bf155",
+          "bytes": 214360
+        },
+        {
+          "fileId": "FJ3165",
+          "sha256": "2b02ea3874d39295b15a7de2a2b2dd1367cf5a00a5ba5f87519f2a7064b2286f",
+          "bytes": 229803
+        },
+        {
+          "fileId": "FJ3168",
+          "sha256": "0b8d0317800abd7c7cb66473cfa23bcecf2b2a8060a4434f32eb9f6ea93c1cc4",
+          "bytes": 252134
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fifth.thoracic.vertebra",
+      "structureId": "FMA:9922",
+      "preferredName": "fifth thoracic vertebra",
+      "clinicalName": "Fifth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9922",
+      "sourceRepresentationId": "BP8643",
+      "sourceElementFileId": "FJ3169",
+      "sourceElementFileIds": [
+        "FJ3169"
+      ],
+      "sourceFile": "./obj/FJ3169.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "20c3b1dfed3a2ac5e631838ae924379672dac2047186711cfaa819b9a1db6e5b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3169",
+          "sha256": "20c3b1dfed3a2ac5e631838ae924379672dac2047186711cfaa819b9a1db6e5b",
+          "bytes": 147914
+        }
+      ]
+    },
+    {
+      "meshId": "bone.sixth.thoracic.vertebra",
+      "structureId": "FMA:9945",
+      "preferredName": "sixth thoracic vertebra",
+      "clinicalName": "Sixth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9945",
+      "sourceRepresentationId": "BP8303",
+      "sourceElementFileId": "FJ3171",
+      "sourceElementFileIds": [
+        "FJ3171"
+      ],
+      "sourceFile": "./obj/FJ3171.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ebee2a07751de0aa0b33974eea0a9228fed9980f740c619776003d5a38c370c5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3171",
+          "sha256": "ebee2a07751de0aa0b33974eea0a9228fed9980f740c619776003d5a38c370c5",
+          "bytes": 149091
+        }
+      ]
+    },
+    {
+      "meshId": "bone.seventh.thoracic.vertebra",
+      "structureId": "FMA:9968",
+      "preferredName": "seventh thoracic vertebra",
+      "clinicalName": "Seventh thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9968",
+      "sourceRepresentationId": "BP8840",
+      "sourceElementFileId": "FJ3173",
+      "sourceElementFileIds": [
+        "FJ3173"
+      ],
+      "sourceFile": "./obj/FJ3173.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3b66eb6444bc7b6ced9e32eacf2518861531b1296eff0e24db41a85bfdbaff66"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3173",
+          "sha256": "3b66eb6444bc7b6ced9e32eacf2518861531b1296eff0e24db41a85bfdbaff66",
+          "bytes": 167615
+        }
+      ]
+    },
+    {
+      "meshId": "bone.eighth.thoracic.vertebra",
+      "structureId": "FMA:9991",
+      "preferredName": "eighth thoracic vertebra",
+      "clinicalName": "Eighth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA9991",
+      "sourceRepresentationId": "BP9221",
+      "sourceElementFileId": "FJ3174",
+      "sourceElementFileIds": [
+        "FJ3174"
+      ],
+      "sourceFile": "./obj/FJ3174.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "531253894a89d60c78a5235bfba826e0c30c21003267258fe1fca244d9090c1a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3174",
+          "sha256": "531253894a89d60c78a5235bfba826e0c30c21003267258fe1fca244d9090c1a",
+          "bytes": 157442
+        }
+      ]
+    },
+    {
+      "meshId": "bone.ninth.thoracic.vertebra",
+      "structureId": "FMA:10014",
+      "preferredName": "ninth thoracic vertebra",
+      "clinicalName": "Ninth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA10014",
+      "sourceRepresentationId": "BP8178",
+      "sourceElementFileId": "FJ3175",
+      "sourceElementFileIds": [
+        "FJ3175"
+      ],
+      "sourceFile": "./obj/FJ3175.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "34bd592e9f0282eea561a680697beeac655584ca9e4db9232b013535c57e7e61"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3175",
+          "sha256": "34bd592e9f0282eea561a680697beeac655584ca9e4db9232b013535c57e7e61",
+          "bytes": 166118
+        }
+      ]
+    },
+    {
+      "meshId": "bone.tenth.thoracic.vertebra",
+      "structureId": "FMA:10037",
+      "preferredName": "tenth thoracic vertebra",
+      "clinicalName": "Tenth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA10037",
+      "sourceRepresentationId": "BP8412",
+      "sourceElementFileId": "FJ3154",
+      "sourceElementFileIds": [
+        "FJ3154"
+      ],
+      "sourceFile": "./obj/FJ3154.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "abf073c0206696c3baa5cb389831b28a6ce2c6770091065e834b8e4ef50676b1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3154",
+          "sha256": "abf073c0206696c3baa5cb389831b28a6ce2c6770091065e834b8e4ef50676b1",
+          "bytes": 181674
+        }
+      ]
+    },
+    {
+      "meshId": "bone.eleventh.thoracic.vertebra",
+      "structureId": "FMA:10059",
+      "preferredName": "eleventh thoracic vertebra",
+      "clinicalName": "Eleventh thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA10059",
+      "sourceRepresentationId": "BP8043",
+      "sourceElementFileId": "FJ3155",
+      "sourceElementFileIds": [
+        "FJ3155"
+      ],
+      "sourceFile": "./obj/FJ3155.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1f9c9f6dfcd5585e09abc2cf9a8f54ba1c33df399c6d4dad1a92301d85cd88b3"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3155",
+          "sha256": "1f9c9f6dfcd5585e09abc2cf9a8f54ba1c33df399c6d4dad1a92301d85cd88b3",
+          "bytes": 178070
+        }
+      ]
+    },
+    {
+      "meshId": "bone.twelfth.thoracic.vertebra",
+      "structureId": "FMA:10081",
+      "preferredName": "twelfth thoracic vertebra",
+      "clinicalName": "Twelfth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA10081",
+      "sourceRepresentationId": "BP9250",
+      "sourceElementFileId": "FJ3156",
+      "sourceElementFileIds": [
+        "FJ3156"
+      ],
+      "sourceFile": "./obj/FJ3156.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ffeebd0dead6ed95395e35c0843888b079acf67543e2820437e99978c69642a0"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3156",
+          "sha256": "ffeebd0dead6ed95395e35c0843888b079acf67543e2820437e99978c69642a0",
+          "bytes": 181653
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.thoracic.vertebra",
+      "structureId": "FMA:10455",
+      "preferredName": "intervertebral disk of thoracic vertebra",
+      "clinicalName": "Intervertebral disk of thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA10455",
+      "sourceRepresentationId": "BP7811",
+      "sourceElementFileId": "FJ3203",
+      "sourceElementFileIds": [
+        "FJ3203",
+        "FJ3204",
+        "FJ3205",
+        "FJ3206",
+        "FJ3207",
+        "FJ3208",
+        "FJ3209",
+        "FJ3210",
+        "FJ3222",
+        "FJ3223",
+        "FJ3224"
+      ],
+      "sourceFile": "./obj/FJ3203.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3c1e8acf2db66d447c91e29e1df800cc9eed605fc7adcc7b70d2aeb585f24287"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3203",
+          "sha256": "3c1e8acf2db66d447c91e29e1df800cc9eed605fc7adcc7b70d2aeb585f24287",
+          "bytes": 115260
+        },
+        {
+          "fileId": "FJ3204",
+          "sha256": "70238a6e88e8bf340459cc030536bd591ea8eb55b60694e526b39b0a5ff141d0",
+          "bytes": 142632
+        },
+        {
+          "fileId": "FJ3205",
+          "sha256": "678096eb026ccb41a9d9c9feb36336859543aba2e2b4130d2852d69da5a56bb0",
+          "bytes": 205748
+        },
+        {
+          "fileId": "FJ3206",
+          "sha256": "ea58f9563a87ea209a665232bef9924be84b89c5614ddcc0bc2bb51dfaea6068",
+          "bytes": 207988
+        },
+        {
+          "fileId": "FJ3207",
+          "sha256": "7df1bee7ad9edd0e0405b052c62a16472f9f954c45203eb5a5f75fd311841a1b",
+          "bytes": 266226
+        },
+        {
+          "fileId": "FJ3208",
+          "sha256": "0e56e370d55f029013aab8d837822c21c5ab1bdbbb98109a740d669eb15ee075",
+          "bytes": 265177
+        },
+        {
+          "fileId": "FJ3209",
+          "sha256": "84ebc4e0ab44c57246f189d0ccf5fe212d1f4ec9f64eb8f8c5a7143adba4b5b8",
+          "bytes": 276494
+        },
+        {
+          "fileId": "FJ3210",
+          "sha256": "8f2a670e4c8271c8ac6c1195cd324e1d5e69255b937e759c99c6ee90279bc21f",
+          "bytes": 308298
+        },
+        {
+          "fileId": "FJ3222",
+          "sha256": "b7387340fcd82362f86af387a7fe21a9a2e9ab9f4549ec539fc519112b4296d5",
+          "bytes": 98615
+        },
+        {
+          "fileId": "FJ3223",
+          "sha256": "108dd5e9e772425ec890afc92d633de4c345c6ff3ad7cb4e31c744b407742777",
+          "bytes": 114099
+        },
+        {
+          "fileId": "FJ3224",
+          "sha256": "99e4ff2970050012f88b9a70e5bb9f3cd647bd3091a53238aa1619a65d591ed5",
+          "bytes": 133236
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.first.thoracic.vertebra",
+      "structureId": "FMA:10458",
+      "preferredName": "intervertebral disk of first thoracic vertebra",
+      "clinicalName": "Intervertebral disk of first thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA10458",
+      "sourceRepresentationId": "BP9158",
+      "sourceElementFileId": "FJ3222",
+      "sourceElementFileIds": [
+        "FJ3222"
+      ],
+      "sourceFile": "./obj/FJ3222.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b7387340fcd82362f86af387a7fe21a9a2e9ab9f4549ec539fc519112b4296d5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3222",
+          "sha256": "b7387340fcd82362f86af387a7fe21a9a2e9ab9f4549ec539fc519112b4296d5",
+          "bytes": 98615
+        }
+      ]
+    },
+    {
+      "meshId": "bone.atlas",
+      "structureId": "FMA:12519",
+      "preferredName": "atlas",
+      "clinicalName": "Atlas",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12519",
+      "sourceRepresentationId": "BP8831",
+      "sourceElementFileId": "FJ3176",
+      "sourceElementFileIds": [
+        "FJ3176"
+      ],
+      "sourceFile": "./obj/FJ3176.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8ac9ee6d7631edc066a322af278ed508eab4d9c0919e9a77657ead17c14c8a79"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3176",
+          "sha256": "8ac9ee6d7631edc066a322af278ed508eab4d9c0919e9a77657ead17c14c8a79",
+          "bytes": 148677
+        }
+      ]
+    },
+    {
+      "meshId": "bone.axis",
+      "structureId": "FMA:12520",
+      "preferredName": "axis",
+      "clinicalName": "Axis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12520",
+      "sourceRepresentationId": "BP8459",
+      "sourceElementFileId": "FJ3177",
+      "sourceElementFileIds": [
+        "FJ3177"
+      ],
+      "sourceFile": "./obj/FJ3177.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ae446bbf47561c5ff2a2c0a03bfb158ba2581477ae5078ac89cc95b92637adab"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3177",
+          "sha256": "ae446bbf47561c5ff2a2c0a03bfb158ba2581477ae5078ac89cc95b92637adab",
+          "bytes": 161899
+        }
+      ]
+    },
+    {
+      "meshId": "bone.third.cervical.vertebra",
+      "structureId": "FMA:12521",
+      "preferredName": "third cervical vertebra",
+      "clinicalName": "Third cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12521",
+      "sourceRepresentationId": "BP9108",
+      "sourceElementFileId": "FJ3161",
+      "sourceElementFileIds": [
+        "FJ3161"
+      ],
+      "sourceFile": "./obj/FJ3161.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8f0de55a4feef85c256501a8afff7bb5aa3f77f4681af4c91801da87b54db103"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3161",
+          "sha256": "8f0de55a4feef85c256501a8afff7bb5aa3f77f4681af4c91801da87b54db103",
+          "bytes": 139572
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fourth.cervical.vertebra",
+      "structureId": "FMA:12522",
+      "preferredName": "fourth cervical vertebra",
+      "clinicalName": "Fourth cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12522",
+      "sourceRepresentationId": "BP8003",
+      "sourceElementFileId": "FJ3164",
+      "sourceElementFileIds": [
+        "FJ3164"
+      ],
+      "sourceFile": "./obj/FJ3164.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a883dd5929817f87eb366a32ca9d82463fd0db40286c49b8adc9e9d1a8cecc34"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3164",
+          "sha256": "a883dd5929817f87eb366a32ca9d82463fd0db40286c49b8adc9e9d1a8cecc34",
+          "bytes": 161492
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fifth.cervical.vertebra",
+      "structureId": "FMA:12523",
+      "preferredName": "fifth cervical vertebra",
+      "clinicalName": "Fifth cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12523",
+      "sourceRepresentationId": "BP8835",
+      "sourceElementFileId": "FJ3167",
+      "sourceElementFileIds": [
+        "FJ3167"
+      ],
+      "sourceFile": "./obj/FJ3167.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b2485c3707b04f1fd455ee4d3a7b69670ec9c85d4ef9a54463e5c6089f1a69a7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3167",
+          "sha256": "b2485c3707b04f1fd455ee4d3a7b69670ec9c85d4ef9a54463e5c6089f1a69a7",
+          "bytes": 158857
+        }
+      ]
+    },
+    {
+      "meshId": "bone.sixth.cervical.vertebra",
+      "structureId": "FMA:12524",
+      "preferredName": "sixth cervical vertebra",
+      "clinicalName": "Sixth cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12524",
+      "sourceRepresentationId": "BP7845",
+      "sourceElementFileId": "FJ3170",
+      "sourceElementFileIds": [
+        "FJ3170"
+      ],
+      "sourceFile": "./obj/FJ3170.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ac100888f7e271851c138e8d41a52168070e4fe5c63e8876a4bcfba08f3b59aa"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3170",
+          "sha256": "ac100888f7e271851c138e8d41a52168070e4fe5c63e8876a4bcfba08f3b59aa",
+          "bytes": 162032
+        }
+      ]
+    },
+    {
+      "meshId": "bone.seventh.cervical.vertebra",
+      "structureId": "FMA:12525",
+      "preferredName": "seventh cervical vertebra",
+      "clinicalName": "Seventh cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA12525",
+      "sourceRepresentationId": "BP7979",
+      "sourceElementFileId": "FJ3172",
+      "sourceElementFileIds": [
+        "FJ3172"
+      ],
+      "sourceFile": "./obj/FJ3172.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "43bc0a1f9b3adffd5f45256b61f75affa15b56c85b387fa733b59de310216104"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3172",
+          "sha256": "43bc0a1f9b3adffd5f45256b61f75affa15b56c85b387fa733b59de310216104",
+          "bytes": 133359
+        }
+      ]
+    },
+    {
+      "meshId": "bone.first.lumbar.vertebra",
+      "structureId": "FMA:13072",
+      "preferredName": "first lumbar vertebra",
+      "clinicalName": "First lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13072",
+      "sourceRepresentationId": "BP8948",
+      "sourceElementFileId": "FJ3157",
+      "sourceElementFileIds": [
+        "FJ3157"
+      ],
+      "sourceFile": "./obj/FJ3157.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "67940f16382935851ebeb7a86c926dbf922070f390c438fdbbb56f7b7fb76057"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3157",
+          "sha256": "67940f16382935851ebeb7a86c926dbf922070f390c438fdbbb56f7b7fb76057",
+          "bytes": 193798
+        }
+      ]
+    },
+    {
+      "meshId": "bone.second.lumbar.vertebra",
+      "structureId": "FMA:13073",
+      "preferredName": "second lumbar vertebra",
+      "clinicalName": "Second lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13073",
+      "sourceRepresentationId": "BP8995",
+      "sourceElementFileId": "FJ3159",
+      "sourceElementFileIds": [
+        "FJ3159"
+      ],
+      "sourceFile": "./obj/FJ3159.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5e6301d2020ba73167e71c274848ddcbec0f7936d9f26a78f2de8ffa82f095c7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3159",
+          "sha256": "5e6301d2020ba73167e71c274848ddcbec0f7936d9f26a78f2de8ffa82f095c7",
+          "bytes": 214016
+        }
+      ]
+    },
+    {
+      "meshId": "bone.third.lumbar.vertebra",
+      "structureId": "FMA:13074",
+      "preferredName": "third lumbar vertebra",
+      "clinicalName": "Third lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13074",
+      "sourceRepresentationId": "BP8227",
+      "sourceElementFileId": "FJ3162",
+      "sourceElementFileIds": [
+        "FJ3162"
+      ],
+      "sourceFile": "./obj/FJ3162.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "aa58bbebf75e858d5258926b3f85ef6bc27f765464e87bfc828baf24156bf155"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3162",
+          "sha256": "aa58bbebf75e858d5258926b3f85ef6bc27f765464e87bfc828baf24156bf155",
+          "bytes": 214360
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fourth.lumbar.vertebra",
+      "structureId": "FMA:13075",
+      "preferredName": "fourth lumbar vertebra",
+      "clinicalName": "Fourth lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13075",
+      "sourceRepresentationId": "BP8133",
+      "sourceElementFileId": "FJ3165",
+      "sourceElementFileIds": [
+        "FJ3165"
+      ],
+      "sourceFile": "./obj/FJ3165.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2b02ea3874d39295b15a7de2a2b2dd1367cf5a00a5ba5f87519f2a7064b2286f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3165",
+          "sha256": "2b02ea3874d39295b15a7de2a2b2dd1367cf5a00a5ba5f87519f2a7064b2286f",
+          "bytes": 229803
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fifth.lumbar.vertebra",
+      "structureId": "FMA:13076",
+      "preferredName": "fifth lumbar vertebra",
+      "clinicalName": "Fifth lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13076",
+      "sourceRepresentationId": "BP8280",
+      "sourceElementFileId": "FJ3168",
+      "sourceElementFileIds": [
+        "FJ3168"
+      ],
+      "sourceFile": "./obj/FJ3168.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0b8d0317800abd7c7cb66473cfa23bcecf2b2a8060a4434f32eb9f6ea93c1cc4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3168",
+          "sha256": "0b8d0317800abd7c7cb66473cfa23bcecf2b2a8060a4434f32eb9f6ea93c1cc4",
+          "bytes": 252134
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.second.thoracic.vertebra",
+      "structureId": "FMA:13495",
+      "preferredName": "intervertebral disk of second thoracic vertebra",
+      "clinicalName": "Intervertebral disk of second thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13495",
+      "sourceRepresentationId": "BP8514",
+      "sourceElementFileId": "FJ3223",
+      "sourceElementFileIds": [
+        "FJ3223"
+      ],
+      "sourceFile": "./obj/FJ3223.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "108dd5e9e772425ec890afc92d633de4c345c6ff3ad7cb4e31c744b407742777"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3223",
+          "sha256": "108dd5e9e772425ec890afc92d633de4c345c6ff3ad7cb4e31c744b407742777",
+          "bytes": 114099
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.third.thoracic.vertebra",
+      "structureId": "FMA:13500",
+      "preferredName": "intervertebral disk of third thoracic vertebra",
+      "clinicalName": "Intervertebral disk of third thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13500",
+      "sourceRepresentationId": "BP9007",
+      "sourceElementFileId": "FJ3224",
+      "sourceElementFileIds": [
+        "FJ3224"
+      ],
+      "sourceFile": "./obj/FJ3224.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "99e4ff2970050012f88b9a70e5bb9f3cd647bd3091a53238aa1619a65d591ed5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3224",
+          "sha256": "99e4ff2970050012f88b9a70e5bb9f3cd647bd3091a53238aa1619a65d591ed5",
+          "bytes": 133236
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.fourth.thoracic.vertebra",
+      "structureId": "FMA:13501",
+      "preferredName": "intervertebral disk of fourth thoracic vertebra",
+      "clinicalName": "Intervertebral disk of fourth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13501",
+      "sourceRepresentationId": "BP9269",
+      "sourceElementFileId": "FJ3203",
+      "sourceElementFileIds": [
+        "FJ3203"
+      ],
+      "sourceFile": "./obj/FJ3203.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3c1e8acf2db66d447c91e29e1df800cc9eed605fc7adcc7b70d2aeb585f24287"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3203",
+          "sha256": "3c1e8acf2db66d447c91e29e1df800cc9eed605fc7adcc7b70d2aeb585f24287",
+          "bytes": 115260
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.fifth.thoracic.vertebra",
+      "structureId": "FMA:13502",
+      "preferredName": "intervertebral disk of fifth thoracic vertebra",
+      "clinicalName": "Intervertebral disk of fifth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13502",
+      "sourceRepresentationId": "BP8610",
+      "sourceElementFileId": "FJ3204",
+      "sourceElementFileIds": [
+        "FJ3204"
+      ],
+      "sourceFile": "./obj/FJ3204.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "70238a6e88e8bf340459cc030536bd591ea8eb55b60694e526b39b0a5ff141d0"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3204",
+          "sha256": "70238a6e88e8bf340459cc030536bd591ea8eb55b60694e526b39b0a5ff141d0",
+          "bytes": 142632
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.sixth.thoracic.vertebra",
+      "structureId": "FMA:13503",
+      "preferredName": "intervertebral disk of sixth thoracic vertebra",
+      "clinicalName": "Intervertebral disk of sixth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13503",
+      "sourceRepresentationId": "BP8652",
+      "sourceElementFileId": "FJ3205",
+      "sourceElementFileIds": [
+        "FJ3205"
+      ],
+      "sourceFile": "./obj/FJ3205.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "678096eb026ccb41a9d9c9feb36336859543aba2e2b4130d2852d69da5a56bb0"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3205",
+          "sha256": "678096eb026ccb41a9d9c9feb36336859543aba2e2b4130d2852d69da5a56bb0",
+          "bytes": 205748
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.seventh.thoracic.vertebra",
+      "structureId": "FMA:13504",
+      "preferredName": "intervertebral disk of seventh thoracic vertebra",
+      "clinicalName": "Intervertebral disk of seventh thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13504",
+      "sourceRepresentationId": "BP8433",
+      "sourceElementFileId": "FJ3206",
+      "sourceElementFileIds": [
+        "FJ3206"
+      ],
+      "sourceFile": "./obj/FJ3206.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ea58f9563a87ea209a665232bef9924be84b89c5614ddcc0bc2bb51dfaea6068"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3206",
+          "sha256": "ea58f9563a87ea209a665232bef9924be84b89c5614ddcc0bc2bb51dfaea6068",
+          "bytes": 207988
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.eighth.thoracic.vertebra",
+      "structureId": "FMA:13505",
+      "preferredName": "intervertebral disk of eighth thoracic vertebra",
+      "clinicalName": "Intervertebral disk of eighth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13505",
+      "sourceRepresentationId": "BP8829",
+      "sourceElementFileId": "FJ3207",
+      "sourceElementFileIds": [
+        "FJ3207"
+      ],
+      "sourceFile": "./obj/FJ3207.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "7df1bee7ad9edd0e0405b052c62a16472f9f954c45203eb5a5f75fd311841a1b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3207",
+          "sha256": "7df1bee7ad9edd0e0405b052c62a16472f9f954c45203eb5a5f75fd311841a1b",
+          "bytes": 266226
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.ninth.thoracic.vertebra",
+      "structureId": "FMA:13506",
+      "preferredName": "intervertebral disk of ninth thoracic vertebra",
+      "clinicalName": "Intervertebral disk of ninth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13506",
+      "sourceRepresentationId": "BP8704",
+      "sourceElementFileId": "FJ3208",
+      "sourceElementFileIds": [
+        "FJ3208"
+      ],
+      "sourceFile": "./obj/FJ3208.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0e56e370d55f029013aab8d837822c21c5ab1bdbbb98109a740d669eb15ee075"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3208",
+          "sha256": "0e56e370d55f029013aab8d837822c21c5ab1bdbbb98109a740d669eb15ee075",
+          "bytes": 265177
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.tenth.thoracic.vertebra",
+      "structureId": "FMA:13507",
+      "preferredName": "intervertebral disk of tenth thoracic vertebra",
+      "clinicalName": "Intervertebral disk of tenth thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13507",
+      "sourceRepresentationId": "BP9069",
+      "sourceElementFileId": "FJ3209",
+      "sourceElementFileIds": [
+        "FJ3209"
+      ],
+      "sourceFile": "./obj/FJ3209.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "84ebc4e0ab44c57246f189d0ccf5fe212d1f4ec9f64eb8f8c5a7143adba4b5b8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3209",
+          "sha256": "84ebc4e0ab44c57246f189d0ccf5fe212d1f4ec9f64eb8f8c5a7143adba4b5b8",
+          "bytes": 276494
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.eleventh.thoracic.vertebra",
+      "structureId": "FMA:13508",
+      "preferredName": "intervertebral disk of eleventh thoracic vertebra",
+      "clinicalName": "Intervertebral disk of eleventh thoracic vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13508",
+      "sourceRepresentationId": "BP7810",
+      "sourceElementFileId": "FJ3210",
+      "sourceElementFileIds": [
+        "FJ3210"
+      ],
+      "sourceFile": "./obj/FJ3210.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8f2a670e4c8271c8ac6c1195cd324e1d5e69255b937e759c99c6ee90279bc21f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3210",
+          "sha256": "8f2a670e4c8271c8ac6c1195cd324e1d5e69255b937e759c99c6ee90279bc21f",
+          "bytes": 308298
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.lumbar.vertebra",
+      "structureId": "FMA:13894",
+      "preferredName": "intervertebral disk of lumbar vertebra",
+      "clinicalName": "Intervertebral disk of lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13894",
+      "sourceRepresentationId": "BP8047",
+      "sourceElementFileId": "FJ3212",
+      "sourceElementFileIds": [
+        "FJ3212",
+        "FJ3214",
+        "FJ3215",
+        "FJ3216",
+        "FJ3217"
+      ],
+      "sourceFile": "./obj/FJ3212.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5bcf1493e5210294ed340c9d3146cf28f8961a255cc9bbcbe38526342baefcc1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3212",
+          "sha256": "5bcf1493e5210294ed340c9d3146cf28f8961a255cc9bbcbe38526342baefcc1",
+          "bytes": 344934
+        },
+        {
+          "fileId": "FJ3214",
+          "sha256": "804fa1c4aaa0812343a5f1235efc5c0920e034296286071849c93b761084cbd6",
+          "bytes": 320154
+        },
+        {
+          "fileId": "FJ3215",
+          "sha256": "22ae331178c3562580008f500eecbb045a8c88a800e7452914c461ae2ea3e23c",
+          "bytes": 359674
+        },
+        {
+          "fileId": "FJ3216",
+          "sha256": "2aee68b19ac9da829a6d2571ea4673b9a23b2e33e99b86edd41317464e6a7582",
+          "bytes": 331138
+        },
+        {
+          "fileId": "FJ3217",
+          "sha256": "a70ad77646a204454af2c355efca1375c59e392981679ffc85913b8d18979214",
+          "bytes": 266806
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.cervical.vertebra",
+      "structureId": "FMA:13895",
+      "preferredName": "intervertebral disk of cervical vertebra",
+      "clinicalName": "Intervertebral disk of cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13895",
+      "sourceRepresentationId": "BP7935",
+      "sourceElementFileId": "FJ3202",
+      "sourceElementFileIds": [
+        "FJ3202",
+        "FJ3213",
+        "FJ3218",
+        "FJ3219",
+        "FJ3220",
+        "FJ3221"
+      ],
+      "sourceFile": "./obj/FJ3202.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "10b24dc45678b68734e84e2d10c749c5b53b4ed3c39c04d2052bdebc02301840"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3202",
+          "sha256": "10b24dc45678b68734e84e2d10c749c5b53b4ed3c39c04d2052bdebc02301840",
+          "bytes": 235451
+        },
+        {
+          "fileId": "FJ3213",
+          "sha256": "1792fb233867a50a88c0b087391886dfb63f62eede857920736367c0d0c9e91d",
+          "bytes": 58729
+        },
+        {
+          "fileId": "FJ3218",
+          "sha256": "a1820438c3e0dd6361807a4a7380861df4134f48df2d869630e678ff71ec226d",
+          "bytes": 67181
+        },
+        {
+          "fileId": "FJ3219",
+          "sha256": "9614a560acb98669f69bf67a15321e73495e7decf71fa4e4e3941fc494b443d4",
+          "bytes": 68638
+        },
+        {
+          "fileId": "FJ3220",
+          "sha256": "6aa2490d85cc76e1f9c29a4d187e36c54d3faa1091b42d1ebc54d45ae1d96194",
+          "bytes": 78851
+        },
+        {
+          "fileId": "FJ3221",
+          "sha256": "d76e5f07cea767b03ee7138fde4781a546f5bbb490de023b1992a5fa206d1322",
+          "bytes": 88234
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.third.cervical.vertebra",
+      "structureId": "FMA:13896",
+      "preferredName": "intervertebral disk of third cervical vertebra",
+      "clinicalName": "Intervertebral disk of third cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13896",
+      "sourceRepresentationId": "BP9201",
+      "sourceElementFileId": "FJ3213",
+      "sourceElementFileIds": [
+        "FJ3213"
+      ],
+      "sourceFile": "./obj/FJ3213.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1792fb233867a50a88c0b087391886dfb63f62eede857920736367c0d0c9e91d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3213",
+          "sha256": "1792fb233867a50a88c0b087391886dfb63f62eede857920736367c0d0c9e91d",
+          "bytes": 58729
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.fourth.cervical.vertebra",
+      "structureId": "FMA:13897",
+      "preferredName": "intervertebral disk of fourth cervical vertebra",
+      "clinicalName": "Intervertebral disk of fourth cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13897",
+      "sourceRepresentationId": "BP8718",
+      "sourceElementFileId": "FJ3218",
+      "sourceElementFileIds": [
+        "FJ3218"
+      ],
+      "sourceFile": "./obj/FJ3218.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a1820438c3e0dd6361807a4a7380861df4134f48df2d869630e678ff71ec226d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3218",
+          "sha256": "a1820438c3e0dd6361807a4a7380861df4134f48df2d869630e678ff71ec226d",
+          "bytes": 67181
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.fifth.cervical.vertebra",
+      "structureId": "FMA:13898",
+      "preferredName": "intervertebral disk of fifth cervical vertebra",
+      "clinicalName": "Intervertebral disk of fifth cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13898",
+      "sourceRepresentationId": "BP7934",
+      "sourceElementFileId": "FJ3219",
+      "sourceElementFileIds": [
+        "FJ3219"
+      ],
+      "sourceFile": "./obj/FJ3219.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9614a560acb98669f69bf67a15321e73495e7decf71fa4e4e3941fc494b443d4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3219",
+          "sha256": "9614a560acb98669f69bf67a15321e73495e7decf71fa4e4e3941fc494b443d4",
+          "bytes": 68638
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.sixth.cervical.vertebra",
+      "structureId": "FMA:13899",
+      "preferredName": "intervertebral disk of sixth cervical vertebra",
+      "clinicalName": "Intervertebral disk of sixth cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13899",
+      "sourceRepresentationId": "BP9190",
+      "sourceElementFileId": "FJ3220",
+      "sourceElementFileIds": [
+        "FJ3220"
+      ],
+      "sourceFile": "./obj/FJ3220.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "6aa2490d85cc76e1f9c29a4d187e36c54d3faa1091b42d1ebc54d45ae1d96194"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3220",
+          "sha256": "6aa2490d85cc76e1f9c29a4d187e36c54d3faa1091b42d1ebc54d45ae1d96194",
+          "bytes": 78851
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.seventh.cervical.vertebra",
+      "structureId": "FMA:13900",
+      "preferredName": "intervertebral disk of seventh cervical vertebra",
+      "clinicalName": "Intervertebral disk of seventh cervical vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA13900",
+      "sourceRepresentationId": "BP8243",
+      "sourceElementFileId": "FJ3221",
+      "sourceElementFileIds": [
+        "FJ3221"
+      ],
+      "sourceFile": "./obj/FJ3221.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d76e5f07cea767b03ee7138fde4781a546f5bbb490de023b1992a5fa206d1322"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3221",
+          "sha256": "d76e5f07cea767b03ee7138fde4781a546f5bbb490de023b1992a5fa206d1322",
+          "bytes": 88234
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.first.lumbar.vertebra",
+      "structureId": "FMA:16033",
+      "preferredName": "intervertebral disk of first lumbar vertebra",
+      "clinicalName": "Intervertebral disk of first lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA16033",
+      "sourceRepresentationId": "BP8891",
+      "sourceElementFileId": "FJ3212",
+      "sourceElementFileIds": [
+        "FJ3212"
+      ],
+      "sourceFile": "./obj/FJ3212.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5bcf1493e5210294ed340c9d3146cf28f8961a255cc9bbcbe38526342baefcc1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3212",
+          "sha256": "5bcf1493e5210294ed340c9d3146cf28f8961a255cc9bbcbe38526342baefcc1",
+          "bytes": 344934
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.second.lumbar.vertebra",
+      "structureId": "FMA:16034",
+      "preferredName": "intervertebral disk of second lumbar vertebra",
+      "clinicalName": "Intervertebral disk of second lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA16034",
+      "sourceRepresentationId": "BP8683",
+      "sourceElementFileId": "FJ3214",
+      "sourceElementFileIds": [
+        "FJ3214"
+      ],
+      "sourceFile": "./obj/FJ3214.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "804fa1c4aaa0812343a5f1235efc5c0920e034296286071849c93b761084cbd6"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3214",
+          "sha256": "804fa1c4aaa0812343a5f1235efc5c0920e034296286071849c93b761084cbd6",
+          "bytes": 320154
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.third.lumbar.vertebra",
+      "structureId": "FMA:16035",
+      "preferredName": "intervertebral disk of third lumbar vertebra",
+      "clinicalName": "Intervertebral disk of third lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA16035",
+      "sourceRepresentationId": "BP8046",
+      "sourceElementFileId": "FJ3215",
+      "sourceElementFileIds": [
+        "FJ3215"
+      ],
+      "sourceFile": "./obj/FJ3215.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "22ae331178c3562580008f500eecbb045a8c88a800e7452914c461ae2ea3e23c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3215",
+          "sha256": "22ae331178c3562580008f500eecbb045a8c88a800e7452914c461ae2ea3e23c",
+          "bytes": 359674
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.fourth.lumbar.vertebra",
+      "structureId": "FMA:16036",
+      "preferredName": "intervertebral disk of fourth lumbar vertebra",
+      "clinicalName": "Intervertebral disk of fourth lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA16036",
+      "sourceRepresentationId": "BP8261",
+      "sourceElementFileId": "FJ3216",
+      "sourceElementFileIds": [
+        "FJ3216"
+      ],
+      "sourceFile": "./obj/FJ3216.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2aee68b19ac9da829a6d2571ea4673b9a23b2e33e99b86edd41317464e6a7582"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3216",
+          "sha256": "2aee68b19ac9da829a6d2571ea4673b9a23b2e33e99b86edd41317464e6a7582",
+          "bytes": 331138
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.fifth.lumbar.vertebra",
+      "structureId": "FMA:16037",
+      "preferredName": "intervertebral disk of fifth lumbar vertebra",
+      "clinicalName": "Intervertebral disk of fifth lumbar vertebra",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA16037",
+      "sourceRepresentationId": "BP8781",
+      "sourceElementFileId": "FJ3217",
+      "sourceElementFileIds": [
+        "FJ3217"
+      ],
+      "sourceFile": "./obj/FJ3217.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a70ad77646a204454af2c355efca1375c59e392981679ffc85913b8d18979214"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3217",
+          "sha256": "a70ad77646a204454af2c355efca1375c59e392981679ffc85913b8d18979214",
+          "bytes": 266806
+        }
+      ]
+    },
+    {
+      "meshId": "bone.sacrum",
+      "structureId": "FMA:16202",
+      "preferredName": "sacrum",
+      "clinicalName": "Sacrum",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA16202",
+      "sourceRepresentationId": "BP9174",
+      "sourceElementFileId": "FJ3393",
+      "sourceElementFileIds": [
+        "FJ3393"
+      ],
+      "sourceFile": "./obj/FJ3393.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cd04cc9f78d758ba34e92896914f647d22d257b9e7e51b97764670f694033489"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3393",
+          "sha256": "cd04cc9f78d758ba34e92896914f647d22d257b9e7e51b97764670f694033489",
+          "bytes": 654878
+        }
+      ]
+    },
+    {
+      "meshId": "bone.intervertebral.disk.of.axis",
+      "structureId": "FMA:25058",
+      "preferredName": "intervertebral disk of axis",
+      "clinicalName": "Intervertebral disk of axis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA25058",
+      "sourceRepresentationId": "BP9151",
+      "sourceElementFileId": "FJ3202",
+      "sourceElementFileIds": [
+        "FJ3202"
+      ],
+      "sourceFile": "./obj/FJ3202.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "10b24dc45678b68734e84e2d10c749c5b53b4ed3c39c04d2052bdebc02301840"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3202",
+          "sha256": "10b24dc45678b68734e84e2d10c749c5b53b4ed3c39c04d2052bdebc02301840",
+          "bytes": 235451
+        }
+      ]
+    },
+    {
+      "meshId": "bone.organ.component.of.neuraxis",
+      "structureId": "FMA:83153",
+      "preferredName": "organ component of neuraxis",
+      "clinicalName": "Organ component of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83153",
+      "sourceRepresentationId": "BP6494",
+      "sourceElementFileId": "FJ1760",
+      "sourceElementFileIds": [
+        "FJ1760",
+        "FJ1782",
+        "FJ1808",
+        "FJ1827"
+      ],
+      "sourceFile": "./obj/FJ1760.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "aec134edcffcaea082eaebc3a01fe84700893fcc8cba5868b1ade6a721f530bf"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1760",
+          "sha256": "aec134edcffcaea082eaebc3a01fe84700893fcc8cba5868b1ade6a721f530bf",
+          "bytes": 132131
+        },
+        {
+          "fileId": "FJ1782",
+          "sha256": "6e6e87e4feda05756e8748a61febdb2fe61d4ba834fd5a57d805512d9fcd82cc",
+          "bytes": 100051
+        },
+        {
+          "fileId": "FJ1808",
+          "sha256": "122de5cfac67f779f911876ea1faca1fb9546327b1a1654d395f571f711772f7",
+          "bytes": 131989
+        },
+        {
+          "fileId": "FJ1827",
+          "sha256": "a4b5be59d7cf6dc3ca1b2ae97a83ffd947e39493cc663c2cb7d65a064af91b1d",
+          "bytes": 44651
+        }
+      ]
+    },
+    {
+      "meshId": "bone.stria.of.neuraxis",
+      "structureId": "FMA:83854",
+      "preferredName": "stria of neuraxis",
+      "clinicalName": "Stria of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83854",
+      "sourceRepresentationId": "BP6561",
+      "sourceElementFileId": "FJ1777",
+      "sourceElementFileIds": [
+        "FJ1777",
+        "FJ1778",
+        "FJ1824",
+        "FJ1825"
+      ],
+      "sourceFile": "./obj/FJ1777.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c3fb623bd7dd4e6f99ea6b71f7ab59b211f5bd86eba1a9451a2f4b6838f07ef7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1777",
+          "sha256": "c3fb623bd7dd4e6f99ea6b71f7ab59b211f5bd86eba1a9451a2f4b6838f07ef7",
+          "bytes": 62077
+        },
+        {
+          "fileId": "FJ1778",
+          "sha256": "8a94c444ff5709f1a3ec69baf8721ae77ab5ca5d1fe5cacfa202563b3e822632",
+          "bytes": 52250
+        },
+        {
+          "fileId": "FJ1824",
+          "sha256": "252737907ed1ef0c3317fff6cce455ebe56975e1ab9d87e66cb19549239000d2",
+          "bytes": 57068
+        },
+        {
+          "fileId": "FJ1825",
+          "sha256": "44a4bf38cf12b4f5b622bdff4460a71d139664d2a85793a26e87dcf3b5aa5998",
+          "bytes": 61009
+        }
+      ]
+    },
+    {
+      "meshId": "bone.lamina.of.neuraxis",
+      "structureId": "FMA:83856",
+      "preferredName": "lamina of neuraxis",
+      "clinicalName": "Lamina of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83856",
+      "sourceRepresentationId": "BP6556",
+      "sourceElementFileId": "FJ1764",
+      "sourceElementFileIds": [
+        "FJ1764",
+        "FJ1812"
+      ],
+      "sourceFile": "./obj/FJ1764.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8935c1c22609f2e8078ec33ac867e2633c645e98b80d1bdca789de8e3a8f010e"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1764",
+          "sha256": "8935c1c22609f2e8078ec33ac867e2633c645e98b80d1bdca789de8e3a8f010e",
+          "bytes": 23020
+        },
+        {
+          "fileId": "FJ1812",
+          "sha256": "91812f9540a4f96cff9ccfcfa478ac885d7f59c0fd08ab0f05fd865e6b670713",
+          "bytes": 22387
+        }
+      ]
+    },
+    {
+      "meshId": "bone.brachium.of.neuraxis",
+      "structureId": "FMA:83857",
+      "preferredName": "brachium of neuraxis",
+      "clinicalName": "Brachium of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83857",
+      "sourceRepresentationId": "BP6567",
+      "sourceElementFileId": "FJ1735",
+      "sourceElementFileIds": [
+        "FJ1735",
+        "FJ1736",
+        "FJ1761",
+        "FJ1809"
+      ],
+      "sourceFile": "./obj/FJ1735.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9a480c1559b0089b614b5f86d1e4719ff80d9ae3cc9ea2e0a76e98c37f14bdf3"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1735",
+          "sha256": "9a480c1559b0089b614b5f86d1e4719ff80d9ae3cc9ea2e0a76e98c37f14bdf3",
+          "bytes": 16422
+        },
+        {
+          "fileId": "FJ1736",
+          "sha256": "77d77692b0ff86d405d8b1336474f1a2e5b43bd5303956737ce65dfafbd99fa4",
+          "bytes": 15439
+        },
+        {
+          "fileId": "FJ1761",
+          "sha256": "190f6b408b3967c91cfe4aab21672a5998867b4ea5a145567de66df8111da3aa",
+          "bytes": 17740
+        },
+        {
+          "fileId": "FJ1809",
+          "sha256": "733feb8590917edc0454661f7027564ae56fe51d4b916f59f82c1e222e0faefc",
+          "bytes": 15073
+        }
+      ]
+    },
+    {
+      "meshId": "bone.peduncle.of.neuraxis",
+      "structureId": "FMA:83860",
+      "preferredName": "peduncle of neuraxis",
+      "clinicalName": "Peduncle of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83860",
+      "sourceRepresentationId": "BP6559",
+      "sourceElementFileId": "FJ1774",
+      "sourceElementFileIds": [
+        "FJ1774",
+        "FJ1821"
+      ],
+      "sourceFile": "./obj/FJ1774.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f1fb3311c99418c348b480280145b99e8d80632c33a4ddb4ca3052a4ee22c352"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1774",
+          "sha256": "f1fb3311c99418c348b480280145b99e8d80632c33a4ddb4ca3052a4ee22c352",
+          "bytes": 378647
+        },
+        {
+          "fileId": "FJ1821",
+          "sha256": "322d04d50d336255c89f963566753415c0e2c43538303148cc6f6482ecbca17b",
+          "bytes": 391141
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fornix.of.neuraxis",
+      "structureId": "FMA:83865",
+      "preferredName": "fornix of neuraxis",
+      "clinicalName": "Fornix of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83865",
+      "sourceRepresentationId": "BP6565",
+      "sourceElementFileId": "FJ1756",
+      "sourceElementFileIds": [
+        "FJ1756",
+        "FJ1804"
+      ],
+      "sourceFile": "./obj/FJ1756.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ecfe3a87d95ee1a7ad39bd742935dd3eeb4ab94ecdc7895d55e8b308b37e6fa4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1756",
+          "sha256": "ecfe3a87d95ee1a7ad39bd742935dd3eeb4ab94ecdc7895d55e8b308b37e6fa4",
+          "bytes": 428396
+        },
+        {
+          "fileId": "FJ1804",
+          "sha256": "d18c04db4ad5e495310fc7f0fde79c9e2bfbcccb78e4169f7bdbe74b193b77a6",
+          "bytes": 430203
+        }
+      ]
+    },
+    {
+      "meshId": "bone.septum.of.neuraxis",
+      "structureId": "FMA:83904",
+      "preferredName": "septum of neuraxis",
+      "clinicalName": "Septum of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA83904",
+      "sourceRepresentationId": "BP6579",
+      "sourceElementFileId": "FJ1832",
+      "sourceElementFileIds": [
+        "FJ1832"
+      ],
+      "sourceFile": "./obj/FJ1832.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "38cc30c1c449b1e171ba945320a087c95473da3ffe2a9c0965f4c4d1d28b2d25"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1832",
+          "sha256": "38cc30c1c449b1e171ba945320a087c95473da3ffe2a9c0965f4c4d1d28b2d25",
+          "bytes": 508236
+        }
+      ]
+    },
+    {
+      "meshId": "bone.zone.of.neuraxis",
+      "structureId": "FMA:84054",
+      "preferredName": "zone of neuraxis",
+      "clinicalName": "Zone of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA84054",
+      "sourceRepresentationId": "BP6546",
+      "sourceElementFileId": "FJ1743",
+      "sourceElementFileIds": [
+        "FJ1743",
+        "FJ1780",
+        "FJ1828"
+      ],
+      "sourceFile": "./obj/FJ1743.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f7c54da9219af0df072a41ebf7d128f2f59535efc5cde6f7356616eddaebf41e"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1743",
+          "sha256": "f7c54da9219af0df072a41ebf7d128f2f59535efc5cde6f7356616eddaebf41e",
+          "bytes": 27755
+        },
+        {
+          "fileId": "FJ1780",
+          "sha256": "4780787c4dcd06ea54fb8e486a563968b29e274069de01baa421cde17b19718c",
+          "bytes": 60641
+        },
+        {
+          "fileId": "FJ1828",
+          "sha256": "f3053705d7e2ef8a499890e13332163870f063f3908f4a148f070cc7b9c90051",
+          "bytes": 65789
+        }
+      ]
+    },
+    {
+      "meshId": "bone.nuclear.complex.of.neuraxis",
+      "structureId": "FMA:84059",
+      "preferredName": "nuclear complex of neuraxis",
+      "clinicalName": "Nuclear complex of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA84059",
+      "sourceRepresentationId": "BP6583",
+      "sourceElementFileId": "FJ1753",
+      "sourceElementFileIds": [
+        "FJ1753",
+        "FJ1829"
+      ],
+      "sourceFile": "./obj/FJ1753.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1a557cc879fa71c1e5a5681caf4e7506418c479c29171b48a959a1d5a69e1425"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1753",
+          "sha256": "1a557cc879fa71c1e5a5681caf4e7506418c479c29171b48a959a1d5a69e1425",
+          "bytes": 22629
+        },
+        {
+          "fileId": "FJ1829",
+          "sha256": "f53fab3de8ac6b90a2c956e8ccac9b949d9adc32b843070712f12c9ad1b18e92",
+          "bytes": 22898
+        }
+      ]
+    },
+    {
+      "meshId": "bone.circumventricular.organ.of.neuraxis",
+      "structureId": "FMA:84081",
+      "preferredName": "circumventricular organ of neuraxis",
+      "clinicalName": "Circumventricular organ of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA84081",
+      "sourceRepresentationId": "BP5524",
+      "sourceElementFileId": "FJ1795",
+      "sourceElementFileIds": [
+        "FJ1795"
+      ],
+      "sourceFile": "./obj/FJ1795.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b424373c89b88a2916e4ec4ef9aef0b273606df7713f107ba8dcf7e5303f1768"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1795",
+          "sha256": "b424373c89b88a2916e4ec4ef9aef0b273606df7713f107ba8dcf7e5303f1768",
+          "bytes": 34031
+        }
+      ]
+    },
+    {
+      "meshId": "bone.region.of.wall.of.ventricular.system.of.neuraxis",
+      "structureId": "FMA:242770",
+      "preferredName": "region of wall of ventricular system of neuraxis",
+      "clinicalName": "Region of wall of ventricular system of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA242770",
+      "sourceRepresentationId": "BP5506",
+      "sourceElementFileId": "FJ1755",
+      "sourceElementFileIds": [
+        "FJ1755",
+        "FJ1803"
+      ],
+      "sourceFile": "./obj/FJ1755.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "221d1889dbb2d850c6da56c0cdd1b1d4581ac845dd55c96e68a594c33a1742dc"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1755",
+          "sha256": "221d1889dbb2d850c6da56c0cdd1b1d4581ac845dd55c96e68a594c33a1742dc",
+          "bytes": 337260
+        },
+        {
+          "fileId": "FJ1803",
+          "sha256": "a950a761098cf6d80c09c7133ce0c0044598c64682c0a0825f6bbd4b23892dc3",
+          "bytes": 344942
+        }
+      ]
+    },
+    {
+      "meshId": "bone.region.of.ventricular.system.of.neuraxis",
+      "structureId": "FMA:242789",
+      "preferredName": "region of ventricular system of neuraxis",
+      "clinicalName": "Region of ventricular system of neuraxis",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-spine",
+      "sourceConceptId": "FMA242789",
+      "sourceRepresentationId": "BP5510",
+      "sourceElementFileId": "FJ1730",
+      "sourceElementFileIds": [
+        "FJ1730",
+        "FJ1731",
+        "FJ1737",
+        "FJ1738",
+        "FJ1767",
+        "FJ1814"
+      ],
+      "sourceFile": "./obj/FJ1730.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2a682d4918bb85c3bae087e7797ff8051f040cafbfb3c0c864ea3dc9301b629d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1730",
+          "sha256": "2a682d4918bb85c3bae087e7797ff8051f040cafbfb3c0c864ea3dc9301b629d",
+          "bytes": 245099
+        },
+        {
+          "fileId": "FJ1731",
+          "sha256": "8280c135e11da7f08ef03414797d3b9447e6edcaaa7d60f835831045521b424e",
+          "bytes": 447538
+        },
+        {
+          "fileId": "FJ1737",
+          "sha256": "11380059bd0dd04099465800f850d5520c0f6ed911c97cd00262840e20f3825b",
+          "bytes": 46908
+        },
+        {
+          "fileId": "FJ1738",
+          "sha256": "953032accd04cc408bfdb19ce0127c32043a795e402f5300aafd7259fdabef5b",
+          "bytes": 33446
+        },
+        {
+          "fileId": "FJ1767",
+          "sha256": "8491961042556b62e2570c8e8dec8fe9269908abb34aa738ba7613489acd7838",
+          "bytes": 1158407
+        },
+        {
+          "fileId": "FJ1814",
+          "sha256": "5a0c29cf5c573d35f225df3c96c66cc34eb166fde8e54323b3c22b6f2220248b",
+          "bytes": 1168390
+        }
+      ]
+    }
+  ]
+}

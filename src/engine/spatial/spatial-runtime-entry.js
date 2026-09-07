@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
-const RUNTIME_VERSION = "2026-09-07-styled-exterior-1";
+const RUNTIME_VERSION = "2026-09-07-fullbody-1";
 
 let meshoptReadyPromise = null;
 

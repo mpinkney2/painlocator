@@ -1,0 +1,1420 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-thorax",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-thorax",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.body.of.sternum",
+      "structureId": "FMA:7487",
+      "preferredName": "body of sternum",
+      "clinicalName": "Body of sternum",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7487",
+      "sourceRepresentationId": "BP8989",
+      "sourceElementFileId": "FJ3178",
+      "sourceElementFileIds": [
+        "FJ3178"
+      ],
+      "sourceFile": "./obj/FJ3178.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ec90f03f2ce1edebc8793a9e9973229b198d6367eb5eab1dff6e238110e94d9d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3178",
+          "sha256": "ec90f03f2ce1edebc8793a9e9973229b198d6367eb5eab1dff6e238110e94d9d",
+          "bytes": 374292
+        }
+      ]
+    },
+    {
+      "meshId": "bone.typical.rib",
+      "structureId": "FMA:7593",
+      "preferredName": "typical rib",
+      "clinicalName": "Typical rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7593",
+      "sourceRepresentationId": "BP8083",
+      "sourceElementFileId": "FJ3230",
+      "sourceElementFileIds": [
+        "FJ3230",
+        "FJ3231",
+        "FJ3232",
+        "FJ3233",
+        "FJ3234",
+        "FJ3338",
+        "FJ3340",
+        "FJ3342",
+        "FJ3344",
+        "FJ3346"
+      ],
+      "sourceFile": "./obj/FJ3230.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8c097e93d79c610bed49d6c027d25c8439447c20bfb94fa64009b9c4db4d8f5b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3230",
+          "sha256": "8c097e93d79c610bed49d6c027d25c8439447c20bfb94fa64009b9c4db4d8f5b",
+          "bytes": 460032
+        },
+        {
+          "fileId": "FJ3231",
+          "sha256": "c1259fcdaf463bdecfc0868a3acc964edd4901ab03eb539b28e40462671be1fb",
+          "bytes": 564534
+        },
+        {
+          "fileId": "FJ3232",
+          "sha256": "c40bbcd5c2b98bb94161819a2cf824296289ce68eb62b37f3b175af4aadfd351",
+          "bytes": 622387
+        },
+        {
+          "fileId": "FJ3233",
+          "sha256": "8160b28fd649aadd705a05cc3e6e9cfd7035c44d8258b5a50977ec89fe8e7414",
+          "bytes": 657309
+        },
+        {
+          "fileId": "FJ3234",
+          "sha256": "372c650b2b7bc3f6767aa50a0f5b7e5dac6a15a17aeea5f5017166ba5d328757",
+          "bytes": 642407
+        },
+        {
+          "fileId": "FJ3338",
+          "sha256": "b239419743f7320b8b1d4f4d96ab41c1ff7fccdc921fa3a99c700a9d6dbd2a6c",
+          "bytes": 463525
+        },
+        {
+          "fileId": "FJ3340",
+          "sha256": "ffca17251de4f457c4952e9d913070eb7a6f767493925ac3d8c3c744941b5dbd",
+          "bytes": 567435
+        },
+        {
+          "fileId": "FJ3342",
+          "sha256": "b2d1f3bc9478c51524628f4e79524290add55800ae85b06ff657f17f4c0c6f1f",
+          "bytes": 627173
+        },
+        {
+          "fileId": "FJ3344",
+          "sha256": "5e45ea5a527d3b7df56c508213020265ed1c8a0d9a99f31454b92059f4f1a95f",
+          "bytes": 661844
+        },
+        {
+          "fileId": "FJ3346",
+          "sha256": "86cc62c1a0a754f2e01a30b5d7179c745f3c2404ef4031ae43568667c4041996",
+          "bytes": 647429
+        }
+      ]
+    },
+    {
+      "meshId": "bone.false.rib",
+      "structureId": "FMA:7594",
+      "preferredName": "false rib",
+      "clinicalName": "False rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7594",
+      "sourceRepresentationId": "BP8409",
+      "sourceElementFileId": "FJ3225",
+      "sourceElementFileIds": [
+        "FJ3225",
+        "FJ3226",
+        "FJ3227",
+        "FJ3235",
+        "FJ3236",
+        "FJ3330",
+        "FJ3331",
+        "FJ3332",
+        "FJ3347",
+        "FJ3348"
+      ],
+      "sourceFile": "./obj/FJ3225.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "40680b5a3556b5984a5006e01649ff20cb4c88d9d3a7fef79cbad0648a972d54"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3225",
+          "sha256": "40680b5a3556b5984a5006e01649ff20cb4c88d9d3a7fef79cbad0648a972d54",
+          "bytes": 432176
+        },
+        {
+          "fileId": "FJ3226",
+          "sha256": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250",
+          "bytes": 304274
+        },
+        {
+          "fileId": "FJ3227",
+          "sha256": "3b7e5d6673a1be5bc14d72a4ea659d361b143f3fda5bca3ec758c176daba16c5",
+          "bytes": 170991
+        },
+        {
+          "fileId": "FJ3235",
+          "sha256": "7d9525200958a9545391a2e135649580282108d77f7ae88a34003a56f48f4c8b",
+          "bytes": 532783
+        },
+        {
+          "fileId": "FJ3236",
+          "sha256": "ec09e201beaaa70c24a41eedcef4671118b453361f827be02fb73fc361208db8",
+          "bytes": 481787
+        },
+        {
+          "fileId": "FJ3330",
+          "sha256": "9e62a17a2ea9dc16797beec97bd0925c9692c2a4764391cbc1e289b0120e7aa4",
+          "bytes": 434806
+        },
+        {
+          "fileId": "FJ3331",
+          "sha256": "1fdce776ea65919bf9aa418ec91c872b3eb835daca57dc69a7caa40bb02707d7",
+          "bytes": 306720
+        },
+        {
+          "fileId": "FJ3332",
+          "sha256": "50dd4dac4ebb45fa245d700f7ceac89edd7503cb4caab154b644b0a808da2ecc",
+          "bytes": 172391
+        },
+        {
+          "fileId": "FJ3347",
+          "sha256": "388e8f3dd5c308fe1454daed2aa3a2fced280d4ec60f97b547b476ca6b0da930",
+          "bytes": 535781
+        },
+        {
+          "fileId": "FJ3348",
+          "sha256": "4ef4af4eb8a7ea76479b2d4a1b2973c7d950f6e3aa5593eca4377258222bdaf6",
+          "bytes": 485199
+        }
+      ]
+    },
+    {
+      "meshId": "bone.floating.rib",
+      "structureId": "FMA:7595",
+      "preferredName": "floating rib",
+      "clinicalName": "Floating rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7595",
+      "sourceRepresentationId": "BP8953",
+      "sourceElementFileId": "FJ3226",
+      "sourceElementFileIds": [
+        "FJ3226",
+        "FJ3227",
+        "FJ3331",
+        "FJ3332"
+      ],
+      "sourceFile": "./obj/FJ3226.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3226",
+          "sha256": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250",
+          "bytes": 304274
+        },
+        {
+          "fileId": "FJ3227",
+          "sha256": "3b7e5d6673a1be5bc14d72a4ea659d361b143f3fda5bca3ec758c176daba16c5",
+          "bytes": 170991
+        },
+        {
+          "fileId": "FJ3331",
+          "sha256": "1fdce776ea65919bf9aa418ec91c872b3eb835daca57dc69a7caa40bb02707d7",
+          "bytes": 306720
+        },
+        {
+          "fileId": "FJ3332",
+          "sha256": "50dd4dac4ebb45fa245d700f7ceac89edd7503cb4caab154b644b0a808da2ecc",
+          "bytes": 172391
+        }
+      ]
+    },
+    {
+      "meshId": "bone.atypical.rib",
+      "structureId": "FMA:7596",
+      "preferredName": "atypical rib",
+      "clinicalName": "Atypical rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7596",
+      "sourceRepresentationId": "BP8343",
+      "sourceElementFileId": "FJ3228",
+      "sourceElementFileIds": [
+        "FJ3228",
+        "FJ3229",
+        "FJ3334",
+        "FJ3336"
+      ],
+      "sourceFile": "./obj/FJ3228.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "803a7134c1e69f640b87f9c6c4a846c869379446e771a1a7c9d18914c331a603"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3228",
+          "sha256": "803a7134c1e69f640b87f9c6c4a846c869379446e771a1a7c9d18914c331a603",
+          "bytes": 200847
+        },
+        {
+          "fileId": "FJ3229",
+          "sha256": "631b4f63625fa6cc89ad83961b2156abe5878d1baf4a8cb2b2acbaa06bc97f58",
+          "bytes": 355230
+        },
+        {
+          "fileId": "FJ3334",
+          "sha256": "3831c5c578d45fc491e7e72417cc436e04a1a3a1916138e51528ad0b0b212a54",
+          "bytes": 202343
+        },
+        {
+          "fileId": "FJ3336",
+          "sha256": "57084a626a91aa88782f2e836c75450cd90bf19717dfd3f31602b4c674b70c0c",
+          "bytes": 358347
+        }
+      ]
+    },
+    {
+      "meshId": "bone.first.rib",
+      "structureId": "FMA:7597",
+      "preferredName": "first rib",
+      "clinicalName": "First rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7597",
+      "sourceRepresentationId": "BP8342",
+      "sourceElementFileId": "FJ3228",
+      "sourceElementFileIds": [
+        "FJ3228",
+        "FJ3334"
+      ],
+      "sourceFile": "./obj/FJ3228.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "803a7134c1e69f640b87f9c6c4a846c869379446e771a1a7c9d18914c331a603"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3228",
+          "sha256": "803a7134c1e69f640b87f9c6c4a846c869379446e771a1a7c9d18914c331a603",
+          "bytes": 200847
+        },
+        {
+          "fileId": "FJ3334",
+          "sha256": "3831c5c578d45fc491e7e72417cc436e04a1a3a1916138e51528ad0b0b212a54",
+          "bytes": 202343
+        }
+      ]
+    },
+    {
+      "meshId": "bone.second.rib",
+      "structureId": "FMA:7620",
+      "preferredName": "second rib",
+      "clinicalName": "Second rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7620",
+      "sourceRepresentationId": "BP8997",
+      "sourceElementFileId": "FJ3229",
+      "sourceElementFileIds": [
+        "FJ3229",
+        "FJ3336"
+      ],
+      "sourceFile": "./obj/FJ3229.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "631b4f63625fa6cc89ad83961b2156abe5878d1baf4a8cb2b2acbaa06bc97f58"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3229",
+          "sha256": "631b4f63625fa6cc89ad83961b2156abe5878d1baf4a8cb2b2acbaa06bc97f58",
+          "bytes": 355230
+        },
+        {
+          "fileId": "FJ3336",
+          "sha256": "57084a626a91aa88782f2e836c75450cd90bf19717dfd3f31602b4c674b70c0c",
+          "bytes": 358347
+        }
+      ]
+    },
+    {
+      "meshId": "bone.third.rib",
+      "structureId": "FMA:7638",
+      "preferredName": "third rib",
+      "clinicalName": "Third rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7638",
+      "sourceRepresentationId": "BP8358",
+      "sourceElementFileId": "FJ3230",
+      "sourceElementFileIds": [
+        "FJ3230",
+        "FJ3338"
+      ],
+      "sourceFile": "./obj/FJ3230.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8c097e93d79c610bed49d6c027d25c8439447c20bfb94fa64009b9c4db4d8f5b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3230",
+          "sha256": "8c097e93d79c610bed49d6c027d25c8439447c20bfb94fa64009b9c4db4d8f5b",
+          "bytes": 460032
+        },
+        {
+          "fileId": "FJ3338",
+          "sha256": "b239419743f7320b8b1d4f4d96ab41c1ff7fccdc921fa3a99c700a9d6dbd2a6c",
+          "bytes": 463525
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fourth.rib",
+      "structureId": "FMA:7749",
+      "preferredName": "fourth rib",
+      "clinicalName": "Fourth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7749",
+      "sourceRepresentationId": "BP8082",
+      "sourceElementFileId": "FJ3231",
+      "sourceElementFileIds": [
+        "FJ3231",
+        "FJ3340"
+      ],
+      "sourceFile": "./obj/FJ3231.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c1259fcdaf463bdecfc0868a3acc964edd4901ab03eb539b28e40462671be1fb"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3231",
+          "sha256": "c1259fcdaf463bdecfc0868a3acc964edd4901ab03eb539b28e40462671be1fb",
+          "bytes": 564534
+        },
+        {
+          "fileId": "FJ3340",
+          "sha256": "ffca17251de4f457c4952e9d913070eb7a6f767493925ac3d8c3c744941b5dbd",
+          "bytes": 567435
+        }
+      ]
+    },
+    {
+      "meshId": "bone.fifth.rib",
+      "structureId": "FMA:7776",
+      "preferredName": "fifth rib",
+      "clinicalName": "Fifth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7776",
+      "sourceRepresentationId": "BP8480",
+      "sourceElementFileId": "FJ3232",
+      "sourceElementFileIds": [
+        "FJ3232",
+        "FJ3342"
+      ],
+      "sourceFile": "./obj/FJ3232.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c40bbcd5c2b98bb94161819a2cf824296289ce68eb62b37f3b175af4aadfd351"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3232",
+          "sha256": "c40bbcd5c2b98bb94161819a2cf824296289ce68eb62b37f3b175af4aadfd351",
+          "bytes": 622387
+        },
+        {
+          "fileId": "FJ3342",
+          "sha256": "b2d1f3bc9478c51524628f4e79524290add55800ae85b06ff657f17f4c0c6f1f",
+          "bytes": 627173
+        }
+      ]
+    },
+    {
+      "meshId": "bone.seventh.rib",
+      "structureId": "FMA:7830",
+      "preferredName": "seventh rib",
+      "clinicalName": "Seventh rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7830",
+      "sourceRepresentationId": "BP8212",
+      "sourceElementFileId": "FJ3234",
+      "sourceElementFileIds": [
+        "FJ3234",
+        "FJ3346"
+      ],
+      "sourceFile": "./obj/FJ3234.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "372c650b2b7bc3f6767aa50a0f5b7e5dac6a15a17aeea5f5017166ba5d328757"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3234",
+          "sha256": "372c650b2b7bc3f6767aa50a0f5b7e5dac6a15a17aeea5f5017166ba5d328757",
+          "bytes": 642407
+        },
+        {
+          "fileId": "FJ3346",
+          "sha256": "86cc62c1a0a754f2e01a30b5d7179c745f3c2404ef4031ae43568667c4041996",
+          "bytes": 647429
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.first.rib",
+      "structureId": "FMA:7857",
+      "preferredName": "right first rib",
+      "clinicalName": "Right first rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7857",
+      "sourceRepresentationId": "BP8341",
+      "sourceElementFileId": "FJ3334",
+      "sourceElementFileIds": [
+        "FJ3334"
+      ],
+      "sourceFile": "./obj/FJ3334.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3831c5c578d45fc491e7e72417cc436e04a1a3a1916138e51528ad0b0b212a54"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3334",
+          "sha256": "3831c5c578d45fc491e7e72417cc436e04a1a3a1916138e51528ad0b0b212a54",
+          "bytes": 202343
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.second.rib",
+      "structureId": "FMA:7882",
+      "preferredName": "right second rib",
+      "clinicalName": "Right second rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7882",
+      "sourceRepresentationId": "BP9279",
+      "sourceElementFileId": "FJ3336",
+      "sourceElementFileIds": [
+        "FJ3336"
+      ],
+      "sourceFile": "./obj/FJ3336.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "57084a626a91aa88782f2e836c75450cd90bf19717dfd3f31602b4c674b70c0c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3336",
+          "sha256": "57084a626a91aa88782f2e836c75450cd90bf19717dfd3f31602b4c674b70c0c",
+          "bytes": 358347
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.third.rib",
+      "structureId": "FMA:7909",
+      "preferredName": "right third rib",
+      "clinicalName": "Right third rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7909",
+      "sourceRepresentationId": "BP8969",
+      "sourceElementFileId": "FJ3338",
+      "sourceElementFileIds": [
+        "FJ3338"
+      ],
+      "sourceFile": "./obj/FJ3338.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b239419743f7320b8b1d4f4d96ab41c1ff7fccdc921fa3a99c700a9d6dbd2a6c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3338",
+          "sha256": "b239419743f7320b8b1d4f4d96ab41c1ff7fccdc921fa3a99c700a9d6dbd2a6c",
+          "bytes": 463525
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.fourth.rib",
+      "structureId": "FMA:7957",
+      "preferredName": "right fourth rib",
+      "clinicalName": "Right fourth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7957",
+      "sourceRepresentationId": "BP9092",
+      "sourceElementFileId": "FJ3340",
+      "sourceElementFileIds": [
+        "FJ3340"
+      ],
+      "sourceFile": "./obj/FJ3340.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ffca17251de4f457c4952e9d913070eb7a6f767493925ac3d8c3c744941b5dbd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3340",
+          "sha256": "ffca17251de4f457c4952e9d913070eb7a6f767493925ac3d8c3c744941b5dbd",
+          "bytes": 567435
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.first.rib",
+      "structureId": "FMA:7987",
+      "preferredName": "left first rib",
+      "clinicalName": "Left first rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA7987",
+      "sourceRepresentationId": "BP8800",
+      "sourceElementFileId": "FJ3228",
+      "sourceElementFileIds": [
+        "FJ3228"
+      ],
+      "sourceFile": "./obj/FJ3228.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "803a7134c1e69f640b87f9c6c4a846c869379446e771a1a7c9d18914c331a603"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3228",
+          "sha256": "803a7134c1e69f640b87f9c6c4a846c869379446e771a1a7c9d18914c331a603",
+          "bytes": 200847
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.second.rib",
+      "structureId": "FMA:8012",
+      "preferredName": "left second rib",
+      "clinicalName": "Left second rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8012",
+      "sourceRepresentationId": "BP8996",
+      "sourceElementFileId": "FJ3229",
+      "sourceElementFileIds": [
+        "FJ3229"
+      ],
+      "sourceFile": "./obj/FJ3229.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "631b4f63625fa6cc89ad83961b2156abe5878d1baf4a8cb2b2acbaa06bc97f58"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3229",
+          "sha256": "631b4f63625fa6cc89ad83961b2156abe5878d1baf4a8cb2b2acbaa06bc97f58",
+          "bytes": 355230
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.third.rib",
+      "structureId": "FMA:8039",
+      "preferredName": "left third rib",
+      "clinicalName": "Left third rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8039",
+      "sourceRepresentationId": "BP8357",
+      "sourceElementFileId": "FJ3230",
+      "sourceElementFileIds": [
+        "FJ3230"
+      ],
+      "sourceFile": "./obj/FJ3230.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8c097e93d79c610bed49d6c027d25c8439447c20bfb94fa64009b9c4db4d8f5b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3230",
+          "sha256": "8c097e93d79c610bed49d6c027d25c8439447c20bfb94fa64009b9c4db4d8f5b",
+          "bytes": 460032
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.fifth.rib",
+      "structureId": "FMA:8066",
+      "preferredName": "right fifth rib",
+      "clinicalName": "Right fifth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8066",
+      "sourceRepresentationId": "BP8792",
+      "sourceElementFileId": "FJ3342",
+      "sourceElementFileIds": [
+        "FJ3342"
+      ],
+      "sourceFile": "./obj/FJ3342.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b2d1f3bc9478c51524628f4e79524290add55800ae85b06ff657f17f4c0c6f1f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3342",
+          "sha256": "b2d1f3bc9478c51524628f4e79524290add55800ae85b06ff657f17f4c0c6f1f",
+          "bytes": 627173
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fifth.rib",
+      "structureId": "FMA:8093",
+      "preferredName": "left fifth rib",
+      "clinicalName": "Left fifth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8093",
+      "sourceRepresentationId": "BP8479",
+      "sourceElementFileId": "FJ3232",
+      "sourceElementFileIds": [
+        "FJ3232"
+      ],
+      "sourceFile": "./obj/FJ3232.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c40bbcd5c2b98bb94161819a2cf824296289ce68eb62b37f3b175af4aadfd351"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3232",
+          "sha256": "c40bbcd5c2b98bb94161819a2cf824296289ce68eb62b37f3b175af4aadfd351",
+          "bytes": 622387
+        }
+      ]
+    },
+    {
+      "meshId": "bone.eighth.rib",
+      "structureId": "FMA:8120",
+      "preferredName": "eighth rib",
+      "clinicalName": "Eighth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8120",
+      "sourceRepresentationId": "BP8709",
+      "sourceElementFileId": "FJ3235",
+      "sourceElementFileIds": [
+        "FJ3235",
+        "FJ3347"
+      ],
+      "sourceFile": "./obj/FJ3235.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "7d9525200958a9545391a2e135649580282108d77f7ae88a34003a56f48f4c8b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3235",
+          "sha256": "7d9525200958a9545391a2e135649580282108d77f7ae88a34003a56f48f4c8b",
+          "bytes": 532783
+        },
+        {
+          "fileId": "FJ3347",
+          "sha256": "388e8f3dd5c308fe1454daed2aa3a2fced280d4ec60f97b547b476ca6b0da930",
+          "bytes": 535781
+        }
+      ]
+    },
+    {
+      "meshId": "bone.sixth.rib",
+      "structureId": "FMA:8147",
+      "preferredName": "sixth rib",
+      "clinicalName": "Sixth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8147",
+      "sourceRepresentationId": "BP8882",
+      "sourceElementFileId": "FJ3233",
+      "sourceElementFileIds": [
+        "FJ3233",
+        "FJ3344"
+      ],
+      "sourceFile": "./obj/FJ3233.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8160b28fd649aadd705a05cc3e6e9cfd7035c44d8258b5a50977ec89fe8e7414"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3233",
+          "sha256": "8160b28fd649aadd705a05cc3e6e9cfd7035c44d8258b5a50977ec89fe8e7414",
+          "bytes": 657309
+        },
+        {
+          "fileId": "FJ3344",
+          "sha256": "5e45ea5a527d3b7df56c508213020265ed1c8a0d9a99f31454b92059f4f1a95f",
+          "bytes": 661844
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fourth.rib",
+      "structureId": "FMA:8148",
+      "preferredName": "left fourth rib",
+      "clinicalName": "Left fourth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8148",
+      "sourceRepresentationId": "BP8081",
+      "sourceElementFileId": "FJ3231",
+      "sourceElementFileIds": [
+        "FJ3231"
+      ],
+      "sourceFile": "./obj/FJ3231.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c1259fcdaf463bdecfc0868a3acc964edd4901ab03eb539b28e40462671be1fb"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3231",
+          "sha256": "c1259fcdaf463bdecfc0868a3acc964edd4901ab03eb539b28e40462671be1fb",
+          "bytes": 564534
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.sixth.rib",
+      "structureId": "FMA:8175",
+      "preferredName": "right sixth rib",
+      "clinicalName": "Right sixth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8175",
+      "sourceRepresentationId": "BP8881",
+      "sourceElementFileId": "FJ3344",
+      "sourceElementFileIds": [
+        "FJ3344"
+      ],
+      "sourceFile": "./obj/FJ3344.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5e45ea5a527d3b7df56c508213020265ed1c8a0d9a99f31454b92059f4f1a95f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3344",
+          "sha256": "5e45ea5a527d3b7df56c508213020265ed1c8a0d9a99f31454b92059f4f1a95f",
+          "bytes": 661844
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.sixth.rib",
+      "structureId": "FMA:8202",
+      "preferredName": "left sixth rib",
+      "clinicalName": "Left sixth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8202",
+      "sourceRepresentationId": "BP9041",
+      "sourceElementFileId": "FJ3233",
+      "sourceElementFileIds": [
+        "FJ3233"
+      ],
+      "sourceFile": "./obj/FJ3233.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8160b28fd649aadd705a05cc3e6e9cfd7035c44d8258b5a50977ec89fe8e7414"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3233",
+          "sha256": "8160b28fd649aadd705a05cc3e6e9cfd7035c44d8258b5a50977ec89fe8e7414",
+          "bytes": 657309
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.seventh.rib",
+      "structureId": "FMA:8229",
+      "preferredName": "right seventh rib",
+      "clinicalName": "Right seventh rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8229",
+      "sourceRepresentationId": "BP8211",
+      "sourceElementFileId": "FJ3346",
+      "sourceElementFileIds": [
+        "FJ3346"
+      ],
+      "sourceFile": "./obj/FJ3346.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "86cc62c1a0a754f2e01a30b5d7179c745f3c2404ef4031ae43568667c4041996"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3346",
+          "sha256": "86cc62c1a0a754f2e01a30b5d7179c745f3c2404ef4031ae43568667c4041996",
+          "bytes": 647429
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.seventh.rib",
+      "structureId": "FMA:8256",
+      "preferredName": "left seventh rib",
+      "clinicalName": "Left seventh rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8256",
+      "sourceRepresentationId": "BP9230",
+      "sourceElementFileId": "FJ3234",
+      "sourceElementFileIds": [
+        "FJ3234"
+      ],
+      "sourceFile": "./obj/FJ3234.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "372c650b2b7bc3f6767aa50a0f5b7e5dac6a15a17aeea5f5017166ba5d328757"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3234",
+          "sha256": "372c650b2b7bc3f6767aa50a0f5b7e5dac6a15a17aeea5f5017166ba5d328757",
+          "bytes": 642407
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.eighth.rib",
+      "structureId": "FMA:8283",
+      "preferredName": "right eighth rib",
+      "clinicalName": "Right eighth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8283",
+      "sourceRepresentationId": "BP9073",
+      "sourceElementFileId": "FJ3347",
+      "sourceElementFileIds": [
+        "FJ3347"
+      ],
+      "sourceFile": "./obj/FJ3347.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "388e8f3dd5c308fe1454daed2aa3a2fced280d4ec60f97b547b476ca6b0da930"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3347",
+          "sha256": "388e8f3dd5c308fe1454daed2aa3a2fced280d4ec60f97b547b476ca6b0da930",
+          "bytes": 535781
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.eighth.rib",
+      "structureId": "FMA:8310",
+      "preferredName": "left eighth rib",
+      "clinicalName": "Left eighth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8310",
+      "sourceRepresentationId": "BP8708",
+      "sourceElementFileId": "FJ3235",
+      "sourceElementFileIds": [
+        "FJ3235"
+      ],
+      "sourceFile": "./obj/FJ3235.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "7d9525200958a9545391a2e135649580282108d77f7ae88a34003a56f48f4c8b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3235",
+          "sha256": "7d9525200958a9545391a2e135649580282108d77f7ae88a34003a56f48f4c8b",
+          "bytes": 532783
+        }
+      ]
+    },
+    {
+      "meshId": "bone.ninth.rib",
+      "structureId": "FMA:8337",
+      "preferredName": "ninth rib",
+      "clinicalName": "Ninth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8337",
+      "sourceRepresentationId": "BP8439",
+      "sourceElementFileId": "FJ3236",
+      "sourceElementFileIds": [
+        "FJ3236",
+        "FJ3348"
+      ],
+      "sourceFile": "./obj/FJ3236.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ec09e201beaaa70c24a41eedcef4671118b453361f827be02fb73fc361208db8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3236",
+          "sha256": "ec09e201beaaa70c24a41eedcef4671118b453361f827be02fb73fc361208db8",
+          "bytes": 481787
+        },
+        {
+          "fileId": "FJ3348",
+          "sha256": "4ef4af4eb8a7ea76479b2d4a1b2973c7d950f6e3aa5593eca4377258222bdaf6",
+          "bytes": 485199
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.ninth.rib",
+      "structureId": "FMA:8364",
+      "preferredName": "right ninth rib",
+      "clinicalName": "Right ninth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8364",
+      "sourceRepresentationId": "BP9181",
+      "sourceElementFileId": "FJ3348",
+      "sourceElementFileIds": [
+        "FJ3348"
+      ],
+      "sourceFile": "./obj/FJ3348.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4ef4af4eb8a7ea76479b2d4a1b2973c7d950f6e3aa5593eca4377258222bdaf6"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3348",
+          "sha256": "4ef4af4eb8a7ea76479b2d4a1b2973c7d950f6e3aa5593eca4377258222bdaf6",
+          "bytes": 485199
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.ninth.rib",
+      "structureId": "FMA:8391",
+      "preferredName": "left ninth rib",
+      "clinicalName": "Left ninth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8391",
+      "sourceRepresentationId": "BP8438",
+      "sourceElementFileId": "FJ3236",
+      "sourceElementFileIds": [
+        "FJ3236"
+      ],
+      "sourceFile": "./obj/FJ3236.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ec09e201beaaa70c24a41eedcef4671118b453361f827be02fb73fc361208db8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3236",
+          "sha256": "ec09e201beaaa70c24a41eedcef4671118b453361f827be02fb73fc361208db8",
+          "bytes": 481787
+        }
+      ]
+    },
+    {
+      "meshId": "bone.tenth.rib",
+      "structureId": "FMA:8418",
+      "preferredName": "tenth rib",
+      "clinicalName": "Tenth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8418",
+      "sourceRepresentationId": "BP8408",
+      "sourceElementFileId": "FJ3225",
+      "sourceElementFileIds": [
+        "FJ3225",
+        "FJ3330"
+      ],
+      "sourceFile": "./obj/FJ3225.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "40680b5a3556b5984a5006e01649ff20cb4c88d9d3a7fef79cbad0648a972d54"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3225",
+          "sha256": "40680b5a3556b5984a5006e01649ff20cb4c88d9d3a7fef79cbad0648a972d54",
+          "bytes": 432176
+        },
+        {
+          "fileId": "FJ3330",
+          "sha256": "9e62a17a2ea9dc16797beec97bd0925c9692c2a4764391cbc1e289b0120e7aa4",
+          "bytes": 434806
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.tenth.rib",
+      "structureId": "FMA:8445",
+      "preferredName": "right tenth rib",
+      "clinicalName": "Right tenth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8445",
+      "sourceRepresentationId": "BP8407",
+      "sourceElementFileId": "FJ3330",
+      "sourceElementFileIds": [
+        "FJ3330"
+      ],
+      "sourceFile": "./obj/FJ3330.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9e62a17a2ea9dc16797beec97bd0925c9692c2a4764391cbc1e289b0120e7aa4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3330",
+          "sha256": "9e62a17a2ea9dc16797beec97bd0925c9692c2a4764391cbc1e289b0120e7aa4",
+          "bytes": 434806
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.tenth.rib",
+      "structureId": "FMA:8472",
+      "preferredName": "left tenth rib",
+      "clinicalName": "Left tenth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8472",
+      "sourceRepresentationId": "BP9155",
+      "sourceElementFileId": "FJ3225",
+      "sourceElementFileIds": [
+        "FJ3225"
+      ],
+      "sourceFile": "./obj/FJ3225.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "40680b5a3556b5984a5006e01649ff20cb4c88d9d3a7fef79cbad0648a972d54"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3225",
+          "sha256": "40680b5a3556b5984a5006e01649ff20cb4c88d9d3a7fef79cbad0648a972d54",
+          "bytes": 432176
+        }
+      ]
+    },
+    {
+      "meshId": "bone.eleventh.rib",
+      "structureId": "FMA:8499",
+      "preferredName": "eleventh rib",
+      "clinicalName": "Eleventh rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8499",
+      "sourceRepresentationId": "BP8952",
+      "sourceElementFileId": "FJ3226",
+      "sourceElementFileIds": [
+        "FJ3226",
+        "FJ3331"
+      ],
+      "sourceFile": "./obj/FJ3226.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3226",
+          "sha256": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250",
+          "bytes": 304274
+        },
+        {
+          "fileId": "FJ3331",
+          "sha256": "1fdce776ea65919bf9aa418ec91c872b3eb835daca57dc69a7caa40bb02707d7",
+          "bytes": 306720
+        }
+      ]
+    },
+    {
+      "meshId": "bone.twelfth.rib",
+      "structureId": "FMA:8515",
+      "preferredName": "twelfth rib",
+      "clinicalName": "Twelfth rib",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8515",
+      "sourceRepresentationId": "BP9062",
+      "sourceElementFileId": "FJ3227",
+      "sourceElementFileIds": [
+        "FJ3227",
+        "FJ3332"
+      ],
+      "sourceFile": "./obj/FJ3227.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3b7e5d6673a1be5bc14d72a4ea659d361b143f3fda5bca3ec758c176daba16c5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3227",
+          "sha256": "3b7e5d6673a1be5bc14d72a4ea659d361b143f3fda5bca3ec758c176daba16c5",
+          "bytes": 170991
+        },
+        {
+          "fileId": "FJ3332",
+          "sha256": "50dd4dac4ebb45fa245d700f7ceac89edd7503cb4caab154b644b0a808da2ecc",
+          "bytes": 172391
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.eleventh.rib",
+      "structureId": "FMA:8531",
+      "preferredName": "right eleventh rib",
+      "clinicalName": "Right eleventh rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8531",
+      "sourceRepresentationId": "BP8951",
+      "sourceElementFileId": "FJ3331",
+      "sourceElementFileIds": [
+        "FJ3331"
+      ],
+      "sourceFile": "./obj/FJ3331.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1fdce776ea65919bf9aa418ec91c872b3eb835daca57dc69a7caa40bb02707d7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3331",
+          "sha256": "1fdce776ea65919bf9aa418ec91c872b3eb835daca57dc69a7caa40bb02707d7",
+          "bytes": 306720
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.eleventh.rib",
+      "structureId": "FMA:8532",
+      "preferredName": "left eleventh rib",
+      "clinicalName": "Left eleventh rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8532",
+      "sourceRepresentationId": "BP9097",
+      "sourceElementFileId": "FJ3226",
+      "sourceElementFileIds": [
+        "FJ3226"
+      ],
+      "sourceFile": "./obj/FJ3226.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3226",
+          "sha256": "24a27d42732af55ad1e7142179f2dd4f906de78b701fbe5c459d8884a026f250",
+          "bytes": 304274
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.twelfth.rib",
+      "structureId": "FMA:8533",
+      "preferredName": "right twelfth rib",
+      "clinicalName": "Right twelfth rib",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8533",
+      "sourceRepresentationId": "BP9236",
+      "sourceElementFileId": "FJ3332",
+      "sourceElementFileIds": [
+        "FJ3332"
+      ],
+      "sourceFile": "./obj/FJ3332.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "50dd4dac4ebb45fa245d700f7ceac89edd7503cb4caab154b644b0a808da2ecc"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3332",
+          "sha256": "50dd4dac4ebb45fa245d700f7ceac89edd7503cb4caab154b644b0a808da2ecc",
+          "bytes": 172391
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.twelfth.rib",
+      "structureId": "FMA:8534",
+      "preferredName": "left twelfth rib",
+      "clinicalName": "Left twelfth rib",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA8534",
+      "sourceRepresentationId": "BP9061",
+      "sourceElementFileId": "FJ3227",
+      "sourceElementFileIds": [
+        "FJ3227"
+      ],
+      "sourceFile": "./obj/FJ3227.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3b7e5d6673a1be5bc14d72a4ea659d361b143f3fda5bca3ec758c176daba16c5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3227",
+          "sha256": "3b7e5d6673a1be5bc14d72a4ea659d361b143f3fda5bca3ec758c176daba16c5",
+          "bytes": 170991
+        }
+      ]
+    },
+    {
+      "meshId": "bone.zone.of.sternum",
+      "structureId": "FMA:12215",
+      "preferredName": "zone of sternum",
+      "clinicalName": "Zone of sternum",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-thorax",
+      "sourceConceptId": "FMA12215",
+      "sourceRepresentationId": "BP8563",
+      "sourceElementFileId": "FJ3290",
+      "sourceElementFileIds": [
+        "FJ3290"
+      ],
+      "sourceFile": "./obj/FJ3290.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e94f731d044131260947146ab79fa7c4712865e1aac36a1410003358b96e0692"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3290",
+          "sha256": "e94f731d044131260947146ab79fa7c4712865e1aac36a1410003358b96e0692",
+          "bytes": 164755
+        }
+      ]
+    }
+  ]
+}

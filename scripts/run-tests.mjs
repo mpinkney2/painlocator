@@ -2025,7 +2025,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-styled-exterior-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-fullbody-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2040,7 +2040,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-styled-exterior-1'));
+    assert.ok(html.includes('?v=2026-09-07-fullbody-1'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2149,7 +2149,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-styled-exterior-1';
+    const ver = '2026-09-07-fullbody-1';
     assert.ok(html.includes('spatial-bootstrap.js'));
     assert.ok(html.includes('type="module"'));
     assert.equal(html.includes('type="importmap"'), false);
@@ -2171,6 +2171,73 @@ console.log('PainLocator tests\n');
     assert.ok(entry.includes('GLTFLoader'));
     assert.ok(entry.includes('MeshoptDecoder'));
     assert.equal(/\/vendor\/(three|GLTFLoader)/.test(entry), false);
+  });
+
+
+  test('fullbody flag: off by default; on via query', () => {
+    loadScript('src/engine/spatial/canonical-body-flag.js', sandbox);
+    assert.equal(sandbox.CanonicalBodyFlag.resolveFullBodyAnatomy({ search: '' }), false);
+    assert.equal(sandbox.CanonicalBodyFlag.resolveFullBodyAnatomy({ search: '?fullBodyAnatomy=1' }), true);
+    assert.equal(sandbox.CanonicalBodyFlag.resolveFullBodyAnatomy({ search: '?fullBodyAnatomy=0' }), false);
+    assert.ok(sandbox.CanonicalBodyFlag.FULLBODY_INDEX_URL.includes('prototype-bp3d-fullbody-msk'));
+  });
+
+  test('fullbody assets: index + packs + identity registration exist', () => {
+    const index = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/prototype-bp3d-fullbody-msk/index.json'), 'utf8')
+    );
+    assert.equal(index.modelId, 'bp3d-fullbody-msk-v1');
+    assert.equal(index.coordinateFrameVersion, 'painlocator-bp3d-canonical-v1');
+    assert.ok(index.structureCount >= 400);
+    assert.ok(Object.keys(index.packs).length >= 10);
+    let total = 0;
+    const meshIds = new Set();
+    const fmas = new Set();
+    for (const [packId, meta] of Object.entries(index.packs)) {
+      const manifest = JSON.parse(
+        readFileSync(
+          join(root, 'public/anatomy/spatial/prototype-bp3d-fullbody-msk/packs', packId, 'manifest.json'),
+          'utf8'
+        )
+      );
+      const layer = meta.layer;
+      const meshes = manifest.layers[layer].meshes;
+      assert.equal(meshes.length, meta.structureCount);
+      for (const m of meshes) {
+        assert.ok(m.meshId);
+        assert.ok(/^FMA:\d+$/.test(m.structureId), m.structureId);
+        assert.ok(['left', 'right', 'midline'].includes(m.laterality));
+        assert.ok(!meshIds.has(m.meshId), `duplicate meshId ${m.meshId}`);
+        meshIds.add(m.meshId);
+        fmas.add(m.structureId);
+      }
+      const glb = join(
+        root,
+        'public/anatomy/spatial/prototype-bp3d-fullbody-msk/packs',
+        packId,
+        `${layer}.glb`
+      );
+      assert.ok(statSync(glb).isFile(), glb);
+      total += statSync(glb).size;
+    }
+    assert.equal(meshIds.size, index.structureCount);
+    assert.ok(total > 1_000_000 && total < 80_000_000, `unexpected payload ${total}`);
+    const reg = JSON.parse(
+      readFileSync(
+        join(root, 'public/anatomy/spatial/registration/bp3d-fullbody-canonical-identity.json'),
+        'utf8'
+      )
+    );
+    assert.equal(reg.transform.scale, 1);
+    assert.deepEqual(reg.transform.translation, [0, 0, 0]);
+    assert.equal(reg.sourceModelId, 'bp3d-fullbody-msk-v1');
+  });
+
+  test('fullbody docs + curator scripts exist', () => {
+    assert.ok(statSync(join(root, 'docs/SPATIAL_FULLBODY_BP3D_ANATOMY.md')).isFile());
+    assert.ok(statSync(join(root, 'tools/bp3d-ingest/curate-fullbody.py')).isFile());
+    assert.ok(statSync(join(root, 'tools/bp3d-ingest/ingest-fullbody.py')).isFile());
+    assert.ok(statSync(join(root, 'data/bodyparts3d/subset/fullbody/catalog.json')).isFile());
   });
 
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {

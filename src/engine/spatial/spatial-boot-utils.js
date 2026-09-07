@@ -10,7 +10,7 @@
  */
 (function (global) {
   /** Bump for classic-script cache tokens when Spatial bridge / exterior contract changes */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-07-styled-exterior-1";
+  const SPATIAL_RUNTIME_VERSION = "2026-09-07-fullbody-1";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",

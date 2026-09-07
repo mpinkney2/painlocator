@@ -17,7 +17,10 @@
     "bp3d:ingest": "python3 tools/bp3d-ingest/ingest.py",
     "bp3d:optimize": "node tools/bp3d-ingest/optimize.mjs",
     "bp3d:test": "node tools/bp3d-ingest/test-integrity.mjs",
-    "bp3d:build": "node tools/bp3d-ingest/build.mjs"
+    "bp3d:build": "node tools/bp3d-ingest/build.mjs",
+    "bp3d:curate-fullbody": "python3 tools/bp3d-ingest/curate-fullbody.py",
+    "bp3d:ingest-fullbody": "python3 tools/bp3d-ingest/ingest-fullbody.py",
+    "test:fullbody-browser": "node scripts/fullbody-browser-smoke.mjs"
   },
   "dependencies": {
     "three": "0.170.0"

@@ -24,18 +24,20 @@
   const DEPTHS = Object.freeze(["surface", "muscle", "skeletal"]);
 
   const MATERIALS = Object.freeze({
-    exteriorGhostMuscle: { color: 0xb7c0c9, opacity: 0.22 },
-    exteriorGhostSkeletal: { color: 0xb7c0c9, opacity: 0.12 },
-    muscle: { color: 0xb89a9a, roughness: 0.86, metalness: 0.04, opacity: 0.96 },
-    muscleSubdued: { color: 0xa09090, roughness: 0.9, metalness: 0.02, opacity: 0.18 },
-    skeletal: { color: 0xe4ddd2, roughness: 0.78, metalness: 0.06, opacity: 0.98 },
-    skeletalSubdued: { color: 0xc8c2b8, roughness: 0.88, metalness: 0.03, opacity: 0.14 },
+    exteriorGhostMuscle: { color: 0xb7c0c9, opacity: 0.18 },
+    exteriorGhostSkeletal: { color: 0xb7c0c9, opacity: 0.1 },
+    // Clinical muted terracotta / anatomical muscle tone
+    muscle: { color: 0xa86f62, roughness: 0.72, metalness: 0.04, opacity: 0.98 },
+    muscleSubdued: { color: 0x8a6a62, roughness: 0.88, metalness: 0.02, opacity: 0.22 },
+    // Warm ivory bone — not pure white / plastic
+    skeletal: { color: 0xe8dfd0, roughness: 0.82, metalness: 0.05, opacity: 0.99 },
+    skeletalSubdued: { color: 0xcfc6b8, roughness: 0.9, metalness: 0.03, opacity: 0.16 },
     selected: {
-      color: 0xd4b4b0,
-      emissive: 0x5c403c,
-      emissiveIntensity: 0.22,
-      roughness: 0.55,
-      metalness: 0.05
+      color: 0xc4dce0,
+      emissive: 0x2a6f78,
+      emissiveIntensity: 0.28,
+      roughness: 0.5,
+      metalness: 0.06
     }
   });
 

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-shoulder-girdle-left",
+  "displayName": "Skeletal Shoulder Girdle Left",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.left.clavicle",
+          "structureId": "FMA:13323",
+          "structureName": "left clavicle",
+          "clinicalName": "Left clavicle",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-shoulder-girdle-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8841",
+          "sourceElementFileId": "FJ3237",
+          "sourceElementFileIds": [
+            "FJ3237"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.scapula",
+          "structureId": "FMA:13396",
+          "structureName": "left scapula",
+          "clinicalName": "Left scapula",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-shoulder-girdle-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9121",
+          "sourceElementFileId": "FJ3279",
+          "sourceElementFileIds": [
+            "FJ3279"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,770 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-skull",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-skull",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.parietal.bone",
+      "structureId": "FMA:9613",
+      "preferredName": "parietal bone",
+      "clinicalName": "Parietal bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA9613",
+      "sourceRepresentationId": "BP9058",
+      "sourceElementFileId": "FJ3274",
+      "sourceElementFileIds": [
+        "FJ3274",
+        "FJ3380"
+      ],
+      "sourceFile": "./obj/FJ3274.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "45ab8d9b21c1854c9ea744137560020004e694eba3217a0a3fa0876d02207f65"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3274",
+          "sha256": "45ab8d9b21c1854c9ea744137560020004e694eba3217a0a3fa0876d02207f65",
+          "bytes": 956856
+        },
+        {
+          "fileId": "FJ3380",
+          "sha256": "b6874589f3ddcbeae7153c2d499c23d0083eb18e95d139759529c901384758c8",
+          "bytes": 928866
+        }
+      ]
+    },
+    {
+      "meshId": "bone.vomer",
+      "structureId": "FMA:9710",
+      "preferredName": "vomer",
+      "clinicalName": "Vomer",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA9710",
+      "sourceRepresentationId": "BP8776",
+      "sourceElementFileId": "FJ3395",
+      "sourceElementFileIds": [
+        "FJ3395"
+      ],
+      "sourceFile": "./obj/FJ3395.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "6eaf47a63ac9ca5f310bf43e136070a684a35c170b4d6e3dbdb8c03c300995e2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3395",
+          "sha256": "6eaf47a63ac9ca5f310bf43e136070a684a35c170b4d6e3dbdb8c03c300995e2",
+          "bytes": 465969
+        }
+      ]
+    },
+    {
+      "meshId": "bone.maxilla",
+      "structureId": "FMA:9711",
+      "preferredName": "maxilla",
+      "clinicalName": "Maxilla",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA9711",
+      "sourceRepresentationId": "BP8310",
+      "sourceElementFileId": "FJ3269",
+      "sourceElementFileIds": [
+        "FJ3269",
+        "FJ3375"
+      ],
+      "sourceFile": "./obj/FJ3269.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ba97a37d471d6db65bca375a6413fd09e69e102017fb8a104d07255212d1b576"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3269",
+          "sha256": "ba97a37d471d6db65bca375a6413fd09e69e102017fb8a104d07255212d1b576",
+          "bytes": 384814
+        },
+        {
+          "fileId": "FJ3375",
+          "sha256": "99fde288184e5d9ccb08ff5547fc1a693b2ef0d6a12a80e47b711f51bd3f7906",
+          "bytes": 388578
+        }
+      ]
+    },
+    {
+      "meshId": "bone.frontal.bone",
+      "structureId": "FMA:52734",
+      "preferredName": "frontal bone",
+      "clinicalName": "Frontal bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52734",
+      "sourceRepresentationId": "BP8209",
+      "sourceElementFileId": "FJ3200",
+      "sourceElementFileIds": [
+        "FJ3200"
+      ],
+      "sourceFile": "./obj/FJ3200.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "48583dbbeab8ae243aa4c266b44ca5b26b9c4e1e79976819cfdf5dcb59ec5772"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3200",
+          "sha256": "48583dbbeab8ae243aa4c266b44ca5b26b9c4e1e79976819cfdf5dcb59ec5772",
+          "bytes": 1005988
+        }
+      ]
+    },
+    {
+      "meshId": "bone.occipital.bone",
+      "structureId": "FMA:52735",
+      "preferredName": "occipital bone",
+      "clinicalName": "Occipital bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52735",
+      "sourceRepresentationId": "BP9177",
+      "sourceElementFileId": "FJ3309",
+      "sourceElementFileIds": [
+        "FJ3309"
+      ],
+      "sourceFile": "./obj/FJ3309.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c0262a08591e48504c8a53302525377e0c4ad1c165456475f3bb80aab6202d44"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3309",
+          "sha256": "c0262a08591e48504c8a53302525377e0c4ad1c165456475f3bb80aab6202d44",
+          "bytes": 843673
+        }
+      ]
+    },
+    {
+      "meshId": "bone.sphenoid.bone",
+      "structureId": "FMA:52736",
+      "preferredName": "sphenoid bone",
+      "clinicalName": "Sphenoid bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52736",
+      "sourceRepresentationId": "BP8498",
+      "sourceElementFileId": "FJ3394",
+      "sourceElementFileIds": [
+        "FJ3394"
+      ],
+      "sourceFile": "./obj/FJ3394.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "127f537eb70e6ad4b036a535550ab7a681ce06dbdc1efda85956d910c54d6285"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3394",
+          "sha256": "127f537eb70e6ad4b036a535550ab7a681ce06dbdc1efda85956d910c54d6285",
+          "bytes": 573595
+        }
+      ]
+    },
+    {
+      "meshId": "bone.temporal.bone",
+      "structureId": "FMA:52737",
+      "preferredName": "temporal bone",
+      "clinicalName": "Temporal bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52737",
+      "sourceRepresentationId": "BP7992",
+      "sourceElementFileId": "FJ3281",
+      "sourceElementFileIds": [
+        "FJ3281",
+        "FJ3386"
+      ],
+      "sourceFile": "./obj/FJ3281.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0dd858a59e8f4f004871f55411f4048bd6a69e4ec55cf6daa08ae34a5dbd974a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3281",
+          "sha256": "0dd858a59e8f4f004871f55411f4048bd6a69e4ec55cf6daa08ae34a5dbd974a",
+          "bytes": 341129
+        },
+        {
+          "fileId": "FJ3386",
+          "sha256": "b008c86a55b1e7743a56060b4d9cb8f8abcac71d83810f66fc50847181b7fa75",
+          "bytes": 349968
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.temporal.bone",
+      "structureId": "FMA:52738",
+      "preferredName": "right temporal bone",
+      "clinicalName": "Right temporal bone",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52738",
+      "sourceRepresentationId": "BP8875",
+      "sourceElementFileId": "FJ3386",
+      "sourceElementFileIds": [
+        "FJ3386"
+      ],
+      "sourceFile": "./obj/FJ3386.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b008c86a55b1e7743a56060b4d9cb8f8abcac71d83810f66fc50847181b7fa75"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3386",
+          "sha256": "b008c86a55b1e7743a56060b4d9cb8f8abcac71d83810f66fc50847181b7fa75",
+          "bytes": 349968
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.temporal.bone",
+      "structureId": "FMA:52739",
+      "preferredName": "left temporal bone",
+      "clinicalName": "Left temporal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52739",
+      "sourceRepresentationId": "BP7991",
+      "sourceElementFileId": "FJ3281",
+      "sourceElementFileIds": [
+        "FJ3281"
+      ],
+      "sourceFile": "./obj/FJ3281.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0dd858a59e8f4f004871f55411f4048bd6a69e4ec55cf6daa08ae34a5dbd974a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3281",
+          "sha256": "0dd858a59e8f4f004871f55411f4048bd6a69e4ec55cf6daa08ae34a5dbd974a",
+          "bytes": 341129
+        }
+      ]
+    },
+    {
+      "meshId": "bone.ethmoid",
+      "structureId": "FMA:52740",
+      "preferredName": "ethmoid",
+      "clinicalName": "Ethmoid",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52740",
+      "sourceRepresentationId": "BP8991",
+      "sourceElementFileId": "FJ3199",
+      "sourceElementFileIds": [
+        "FJ3199"
+      ],
+      "sourceFile": "./obj/FJ3199.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ffc2b3a343d531e72fdc70c0ef7f8c1c10c3fb84509f015585ad3b24eb403e21"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3199",
+          "sha256": "ffc2b3a343d531e72fdc70c0ef7f8c1c10c3fb84509f015585ad3b24eb403e21",
+          "bytes": 1542628
+        }
+      ]
+    },
+    {
+      "meshId": "bone.lacrimal.bone",
+      "structureId": "FMA:52741",
+      "preferredName": "lacrimal bone",
+      "clinicalName": "Lacrimal bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52741",
+      "sourceRepresentationId": "BP8104",
+      "sourceElementFileId": "FJ3265",
+      "sourceElementFileIds": [
+        "FJ3265",
+        "FJ3371"
+      ],
+      "sourceFile": "./obj/FJ3265.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "28320fa6801ecb66f9316b1da0db475d5e3e32468c368946f2af27bd9f5a9528"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3265",
+          "sha256": "28320fa6801ecb66f9316b1da0db475d5e3e32468c368946f2af27bd9f5a9528",
+          "bytes": 39999
+        },
+        {
+          "fileId": "FJ3371",
+          "sha256": "f9f3b356cd8fb0f3adb0966c780f4a40cad5752bd52188f8029be202dc1b1028",
+          "bytes": 44177
+        }
+      ]
+    },
+    {
+      "meshId": "bone.nasal.bone",
+      "structureId": "FMA:52745",
+      "preferredName": "nasal bone",
+      "clinicalName": "Nasal bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52745",
+      "sourceRepresentationId": "BP8559",
+      "sourceElementFileId": "FJ3272",
+      "sourceElementFileIds": [
+        "FJ3272",
+        "FJ3378"
+      ],
+      "sourceFile": "./obj/FJ3272.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "43a73088376ae4179e8edd2f5d296d5c573cd1078379a0e3e8eeb90920ba9dc5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3272",
+          "sha256": "43a73088376ae4179e8edd2f5d296d5c573cd1078379a0e3e8eeb90920ba9dc5",
+          "bytes": 28143
+        },
+        {
+          "fileId": "FJ3378",
+          "sha256": "933e8c8de3b4eaa2a4d784862388cac53da48309a29fd3ae04e9ac10da543c5f",
+          "bytes": 27681
+        }
+      ]
+    },
+    {
+      "meshId": "bone.zygomatic.bone",
+      "structureId": "FMA:52747",
+      "preferredName": "zygomatic bone",
+      "clinicalName": "Zygomatic bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52747",
+      "sourceRepresentationId": "BP8496",
+      "sourceElementFileId": "FJ3287",
+      "sourceElementFileIds": [
+        "FJ3287",
+        "FJ3392"
+      ],
+      "sourceFile": "./obj/FJ3287.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "eb4176b5641daa0f68da7190b1d3e3c26716cdb3b4337b2c8ecd39dfd47618a1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3287",
+          "sha256": "eb4176b5641daa0f68da7190b1d3e3c26716cdb3b4337b2c8ecd39dfd47618a1",
+          "bytes": 96708
+        },
+        {
+          "fileId": "FJ3392",
+          "sha256": "bda976acce1517ed5349e8a0ad8d71922c148b95bdde18381a5d808f690c3c0f",
+          "bytes": 101099
+        }
+      ]
+    },
+    {
+      "meshId": "bone.mandible",
+      "structureId": "FMA:52748",
+      "preferredName": "mandible",
+      "clinicalName": "Mandible",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52748",
+      "sourceRepresentationId": "BP8107",
+      "sourceElementFileId": "FJ3289",
+      "sourceElementFileIds": [
+        "FJ3289"
+      ],
+      "sourceFile": "./obj/FJ3289.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c38102c34660e2b767a7b95a341380bf4a52c754c6235fcd322be5c7b8cb1745"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3289",
+          "sha256": "c38102c34660e2b767a7b95a341380bf4a52c754c6235fcd322be5c7b8cb1745",
+          "bytes": 355295
+        }
+      ]
+    },
+    {
+      "meshId": "bone.hyoid.bone",
+      "structureId": "FMA:52749",
+      "preferredName": "hyoid bone",
+      "clinicalName": "Hyoid bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52749",
+      "sourceRepresentationId": "BP8836",
+      "sourceElementFileId": "FJ2772",
+      "sourceElementFileIds": [
+        "FJ2772",
+        "FJ3201"
+      ],
+      "sourceFile": "./obj/FJ2772.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c8c6cfdd66285cdda16fa441829f723d3943823d0ffebf5e394ff8dc49a598b1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ2772",
+          "sha256": "c8c6cfdd66285cdda16fa441829f723d3943823d0ffebf5e394ff8dc49a598b1",
+          "bytes": 75562
+        },
+        {
+          "fileId": "FJ3201",
+          "sha256": "c52dd55001d86286d6469190d3673cc8b2b03fb3d9c29d45cec211192950c027",
+          "bytes": 75562
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.parietal.bone",
+      "structureId": "FMA:52788",
+      "preferredName": "right parietal bone",
+      "clinicalName": "Right parietal bone",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52788",
+      "sourceRepresentationId": "BP9057",
+      "sourceElementFileId": "FJ3380",
+      "sourceElementFileIds": [
+        "FJ3380"
+      ],
+      "sourceFile": "./obj/FJ3380.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b6874589f3ddcbeae7153c2d499c23d0083eb18e95d139759529c901384758c8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3380",
+          "sha256": "b6874589f3ddcbeae7153c2d499c23d0083eb18e95d139759529c901384758c8",
+          "bytes": 928866
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.parietal.bone",
+      "structureId": "FMA:52789",
+      "preferredName": "left parietal bone",
+      "clinicalName": "Left parietal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52789",
+      "sourceRepresentationId": "BP9209",
+      "sourceElementFileId": "FJ3274",
+      "sourceElementFileIds": [
+        "FJ3274"
+      ],
+      "sourceFile": "./obj/FJ3274.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "45ab8d9b21c1854c9ea744137560020004e694eba3217a0a3fa0876d02207f65"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3274",
+          "sha256": "45ab8d9b21c1854c9ea744137560020004e694eba3217a0a3fa0876d02207f65",
+          "bytes": 956856
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.zygomatic.bone",
+      "structureId": "FMA:52892",
+      "preferredName": "right zygomatic bone",
+      "clinicalName": "Right zygomatic bone",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52892",
+      "sourceRepresentationId": "BP8777",
+      "sourceElementFileId": "FJ3392",
+      "sourceElementFileIds": [
+        "FJ3392"
+      ],
+      "sourceFile": "./obj/FJ3392.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bda976acce1517ed5349e8a0ad8d71922c148b95bdde18381a5d808f690c3c0f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3392",
+          "sha256": "bda976acce1517ed5349e8a0ad8d71922c148b95bdde18381a5d808f690c3c0f",
+          "bytes": 101099
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.zygomatic.bone",
+      "structureId": "FMA:52893",
+      "preferredName": "left zygomatic bone",
+      "clinicalName": "Left zygomatic bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA52893",
+      "sourceRepresentationId": "BP8495",
+      "sourceElementFileId": "FJ3287",
+      "sourceElementFileIds": [
+        "FJ3287"
+      ],
+      "sourceFile": "./obj/FJ3287.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "eb4176b5641daa0f68da7190b1d3e3c26716cdb3b4337b2c8ecd39dfd47618a1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3287",
+          "sha256": "eb4176b5641daa0f68da7190b1d3e3c26716cdb3b4337b2c8ecd39dfd47618a1",
+          "bytes": 96708
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.lacrimal.bone",
+      "structureId": "FMA:53645",
+      "preferredName": "right lacrimal bone",
+      "clinicalName": "Right lacrimal bone",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA53645",
+      "sourceRepresentationId": "BP8741",
+      "sourceElementFileId": "FJ3371",
+      "sourceElementFileIds": [
+        "FJ3371"
+      ],
+      "sourceFile": "./obj/FJ3371.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f9f3b356cd8fb0f3adb0966c780f4a40cad5752bd52188f8029be202dc1b1028"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3371",
+          "sha256": "f9f3b356cd8fb0f3adb0966c780f4a40cad5752bd52188f8029be202dc1b1028",
+          "bytes": 44177
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.lacrimal.bone",
+      "structureId": "FMA:53646",
+      "preferredName": "left lacrimal bone",
+      "clinicalName": "Left lacrimal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA53646",
+      "sourceRepresentationId": "BP8103",
+      "sourceElementFileId": "FJ3265",
+      "sourceElementFileIds": [
+        "FJ3265"
+      ],
+      "sourceFile": "./obj/FJ3265.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "28320fa6801ecb66f9316b1da0db475d5e3e32468c368946f2af27bd9f5a9528"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3265",
+          "sha256": "28320fa6801ecb66f9316b1da0db475d5e3e32468c368946f2af27bd9f5a9528",
+          "bytes": 39999
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.nasal.bone",
+      "structureId": "FMA:53647",
+      "preferredName": "right nasal bone",
+      "clinicalName": "Right nasal bone",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA53647",
+      "sourceRepresentationId": "BP9060",
+      "sourceElementFileId": "FJ3378",
+      "sourceElementFileIds": [
+        "FJ3378"
+      ],
+      "sourceFile": "./obj/FJ3378.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "933e8c8de3b4eaa2a4d784862388cac53da48309a29fd3ae04e9ac10da543c5f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3378",
+          "sha256": "933e8c8de3b4eaa2a4d784862388cac53da48309a29fd3ae04e9ac10da543c5f",
+          "bytes": 27681
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.nasal.bone",
+      "structureId": "FMA:53648",
+      "preferredName": "left nasal bone",
+      "clinicalName": "Left nasal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA53648",
+      "sourceRepresentationId": "BP8558",
+      "sourceElementFileId": "FJ3272",
+      "sourceElementFileIds": [
+        "FJ3272"
+      ],
+      "sourceFile": "./obj/FJ3272.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "43a73088376ae4179e8edd2f5d296d5c573cd1078379a0e3e8eeb90920ba9dc5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3272",
+          "sha256": "43a73088376ae4179e8edd2f5d296d5c573cd1078379a0e3e8eeb90920ba9dc5",
+          "bytes": 28143
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.maxilla",
+      "structureId": "FMA:53649",
+      "preferredName": "right maxilla",
+      "clinicalName": "Right maxilla",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA53649",
+      "sourceRepresentationId": "BP8309",
+      "sourceElementFileId": "FJ3375",
+      "sourceElementFileIds": [
+        "FJ3375"
+      ],
+      "sourceFile": "./obj/FJ3375.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "99fde288184e5d9ccb08ff5547fc1a693b2ef0d6a12a80e47b711f51bd3f7906"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3375",
+          "sha256": "99fde288184e5d9ccb08ff5547fc1a693b2ef0d6a12a80e47b711f51bd3f7906",
+          "bytes": 388578
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.maxilla",
+      "structureId": "FMA:53650",
+      "preferredName": "left maxilla",
+      "clinicalName": "Left maxilla",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-skull",
+      "sourceConceptId": "FMA53650",
+      "sourceRepresentationId": "BP9046",
+      "sourceElementFileId": "FJ3269",
+      "sourceElementFileIds": [
+        "FJ3269"
+      ],
+      "sourceFile": "./obj/FJ3269.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ba97a37d471d6db65bca375a6413fd09e69e102017fb8a104d07255212d1b576"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3269",
+          "sha256": "ba97a37d471d6db65bca375a6413fd09e69e102017fb8a104d07255212d1b576",
+          "bytes": 384814
+        }
+      ]
+    }
+  ]
+}

@@ -233,6 +233,16 @@
     if (layerId !== "muscle" && layerId !== "skeletal") {
       throw new Error(`Unsupported layer pack: ${layerId}`);
     }
+
+    const flag =
+      (typeof globalThis !== "undefined" && globalThis.CanonicalBodyFlag) ||
+      (typeof window !== "undefined" && window.CanonicalBodyFlag) ||
+      null;
+    const fullBody = !!(flag && flag.resolveFullBodyAnatomy && flag.resolveFullBodyAnatomy());
+    if (fullBody) {
+      return loadFullBodyLayerPack(THREE, layerId, options);
+    }
+
     const registrationUrl = options.registrationUrl || DEFAULT_REGISTRATION_URL;
     const cacheKey = packCacheKey(layerId, registrationUrl);
     if (packCache.has(cacheKey)) return packCache.get(cacheKey);
@@ -298,6 +308,7 @@
         metaById: bound.metaById,
         manifest,
         registration,
+        fullBody: false,
         /** @deprecated Prefer SpatialLayerLoader.detachPack — do not free shared cache. */
         dispose() {
           detachPack(packed);
@@ -318,10 +329,134 @@
     return pending;
   }
 
+  /**
+   * Progressive multi-pack full-body MSK load (?fullBodyAnatomy=1).
+   */
+  async function loadFullBodyLayerPack(THREE, layerId, options = {}) {
+    const flag =
+      (typeof globalThis !== "undefined" && globalThis.CanonicalBodyFlag) ||
+      (typeof window !== "undefined" && window.CanonicalBodyFlag) ||
+      null;
+    const indexUrl = (flag && flag.FULLBODY_INDEX_URL) ||
+      "/anatomy/spatial/prototype-bp3d-fullbody-msk/index.json";
+    const registrationUrl =
+      options.registrationUrl ||
+      (flag && flag.FULLBODY_IDENTITY_REGISTRATION_URL) ||
+      "/anatomy/spatial/registration/bp3d-fullbody-canonical-identity.json";
+    const cacheKey = `fullbody::${layerId}::${registrationUrl}`;
+    if (packCache.has(cacheKey)) return packCache.get(cacheKey);
+    if (packPromises.has(cacheKey)) return packPromises.get(cacheKey);
+
+    const pending = (async () => {
+      const registration = await loadRegistration(registrationUrl);
+      const [indexRes, loader] = await Promise.all([
+        fetch(indexUrl, { cache: "force-cache" }),
+        getGltfLoader()
+      ]);
+      if (!indexRes.ok) throw new Error(`Full-body index HTTP ${indexRes.status}`);
+      const index = await indexRes.json();
+      if (index.modelId !== "bp3d-fullbody-msk-v1") {
+        throw new Error(`Unexpected full-body modelId: ${index.modelId}`);
+      }
+
+      const packMetas = Object.values(index.packs || {}).filter((p) => p.layer === layerId);
+      if (!packMetas.length) throw new Error(`No full-body packs for layer ${layerId}`);
+
+      // Skip low-value "other" packs on first paint; keep available via index for future.
+      const primary = packMetas.filter((p) => !String(p.packId).endsWith("-other"));
+      const loadList = primary.length ? primary : packMetas;
+
+      const root = new THREE.Group();
+      root.name = `spatial-layer-fullbody-${layerId}`;
+      root.userData.spatialLayerPack = layerId;
+      root.userData.fullBodyAnatomy = true;
+
+      const meshById = new Map();
+      const metaById = new Map();
+      let byteLength = 0;
+      const loadedPackIds = [];
+
+      await Promise.all(
+        loadList.map(async (meta) => {
+          const base = meta.baseUrl;
+          const manifestUrl = joinUrl(base, "manifest.json");
+          const glbUrl = joinUrl(base, LAYER_FILES[layerId]);
+          const manifestRes = await fetch(manifestUrl, { cache: "force-cache" });
+          if (!manifestRes.ok) throw new Error(`Pack manifest HTTP ${manifestRes.status} (${meta.packId})`);
+          const manifest = await manifestRes.json();
+          const layerDef = manifest.layers?.[layerId];
+          if (!layerDef?.file) throw new Error(`Pack ${meta.packId} missing layers.${layerId}`);
+
+          const gltf = await loader.loadAsync(glbUrl);
+          const sceneRoot = gltf.scene || gltf.scenes?.[0];
+          if (!sceneRoot) throw new Error(`Pack ${meta.packId} GLB has no scene`);
+
+          const packRoot = new THREE.Group();
+          packRoot.name = `fullbody-pack-${meta.packId}`;
+          packRoot.add(sceneRoot);
+          const bound = bindMeshMetadata(packRoot, layerId, layerDef);
+          for (const [id, mesh] of bound.meshById) {
+            if (meshById.has(id)) {
+              throw new Error(`Duplicate meshId across full-body packs: ${id}`);
+            }
+            meshById.set(id, mesh);
+          }
+          for (const [id, metaRow] of bound.metaById) {
+            metaById.set(id, metaRow);
+          }
+          root.add(packRoot);
+          loadedPackIds.push(meta.packId);
+          try {
+            const head = await fetch(glbUrl, { method: "HEAD", cache: "force-cache" });
+            const len = head.headers.get("content-length");
+            if (len) byteLength += Number(len);
+          } catch (_) {
+            /* ignore */
+          }
+        })
+      );
+
+      applyRegistrationTransform(root, registration);
+
+      const packed = {
+        layerId,
+        url: indexUrl,
+        registrationUrl,
+        byteLength,
+        root,
+        meshById,
+        metaById,
+        manifest: index,
+        registration,
+        fullBody: true,
+        loadedPackIds,
+        dispose() {
+          detachPack(packed);
+        }
+      };
+      packCache.set(cacheKey, packed);
+      packCache.set(`fullbody::${layerId}`, packed);
+      return packed;
+    })().catch((err) => {
+      packPromises.delete(cacheKey);
+      throw err;
+    });
+
+    packPromises.set(cacheKey, pending);
+    return pending;
+  }
+
   function getCachedPack(layerId, registrationUrl) {
-    if (registrationUrl) return packCache.get(packCacheKey(layerId, registrationUrl)) || null;
+    if (registrationUrl) {
+      return (
+        packCache.get(packCacheKey(layerId, registrationUrl)) ||
+        packCache.get(`fullbody::${layerId}::${registrationUrl}`) ||
+        null
+      );
+    }
     return (
       packCache.get(layerId) ||
+      packCache.get(`fullbody::${layerId}`) ||
       packCache.get(packCacheKey(layerId, DEFAULT_REGISTRATION_URL)) ||
       null
     );

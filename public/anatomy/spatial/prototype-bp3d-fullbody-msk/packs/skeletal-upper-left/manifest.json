@@ -1,0 +1,628 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-upper-left",
+  "displayName": "Skeletal Upper Left",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.left.humerus",
+          "structureId": "FMA:23131",
+          "structureName": "left humerus",
+          "clinicalName": "Left humerus",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9191",
+          "sourceElementFileId": "FJ3262",
+          "sourceElementFileIds": [
+            "FJ3262"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.radius",
+          "structureId": "FMA:23465",
+          "structureName": "left radius",
+          "clinicalName": "Left radius",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9059",
+          "sourceElementFileId": "FJ3277",
+          "sourceElementFileIds": [
+            "FJ3277"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.ulna",
+          "structureId": "FMA:23468",
+          "structureName": "left ulna",
+          "clinicalName": "Left ulna",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9070",
+          "sourceElementFileId": "FJ3286",
+          "sourceElementFileIds": [
+            "FJ3286"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.index.finger",
+          "structureId": "FMA:23938",
+          "structureName": "middle phalanx of left index finger",
+          "clinicalName": "Middle phalanx of left index finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9063",
+          "sourceElementFileId": "FJ3296",
+          "sourceElementFileIds": [
+            "FJ3296"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.middle.finger",
+          "structureId": "FMA:23940",
+          "structureName": "middle phalanx of left middle finger",
+          "clinicalName": "Middle phalanx of left middle finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8456",
+          "sourceElementFileId": "FJ3299",
+          "sourceElementFileIds": [
+            "FJ3299"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.ring.finger",
+          "structureId": "FMA:23942",
+          "structureName": "middle phalanx of left ring finger",
+          "clinicalName": "Middle phalanx of left ring finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8611",
+          "sourceElementFileId": "FJ3291",
+          "sourceElementFileIds": [
+            "FJ3291"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.little.finger",
+          "structureId": "FMA:23944",
+          "structureName": "middle phalanx of left little finger",
+          "clinicalName": "Middle phalanx of left little finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8595",
+          "sourceElementFileId": "FJ3297",
+          "sourceElementFileIds": [
+            "FJ3297"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.thumb",
+          "structureId": "FMA:23951",
+          "structureName": "distal phalanx of left thumb",
+          "clinicalName": "Distal phalanx of left thumb",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9118",
+          "sourceElementFileId": "FJ3188",
+          "sourceElementFileIds": [
+            "FJ3188"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.index.finger",
+          "structureId": "FMA:23953",
+          "structureName": "distal phalanx of left index finger",
+          "clinicalName": "Distal phalanx of left index finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8295",
+          "sourceElementFileId": "FJ3183",
+          "sourceElementFileIds": [
+            "FJ3183"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.middle.finger",
+          "structureId": "FMA:23955",
+          "structureName": "distal phalanx of left middle finger",
+          "clinicalName": "Distal phalanx of left middle finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8844",
+          "sourceElementFileId": "FJ3186",
+          "sourceElementFileIds": [
+            "FJ3186"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.ring.finger",
+          "structureId": "FMA:23957",
+          "structureName": "distal phalanx of left ring finger",
+          "clinicalName": "Distal phalanx of left ring finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9065",
+          "sourceElementFileId": "FJ3187",
+          "sourceElementFileIds": [
+            "FJ3187"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.little.finger",
+          "structureId": "FMA:23959",
+          "structureName": "distal phalanx of left little finger",
+          "clinicalName": "Distal phalanx of left little finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8799",
+          "sourceElementFileId": "FJ3184",
+          "sourceElementFileIds": [
+            "FJ3184"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.first.metacarpal.bone",
+          "structureId": "FMA:24465",
+          "structureName": "left first metacarpal bone",
+          "clinicalName": "Left first metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8887",
+          "sourceElementFileId": "FJ3240",
+          "sourceElementFileIds": [
+            "FJ3240"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.second.metacarpal.bone",
+          "structureId": "FMA:24467",
+          "structureName": "left second metacarpal bone",
+          "clinicalName": "Left second metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8909",
+          "sourceElementFileId": "FJ3243",
+          "sourceElementFileIds": [
+            "FJ3243"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.third.metacarpal.bone",
+          "structureId": "FMA:24469",
+          "structureName": "left third metacarpal bone",
+          "clinicalName": "Left third metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8863",
+          "sourceElementFileId": "FJ3246",
+          "sourceElementFileIds": [
+            "FJ3246"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.fourth.metacarpal.bone",
+          "structureId": "FMA:24471",
+          "structureName": "left fourth metacarpal bone",
+          "clinicalName": "Left fourth metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9203",
+          "sourceElementFileId": "FJ3249",
+          "sourceElementFileIds": [
+            "FJ3249"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.fifth.metacarpal.bone",
+          "structureId": "FMA:24473",
+          "structureName": "left fifth metacarpal bone",
+          "clinicalName": "Left fifth metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8000",
+          "sourceElementFileId": "FJ3252",
+          "sourceElementFileIds": [
+            "FJ3252"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.second.toe",
+          "structureId": "FMA:32635",
+          "structureName": "proximal phalanx of left second toe",
+          "clinicalName": "Proximal phalanx of left second toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9088",
+          "sourceElementFileId": "FJ3328",
+          "sourceElementFileIds": [
+            "FJ3328"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.third.toe",
+          "structureId": "FMA:32637",
+          "structureName": "proximal phalanx of left third toe",
+          "clinicalName": "Proximal phalanx of left third toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8837",
+          "sourceElementFileId": "FJ3311",
+          "sourceElementFileIds": [
+            "FJ3311"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.fourth.toe",
+          "structureId": "FMA:32639",
+          "structureName": "proximal phalanx of left fourth toe",
+          "clinicalName": "Proximal phalanx of left fourth toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8346",
+          "sourceElementFileId": "FJ3312",
+          "sourceElementFileIds": [
+            "FJ3312"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.little.toe",
+          "structureId": "FMA:32641",
+          "structureName": "proximal phalanx of left little toe",
+          "clinicalName": "Proximal phalanx of left little toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8594",
+          "sourceElementFileId": "FJ3315",
+          "sourceElementFileIds": [
+            "FJ3315"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.second.toe",
+          "structureId": "FMA:32643",
+          "structureName": "middle phalanx of left second toe",
+          "clinicalName": "Middle phalanx of left second toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7873",
+          "sourceElementFileId": "FJ3293",
+          "sourceElementFileIds": [
+            "FJ3293"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.third.toe",
+          "structureId": "FMA:32645",
+          "structureName": "middle phalanx of left third toe",
+          "clinicalName": "Middle phalanx of left third toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7748",
+          "sourceElementFileId": "FJ3294",
+          "sourceElementFileIds": [
+            "FJ3294"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.fourth.toe",
+          "structureId": "FMA:32647",
+          "structureName": "middle phalanx of left fourth toe",
+          "clinicalName": "Middle phalanx of left fourth toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9004",
+          "sourceElementFileId": "FJ3295",
+          "sourceElementFileIds": [
+            "FJ3295"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.big.toe",
+          "structureId": "FMA:32651",
+          "structureName": "distal phalanx of left big toe",
+          "clinicalName": "Distal phalanx of left big toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9247",
+          "sourceElementFileId": "FJ3182",
+          "sourceElementFileIds": [
+            "FJ3182"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.second.toe",
+          "structureId": "FMA:32653",
+          "structureName": "distal phalanx of left second toe",
+          "clinicalName": "Distal phalanx of left second toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8108",
+          "sourceElementFileId": "FJ3179",
+          "sourceElementFileIds": [
+            "FJ3179"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.third.toe",
+          "structureId": "FMA:32655",
+          "structureName": "distal phalanx of left third toe",
+          "clinicalName": "Distal phalanx of left third toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7955",
+          "sourceElementFileId": "FJ3180",
+          "sourceElementFileIds": [
+            "FJ3180"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.fourth.toe",
+          "structureId": "FMA:32657",
+          "structureName": "distal phalanx of left fourth toe",
+          "clinicalName": "Distal phalanx of left fourth toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8789",
+          "sourceElementFileId": "FJ3181",
+          "sourceElementFileIds": [
+            "FJ3181"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.left.little.toe",
+          "structureId": "FMA:32659",
+          "structureName": "distal phalanx of left little toe",
+          "clinicalName": "Distal phalanx of left little toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8818",
+          "sourceElementFileId": "FJ3185",
+          "sourceElementFileIds": [
+            "FJ3185"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.big.toe",
+          "structureId": "FMA:43254",
+          "structureName": "proximal phalanx of left big toe",
+          "clinicalName": "Proximal phalanx of left big toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8653",
+          "sourceElementFileId": "FJ3329",
+          "sourceElementFileIds": [
+            "FJ3329"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.thumb",
+          "structureId": "FMA:65470",
+          "structureName": "proximal phalanx of left thumb",
+          "clinicalName": "Proximal phalanx of left thumb",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7897",
+          "sourceElementFileId": "FJ3318",
+          "sourceElementFileIds": [
+            "FJ3318"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.little.finger",
+          "structureId": "FMA:66791",
+          "structureName": "proximal phalanx of left little finger",
+          "clinicalName": "Proximal phalanx of left little finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8710",
+          "sourceElementFileId": "FJ3314",
+          "sourceElementFileIds": [
+            "FJ3314"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.middle.finger",
+          "structureId": "FMA:71908",
+          "structureName": "proximal phalanx of left middle finger",
+          "clinicalName": "Proximal phalanx of left middle finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8864",
+          "sourceElementFileId": "FJ3316",
+          "sourceElementFileIds": [
+            "FJ3316"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.index.finger",
+          "structureId": "FMA:71915",
+          "structureName": "proximal phalanx of left index finger",
+          "clinicalName": "Proximal phalanx of left index finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8328",
+          "sourceElementFileId": "FJ3313",
+          "sourceElementFileIds": [
+            "FJ3313"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.left.ring.finger",
+          "structureId": "FMA:71916",
+          "structureName": "proximal phalanx of left ring finger",
+          "clinicalName": "Proximal phalanx of left ring finger",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7936",
+          "sourceElementFileId": "FJ3317",
+          "sourceElementFileIds": [
+            "FJ3317"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.left.little.toe",
+          "structureId": "FMA:230988",
+          "structureName": "middle phalanx of left little toe",
+          "clinicalName": "Middle phalanx of left little toe",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-upper-left",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9035",
+          "sourceElementFileId": "FJ3298",
+          "sourceElementFileIds": [
+            "FJ3298"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}
