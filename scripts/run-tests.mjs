@@ -2013,12 +2013,14 @@ console.log('PainLocator tests\n');
     assert.ok(renderer.includes('canonical frame skipped'));
     assert.ok(renderer.includes('Tear down prior mount BEFORE loading Three'));
     assert.ok(renderer.includes('SpatialThreeLoader failed to load'));
-    // Classic scripts must not contain source-level import() — Vite rewrites those
-    // into ESM and classic tags then fail, leaving SpatialThreeLoader undefined.
+    // Classic scripts must not contain source-level import() expressions — Vite
+    // rewrites those into ESM and classic tags then fail. String-inside-Function is OK.
     const threeLoaderSrc = readFileSync(join(root, 'src/engine/spatial/spatial-three-loader.js'), 'utf8');
     const bootSrc = readFileSync(join(root, 'src/engine/spatial/spatial-boot-utils.js'), 'utf8');
-    assert.equal(/\bimport\s*\(/.test(threeLoaderSrc), false);
-    assert.equal(/\bimport\s*\(/.test(bootSrc), false);
+    assert.ok(bootSrc.includes('new Function("u", "return import(u)")'));
+    assert.ok(threeLoaderSrc.includes('new Function("u", "return import(u)")'));
+    assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(bootSrc), false);
+    assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(threeLoaderSrc), false);
     loadScript('src/engine/spatial/spatial-three-loader.js', sandbox);
     assert.equal(typeof sandbox.SpatialThreeLoader?.loadThreeModule, 'function');
   });
