@@ -2009,6 +2009,7 @@ console.log('PainLocator tests\n');
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
     assert.ok(renderer.includes('canonical frame skipped'));
+    assert.ok(renderer.includes('Tear down prior mount BEFORE loading Three'));
   });
 }
 

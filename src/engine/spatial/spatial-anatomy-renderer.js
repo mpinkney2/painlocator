@@ -68,6 +68,9 @@
           throw new Error("WebGL unavailable");
         }
 
+        // Tear down prior mount BEFORE loading Three — teardown clears this.THREE.
+        this._teardownMount({ keepAttachments: true });
+
         onProgress("Loading 3D library…");
         this.THREE = await withTimeout(
           SpatialThreeLoader.loadThreeModule(),
@@ -75,9 +78,9 @@
           "Three.js"
         );
         if (this.disposed || generation !== this._mountGeneration) return false;
-
-        // Tear down any prior spatial DOM/listeners before remounting.
-        this._teardownMount({ keepAttachments: true });
+        if (!this.THREE?.WebGLRenderer) {
+          throw new Error("Three.js loaded without WebGLRenderer");
+        }
 
         container.classList.add("cae-spatial-active");
 

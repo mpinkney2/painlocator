@@ -12,6 +12,9 @@
      * @param {typeof import("three")} THREE
      */
     constructor(mountEl, THREE) {
+      if (!THREE?.WebGLRenderer) {
+        throw new Error("SpatialSceneController requires a valid Three.js module");
+      }
       this.THREE = THREE;
       this.mountEl = mountEl;
       this.disposed = false;

@@ -11,9 +11,10 @@
   }
 
   function loadThreeModule() {
-    if (global.__PAINLOCATOR_THREE__) {
+    if (global.__PAINLOCATOR_THREE__?.WebGLRenderer) {
       return Promise.resolve(global.__PAINLOCATOR_THREE__);
     }
+    global.__PAINLOCATOR_THREE__ = null;
     if (pending) return pending;
     const withTimeout =
       typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
@@ -28,9 +29,19 @@
       "Three.js import"
     )
       .then((mod) => {
-        global.__PAINLOCATOR_THREE__ = mod;
+        // Named-export ESM namespace (three.module.min.js) — unwrap default if present.
+        const THREE =
+          mod && typeof mod.WebGLRenderer === "function"
+            ? mod
+            : mod?.default && typeof mod.default.WebGLRenderer === "function"
+              ? mod.default
+              : null;
+        if (!THREE) {
+          throw new Error("Three.js module loaded without WebGLRenderer");
+        }
+        global.__PAINLOCATOR_THREE__ = THREE;
         pending = null;
-        return mod;
+        return THREE;
       })
       .catch((err) => {
         pending = null;

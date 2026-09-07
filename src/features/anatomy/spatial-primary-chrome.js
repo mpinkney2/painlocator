@@ -43,8 +43,11 @@
 
   function humanReason(reason) {
     const r = String(reason || "");
-    if (/webgl/i.test(r)) {
+    if (/^WebGL unavailable$/i.test(r) || /webgl unavailable/i.test(r)) {
       return "This browser preview cannot run WebGL 3D. Open the app in Chrome/Edge (external tab), then Retry.";
+    }
+    if (/WebGLRenderer|Three\.js module loaded without/i.test(r)) {
+      return "The 3D library failed to initialize. Tap Retry 3D, or open in Chrome/Edge.";
     }
     if (/timed out|timeout/i.test(r)) {
       return "3D loading took too long and was stopped. Check your network, then Retry.";
