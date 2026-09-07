@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "registrationId": "bp3d-prototype-shoulder→bp3d-canonical-identity",
+  "registrationVersion": "bp3d-shoulder-canonical-identity-v1",
+  "sourceModelId": "bp3d-prototype-shoulder",
+  "targetModelId": "bp3d-canonical-body",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "targetAssetVersion": "bp3d-fullbody-skin-canonical-v0",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "method": "identity",
+  "units": "meters",
+  "coordinateSystem": "y-up-right-handed",
+  "transform": {
+    "scale": 1.0,
+    "rotationEuler": [0, 0, 0],
+    "rotationOrder": "XYZ",
+    "translation": [0, 0, 0]
+  },
+  "derivation": {
+    "summary": "Shoulder muscle/skeletal packs share the BP3D ingest remap with FMA7163 skin. In canonical-body mode they mount with identity — no Slice 3 mannequin adapter.",
+    "note": "Slice 3 registration bp3d-shoulder-adult-male.json remains the default when canonicalBodyMode is OFF.",
+    "derivedAt": "2026-09-06T22:45:00Z"
+  },
+  "validation": {
+    "status": "pass-preview",
+    "label": "canonical-frame identity co-location",
+    "clinicalPrecisionClaimed": false,
+    "stopConditionTriggered": false,
+    "checks": [
+      {
+        "id": "humerus-inside-skin-aabb",
+        "pass": true,
+        "detail": "FMA:23131 centroid inside canonical skin AABB (see prototype-bp3d-fullbody/validation.json)."
+      },
+      {
+        "id": "identity-vs-canonical-skin",
+        "pass": true,
+        "detail": "scale=1, translation=[0,0,0], rotation=I"
+      }
+    ],
+    "structuresExpected": [
+      "bone.humerus.left",
+      "bone.scapula.left",
+      "bone.clavicle.left",
+      "muscle.deltoid.left",
+      "rotator-cuff (pack contents)"
+    ],
+    "warnings": [
+      "Identity registration is only valid in painlocator-bp3d-canonical-v1 after the exterior has been globally conformed (or when validating against the hidden canonical skin)."
+    ]
+  }
+}

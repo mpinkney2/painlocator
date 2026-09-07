@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "registrationId": "adult-male-exterior→bp3d-canonical-landmark-v2-dev",
+  "registrationVersion": "exterior-to-canonical-landmark-v2-dev",
+  "status": "development-experiment-rejected",
+  "enabledByDefault": false,
+  "adopted": false,
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "method": "global-similarity-plus-symmetric-lateral-and-or-depth",
+  "regionalPatches": false,
+  "findings": {
+    "status": "development-only-evaluated-not-adopted",
+    "allowedOps": [
+      "symmetric lateral scale",
+      "global torso-depth scale",
+      "base uniform similarity"
+    ],
+    "forbidden": [
+      "per-joint offsets",
+      "per-region hand-tuned patches"
+    ],
+    "trials": [
+      {
+        "name": "v2-lateral+depth",
+        "beforeMm": {
+          "mean": 52.925,
+          "median": 52.753,
+          "p95": 94.009,
+          "max": 96.551
+        },
+        "afterMm": {
+          "mean": 71.456,
+          "median": 67.709,
+          "p95": 141.552,
+          "max": 144.608
+        },
+        "verdict": "WORSE — depth+lateral over-corrected arms/shoulders"
+      },
+      {
+        "name": "v2b-lateral-only",
+        "lateralScale": 1.31957,
+        "beforeMm": {
+          "mean": 53.9,
+          "max": 96.6,
+          "hipMean": 95.3
+        },
+        "afterMm": {
+          "mean": 72.2,
+          "max": 144.3,
+          "hipMean": 65.5
+        },
+        "note": "Hips improve (~95→66 mm) but shoulders/elbows/forearms degrade sharply; a single lateral scale cannot reconcile shoulder-correct vs hip-narrow mannequin.",
+        "verdict": "NOT ADOPTED — improves hips only by harming limbs (would become regional hack if scoped to hips)"
+      }
+    ],
+    "recommendation": "Do not ship landmark-conformer v2 as default. Remesh/rebuild styled exterior from canonical geometry for persistence path.",
+    "productionDefault": "exterior-to-canonical-v1.json (unchanged)"
+  },
+  "validation": {
+    "status": "not-adopted",
+    "clinicalPrecisionClaimed": false,
+    "persistenceReady": false,
+    "note": "Experiment reduced hip error only by degrading limb alignment; rejected per Slice 5 stop-condition spirit (no regional hacks)."
+  }
+}

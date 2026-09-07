@@ -1,0 +1,758 @@
+{
+  "generatedAt": "2026-09-06T23:03:04.859Z",
+  "kind": "canonical-frame-hardening-report",
+  "clinicalRegistrationClaimed": false,
+  "stability": {
+    "shoulderL": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "shoulderR": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "chest": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "abdomen": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "hipL": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "hipR": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "kneeL": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "kneeR": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    },
+    "forearmL": {
+      "maxDeltaMm": 0,
+      "meanDeltaMm": 0,
+      "runs": 5
+    }
+  },
+  "projection": {
+    "overallRawToNearestMm": {
+      "n": 18,
+      "mean": 43.209,
+      "median": 41.715,
+      "p95": 83.28,
+      "max": 95.432,
+      "min": 3.577
+    },
+    "overallRawToTargetMm": {
+      "n": 18,
+      "mean": 53.921,
+      "median": 52.753,
+      "p95": 94.009,
+      "max": 96.551,
+      "min": 14.047
+    },
+    "byRegion": {
+      "head/neck": {
+        "n": 3,
+        "mean": 21.804,
+        "median": 18.649,
+        "p95": 18.649,
+        "max": 32.715,
+        "min": 14.047
+      },
+      "torso": {
+        "n": 3,
+        "mean": 42.341,
+        "median": 31.83,
+        "p95": 31.83,
+        "max": 70.385,
+        "min": 24.809
+      },
+      "shoulders": {
+        "n": 2,
+        "mean": 29.704,
+        "median": 29.704,
+        "p95": 29.656,
+        "max": 29.752,
+        "min": 29.656
+      },
+      "arms": {
+        "n": 4,
+        "mean": 69.213,
+        "median": 70.989,
+        "p95": 90.286,
+        "max": 92.573,
+        "min": 42.304
+      },
+      "hips": {
+        "n": 2,
+        "mean": 95.28,
+        "median": 95.28,
+        "p95": 94.009,
+        "max": 96.551,
+        "min": 94.009
+      },
+      "legs": {
+        "n": 4,
+        "mean": 62.83,
+        "median": 62.764,
+        "p95": 71.219,
+        "max": 71.979,
+        "min": 53.815
+      }
+    },
+    "landmarks": [
+      {
+        "id": "head",
+        "region": "head/neck",
+        "exteriorPointMeters": [
+          0,
+          1.68,
+          0.01
+        ],
+        "rawCanonicalMeters": [
+          0.0007873261286735975,
+          1.5506804128725156,
+          0.09193274173028097
+        ],
+        "nearestCanonicalMeters": [
+          0.06925071229517622,
+          1.5498424245254179,
+          0.10558866197688146
+        ],
+        "targetLandmarkMeters": [
+          0.0011595392528650017,
+          1.554339968695245,
+          0.10548956833035562
+        ],
+        "rawToNearestMm": 69.817,
+        "rawToTargetMm": 14.047,
+        "nearestToTargetMm": 68.24
+      },
+      {
+        "id": "neck",
+        "region": "head/neck",
+        "exteriorPointMeters": [
+          0,
+          1.545,
+          0
+        ],
+        "rawCanonicalMeters": [
+          0.0007873261286735975,
+          1.4213712473756013,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          -0.029088748595710714,
+          1.4155833473165949,
+          0.11891748965366122
+        ],
+        "targetLandmarkMeters": [
+          -0.0008851165196159925,
+          1.427096349790541,
+          0.11452117564359539
+        ],
+        "rawToNearestMm": 47.57,
+        "rawToTargetMm": 32.715,
+        "nearestToTargetMm": 30.779
+      },
+      {
+        "id": "chest",
+        "region": "torso",
+        "exteriorPointMeters": [
+          0,
+          1.28,
+          0.05
+        ],
+        "rawCanonicalMeters": [
+          0.0007873261286735975,
+          1.1675421447335104,
+          0.1302465685441815
+        ],
+        "nearestCanonicalMeters": [
+          0.0054402616850809625,
+          1.1633588975983193,
+          0.20980540121343505
+        ],
+        "targetLandmarkMeters": [
+          -0.00032405221246800876,
+          1.199232487744056,
+          0.13300413678991568
+        ],
+        "rawToNearestMm": 79.804,
+        "rawToTargetMm": 31.83,
+        "nearestToTargetMm": 84.962
+      },
+      {
+        "id": "abdomen",
+        "region": "torso",
+        "exteriorPointMeters": [
+          0,
+          1.05,
+          0.03
+        ],
+        "rawCanonicalMeters": [
+          0.0007873261286735975,
+          0.9472376405535823,
+          0.11108965513723124
+        ],
+        "nearestCanonicalMeters": [
+          0.001976865517098819,
+          0.9554239382706036,
+          0.193957739959941
+        ],
+        "targetLandmarkMeters": [
+          -0.0005971184913871742,
+          0.9311411904247012,
+          0.09226225429595308
+        ],
+        "rawToNearestMm": 83.28,
+        "rawToTargetMm": 24.809,
+        "nearestToTargetMm": 104.586
+      },
+      {
+        "id": "shoulderL",
+        "region": "shoulders",
+        "exteriorPointMeters": [
+          -0.24,
+          1.38,
+          0
+        ],
+        "rawCanonicalMeters": [
+          -0.22909563475472958,
+          1.2633267117682616,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          -0.23167118657290867,
+          1.274423715621565,
+          0.08082013180585765
+        ],
+        "targetLandmarkMeters": [
+          -0.23975244429820033,
+          1.2557423665942673,
+          0.055631796038714786
+        ],
+        "rawToNearestMm": 11.495,
+        "rawToTargetMm": 29.752,
+        "nearestToTargetMm": 32.384
+      },
+      {
+        "id": "shoulderR",
+        "region": "shoulders",
+        "exteriorPointMeters": [
+          0.24,
+          1.38,
+          0
+        ],
+        "rawCanonicalMeters": [
+          0.23067028701207679,
+          1.2633267117682616,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          0.23153181304494563,
+          1.2685464372758983,
+          0.08428352797383978
+        ],
+        "targetLandmarkMeters": [
+          0.24097743895762416,
+          1.2556374151952376,
+          0.055631796038714786
+        ],
+        "rawToNearestMm": 5.631,
+        "rawToTargetMm": 29.656,
+        "nearestToTargetMm": 32.814
+      },
+      {
+        "id": "forearmL",
+        "region": "arms",
+        "exteriorPointMeters": [
+          -0.34,
+          0.92,
+          0.02
+        ],
+        "rawCanonicalMeters": [
+          -0.32488020178948096,
+          0.8227177034084057,
+          0.1015111984337561
+        ],
+        "nearestCanonicalMeters": [
+          -0.293697463399498,
+          0.8061830488502821,
+          0.1244799138022386
+        ],
+        "targetLandmarkMeters": [
+          -0.32570764010357534,
+          0.7479350223887642,
+          0.15607028491019695
+        ],
+        "rawToNearestMm": 42.111,
+        "rawToTargetMm": 92.573,
+        "nearestToTargetMm": 73.59
+      },
+      {
+        "id": "forearmR",
+        "region": "arms",
+        "exteriorPointMeters": [
+          0.34,
+          0.92,
+          0.02
+        ],
+        "rawCanonicalMeters": [
+          0.32645485404682817,
+          0.8227177034084057,
+          0.1015111984337561
+        ],
+        "nearestCanonicalMeters": [
+          0.294397701063773,
+          0.8051335348599845,
+          0.1217511774274648
+        ],
+        "targetLandmarkMeters": [
+          0.3264078777678504,
+          0.7496142447732405,
+          0.1544960139247505
+        ],
+        "rawToNearestMm": 41.791,
+        "rawToTargetMm": 90.286,
+        "nearestToTargetMm": 71.967
+      },
+      {
+        "id": "hipL",
+        "region": "hips",
+        "exteriorPointMeters": [
+          -0.1,
+          0.9,
+          0
+        ],
+        "rawCanonicalMeters": [
+          -0.09499724090607775,
+          0.8035607900014553,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          -0.15901858059455598,
+          0.8137395495804249,
+          0.08071518040682789
+        ],
+        "targetLandmarkMeters": [
+          -0.1897561056938347,
+          0.8066092516606533,
+          0.10061723844059654
+        ],
+        "rawToNearestMm": 64.846,
+        "rawToTargetMm": 96.551,
+        "nearestToTargetMm": 37.306
+      },
+      {
+        "id": "hipR",
+        "region": "hips",
+        "exteriorPointMeters": [
+          0.1,
+          0.9,
+          0
+        ],
+        "rawCanonicalMeters": [
+          0.09657189316342493,
+          0.8035607900014553,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          0.15887920706659292,
+          0.8061830488502821,
+          0.07494285346019097
+        ],
+        "targetLandmarkMeters": [
+          0.18899592126242756,
+          0.8070465688077875,
+          0.09918615131270085
+        ],
+        "rawToNearestMm": 62.801,
+        "rawToTargetMm": 94.009,
+        "nearestToTargetMm": 38.672
+      },
+      {
+        "id": "kneeL",
+        "region": "legs",
+        "exteriorPointMeters": [
+          -0.1,
+          0.41,
+          0
+        ],
+        "rawCanonicalMeters": [
+          -0.09499724090607775,
+          0.33421641153117376,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          -0.12218063953510953,
+          0.3246135544022195,
+          0.09908167523703622
+        ],
+        "targetLandmarkMeters": [
+          -0.07972055060277597,
+          0.40370687946514944,
+          0.08549755141833894
+        ],
+        "rawToNearestMm": 33.331,
+        "rawToTargetMm": 71.219,
+        "nearestToTargetMm": 90.792
+      },
+      {
+        "id": "kneeR",
+        "region": "legs",
+        "exteriorPointMeters": [
+          0.1,
+          0.41,
+          0
+        ],
+        "rawCanonicalMeters": [
+          0.09657189316342493,
+          0.33421641153117376,
+          0.08235428502680583
+        ],
+        "nearestCanonicalMeters": [
+          0.11469466807506314,
+          0.331435395339154,
+          0.10957681514001241
+        ],
+        "targetLandmarkMeters": [
+          0.08072897357592518,
+          0.4043293129284147,
+          0.08612473130913005
+        ],
+        "rawToNearestMm": 32.821,
+        "rawToTargetMm": 71.979,
+        "nearestToTargetMm": 83.769
+      },
+      {
+        "id": "ankleL",
+        "region": "legs",
+        "exteriorPointMeters": [
+          -0.1,
+          0.06,
+          0.04
+        ],
+        "rawCanonicalMeters": [
+          -0.09499724090607775,
+          -0.0010295730904558778,
+          0.12066811184070636
+        ],
+        "nearestCanonicalMeters": [
+          -0.09709725516699645,
+          0.0041706953145989045,
+          0.11755312146627432
+        ],
+        "targetLandmarkMeters": [
+          -0.10867750661081817,
+          -0.05008386770450852,
+          0.1395340485484994
+        ],
+        "rawToNearestMm": 6.415,
+        "rawToTargetMm": 54.308,
+        "nearestToTargetMm": 59.673
+      },
+      {
+        "id": "ankleR",
+        "region": "legs",
+        "exteriorPointMeters": [
+          0.1,
+          0.06,
+          0.04
+        ],
+        "rawCanonicalMeters": [
+          0.09657189316342493,
+          -0.0010295730904558778,
+          0.12066811184070636
+        ],
+        "nearestCanonicalMeters": [
+          0.09569846485067623,
+          0.00007759075243807256,
+          0.1239551568070898
+        ],
+        "targetLandmarkMeters": [
+          0.11042394726981634,
+          -0.049610077660568304,
+          0.1392176142040076
+        ],
+        "rawToNearestMm": 3.577,
+        "rawToTargetMm": 53.815,
+        "nearestToTargetMm": 54.025
+      },
+      {
+        "id": "vertex",
+        "region": "head/neck",
+        "exteriorPointMeters": [
+          0,
+          1.785,
+          0.01
+        ],
+        "rawCanonicalMeters": [
+          0.0007873261286735975,
+          1.6512542082590045,
+          0.09193274173028097
+        ],
+        "nearestCanonicalMeters": [
+          -0.008518274385877374,
+          1.6389461623016857,
+          0.09047566051659574
+        ],
+        "targetLandmarkMeters": [
+          0.004285796295753581,
+          1.6413600444793701,
+          0.07651712444563741
+        ],
+        "rawToNearestMm": 15.499,
+        "rawToTargetMm": 18.649,
+        "nearestToTargetMm": 19.095
+      },
+      {
+        "id": "elbowL",
+        "region": "arms",
+        "exteriorPointMeters": [
+          -0.33,
+          1.05,
+          0.01
+        ],
+        "rawCanonicalMeters": [
+          -0.31530174508600584,
+          0.9472376405535823,
+          0.09193274173028097
+        ],
+        "nearestCanonicalMeters": [
+          -0.2741765031799623,
+          0.9427248189880024,
+          0.08722216714667312
+        ],
+        "targetLandmarkMeters": [
+          -0.2765903853576468,
+          0.9610913138182107,
+          0.08197459719518503
+        ],
+        "rawToNearestMm": 41.639,
+        "rawToTargetMm": 42.304,
+        "nearestToTargetMm": 19.253
+      },
+      {
+        "id": "elbowR",
+        "region": "arms",
+        "exteriorPointMeters": [
+          0.33,
+          1.05,
+          0.01
+        ],
+        "rawCanonicalMeters": [
+          0.31687639734335304,
+          0.9472376405535823,
+          0.09193274173028097
+        ],
+        "nearestCanonicalMeters": [
+          0.27718567162289204,
+          0.943354527382181,
+          0.09058061191562551
+        ],
+        "targetLandmarkMeters": [
+          0.2779203314161004,
+          0.9798776142445381,
+          0.08249935419033383
+        ],
+        "rawToNearestMm": 39.903,
+        "rawToTargetMm": 51.691,
+        "nearestToTargetMm": 37.414
+      },
+      {
+        "id": "bodyCenter",
+        "region": "torso",
+        "exteriorPointMeters": [
+          0,
+          0.95,
+          0.01
+        ],
+        "rawCanonicalMeters": [
+          0.0007873261286735975,
+          0.8514530735188309,
+          0.09193274173028097
+        ],
+        "nearestCanonicalMeters": [
+          0.0031313309064262005,
+          0.8142643065755738,
+          0.17978930109092314
+        ],
+        "targetLandmarkMeters": [
+          0.0006124973297119141,
+          0.7816244214773178,
+          0.10076089762151241
+        ],
+        "rawToNearestMm": 95.432,
+        "rawToTargetMm": 70.385,
+        "nearestToTargetMm": 85.541
+      }
+    ]
+  },
+  "thresholds": {
+    "PASS_PREVIEW": {
+      "meanLandmarkErrorMm": 80,
+      "maxLandmarkErrorMm": 120,
+      "remountDeltaMm": 0.01,
+      "note": "Visual proof / architecture validation only"
+    },
+    "PASS_DEVELOPMENT": {
+      "meanLandmarkErrorMm": 40,
+      "maxLandmarkErrorMm": 70,
+      "remountDeltaMm": 0.01,
+      "note": "Stable infra for further Spatial work; still not persistence"
+    },
+    "NOT_READY_FOR_PERSISTENCE": {
+      "meanLandmarkErrorMm": 15,
+      "maxLandmarkErrorMm": 25,
+      "remountDeltaMm": 0.01,
+      "note": "Proposed bar before writing canonicalBodyXYZ to schema — not medical validation"
+    },
+    "currentV1Classification": "PASS_PREVIEW",
+    "persistenceAssessment": "NOT_READY_FOR_PERSISTENCE",
+    "rationale": "Current ~57 mm mean / ~97 mm max remains above persistence bar; remount stability is excellent (numeric identity)."
+  },
+  "hipRootCause": {
+    "primary": "mannequin proportions — pelvis/hip width too narrow vs BP3D skin",
+    "evidence": {
+      "exteriorHipWidthMeters": 0.2,
+      "canonicalHipWidthMeters": 0.3788,
+      "hipWidthRatio": 1.894,
+      "exteriorShoulderWidthMeters": 0.48,
+      "canonicalShoulderWidthMeters": 0.4807,
+      "exteriorTorsoDepthMetersApprox": 0.323,
+      "canonicalTorsoDepthMeters": 0.292,
+      "depthRatio": 0.904
+    },
+    "contributingFactors": [
+      "procedural pelvis sphere radius/scale (1.25×0.72) yields ±0.10 m hip centers",
+      "BP3D cadaveric soft-tissue hip breadth ≈ ±0.19 m",
+      "uniform global scale cannot reconcile width vs height simultaneously",
+      "landmark selection (hip band mean) amplifies width residual but is not the root cause",
+      "limb attachment positions secondary vs pelvis width"
+    ],
+    "notRecommended": "per-region hip patches"
+  },
+  "landmarkConformerExperiment": {
+    "status": "development-only-evaluated-not-adopted",
+    "allowedOps": [
+      "symmetric lateral scale",
+      "global torso-depth scale",
+      "base uniform similarity"
+    ],
+    "forbidden": [
+      "per-joint offsets",
+      "per-region hand-tuned patches"
+    ],
+    "trials": [
+      {
+        "name": "v2-lateral+depth",
+        "beforeMm": {
+          "mean": 52.925,
+          "median": 52.753,
+          "p95": 94.009,
+          "max": 96.551
+        },
+        "afterMm": {
+          "mean": 71.456,
+          "median": 67.709,
+          "p95": 141.552,
+          "max": 144.608
+        },
+        "verdict": "WORSE — depth+lateral over-corrected arms/shoulders"
+      },
+      {
+        "name": "v2b-lateral-only",
+        "lateralScale": 1.31957,
+        "beforeMm": {
+          "mean": 53.9,
+          "max": 96.6,
+          "hipMean": 95.3
+        },
+        "afterMm": {
+          "mean": 72.2,
+          "max": 144.3,
+          "hipMean": 65.5
+        },
+        "note": "Hips improve (~95→66 mm) but shoulders/elbows/forearms degrade sharply; a single lateral scale cannot reconcile shoulder-correct vs hip-narrow mannequin.",
+        "verdict": "NOT ADOPTED — improves hips only by harming limbs (would become regional hack if scoped to hips)"
+      }
+    ],
+    "recommendation": "Do not ship landmark-conformer v2 as default. Remesh/rebuild styled exterior from canonical geometry for persistence path.",
+    "productionDefault": "exterior-to-canonical-v1.json (unchanged)"
+  },
+  "canonicalDerivedExterior": {
+    "path": "public/anatomy/spatial/dev/canonical-frame-hardening/canonical-derived-exterior-candidate.glb",
+    "bytes": 165980,
+    "coordinateFrame": "painlocator-bp3d-canonical-v1",
+    "registrationTransform": "identity",
+    "operations": [
+      "weld",
+      "simplify(ratio≈0.4)",
+      "neutral-candidate (no runtime wire)"
+    ],
+    "patientUx": "anatomical silhouette softened by simplification; still not production-polished",
+    "warnings": [
+      "Offline prototype only — not wired into Patient/Clinician runtime",
+      "Appearance remains closer to atlas skin than the calm procedural mannequin",
+      "Near-zero registration error by construction (same frame as BP3D packs)"
+    ]
+  },
+  "shoulderIdentity": {
+    "expectedRegistrationWhenFlagOn": "bp3d-shoulder-canonical-identity.json",
+    "expectedTransform": {
+      "scale": 1,
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotationEuler": [
+        0,
+        0,
+        0
+      ]
+    },
+    "structures": [
+      "humerus",
+      "scapula",
+      "clavicle",
+      "deltoid",
+      "rotator-cuff"
+    ],
+    "note": "Identity co-location validated by Slice 4 prototype validation.json + registration JSON; runtime uses identity URL when canonicalBodyMode ON."
+  },
+  "comparison": {
+    "currentMannequinPlusConformer": {
+      "alignment": "PASS_PREVIEW / NOT_READY_FOR_PERSISTENCE",
+      "appearance": "calm stylized — preferred patient UX today",
+      "payload": "~294 KB exterior + optional 361 KB canonical when flagged",
+      "topology": "18 named surface meshes; stable meshIds",
+      "registration": "global conformer required"
+    },
+    "canonicalDerivedExterior": {
+      "alignment": "identity / near-zero registration",
+      "appearance": "anatomical silhouette softened by simplification; still not production-polished",
+      "payloadBytes": 165980,
+      "topology": "single skin shell; meshIds not yet PL:surface.* partitioned",
+      "registration": "identity",
+      "runtimeWired": false
+    }
+  }
+}

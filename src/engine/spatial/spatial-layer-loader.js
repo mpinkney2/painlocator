@@ -29,10 +29,15 @@
   const packPromises = new Map();
   /** @type {Map<string, object>} */
   const packCache = new Map();
+  /** @type {Map<string, Promise<object>>} */
+  const registrationPromises = new Map();
 
-  let registrationPromise = null;
   let meshoptReady = null;
   let gltfLoaderPromise = null;
+
+  function packCacheKey(layerId, registrationUrl) {
+    return `${layerId}::${registrationUrl || DEFAULT_REGISTRATION_URL}`;
+  }
 
   function joinUrl(base, relative) {
     if (!relative) return base;
@@ -109,17 +114,19 @@
   }
 
   async function loadRegistration(url = DEFAULT_REGISTRATION_URL) {
-    if (registrationPromise) return registrationPromise;
-    registrationPromise = fetch(url, { cache: "force-cache" })
+    const key = url || DEFAULT_REGISTRATION_URL;
+    if (registrationPromises.has(key)) return registrationPromises.get(key);
+    const pending = fetch(key, { cache: "force-cache" })
       .then(async (res) => {
         if (!res.ok) throw new Error(`Registration HTTP ${res.status}`);
         return validateRegistrationConfig(await res.json());
       })
       .catch((err) => {
-        registrationPromise = null;
+        registrationPromises.delete(key);
         throw err;
       });
-    return registrationPromise;
+    registrationPromises.set(key, pending);
+    return pending;
   }
 
   function applyRegistrationTransform(root, registration) {
@@ -211,15 +218,25 @@
     if (layerId !== "muscle" && layerId !== "skeletal") {
       throw new Error(`Unsupported layer pack: ${layerId}`);
     }
-    if (packCache.has(layerId)) return packCache.get(layerId);
-    if (packPromises.has(layerId)) return packPromises.get(layerId);
+    const registrationUrl = options.registrationUrl || DEFAULT_REGISTRATION_URL;
+    const cacheKey = packCacheKey(layerId, registrationUrl);
+    if (packCache.has(cacheKey)) return packCache.get(cacheKey);
+    if (packPromises.has(cacheKey)) return packPromises.get(cacheKey);
+    // Back-compat: also answer legacy single-key lookups for the default registration.
+    if (
+      registrationUrl === DEFAULT_REGISTRATION_URL &&
+      packCache.has(layerId) &&
+      !options.registrationUrl
+    ) {
+      return packCache.get(layerId);
+    }
 
     const packBase = options.packBase || DEFAULT_PACK_BASE;
     const url = joinUrl(packBase, LAYER_FILES[layerId]);
     const manifestUrl = joinUrl(packBase, "manifest.json");
 
     const pending = (async () => {
-      const registration = await loadRegistration(options.registrationUrl);
+      const registration = await loadRegistration(registrationUrl);
       const [manifestRes, loader] = await Promise.all([
         fetch(manifestUrl, { cache: "force-cache" }),
         getGltfLoader()
@@ -259,6 +276,7 @@
       const packed = {
         layerId,
         url,
+        registrationUrl,
         byteLength,
         root,
         meshById: bound.meshById,
@@ -270,27 +288,39 @@
           detachPack(packed);
         }
       };
-      packCache.set(layerId, packed);
+      packCache.set(cacheKey, packed);
+      // Legacy alias for default registration (existing tests / callers).
+      if (registrationUrl === DEFAULT_REGISTRATION_URL) {
+        packCache.set(layerId, packed);
+      }
       return packed;
     })().catch((err) => {
-      packPromises.delete(layerId);
+      packPromises.delete(cacheKey);
       throw err;
     });
 
-    packPromises.set(layerId, pending);
+    packPromises.set(cacheKey, pending);
     return pending;
   }
 
-  function getCachedPack(layerId) {
-    return packCache.get(layerId) || null;
+  function getCachedPack(layerId, registrationUrl) {
+    if (registrationUrl) return packCache.get(packCacheKey(layerId, registrationUrl)) || null;
+    return (
+      packCache.get(layerId) ||
+      packCache.get(packCacheKey(layerId, DEFAULT_REGISTRATION_URL)) ||
+      null
+    );
   }
 
-  function hasCachedPack(layerId) {
-    return packCache.has(layerId);
+  function hasCachedPack(layerId, registrationUrl) {
+    return !!getCachedPack(layerId, registrationUrl);
   }
 
   function clearPackCache() {
+    const seen = new Set();
     for (const pack of [...packCache.values()]) {
+      if (seen.has(pack)) continue;
+      seen.add(pack);
       try {
         disposePackResources(pack);
       } catch (_) { /* ignore */ }
@@ -299,21 +329,30 @@
     packPromises.clear();
   }
 
+  function clearRegistrationCache() {
+    registrationPromises.clear();
+  }
+
   global.SpatialLayerLoader = {
     loadLayerPack,
     loadRegistration,
     getCachedPack,
     hasCachedPack,
     clearPackCache,
+    clearRegistrationCache,
     detachPack,
     disposePackResources,
     applyRegistrationTransform,
     validateRegistrationConfig,
     isPatientBlocked,
     joinUrl,
+    getGltfLoader,
     DEFAULT_PACK_BASE,
     DEFAULT_REGISTRATION_URL,
+    IDENTITY_REGISTRATION_URL:
+      "/anatomy/spatial/registration/bp3d-shoulder-canonical-identity.json",
     LAYER_FILES,
+    packCacheKey,
     /** App invariant: at most one active SpatialAnatomyRenderer. */
     SINGLE_ACTIVE_SPATIAL_RENDERER: true
   };

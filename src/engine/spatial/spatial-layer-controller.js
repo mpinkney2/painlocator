@@ -75,6 +75,12 @@
       this.onChange = typeof options.onChange === "function" ? options.onChange : () => {};
       this.onError = typeof options.onError === "function" ? options.onError : () => {};
       this.validationMode = !!options.validationMode;
+      this.canonicalBodyMode = !!options.canonicalBodyMode;
+      this.registrationUrl =
+        options.registrationUrl ||
+        (this.canonicalBodyMode
+          ? SpatialLayerLoader.IDENTITY_REGISTRATION_URL
+          : SpatialLayerLoader.DEFAULT_REGISTRATION_URL);
 
       this.depth = "surface";
       this.loading = false;
@@ -159,7 +165,8 @@
     async _ensurePack(layerId) {
       if (this._packs.has(layerId)) return this._packs.get(layerId);
       const pack = await SpatialLayerLoader.loadLayerPack(this.THREE, layerId, {
-        presentationMode: this.presentationMode
+        presentationMode: this.presentationMode,
+        registrationUrl: this.registrationUrl
       });
       if (this._disposed) {
         SpatialLayerLoader.detachPack(pack);

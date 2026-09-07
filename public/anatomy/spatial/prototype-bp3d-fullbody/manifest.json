@@ -1,10 +1,11 @@
 {
   "schemaVersion": "1.0.0",
   "prototypeId": "bp3d-fullbody-skin-canonical-v0",
-  "status": "offline-architecture-prototype",
-  "wiredToRuntime": false,
+  "status": "runtime-feature-flagged",
+  "wiredToRuntime": true,
+  "runtimeGate": "canonicalBodyMode query/config flag (default OFF)",
   "role": "canonical-registration-body",
-  "recommendedProductUse": "Hidden or clinician-only registration/reference body; not default patient exterior",
+  "recommendedProductUse": "Hidden registration/reference body when canonicalBodyMode is ON; not default patient exterior",
   "source": {
     "database": "BodyParts3D 4.0",
     "conceptId": "FMA7163",
