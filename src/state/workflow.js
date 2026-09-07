@@ -114,7 +114,8 @@ function applyWorkflowMode(mode) {
   if (mode !== 'clinical') {
     const advancedTools = ['polygon', 'brush', 'lasso'];
     if (advancedTools.includes(entryStore.activeTool)) {
-      entryStore.setTool(mode === 'review' ? 'select' : 'circle');
+      const spatial = state.engine?.isSpatialMode?.();
+      entryStore.setTool(mode === 'review' ? 'select' : spatial ? 'point' : 'circle');
     }
     state.engine?.clinicalRenderer?.layers?.interaction?.cancelPolygonDraw?.();
     if (state.vizController?.baseMode === 'reference') {
@@ -130,13 +131,17 @@ function applyWorkflowMode(mode) {
     document.getElementById('entryFilterBar').hidden = true;
     document.getElementById('comparePanel').hidden = true;
   } else if (mode === 'capture') {
-    entryStore.setTool('circle');
+    const spatial = state.engine?.isSpatialMode?.();
+    const tool = spatial ? 'point' : 'circle';
+    entryStore.setTool(tool);
     document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(b => {
-      b.classList.toggle('active', b.dataset.tool === 'circle');
+      b.classList.toggle('active', b.dataset.tool === tool);
     });
   }
 
-  if (typeof syncEnlargeButton === 'function') {
+  if (typeof SpatialPrimaryChrome !== 'undefined') {
+    SpatialPrimaryChrome.applySpatialPrimaryChrome(!!state.engine?.isSpatialMode?.());
+  } else if (typeof syncEnlargeButton === 'function') {
     syncEnlargeButton(state.engine?.isEnlarged?.());
   }
 

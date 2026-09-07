@@ -314,6 +314,11 @@ body.shell-patient .display-mode-dock .display-mode-btn {
   border-radius: 999px;
 }
 
+body.shell-patient.spatial-primary .capture-tools {
+  /* Shorter dock without Region/Enlarge — sit clearer above locate CTA */
+  bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+}
+
 body.shell-patient .avatar-hint {
   font-size: 14px;
   font-weight: 500;

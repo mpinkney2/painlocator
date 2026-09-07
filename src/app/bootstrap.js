@@ -33,10 +33,10 @@ function init() {
   initAnatomyZoom();
   initDisplayModeToggle();
 
-  // Engage BP3D-aligned Spatial across Patient + Clinician shells (opt-out via query).
+  // Spatial-primary locate: rotatable 3D across Patient + Clinician (plate = fallback only).
   if (typeof Bp3dShellEngagement !== "undefined") {
     Bp3dShellEngagement.engageBp3dAcrossShells(state.engine).catch((err) => {
-      console.warn("[PainLocator] BP3D shell engagement failed", err);
+      console.warn("[PainLocator] Spatial-primary engagement failed", err);
     });
   }
 

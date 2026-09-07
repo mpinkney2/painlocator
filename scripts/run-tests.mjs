@@ -1949,11 +1949,28 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('id="btnSpatialMode"'));
     const css = readFileSync(join(root, 'src/layout/styles.css'), 'utf8');
     assert.ok(css.includes('.display-mode-dock'));
+    assert.ok(css.includes('body.spatial-primary'));
     const shell = readFileSync(join(root, 'src/layout/shell-styles.css'), 'utf8');
     assert.ok(shell.includes('body.shell-patient .display-mode-dock'));
     const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
     assert.ok(engine.includes('return this.isSpatialMode()'));
     assert.match(engine, /spatial-mount-failed[\s\S]*?return false/);
+  });
+
+  test('spatial-primary: chrome module hides plate toggle by default', () => {
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', sandbox);
+    assert.ok(sandbox.SpatialPrimaryChrome);
+    sandbox.location.search = '';
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), false);
+    sandbox.location.search = '?displayToggle=1';
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
+    sandbox.location.search = '?dev=1';
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
+    const docs = readFileSync(join(root, 'docs/BP3D_SHELL_ENGAGEMENT.md'), 'utf8');
+    assert.ok(docs.includes('Spatial is the interactive'));
+    assert.ok(docs.includes('fallback'));
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('spatial-primary-chrome.js'));
   });
 }
 

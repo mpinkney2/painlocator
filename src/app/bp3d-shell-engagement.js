@@ -1,10 +1,11 @@
 /**
- * Engage BP3D-aligned Spatial across Patient portal and Clinician console.
+ * Engage BP3D-aligned Spatial as the primary locate surface across shells.
  *
- * Recommendation B:
- * - Patient: Spatial stylized exterior in the shared BP3D canonical frame (body hidden)
- * - Clinician: same frame + Surface / Muscle / Skeletal BP3D packs
- * - Opt out: ?canonicalBodyMode=0 | ?displayMode=plate | ?plate=1
+ * Product default:
+ * - Patient + Clinician: rotatable 3D body (snap views + tap to mark)
+ * - CAE 2D plate image is NOT shown alongside Spatial (fallback only)
+ * - Opt out to plate: ?displayMode=plate | ?plate=1
+ * - Show 2D/Spatial toggle: ?displayToggle=1 | ?dev=1
  */
 (function (global) {
   function isFalsyFlag(value) {
@@ -63,28 +64,41 @@
     } catch (_) {
       /* ignore */
     }
-    return false;
+    // Soft default: prefer Spatial even before Three loader probes, when not opted out.
+    return true;
+  }
+
+  function syncSpatialChrome(isSpatial) {
+    if (typeof global.SpatialPrimaryChrome?.applySpatialPrimaryChrome === "function") {
+      global.SpatialPrimaryChrome.applySpatialPrimaryChrome(!!isSpatial);
+      return;
+    }
+    const sync =
+      typeof global.syncDisplayModeButtons === "function"
+        ? global.syncDisplayModeButtons
+        : typeof syncDisplayModeButtons === "function"
+          ? syncDisplayModeButtons
+          : null;
+    if (sync) sync(isSpatial ? "spatial" : "plate");
   }
 
   /**
-   * Prefer Spatial for Patient Locate + Clinician console when WebGL works.
-   * Falls back to plate silently if Spatial cannot mount.
+   * Mount Spatial as the sole interactive locate surface when possible.
+   * Falls back to plate only when Spatial cannot mount (kept off-stage otherwise).
    */
   async function preferSpatialAcrossShells(engine) {
     if (!engine || typeof engine.setDisplayMode !== "function") return false;
-    if (!shouldPreferSpatial()) return false;
+    if (!shouldPreferSpatial()) {
+      syncSpatialChrome(false);
+      return false;
+    }
     try {
       const ok = await engine.setDisplayMode("spatial");
-      const sync =
-        typeof global.syncDisplayModeButtons === "function"
-          ? global.syncDisplayModeButtons
-          : typeof syncDisplayModeButtons === "function"
-            ? syncDisplayModeButtons
-            : null;
-      if (ok && sync) sync("spatial");
+      syncSpatialChrome(!!ok);
       return !!ok;
     } catch (err) {
-      console.warn("[PainLocator] Spatial preference failed — staying on plate", err);
+      console.warn("[PainLocator] Spatial primary failed — plate fallback", err);
+      syncSpatialChrome(false);
       return false;
     }
   }
@@ -97,6 +111,7 @@
       if (!spatial?.ready) return;
       try {
         spatial.refreshPresentationShell?.();
+        syncSpatialChrome(true);
       } catch (err) {
         console.warn("[PainLocator] presentation shell refresh failed", err);
       }
@@ -111,9 +126,10 @@
     bindPresentationShellRefresh(engine);
     const spatialOn = await preferSpatialAcrossShells(engine);
     if (typeof console !== "undefined" && console.info) {
-      console.info("[PainLocator] BP3D shell engagement", {
+      console.info("[PainLocator] Spatial-primary locate engagement", {
         canonicalBodyMode: canonicalOn,
-        spatialPreferred: spatialOn,
+        spatialPrimary: spatialOn,
+        plateFallback: !spatialOn,
         presentationMode:
           typeof state !== "undefined" ? state.presentationMode : null
       });
@@ -127,6 +143,7 @@
     preferSpatialAcrossShells,
     bindPresentationShellRefresh,
     engageBp3dAcrossShells,
+    syncSpatialChrome,
     isFalsyFlag,
     isTruthyFlag
   };

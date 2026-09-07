@@ -1177,6 +1177,18 @@ body.wf-review:not(.review-editing) .display-mode-dock {
   display: none !important;
 }
 
+/* Product: Spatial-primary locate — hide 2D toggle unless ?displayToggle=1 */
+body.spatial-primary:not(.allow-plate-toggle) .display-mode-dock,
+.display-mode-dock[hidden] {
+  display: none !important;
+}
+
+body.spatial-primary .region-tool-zoom,
+body.spatial-primary .capture-tools .region-tool[data-tool="circle"],
+body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
+  display: none !important;
+}
+
 .display-mode-btn {
   min-width: 3.25rem;
 }

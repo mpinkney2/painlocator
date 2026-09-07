@@ -276,10 +276,10 @@
             <li data-patient-step="review"><span>3</span> Review</li>
           </ol>
         </nav>
-        <!-- Outside avatar-wrap so patient locate CTA (fixed, z-index 90) cannot cover it -->
-        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode">
-          <button type="button" class="region-tool display-mode-btn active" id="btnPlateMode" data-display="plate" title="2D clinical plate (default)" aria-pressed="true">2D</button>
-          <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="false">Spatial</button>
+        <!-- Dev/QA only: product locate is Spatial-primary; show with ?displayToggle=1 -->
+        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode" hidden>
+          <button type="button" class="region-tool display-mode-btn" id="btnPlateMode" data-display="plate" title="2D clinical plate (fallback)" aria-pressed="false">2D</button>
+          <button type="button" class="region-tool display-mode-btn active" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="true">Spatial</button>
         </div>
         <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
           <div class="region-tools review-tools show-review" id="reviewTools">
@@ -299,13 +299,13 @@
             <span class="region-tool-divider" aria-hidden="true"></span>
             <button type="button" class="region-tool region-tool-zoom" id="btnEnlargeAnatomy" title="Enlarge silhouette for precise marking" aria-label="Enlarge silhouette for accuracy" aria-pressed="false">Enlarge</button>
           </div>
-          <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Anatomy map — mark pain locations"></div>
-          <p class="avatar-hint" id="avatarHint">Where does it hurt? Tap the body to mark pain.</p>
+          <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="3D anatomy — drag to rotate, tap to mark pain at snap views"></div>
+          <p class="avatar-hint" id="avatarHint">Drag to rotate · Tap the body to mark pain.</p>
         </div>
 
         <!-- PATIENT SHELL: step chrome + locate CTA + describe/review sheet (outside anatomy flex row) -->
         <div id="patientLocateCta" class="patient-locate-cta shell-only-patient" hidden>
-          <p class="patient-locate-prompt">Where does it hurt? Tap the body to mark pain.</p>
+          <p class="patient-locate-prompt">Where does it hurt? Rotate and tap the body to mark pain.</p>
           <button type="button" class="btn btn-primary patient-locate-continue" id="btnPatientNextDescribe" disabled>Continue to Describe</button>
           <p class="patient-locate-hint" id="patientLocateHint" role="status">Mark at least one pain location to continue.</p>
         </div>
@@ -807,17 +807,18 @@
   <script src="src/features/capture/entry-crud.js?v=5.5"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
-  <script src="src/features/review/history-ui.js?v=5.5"></script>
+  <script src="src/features/anatomy/spatial-primary-chrome.js?v=5.12"></script>
+  <script src="src/features/review/history-ui.js?v=5.12"></script>
   <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
   <script src="src/engine/reporting/session-io.js?v=5.5"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
-  <script src="src/state/workflow.js?v=5.5"></script>
+  <script src="src/state/workflow.js?v=5.12"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
   <script src="src/features/shell/patient-flow.js?v=5.7"></script>
-  <script src="src/app/bp3d-shell-engagement.js?v=5.11"></script>
-  <script src="src/app/bootstrap.js?v=5.11"></script>
+  <script src="src/app/bp3d-shell-engagement.js?v=5.12"></script>
+  <script src="src/app/bootstrap.js?v=5.12"></script>
 </body>
 </html>
