@@ -63,12 +63,16 @@
         (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS) || {};
 
       try {
-        if (typeof SpatialThreeLoader === "undefined" || !SpatialThreeLoader.loadThreeModule) {
+        const threeLoader =
+          (typeof global !== "undefined" && global.SpatialThreeLoader) ||
+          (typeof globalThis !== "undefined" && globalThis.SpatialThreeLoader) ||
+          null;
+        if (!threeLoader || typeof threeLoader.loadThreeModule !== "function") {
           throw new Error("SpatialThreeLoader failed to load (script boot)");
         }
 
         onProgress("Checking WebGL…");
-        const probeOk = SpatialThreeLoader.isWebGLAvailable();
+        const probeOk = threeLoader.isWebGLAvailable();
         // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.
         // Also: never call loseContext during probe (poisons Electron/Cursor WebGL).
         if (!probeOk) {
@@ -80,7 +84,7 @@
 
         onProgress("Loading 3D library…");
         this.THREE = await withTimeout(
-          SpatialThreeLoader.loadThreeModule(),
+          threeLoader.loadThreeModule(),
           timeouts.threeMs || 12000,
           "Three.js"
         );

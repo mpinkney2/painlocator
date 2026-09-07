@@ -43,6 +43,9 @@
 
   function humanReason(reason) {
     const r = String(reason || "");
+    if (/SpatialThreeLoader failed to load|Can't find variable: SpatialThreeLoader|SpatialThreeLoader is not defined/i.test(r)) {
+      return "A 3D boot script did not load. Hard-refresh (Cmd+Shift+R), then Retry 3D.";
+    }
     if (/^WebGL unavailable$/i.test(r) || /webgl unavailable/i.test(r)) {
       return "WebGL 3D is blocked in this preview. Open http://localhost:5500 in system Chrome or Edge (not the Cursor preview panel), then Retry.";
     }
