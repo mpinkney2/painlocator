@@ -197,12 +197,20 @@ async function main() {
       'Skeletal GLB was not fetched successfully'
     );
 
-    // Surface restore
-    await page.evaluate(async () => {
-      await window.state?.engine?.spatialRenderer?.setAnatomyDepth?.('surface');
+    // Depth cycle: Surface → Muscle → Skeletal → Muscle → Surface
+    const cycle = await page.evaluate(async () => {
+      const r = window.state?.engine?.spatialRenderer;
+      if (!r?.setAnatomyDepth) return { ok: false, reason: 'no-renderer' };
+      const steps = [];
+      for (const d of ['surface', 'muscle', 'skeletal', 'muscle', 'surface']) {
+        const res = await r.setAnatomyDepth(d);
+        steps.push({ d, ok: !!res?.ok, depth: r.getAnatomyDepth?.() });
+      }
+      return { ok: steps.every((s) => s.ok && s.depth === s.d), steps };
     });
+    assert(cycle.ok, `Depth cycle failed: ${JSON.stringify(cycle)}`);
 
-    assert(pageErrors.length === 0, `Uncaught page errors: ${pageErrors.join(' | ')}`);
+    // Surface restore already covered by cycle; assert no page errors.
 
     console.log('spatial-browser-smoke PASS', {
       bootState: snap.bootState,

@@ -2,15 +2,15 @@
  * SpatialBootUtils — single production boot helper for CAE Spatial / BP3D.
  *
  * Owns:
- * - SPATIAL_RUNTIME_VERSION (cache-bust token)
- * - Vite-safe vendor ESM import (no source-level import())
+ * - SPATIAL_RUNTIME_VERSION (classic-script cache token)
+ * - Reject obsolete /public/vendor Three/GLTF imports (Vite ESM only)
  * - globalThis accessors
  * - soft WebGL probe (never loseContext)
  * - boot state helpers + health classification
  */
 (function (global) {
-  /** Bump for classic-script cache tokens when Spatial bridge contract changes */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-07-vite-esm-1";
+  /** Bump for classic-script cache tokens when Spatial bridge / exterior contract changes */
+  const SPATIAL_RUNTIME_VERSION = "2026-09-07-styled-exterior-1";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",

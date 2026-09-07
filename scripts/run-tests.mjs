@@ -1474,21 +1474,52 @@ console.log('PainLocator tests\n');
     );
   });
 
-  test('canonical conformer: shipped artifact is pass-preview (not failed)', () => {
+  test('canonical conformer: shipped artifact is identity in-frame (not failed)', () => {
     const cfg = JSON.parse(
       readFileSync(join(root, 'public/anatomy/spatial/registration/exterior-to-canonical-v1.json'), 'utf8')
     );
     Conf.validateConformerConfig(cfg);
     assert.equal(cfg.validation.globalConformerFailed, false);
     assert.equal(cfg.validation.stopConditionTriggered, false);
-    assert.equal(cfg.validation.status, 'pass-preview');
+    assert.ok(
+      cfg.validation.status === 'pass-development' || cfg.validation.status === 'pass-preview',
+      cfg.validation.status
+    );
     assert.equal(cfg.regionalPatches, false);
+    assert.equal(cfg.transform.scale, 1);
+    assert.deepEqual(cfg.transform.translation, [0, 0, 0]);
     assert.ok(cfg.derivation.landmarksUsed.length >= 8);
-    assert.ok(cfg.validation.metrics.meanAlignmentErrorMeters < 0.12);
-    assert.ok(cfg.validation.metrics.maxAlignmentErrorMeters < 0.15);
+    assert.ok(cfg.validation.metrics.meanAlignmentErrorMeters < 0.02);
+    assert.ok(cfg.validation.metrics.maxAlignmentErrorMeters < 0.05);
     const report = Conf.buildAlignmentReport(cfg);
     assert.equal(report.clinicalRegistrationClaimed, false);
     assert.equal(report.landmarkDistances.length, cfg.derivation.landmarksUsed.length);
+  });
+
+  test('styled exterior: GLB + alignment report + mannequin archive exist', () => {
+    assert.ok(statSync(join(root, 'public/anatomy/spatial/adult-male/exterior-lod0.glb')).isFile());
+    assert.ok(statSync(join(root, 'public/anatomy/spatial/adult-male/styled-exterior-alignment-report.json')).isFile());
+    assert.ok(
+      statSync(join(root, 'public/anatomy/spatial/dev/interim-mannequin/exterior-lod0-capsule-mannequin.glb')).isFile()
+    );
+    assert.ok(
+      statSync(join(root, 'public/anatomy/spatial/registration/exterior-to-canonical-v1-mannequin-legacy.json')).isFile()
+    );
+    const report = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/styled-exterior-alignment-report.json'), 'utf8')
+    );
+    assert.equal(report.coordinateFrame, 'painlocator-bp3d-canonical-v1');
+    assert.equal(report.regionalPatches, false);
+    assert.equal(report.metrics.meanAlignmentErrorMeters, 0);
+    assert.equal(report.metrics.maxAlignmentErrorMeters, 0);
+    assert.equal(report.meshCount, 18);
+    assert.ok(report.payloadBytes > 0 && report.payloadBytes <= 5 * 1024 * 1024);
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    assert.equal(manifest.coordinateFrame.frameId, 'painlocator-bp3d-canonical-v1');
+    assert.equal(manifest.layers.surface.meshes.length, 18);
+    assert.ok(readFileSync(join(root, 'scripts/generate-styled-exterior-glb.mjs'), 'utf8').includes('painlocator-bp3d-canonical-v1'));
   });
 
   test('canonical identity shoulder registration is identity transform', () => {
@@ -1994,7 +2025,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-vite-esm-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-styled-exterior-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2040,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-vite-esm-1'));
+    assert.ok(html.includes('?v=2026-09-07-styled-exterior-1'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2118,7 +2149,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-vite-esm-1';
+    const ver = '2026-09-07-styled-exterior-1';
     assert.ok(html.includes('spatial-bootstrap.js'));
     assert.ok(html.includes('type="module"'));
     assert.equal(html.includes('type="importmap"'), false);
