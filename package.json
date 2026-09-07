@@ -22,7 +22,11 @@
     "bp3d:ingest-fullbody": "python3 tools/bp3d-ingest/ingest-fullbody.py",
     "bp3d:compare-source-tiers": "python3 tools/bp3d-ingest/compare-source-tiers.py",
     "bp3d:build:production": "node tools/bp3d-ingest/build-production.mjs",
-    "test:fullbody-browser": "node scripts/fullbody-browser-smoke.mjs"
+    "test:fullbody-browser": "node scripts/fullbody-browser-smoke.mjs",
+    "vendor-eval:serve": "node tools/anatomy-vendor/serve-eval.mjs",
+    "vendor-eval:register": "node tools/anatomy-vendor/register-to-canonical.mjs",
+    "vendor-eval:metrics": "node tools/anatomy-vendor/report-mesh-metrics.mjs",
+    "vendor-eval:verify-exclusion": "node tools/anatomy-vendor/verify-eval-exclusion.mjs"
   },
   "dependencies": {
     "three": "0.170.0"

@@ -2,7 +2,7 @@
  * Minimal Node test runner for PainLocator pure logic.
  * Loads modules by evaluating source with stubs where needed.
  */
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -2291,6 +2291,211 @@ console.log('PainLocator tests\n');
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('_initLayerController'));
     assert.ok(renderer.includes('Muscle (BP3D)') || renderer.includes('fallback silhouette'));
+  });
+}
+
+// --- Vendor-neutral anatomy adapter + SciePro evaluation harness ---
+{
+  const sandbox = createSandbox();
+  loadScript('src/engine/anatomy/vendor/anatomy-vendor-types.js', sandbox);
+  loadScript('src/engine/anatomy/vendor/anatomy-vendor-adapter.js', sandbox);
+  const Types = sandbox.AnatomyVendorTypes;
+  const Adapter = sandbox.AnatomyVendorAdapter;
+  const template = JSON.parse(
+    readFileSync(join(root, 'data/anatomy-vendor/sciepro-to-fma-v0.template.json'), 'utf8')
+  );
+  const landmarks = JSON.parse(
+    readFileSync(join(root, 'data/anatomy-vendor/canonical-landmarks-v1.json'), 'utf8')
+  );
+
+  test('vendor adapter: schema validates SciePro mapping template', () => {
+    const summary = Adapter.validateMappingDocument(template);
+    assert.equal(summary.ok, true);
+    assert.ok(summary.structureCount >= 20);
+    assert.equal(summary.filledVendorIds, 0);
+    assert.equal(summary.missingVendorIds, summary.structureCount);
+  });
+
+  test('vendor adapter: missing vendor IDs are placeholders (not invented)', () => {
+    for (const row of template.structures) {
+      assert.equal(row.vendorStructureId, null);
+    }
+    const unresolved = Adapter.listUnresolved(template);
+    assert.equal(unresolved.length, template.structures.length);
+  });
+
+  test('vendor adapter: rejects duplicate FMA mappings', () => {
+    const dup = structuredClone(template);
+    dup.structures.push({ ...dup.structures[0], role: 'dup' });
+    assert.throws(() => Adapter.validateMappingDocument(dup), /Duplicate FMA/);
+  });
+
+  test('vendor adapter: laterality and confidence enums enforced', () => {
+    const badLat = structuredClone(template);
+    badLat.structures[0].laterality = 'bilateral';
+    assert.throws(() => Adapter.validateMappingDocument(badLat), /laterality/i);
+
+    const badConf = structuredClone(template);
+    badConf.structures[0].mappingConfidence = 'LIKELY';
+    assert.throws(() => Adapter.validateMappingDocument(badConf), /mappingConfidence/i);
+
+    for (const c of Object.values(Types.MAPPING_CONFIDENCE)) {
+      assert.ok(['EXACT', 'HIGH_CONFIDENCE', 'MANUAL_REVIEW', 'NO_MATCH'].includes(c));
+    }
+  });
+
+  test('vendor adapter: unknown structure and patient isolation', () => {
+    const filled = structuredClone(template);
+    filled.structures[0].vendorStructureId = 'SP-EVAL-SKULL-001';
+    filled.structures[0].mappingConfidence = 'EXACT';
+
+    assert.throws(
+      () =>
+        Adapter.resolveSelection(filled, {
+          vendorStructureId: 'SP-EVAL-SKULL-001',
+          presentationMode: 'patient'
+        }),
+      /Patient/
+    );
+
+    assert.throws(
+      () =>
+        Adapter.resolveSelection(filled, {
+          vendorStructureId: 'DOES-NOT-EXIST',
+          presentationMode: 'clinician'
+        }),
+      /Unknown vendorStructureId/
+    );
+
+    const sel = Adapter.resolveSelection(filled, {
+      vendorStructureId: 'SP-EVAL-SKULL-001',
+      presentationMode: 'clinician'
+    });
+    assert.equal(sel.fmaStructureId, 'FMA:46565');
+    assert.equal(sel.clinicalName, 'Skull');
+    assert.equal(sel.laterality, 'midline');
+    assert.equal(sel.region, 'head');
+    assert.equal(sel.layer, 'skeletal');
+  });
+
+  test('vendor adapter: NO_MATCH blocks selection; contract fields present', () => {
+    const filled = structuredClone(template);
+    filled.structures[0].vendorStructureId = 'SP-NO-MATCH';
+    filled.structures[0].mappingConfidence = 'NO_MATCH';
+    assert.throws(
+      () =>
+        Adapter.resolveSelection(filled, {
+          vendorStructureId: 'SP-NO-MATCH',
+          presentationMode: 'clinician'
+        }),
+      /NO_MATCH/
+    );
+
+    const structure = Adapter.toVendorStructure(filled, {
+      ...filled.structures[1],
+      vendorStructureId: 'SP-DELTOID-L'
+    });
+    for (const key of [
+      'anatomyVendor',
+      'vendorModelVersion',
+      'vendorStructureId',
+      'vendorStructureName',
+      'fmaStructureId',
+      'clinicalName',
+      'laterality',
+      'region',
+      'layer',
+      'sourceCoordinateSystem',
+      'canonicalRegistrationVersion',
+      'meshId',
+      'runtimeAssetRef'
+    ]) {
+      assert.ok(key in structure, `missing ${key}`);
+    }
+    assert.equal(structure.canonicalRegistrationVersion, Types.CANONICAL_FRAME);
+  });
+
+  test('vendor adapter: forbidden public path helpers catch eval leaks', () => {
+    assert.equal(Adapter.isForbiddenPublicPath('public/vendor-eval/sciepro/a.glb'), true);
+    assert.equal(Adapter.isForbiddenPublicPath('dist/anatomy/sciepro-sample.glb'), true);
+    assert.equal(Adapter.isForbiddenPublicPath('public/anatomy/spatial/adult-male/exterior-lod0.glb'), false);
+    assert.ok(Adapter.EVAL_ASSET_ROOTS.some((r) => r.includes('data/vendor-eval')));
+  });
+
+  test('vendor adapter: canonical landmarks cover required set', () => {
+    const ids = new Set((landmarks.landmarks || []).map((l) => l.id));
+    for (const id of Types.REQUIRED_LANDMARK_IDS) {
+      assert.ok(ids.has(id), `missing landmark ${id}`);
+    }
+  });
+
+  test('vendor registration: identical landmarks → near-zero residual', async () => {
+    const { computeRegistrationResiduals, MEAN_FAIL_M, MAX_FAIL_M } = await import(
+      join(root, 'tools/anatomy-vendor/lib/umeyama.mjs')
+    );
+    const ids = Types.REQUIRED_LANDMARK_IDS;
+    const pts = ids.map((id) => landmarks.landmarks.find((l) => l.id === id).meters);
+    const fit = computeRegistrationResiduals(pts, pts, ids);
+    assert.ok(Math.abs(fit.scale - 1) < 1e-6);
+    assert.ok(fit.meanMeters < 1e-6);
+    assert.ok(fit.maxMeters < 1e-6);
+    assert.ok(fit.meanMeters < MEAN_FAIL_M);
+    assert.ok(fit.maxMeters < MAX_FAIL_M);
+  });
+
+  test('vendor registration: scaled+translated cloud recovers residual near zero', async () => {
+    const { computeRegistrationResiduals } = await import(
+      join(root, 'tools/anatomy-vendor/lib/umeyama.mjs')
+    );
+    const ids = Types.REQUIRED_LANDMARK_IDS.slice(0, 8);
+    const Y = ids.map((id) => landmarks.landmarks.find((l) => l.id === id).meters);
+    const X = Y.map((p) => [p[0] * 2 + 0.1, p[1] * 2 - 0.2, p[2] * 2 + 0.05]);
+    const fit = computeRegistrationResiduals(X, Y, ids);
+    assert.ok(Math.abs(fit.scale - 0.5) < 1e-4);
+    assert.ok(fit.meanMeters < 1e-5);
+  });
+}
+
+{
+  const { spawnSync } = await import('node:child_process');
+  test('vendor eval: verify-eval-exclusion exits 0', () => {
+    const r = spawnSync(process.execPath, [join(root, 'tools/anatomy-vendor/verify-eval-exclusion.mjs')], {
+      cwd: root,
+      encoding: 'utf8'
+    });
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  });
+
+  test('vendor eval: harness docs and scripts exist', () => {
+    for (const rel of [
+      'docs/SCIEPRO_RUNTIME_DELIVERY_ARCHITECTURE.md',
+      'docs/SCIEPRO_EVALUATION_HARNESS.md',
+      'docs/visual-targets/VENDOR_MOCKUP_ACCEPTANCE_CHECKLIST.md',
+      'tools/anatomy-vendor/qa/index.html',
+      'tools/anatomy-vendor/serve-eval.mjs',
+      'tools/anatomy-vendor/report-mesh-metrics.mjs',
+      'data/vendor-eval/README.md',
+      'data/vendor-eval/sciepro/.gitkeep',
+      'data/vendor-eval/zygote/.gitkeep'
+    ]) {
+      assert.ok(statSync(join(root, rel)).isFile() || existsSync(join(root, rel)), rel);
+    }
+    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+    assert.ok(pkg.scripts['vendor-eval:verify-exclusion']);
+    assert.ok(pkg.scripts['vendor-eval:register']);
+    assert.ok(pkg.scripts['vendor-eval:serve']);
+    assert.ok(pkg.scripts['vendor-eval:metrics']);
+    const gitignore = readFileSync(join(root, '.gitignore'), 'utf8');
+    assert.ok(gitignore.includes('data/vendor-eval'));
+    const build = readFileSync(join(root, 'scripts/build.mjs'), 'utf8');
+    assert.ok(build.includes('vendor-eval:verify-exclusion'));
+  });
+
+  test('vendor-neutral renderer contract: patient workflow files unchanged by vendor packs', () => {
+    const patientFlow = readFileSync(join(root, 'src/features/shell/patient-flow.js'), 'utf8');
+    assert.ok(!/vendor-eval|sciepro|AnatomyVendorAdapter/i.test(patientFlow));
+    const presentation = readFileSync(join(root, 'src/state/presentation.js'), 'utf8');
+    assert.ok(!/vendor-eval|sciepro/i.test(presentation));
   });
 }
 

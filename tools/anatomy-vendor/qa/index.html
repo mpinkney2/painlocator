@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PainLocator — Vendor evaluation visual QA (local only)</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111827;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #14b8a6;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #1e293b;
+    }
+    header h1 { margin: 0 0 .35rem; font-size: 1.15rem; }
+    header p { margin: 0; color: var(--muted); max-width: 80ch; line-height: 1.45; font-size: .92rem; }
+    .warn { color: var(--warn); }
+    main { padding: 1rem 1.25rem 3rem; display: grid; gap: 1rem; }
+    .controls {
+      display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+      background: var(--panel); border: 1px solid #1f2937; border-radius: 10px; padding: .75rem;
+    }
+    .controls label { font-size: .85rem; color: var(--muted); }
+    .controls select, .controls input {
+      background: #0f172a; color: var(--text); border: 1px solid #334155; border-radius: 6px; padding: .35rem .5rem;
+    }
+    .controls button {
+      background: var(--accent); color: #042f2e; border: 0; border-radius: 6px; padding: .4rem .75rem; font-weight: 600; cursor: pointer;
+    }
+    .pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 900px) { .pair { grid-template-columns: 1fr; } }
+    figure {
+      margin: 0; background: var(--panel); border: 1px solid #1f2937; border-radius: 10px; padding: .75rem;
+    }
+    figcaption { margin-top: .5rem; font-size: .85rem; color: var(--muted); }
+    model-viewer { width: 100%; height: 360px; background: #0f172a; }
+    #selectionOut {
+      white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: .8rem;
+      background: #0f172a; border-radius: 8px; padding: .75rem; border: 1px solid #1f2937;
+    }
+    .checklist a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vendor evaluation visual QA</h1>
+    <p>
+      Local-only harness. Compares BP3D 99% reference GLBs (left) against a future vendor sample path (right)
+      under the same camera/lighting chrome. <span class="warn">Do not serve proprietary samples from production.</span>
+    </p>
+  </header>
+  <main>
+    <div class="controls">
+      <label>Structure
+        <select id="structureSelect"></select>
+      </label>
+      <label>View
+        <select id="viewSelect">
+          <option value="0deg 75% auto">Front</option>
+          <option value="180deg 75% auto">Back</option>
+          <option value="90deg 75% auto">Left</option>
+          <option value="-90deg 75% auto">Right</option>
+          <option value="0deg 100% 40%">Close head</option>
+          <option value="20deg 70% 35%">Close shoulder</option>
+          <option value="-40deg 45% 22%">Close hand</option>
+          <option value="10deg 55% 45%">Close pelvis</option>
+          <option value="15deg 40% 30%">Close knee</option>
+          <option value="-25deg 25% 22%">Close foot</option>
+        </select>
+      </label>
+      <label>Vendor GLB URL
+        <input id="vendorUrl" size="42" placeholder="/vendor-eval/sciepro/derived/FMA34683.glb" />
+      </label>
+      <button type="button" id="btnApply">Apply</button>
+      <button type="button" id="btnSelectDemo">Demo selection resolve</button>
+    </div>
+
+    <div class="pair">
+      <figure>
+        <model-viewer id="mvA" camera-controls touch-action="pan-y" exposure="1.05" shadow-intensity="0.25"></model-viewer>
+        <figcaption>A — BP3D 4.0 99% comparison asset (committed QA set)</figcaption>
+      </figure>
+      <figure>
+        <model-viewer id="mvB" camera-controls touch-action="pan-y" exposure="1.05" shadow-intensity="0.25"></model-viewer>
+        <figcaption>B — Vendor evaluation sample (local data/vendor-eval only)</figcaption>
+      </figure>
+    </div>
+
+    <section>
+      <h2 style="font-size:1rem;margin:0 0 .5rem;">Structure selection path</h2>
+      <pre id="selectionOut">Load mapping → click Demo selection resolve (requires filled vendorStructureId).</pre>
+    </section>
+
+    <p class="checklist">Mockup acceptance checklist:
+      <a href="/checklist" target="_blank" rel="noreferrer">VENDOR_MOCKUP_ACCEPTANCE_CHECKLIST.md</a>
+    </p>
+  </main>
+
+  <script src="/adapter/anatomy-vendor-types.js"></script>
+  <script src="/adapter/anatomy-vendor-adapter.js"></script>
+  <script>
+    const FMA_TO_BP3D = {
+      "FMA:34683": "/bp3d-compare/glb/a-4.0-99/FMA34683.glb",
+      "FMA:34691": "/bp3d-compare/glb/a-4.0-99/FMA34691.glb",
+      "FMA:13396": "/bp3d-compare/glb/a-4.0-99/FMA13396.glb",
+      "FMA:23131": "/bp3d-compare/glb/a-4.0-99/FMA23131.glb",
+      "FMA:38931": "/bp3d-compare/glb/a-4.0-99/FMA38931.glb",
+      "FMA:24487": "/bp3d-compare/glb/a-4.0-99/FMA24487.glb",
+      "FMA:24478": "/bp3d-compare/glb/a-4.0-99/FMA24478.glb",
+      "FMA:24498": "/bp3d-compare/glb/a-4.0-99/FMA24498.glb",
+      "FMA:24465": "/bp3d-compare/glb/a-4.0-99/FMA24465.glb",
+      "FMA:16587": "/bp3d-compare/glb/a-4.0-99/FMA16587.glb"
+    };
+
+    let mapDoc = null;
+    const structureSelect = document.getElementById("structureSelect");
+    const viewSelect = document.getElementById("viewSelect");
+    const vendorUrl = document.getElementById("vendorUrl");
+    const mvA = document.getElementById("mvA");
+    const mvB = document.getElementById("mvB");
+    const selectionOut = document.getElementById("selectionOut");
+
+    async function boot() {
+      const res = await fetch("/map/sciepro-to-fma-v0.template.json");
+      mapDoc = await res.json();
+      structureSelect.innerHTML = "";
+      for (const row of mapDoc.structures) {
+        const opt = document.createElement("option");
+        opt.value = row.fmaStructureId;
+        opt.textContent = `${row.clinicalName} (${row.fmaStructureId})`;
+        structureSelect.appendChild(opt);
+      }
+      apply();
+    }
+
+    function syncOrbit() {
+      const orbit = viewSelect.value;
+      mvA.setAttribute("camera-orbit", orbit);
+      mvB.setAttribute("camera-orbit", orbit);
+    }
+
+    function apply() {
+      const fma = structureSelect.value;
+      const a = FMA_TO_BP3D[fma];
+      if (a) mvA.src = a;
+      else mvA.removeAttribute("src");
+      const b = vendorUrl.value.trim();
+      if (b) mvB.src = b;
+      else mvB.removeAttribute("src");
+      syncOrbit();
+    }
+
+    document.getElementById("btnApply").addEventListener("click", apply);
+    viewSelect.addEventListener("change", syncOrbit);
+    structureSelect.addEventListener("change", () => {
+      vendorUrl.placeholder = `/vendor-eval/sciepro/derived/${structureSelect.value.replace(":", "")}.glb`;
+      apply();
+    });
+
+    document.getElementById("btnSelectDemo").addEventListener("click", () => {
+      try {
+        AnatomyVendorAdapter.assertClinicianPresentation("clinician");
+        const filled = (mapDoc.structures || []).find((s) => s.vendorStructureId);
+        if (!filled) {
+          selectionOut.textContent =
+            "No vendorStructureId filled yet. After sample arrives, copy template → data/vendor-eval/sciepro/sciepro-to-fma-v0.json and set IDs.";
+          return;
+        }
+        const result = AnatomyVendorAdapter.resolveSelection(mapDoc, {
+          vendorStructureId: filled.vendorStructureId,
+          presentationMode: "clinician"
+        });
+        selectionOut.textContent = JSON.stringify(result, null, 2);
+      } catch (err) {
+        selectionOut.textContent = String(err?.message || err);
+      }
+    });
+
+    boot().catch((err) => {
+      selectionOut.textContent = "Boot failed: " + err;
+    });
+  </script>
+</body>
+</html>

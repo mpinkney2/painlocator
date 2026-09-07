@@ -74,6 +74,9 @@ if (!hasSpatialChunk) {
   process.exit(1);
 }
 
+// Fail closed if proprietary vendor-eval assets leaked into public/ or dist/.
+execSync('npm run vendor-eval:verify-exclusion', { cwd: root, stdio: 'inherit' });
+
 console.log('Build complete → dist/');
 console.log('  index.html (Vite-transformed)');
 console.log('  assets/ (Spatial ESM runtime + hashed chunks)');
