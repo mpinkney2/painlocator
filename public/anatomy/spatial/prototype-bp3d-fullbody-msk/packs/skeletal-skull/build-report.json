@@ -1,0 +1,661 @@
+{
+  "packId": "skeletal-skull",
+  "layer": "skeletal",
+  "structureCount": 25,
+  "glbBytes": 4536776,
+  "glbSha256": "a047c6621053132242c64e3e1e1bcf37a8aa1bfa7305ea25731988d36817206b",
+  "meshes": [
+    {
+      "meshId": "bone.parietal.bone",
+      "structureId": "FMA:9613",
+      "sourceVertices": 16395,
+      "sourceFaces": 26212,
+      "vertices": 16395,
+      "faces": 26212,
+      "elementCount": 2,
+      "centroid": [
+        0.0006142442746151933,
+        1.589198755485555,
+        0.05264913118594802
+      ],
+      "bounds": [
+        [
+          -0.07485649999999999,
+          1.5178,
+          -0.0149522
+        ],
+        [
+          0.0761885,
+          1.6362700000000001,
+          0.131686
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.vomer",
+      "structureId": "FMA:9710",
+      "sourceVertices": 3660,
+      "sourceFaces": 7218,
+      "vertices": 3660,
+      "faces": 7218,
+      "elementCount": 1,
+      "centroid": [
+        0.000654669202722756,
+        1.4943965481340664,
+        0.13531863820486387
+      ],
+      "bounds": [
+        [
+          -0.00481104,
+          1.4745899999999998,
+          0.110747
+        ],
+        [
+          0.0061112200000000005,
+          1.5181099999999998,
+          0.16580699999999998
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.maxilla",
+      "structureId": "FMA:9711",
+      "sourceVertices": 7090,
+      "sourceFaces": 10522,
+      "vertices": 7090,
+      "faces": 10522,
+      "elementCount": 2,
+      "centroid": [
+        0.0006214853153845343,
+        1.4873373257207159,
+        0.15565082913087525
+      ],
+      "bounds": [
+        [
+          -0.0457952,
+          1.4639900000000001,
+          0.12681399999999998
+        ],
+        [
+          0.047610700000000006,
+          1.53335,
+          0.184029
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.frontal.bone",
+      "structureId": "FMA:52734",
+      "sourceVertices": 8472,
+      "sourceFaces": 14510,
+      "vertices": 8472,
+      "faces": 14510,
+      "elementCount": 1,
+      "centroid": [
+        0.00044647090467104394,
+        1.573243005464101,
+        0.14708342751530606
+      ],
+      "bounds": [
+        [
+          -0.0619921,
+          1.52089,
+          0.106639
+        ],
+        [
+          0.0633025,
+          1.6299400000000002,
+          0.177385
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.occipital.bone",
+      "structureId": "FMA:52735",
+      "sourceVertices": 6995,
+      "sourceFaces": 12450,
+      "vertices": 6995,
+      "faces": 12450,
+      "elementCount": 1,
+      "centroid": [
+        0.0006626388202144494,
+        1.5129039711709542,
+        0.02272648345752552
+      ],
+      "bounds": [
+        [
+          -0.060705300000000004,
+          1.47777,
+          -0.018001000000000003
+        ],
+        [
+          0.0619612,
+          1.58451,
+          0.10095900000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.sphenoid.bone",
+      "structureId": "FMA:52736",
+      "sourceVertices": 4957,
+      "sourceFaces": 8154,
+      "vertices": 4957,
+      "faces": 8154,
+      "elementCount": 1,
+      "centroid": [
+        0.0004992622539520225,
+        1.5174839882984248,
+        0.11808867496696338
+      ],
+      "bounds": [
+        [
+          -0.055032899999999996,
+          1.4789100000000002,
+          0.0904127
+        ],
+        [
+          0.0563198,
+          1.5484600000000002,
+          0.145019
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.temporal.bone",
+      "structureId": "FMA:52737",
+      "sourceVertices": 6115,
+      "sourceFaces": 9864,
+      "vertices": 6115,
+      "faces": 9864,
+      "elementCount": 2,
+      "centroid": [
+        0.000787995293646652,
+        1.5133766034054164,
+        0.08261392488176134
+      ],
+      "bounds": [
+        [
+          -0.0725853,
+          1.4754800000000001,
+          0.0350126
+        ],
+        [
+          0.07398940000000001,
+          1.55153,
+          0.133736
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.temporal.bone",
+      "structureId": "FMA:52738",
+      "sourceVertices": 3102,
+      "sourceFaces": 4928,
+      "vertices": 3102,
+      "faces": 4928,
+      "elementCount": 1,
+      "centroid": [
+        0.05254556769782822,
+        1.5133797360676453,
+        0.08263897963628235
+      ],
+      "bounds": [
+        [
+          0.0126951,
+          1.47557,
+          0.0350126
+        ],
+        [
+          0.07398940000000001,
+          1.55153,
+          0.133736
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.temporal.bone",
+      "structureId": "FMA:52739",
+      "sourceVertices": 3013,
+      "sourceFaces": 4936,
+      "vertices": 3013,
+      "faces": 4936,
+      "elementCount": 1,
+      "centroid": [
+        -0.05122018095352184,
+        1.5133734555752192,
+        0.08258874881517952
+      ],
+      "bounds": [
+        [
+          -0.0725853,
+          1.4754800000000001,
+          0.0350704
+        ],
+        [
+          -0.0116242,
+          1.55146,
+          0.13356700000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.ethmoid",
+      "structureId": "FMA:52740",
+      "sourceVertices": 12484,
+      "sourceFaces": 22276,
+      "vertices": 12478,
+      "faces": 22274,
+      "elementCount": 1,
+      "centroid": [
+        0.0006541257935405322,
+        1.5120930422544732,
+        0.1426924840558849
+      ],
+      "bounds": [
+        [
+          -0.0202014,
+          1.49728,
+          0.119816
+        ],
+        [
+          0.0215099,
+          1.53234,
+          0.1672
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.lacrimal.bone",
+      "structureId": "FMA:52741",
+      "sourceVertices": 767,
+      "sourceFaces": 1342,
+      "vertices": 767,
+      "faces": 1342,
+      "elementCount": 2,
+      "centroid": [
+        0.00023370302791269015,
+        1.5132140885436547,
+        0.15805750468857174
+      ],
+      "bounds": [
+        [
+          -0.017931100000000002,
+          1.4978699999999998,
+          0.150764
+        ],
+        [
+          0.0180419,
+          1.52735,
+          0.16551
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.nasal.bone",
+      "structureId": "FMA:52745",
+      "sourceVertices": 528,
+      "sourceFaces": 854,
+      "vertices": 528,
+      "faces": 854,
+      "elementCount": 2,
+      "centroid": [
+        0.001132246952564224,
+        1.5167702821092903,
+        0.17997645076010585
+      ],
+      "bounds": [
+        [
+          -0.00719993,
+          1.5011700000000001,
+          0.16929
+        ],
+        [
+          0.00914871,
+          1.53349,
+          0.190833
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.zygomatic.bone",
+      "structureId": "FMA:52747",
+      "sourceVertices": 1863,
+      "sourceFaces": 2990,
+      "vertices": 1863,
+      "faces": 2990,
+      "elementCount": 2,
+      "centroid": [
+        0.0010609273151344228,
+        1.505967592391113,
+        0.1444564916401856
+      ],
+      "bounds": [
+        [
+          -0.0632444,
+          1.4806199999999998,
+          0.121743
+        ],
+        [
+          0.06457790000000001,
+          1.53674,
+          0.161453
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.mandible",
+      "structureId": "FMA:52748",
+      "sourceVertices": 2845,
+      "sourceFaces": 5576,
+      "vertices": 2845,
+      "faces": 5576,
+      "elementCount": 1,
+      "centroid": [
+        0.0006490630529463882,
+        1.4581091078875599,
+        0.12963143626875578
+      ],
+      "bounds": [
+        [
+          -0.0525541,
+          1.4216300000000002,
+          0.08985370000000001
+        ],
+        [
+          0.0538459,
+          1.5061,
+          0.173832
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.hyoid.bone",
+      "structureId": "FMA:52749",
+      "sourceVertices": 1374,
+      "sourceFaces": 2392,
+      "vertices": 1374,
+      "faces": 2392,
+      "elementCount": 2,
+      "centroid": [
+        0.0006287908955030229,
+        1.4304273391492148,
+        0.11614674223783857
+      ],
+      "bounds": [
+        [
+          -0.0182825,
+          1.42237,
+          0.09441870000000001
+        ],
+        [
+          0.019524200000000002,
+          1.44086,
+          0.129
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.parietal.bone",
+      "structureId": "FMA:52788",
+      "sourceVertices": 8028,
+      "sourceFaces": 13002,
+      "vertices": 8028,
+      "faces": 13002,
+      "elementCount": 1,
+      "centroid": [
+        0.04609156588542817,
+        1.5889874858234436,
+        0.0523670462634954
+      ],
+      "bounds": [
+        [
+          -0.00500244,
+          1.5178800000000001,
+          -0.014831400000000002
+        ],
+        [
+          0.0761885,
+          1.6362700000000001,
+          0.127886
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.parietal.bone",
+      "structureId": "FMA:52789",
+      "sourceVertices": 8367,
+      "sourceFaces": 13210,
+      "vertices": 8367,
+      "faces": 13210,
+      "elementCount": 1,
+      "centroid": [
+        -0.04404659153832588,
+        1.5894062320773281,
+        0.05292615164275498
+      ],
+      "bounds": [
+        [
+          -0.07485649999999999,
+          1.5178,
+          -0.0149522
+        ],
+        [
+          0.00786774,
+          1.6362700000000001,
+          0.131686
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.zygomatic.bone",
+      "structureId": "FMA:52892",
+      "sourceVertices": 934,
+      "sourceFaces": 1556,
+      "vertices": 934,
+      "faces": 1556,
+      "elementCount": 1,
+      "centroid": [
+        0.048799751154276164,
+        1.5060249449145917,
+        0.14437884883007204
+      ],
+      "bounds": [
+        [
+          0.0332346,
+          1.4806400000000002,
+          0.12177400000000001
+        ],
+        [
+          0.06457790000000001,
+          1.5366400000000002,
+          0.161453
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.zygomatic.bone",
+      "structureId": "FMA:52893",
+      "sourceVertices": 929,
+      "sourceFaces": 1434,
+      "vertices": 929,
+      "faces": 1434,
+      "elementCount": 1,
+      "centroid": [
+        -0.047550973315724235,
+        1.505909190969615,
+        0.14453555442947152
+      ],
+      "bounds": [
+        [
+          -0.0632444,
+          1.4806199999999998,
+          0.121743
+        ],
+        [
+          -0.0318933,
+          1.53674,
+          0.161432
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.lacrimal.bone",
+      "structureId": "FMA:53645",
+      "sourceVertices": 401,
+      "sourceFaces": 702,
+      "vertices": 401,
+      "faces": 702,
+      "elementCount": 1,
+      "centroid": [
+        0.012066900862756812,
+        1.514436888939355,
+        0.15806477537900762
+      ],
+      "bounds": [
+        [
+          0.00748647,
+          1.50188,
+          0.150947
+        ],
+        [
+          0.0180419,
+          1.52735,
+          0.16551
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.lacrimal.bone",
+      "structureId": "FMA:53646",
+      "sourceVertices": 366,
+      "sourceFaces": 640,
+      "vertices": 366,
+      "faces": 640,
+      "elementCount": 1,
+      "centroid": [
+        -0.011588583787530787,
+        1.5119924156537197,
+        0.15805024070221066
+      ],
+      "bounds": [
+        [
+          -0.017931100000000002,
+          1.4978699999999998,
+          0.150764
+        ],
+        [
+          -0.00731944,
+          1.5268800000000002,
+          0.164732
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.nasal.bone",
+      "structureId": "FMA:53647",
+      "sourceVertices": 265,
+      "sourceFaces": 416,
+      "vertices": 265,
+      "faces": 416,
+      "elementCount": 1,
+      "centroid": [
+        0.00452715878391377,
+        1.516656596466139,
+        0.17985751143312037
+      ],
+      "bounds": [
+        [
+          0.0007414110000000001,
+          1.5011700000000001,
+          0.169585
+        ],
+        [
+          0.00914871,
+          1.53319,
+          0.190833
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.nasal.bone",
+      "structureId": "FMA:53648",
+      "sourceVertices": 263,
+      "sourceFaces": 438,
+      "vertices": 263,
+      "faces": 438,
+      "elementCount": 1,
+      "centroid": [
+        -0.0019974587268087847,
+        1.5168750867760108,
+        0.18008609869962808
+      ],
+      "bounds": [
+        [
+          -0.00719993,
+          1.50185,
+          0.16929
+        ],
+        [
+          0.00252242,
+          1.53349,
+          0.18946700000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.maxilla",
+      "structureId": "FMA:53649",
+      "sourceVertices": 3513,
+      "sourceFaces": 5324,
+      "vertices": 3513,
+      "faces": 5324,
+      "elementCount": 1,
+      "centroid": [
+        0.01981321530430536,
+        1.4873896881027582,
+        0.15583834973538316
+      ],
+      "bounds": [
+        [
+          0.000251054,
+          1.4639900000000001,
+          0.129374
+        ],
+        [
+          0.047610700000000006,
+          1.53335,
+          0.184029
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.maxilla",
+      "structureId": "FMA:53650",
+      "sourceVertices": 3577,
+      "sourceFaces": 5198,
+      "vertices": 3577,
+      "faces": 5198,
+      "elementCount": 1,
+      "centroid": [
+        -0.01810034990329869,
+        1.4872862453913738,
+        0.1554678998243593
+      ],
+      "bounds": [
+        [
+          -0.0457952,
+          1.4639900000000001,
+          0.12681399999999998
+        ],
+        [
+          0.00306793,
+          1.53329,
+          0.18288
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:30.089949+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}

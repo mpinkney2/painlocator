@@ -1,0 +1,4 @@
+# Evaluation-only pin — NOT a production geometry master.
+# Official BodyParts3D 4.0 does not publish ≤95% meshes.
+# See docs/BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md
+4b4faf3b043f54aa9e5de3cdef584381793434ddb7472855b8d9abebdee002de  BodyParts3D_3.0_obj_95.zip

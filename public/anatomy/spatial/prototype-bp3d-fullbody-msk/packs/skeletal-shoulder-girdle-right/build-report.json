@@ -1,0 +1,63 @@
+{
+  "packId": "skeletal-shoulder-girdle-right",
+  "layer": "skeletal",
+  "structureCount": 2,
+  "glbBytes": 658576,
+  "glbSha256": "e528967f9d135c426f1f552f4bc906b250ec22d4d4d4f8602185e02bcd17b453",
+  "meshes": [
+    {
+      "meshId": "bone.right.clavicle",
+      "structureId": "FMA:13322",
+      "sourceVertices": 583,
+      "sourceFaces": 1146,
+      "vertices": 583,
+      "faces": 1146,
+      "elementCount": 1,
+      "centroid": [
+        0.07851683273847913,
+        1.336881616723343,
+        0.10273026430389824
+      ],
+      "bounds": [
+        [
+          0.00966165,
+          1.30862,
+          0.0544125
+        ],
+        [
+          0.145277,
+          1.35544,
+          0.14694800000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.scapula",
+      "structureId": "FMA:13395",
+      "sourceVertices": 13118,
+      "sourceFaces": 26172,
+      "vertices": 13118,
+      "faces": 26172,
+      "elementCount": 1,
+      "centroid": [
+        0.10780295746582934,
+        1.287399395933764,
+        0.03286444115722136
+      ],
+      "bounds": [
+        [
+          0.0570538,
+          1.1839600000000001,
+          -0.00508275
+        ],
+        [
+          0.166464,
+          1.3498599999999998,
+          0.102856
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:29.631808+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}

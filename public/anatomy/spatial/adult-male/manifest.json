@@ -7,23 +7,26 @@
   "units": "meters",
   "coordinateFrame": {
     "frameId": "painlocator-bp3d-canonical-v1",
-    "role": "target-frame-via-global-exterior-conformer",
-    "note": "Interim stylized exterior is authored in meters Y-up; when canonicalBodyMode is ON it is globally conformed into this BP3D frame (see registration/exterior-to-canonical-v1.json). Flag OFF keeps legacy mannequin space + Slice 3 shoulder registration."
+    "role": "native-exterior-frame",
+    "note": "Styled exterior is authored directly in the BP3D canonical frame (identity exterior-to-canonical-v1 transform). Hidden canonical-body.glb remains the registration reference; clinician BP3D packs use identity shoulder registration when canonicalBodyMode is ON."
   },
   "canonicalBridge": {
     "enabledByDefault": false,
     "featureFlag": "canonicalBodyMode",
     "conformerRegistrationVersion": "exterior-to-canonical-v1",
     "canonicalModelId": "bp3d-canonical-body",
-    "canonicalModelVersion": "bp3d-fullbody-skin-canonical-v0"
+    "canonicalModelVersion": "bp3d-fullbody-skin-canonical-v0",
+    "exteriorKind": "styled-canonical-silhouette-v1"
   },
   "provenance": {
-    "source": "PainLocator interim exterior mannequin (procedural, not medically validated)",
+    "source": "PainLocator styled canonical silhouette (procedural, not medically validated)",
     "licenseRef": "./LICENSE.md",
-    "retrievedAt": "2026-09-06",
-    "status": "interim",
+    "retrievedAt": "2026-09-07",
+    "status": "development",
     "structureIdScheme": "PL:surface.* (PainLocator-local temporary IDs; not FMA)",
-    "notes": "Placeholder for a future BodyParts3D-derived exterior. Authored for Slice 1 so CAE can bind stable meshIds without waiting on BP3D conversion. Future FMA/BP3D mapping replaces or maps PL:structureId values through this manifest contract."
+    "generator": "scripts/generate-styled-exterior-glb.mjs",
+    "alignmentReport": "./styled-exterior-alignment-report.json",
+    "notes": "Option B visible exterior: calm medical silhouette in painlocator-bp3d-canonical-v1. Capsule mannequin archived under spatial/dev/interim-mannequin/. Not a BP3D skin redistribution."
   },
   "layers": {
     "surface": {

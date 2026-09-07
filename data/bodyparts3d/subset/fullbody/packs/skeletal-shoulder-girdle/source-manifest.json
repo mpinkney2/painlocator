@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-shoulder-girdle",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-shoulder-girdle",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.clavicle",
+      "structureId": "FMA:13321",
+      "preferredName": "clavicle",
+      "clinicalName": "Clavicle",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-shoulder-girdle",
+      "sourceConceptId": "FMA13321",
+      "sourceRepresentationId": "BP8842",
+      "sourceElementFileId": "FJ3237",
+      "sourceElementFileIds": [
+        "FJ3237",
+        "FJ3362"
+      ],
+      "sourceFile": "./obj/FJ3237.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2491009d53eaed99ccb2a802b29402eec715eb8d207fb819fad67b0720195cf2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3237",
+          "sha256": "2491009d53eaed99ccb2a802b29402eec715eb8d207fb819fad67b0720195cf2",
+          "bytes": 69709
+        },
+        {
+          "fileId": "FJ3362",
+          "sha256": "9a111cac8351e79dd1315aea90108fe56f78e4bf0159473e6ad727ba91b60e6d",
+          "bytes": 68321
+        }
+      ]
+    },
+    {
+      "meshId": "bone.scapula",
+      "structureId": "FMA:13394",
+      "preferredName": "scapula",
+      "clinicalName": "Scapula",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-shoulder-girdle",
+      "sourceConceptId": "FMA13394",
+      "sourceRepresentationId": "BP9102",
+      "sourceElementFileId": "FJ3279",
+      "sourceElementFileIds": [
+        "FJ3279",
+        "FJ3384"
+      ],
+      "sourceFile": "./obj/FJ3279.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e63a5675c6cdbe942322305920241b4a63762d7a65879572400f444fa3d42739"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3279",
+          "sha256": "e63a5675c6cdbe942322305920241b4a63762d7a65879572400f444fa3d42739",
+          "bytes": 1865738
+        },
+        {
+          "fileId": "FJ3384",
+          "sha256": "1641b04e55f9d75bdd6f1f4f07ea596e5dea0a8cb6b348bff47281b8a0bc6e5d",
+          "bytes": 1743768
+        }
+      ]
+    }
+  ]
+}

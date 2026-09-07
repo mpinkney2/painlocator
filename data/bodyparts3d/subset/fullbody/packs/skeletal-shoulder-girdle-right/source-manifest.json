@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-shoulder-girdle-right",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-shoulder-girdle-right",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.right.clavicle",
+      "structureId": "FMA:13322",
+      "preferredName": "right clavicle",
+      "clinicalName": "Right clavicle",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-shoulder-girdle-right",
+      "sourceConceptId": "FMA13322",
+      "sourceRepresentationId": "BP9271",
+      "sourceElementFileId": "FJ3362",
+      "sourceElementFileIds": [
+        "FJ3362"
+      ],
+      "sourceFile": "./obj/FJ3362.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9a111cac8351e79dd1315aea90108fe56f78e4bf0159473e6ad727ba91b60e6d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3362",
+          "sha256": "9a111cac8351e79dd1315aea90108fe56f78e4bf0159473e6ad727ba91b60e6d",
+          "bytes": 68321
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.scapula",
+      "structureId": "FMA:13395",
+      "preferredName": "right scapula",
+      "clinicalName": "Right scapula",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-shoulder-girdle-right",
+      "sourceConceptId": "FMA13395",
+      "sourceRepresentationId": "BP9101",
+      "sourceElementFileId": "FJ3384",
+      "sourceElementFileIds": [
+        "FJ3384"
+      ],
+      "sourceFile": "./obj/FJ3384.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1641b04e55f9d75bdd6f1f4f07ea596e5dea0a8cb6b348bff47281b8a0bc6e5d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3384",
+          "sha256": "1641b04e55f9d75bdd6f1f4f07ea596e5dea0a8cb6b348bff47281b8a0bc6e5d",
+          "bytes": 1743768
+        }
+      ]
+    }
+  ]
+}

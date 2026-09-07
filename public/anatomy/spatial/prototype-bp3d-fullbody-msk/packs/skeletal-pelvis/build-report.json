@@ -1,0 +1,89 @@
+{
+  "packId": "skeletal-pelvis",
+  "layer": "skeletal",
+  "structureCount": 3,
+  "glbBytes": 237608,
+  "glbSha256": "43d4821d85d18261cdbb915ce05081b740386156798cf41c8a9fd372e5a5579f",
+  "meshes": [
+    {
+      "meshId": "bone.hip.bone",
+      "structureId": "FMA:16585",
+      "sourceVertices": 2539,
+      "sourceFaces": 4706,
+      "vertices": 2539,
+      "faces": 4706,
+      "elementCount": 2,
+      "centroid": [
+        0.00013176984802608707,
+        0.8599129509064434,
+        0.07217995186647397
+      ],
+      "bounds": [
+        [
+          -0.144754,
+          0.751951,
+          0.0011187800000000002
+        ],
+        [
+          0.14487200000000003,
+          0.95809,
+          0.139095
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.hip.bone",
+      "structureId": "FMA:16586",
+      "sourceVertices": 1282,
+      "sourceFaces": 2374,
+      "vertices": 1282,
+      "faces": 2374,
+      "elementCount": 1,
+      "centroid": [
+        0.07609880951664388,
+        0.8598929096778662,
+        0.0721631747493067
+      ],
+      "bounds": [
+        [
+          0.0027903,
+          0.7521530000000001,
+          0.0011187800000000002
+        ],
+        [
+          0.14487200000000003,
+          0.9578690000000001,
+          0.139019
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.hip.bone",
+      "structureId": "FMA:16587",
+      "sourceVertices": 1257,
+      "sourceFaces": 2332,
+      "vertices": 1257,
+      "faces": 2332,
+      "elementCount": 1,
+      "centroid": [
+        -0.07623261940545081,
+        0.8599330969617114,
+        0.07219681673723272
+      ],
+      "bounds": [
+        [
+          -0.144754,
+          0.751951,
+          0.0013149400000000001
+        ],
+        [
+          -0.0027503099999999997,
+          0.95809,
+          0.139095
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:29.367200+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}

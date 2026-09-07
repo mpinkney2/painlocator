@@ -1,9 +1,12 @@
 /**
- * Build interim adult-male exterior GLB (PainLocator-authored procedural geometry).
+ * Legacy capsule mannequin generator (archived).
  *
- * Build-time only — requires the npm **devDependency** `three@0.170.0`.
- * Runtime Spatial mode uses vendored `public/vendor/three.module.min.js` (r170),
- * not this package import.
+ * Prefer `scripts/generate-styled-exterior-glb.mjs` for the production
+ * canonical-frame styled exterior. This script remains for regenerating the
+ * archived interim mannequin under `public/anatomy/spatial/dev/interim-mannequin/`.
+ *
+ * Build-time only — uses npm `three@0.170.0`.
+ * Runtime Spatial uses the Vite ESM Spatial runtime (not /public/vendor Three).
  *
  * Usage: node scripts/generate-exterior-glb.mjs
  */

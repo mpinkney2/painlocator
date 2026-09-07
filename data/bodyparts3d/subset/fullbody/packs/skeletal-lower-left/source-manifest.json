@@ -1,0 +1,420 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-lower-left",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-lower-left",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.left.femur",
+      "structureId": "FMA:24475",
+      "preferredName": "left femur",
+      "clinicalName": "Left femur",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24475",
+      "sourceRepresentationId": "BP9042",
+      "sourceElementFileId": "FJ3259",
+      "sourceElementFileIds": [
+        "FJ3259"
+      ],
+      "sourceFile": "./obj/FJ3259.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d291cc3619c32c68edb9d29e0b755634c2cb85e3db89f0d0b63a316f879ef86d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3259",
+          "sha256": "d291cc3619c32c68edb9d29e0b755634c2cb85e3db89f0d0b63a316f879ef86d",
+          "bytes": 197175
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.tibia",
+      "structureId": "FMA:24478",
+      "preferredName": "left tibia",
+      "clinicalName": "Left tibia",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24478",
+      "sourceRepresentationId": "BP9202",
+      "sourceElementFileId": "FJ3282",
+      "sourceElementFileIds": [
+        "FJ3282"
+      ],
+      "sourceFile": "./obj/FJ3282.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "40e55d7d28f060be61815603ee5eb1c0ba4c2e93af6fed6b5db7ca88d4ed82ef"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3282",
+          "sha256": "40e55d7d28f060be61815603ee5eb1c0ba4c2e93af6fed6b5db7ca88d4ed82ef",
+          "bytes": 101389
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fibula",
+      "structureId": "FMA:24481",
+      "preferredName": "left fibula",
+      "clinicalName": "Left fibula",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24481",
+      "sourceRepresentationId": "BP8251",
+      "sourceElementFileId": "FJ3260",
+      "sourceElementFileIds": [
+        "FJ3260"
+      ],
+      "sourceFile": "./obj/FJ3260.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b5fbb694e1d881033ec8318b97c41e9d9bedc89a8df9845573b1aac528829331"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3260",
+          "sha256": "b5fbb694e1d881033ec8318b97c41e9d9bedc89a8df9845573b1aac528829331",
+          "bytes": 67079
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.talus",
+      "structureId": "FMA:24483",
+      "preferredName": "left talus",
+      "clinicalName": "Left talus",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24483",
+      "sourceRepresentationId": "BP9187",
+      "sourceElementFileId": "FJ3280",
+      "sourceElementFileIds": [
+        "FJ3280"
+      ],
+      "sourceFile": "./obj/FJ3280.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "56b40cfe8944df25ebed250dbcc80794ee5435e6ab667edddabf4324553bdb3c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3280",
+          "sha256": "56b40cfe8944df25ebed250dbcc80794ee5435e6ab667edddabf4324553bdb3c",
+          "bytes": 85959
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.patella",
+      "structureId": "FMA:24487",
+      "preferredName": "left patella",
+      "clinicalName": "Left patella",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24487",
+      "sourceRepresentationId": "BP8378",
+      "sourceElementFileId": "FJ3275",
+      "sourceElementFileIds": [
+        "FJ3275"
+      ],
+      "sourceFile": "./obj/FJ3275.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "768362d04f0f91cea9a28f4aeae9d9f63f3c82450b68d185fa4afefe75d75cc1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3275",
+          "sha256": "768362d04f0f91cea9a28f4aeae9d9f63f3c82450b68d185fa4afefe75d75cc1",
+          "bytes": 19168
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.calcaneus",
+      "structureId": "FMA:24498",
+      "preferredName": "left calcaneus",
+      "clinicalName": "Left calcaneus",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24498",
+      "sourceRepresentationId": "BP8533",
+      "sourceElementFileId": "FJ3256",
+      "sourceElementFileIds": [
+        "FJ3256"
+      ],
+      "sourceFile": "./obj/FJ3256.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5424e3e394e233213071fbf46f178ed9123da4763d6b64125f32e7b8af1803d8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3256",
+          "sha256": "5424e3e394e233213071fbf46f178ed9123da4763d6b64125f32e7b8af1803d8",
+          "bytes": 80416
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.first.metatarsal.bone",
+      "structureId": "FMA:24508",
+      "preferredName": "left first metatarsal bone",
+      "clinicalName": "Left first metatarsal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24508",
+      "sourceRepresentationId": "BP8160",
+      "sourceElementFileId": "FJ3241",
+      "sourceElementFileIds": [
+        "FJ3241"
+      ],
+      "sourceFile": "./obj/FJ3241.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1bb41c84fddb65d6394a55c1f534102794942541212702008a6316f93ba08e16"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3241",
+          "sha256": "1bb41c84fddb65d6394a55c1f534102794942541212702008a6316f93ba08e16",
+          "bytes": 70975
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.second.metatarsal.bone",
+      "structureId": "FMA:24510",
+      "preferredName": "left second metatarsal bone",
+      "clinicalName": "Left second metatarsal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24510",
+      "sourceRepresentationId": "BP8915",
+      "sourceElementFileId": "FJ3244",
+      "sourceElementFileIds": [
+        "FJ3244"
+      ],
+      "sourceFile": "./obj/FJ3244.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4992101f55b96d8fe47abca6e441c902ba1e60429ee41576a1d3a9fc17e4f22a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3244",
+          "sha256": "4992101f55b96d8fe47abca6e441c902ba1e60429ee41576a1d3a9fc17e4f22a",
+          "bytes": 51577
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.third.metatarsal.bone",
+      "structureId": "FMA:24512",
+      "preferredName": "left third metatarsal bone",
+      "clinicalName": "Left third metatarsal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24512",
+      "sourceRepresentationId": "BP8967",
+      "sourceElementFileId": "FJ3247",
+      "sourceElementFileIds": [
+        "FJ3247"
+      ],
+      "sourceFile": "./obj/FJ3247.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "84d0c310fd1448e753ac7ed2bda2d62d9dfb8fbe78f749111aaae3a7281ac5cc"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3247",
+          "sha256": "84d0c310fd1448e753ac7ed2bda2d62d9dfb8fbe78f749111aaae3a7281ac5cc",
+          "bytes": 47147
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fourth.metatarsal.bone",
+      "structureId": "FMA:24514",
+      "preferredName": "left fourth metatarsal bone",
+      "clinicalName": "Left fourth metatarsal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24514",
+      "sourceRepresentationId": "BP8511",
+      "sourceElementFileId": "FJ3250",
+      "sourceElementFileIds": [
+        "FJ3250"
+      ],
+      "sourceFile": "./obj/FJ3250.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e1656035430f9bf5c5b5bb3de96fabfd18e3d78c6e47c39a403a47bd80dfa61b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3250",
+          "sha256": "e1656035430f9bf5c5b5bb3de96fabfd18e3d78c6e47c39a403a47bd80dfa61b",
+          "bytes": 48548
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fifth.metatarsal.bone",
+      "structureId": "FMA:24516",
+      "preferredName": "left fifth metatarsal bone",
+      "clinicalName": "Left fifth metatarsal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA24516",
+      "sourceRepresentationId": "BP9237",
+      "sourceElementFileId": "FJ3253",
+      "sourceElementFileIds": [
+        "FJ3253"
+      ],
+      "sourceFile": "./obj/FJ3253.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "29642383bc5c2d96f7025b2da0b8139f5b71d5d0e1470622745fd9b606575010"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3253",
+          "sha256": "29642383bc5c2d96f7025b2da0b8139f5b71d5d0e1470622745fd9b606575010",
+          "bytes": 51785
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.iliotibial.tract",
+      "structureId": "FMA:58777",
+      "preferredName": "left iliotibial tract",
+      "clinicalName": "Left iliotibial tract",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA58777",
+      "sourceRepresentationId": "BP8856",
+      "sourceElementFileId": "FJ1423M",
+      "sourceElementFileIds": [
+        "FJ1423M"
+      ],
+      "sourceFile": "./obj/FJ1423M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bfd57c0dcc185bf4fd7396064bc1c27c7e438427605f7826b4cfdbeb5e40f589"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1423M",
+          "sha256": "bfd57c0dcc185bf4fd7396064bc1c27c7e438427605f7826b4cfdbeb5e40f589",
+          "bytes": 1157824
+        }
+      ]
+    },
+    {
+      "meshId": "bone.tarsal.plate.of.left.lower.eyelid",
+      "structureId": "FMA:59090",
+      "preferredName": "tarsal plate of left lower eyelid",
+      "clinicalName": "Tarsal plate of left lower eyelid",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA59090",
+      "sourceRepresentationId": "BP4643",
+      "sourceElementFileId": "FJ1328",
+      "sourceElementFileIds": [
+        "FJ1328"
+      ],
+      "sourceFile": "./obj/FJ1328.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c3ba07f82baf4e55563d9736653ef768cb047bbf277a079aacbcfa780096d322"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1328",
+          "sha256": "c3ba07f82baf4e55563d9736653ef768cb047bbf277a079aacbcfa780096d322",
+          "bytes": 61036
+        }
+      ]
+    },
+    {
+      "meshId": "bone.tarsal.plate.of.left.upper.eyelid",
+      "structureId": "FMA:59092",
+      "preferredName": "tarsal plate of left upper eyelid",
+      "clinicalName": "Tarsal plate of left upper eyelid",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-lower-left",
+      "sourceConceptId": "FMA59092",
+      "sourceRepresentationId": "BP4640",
+      "sourceElementFileId": "FJ1324",
+      "sourceElementFileIds": [
+        "FJ1324"
+      ],
+      "sourceFile": "./obj/FJ1324.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "eeb0db9872f49810b69d7865328602d6419327b2f46fda388cd76f8960f5f188"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1324",
+          "sha256": "eeb0db9872f49810b69d7865328602d6419327b2f46fda388cd76f8960f5f188",
+          "bytes": 87602
+        }
+      ]
+    }
+  ]
+}

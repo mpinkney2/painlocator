@@ -1,0 +1,2624 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "muscle-torso",
+  "regionRationale": "Full-body curated muscle pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-torso",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "muscle.external.intercostal.muscle",
+      "structureId": "FMA:9756",
+      "preferredName": "external intercostal muscle",
+      "clinicalName": "External intercostal muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA9756",
+      "sourceRepresentationId": "BP8306",
+      "sourceElementFileId": "FJ1451",
+      "sourceElementFileIds": [
+        "FJ1451",
+        "FJ1451M"
+      ],
+      "sourceFile": "./obj/FJ1451.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "588de751687a05ae711f9b8d65f78ddac891994158fa4a94ea2ca48d36dc1b61"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1451",
+          "sha256": "588de751687a05ae711f9b8d65f78ddac891994158fa4a94ea2ca48d36dc1b61",
+          "bytes": 9118989
+        },
+        {
+          "fileId": "FJ1451M",
+          "sha256": "d4c021ba00dbe2bd3c7e722cb5982df7659d7d68fe6f4ec980588bfd65d31214",
+          "bytes": 9040548
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.internal.intercostal.muscle",
+      "structureId": "FMA:9757",
+      "preferredName": "internal intercostal muscle",
+      "clinicalName": "Internal intercostal muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA9757",
+      "sourceRepresentationId": "BP8018",
+      "sourceElementFileId": "FJ1455",
+      "sourceElementFileIds": [
+        "FJ1455",
+        "FJ1455M"
+      ],
+      "sourceFile": "./obj/FJ1455.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "aa71a14eb5d50c91569fb348ccf3747438bf0e5a4a8cd73784f7ae9ad2f801e3"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1455",
+          "sha256": "aa71a14eb5d50c91569fb348ccf3747438bf0e5a4a8cd73784f7ae9ad2f801e3",
+          "bytes": 7706472
+        },
+        {
+          "fileId": "FJ1455M",
+          "sha256": "d92760297b5c8ceacf1013460e372abcb05f97192ffc514758d74ac0b73af373",
+          "bytes": 7632850
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.innermost.intercostal.muscle",
+      "structureId": "FMA:9758",
+      "preferredName": "innermost intercostal muscle",
+      "clinicalName": "Innermost intercostal muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA9758",
+      "sourceRepresentationId": "BP9146",
+      "sourceElementFileId": "FJ1454",
+      "sourceElementFileIds": [
+        "FJ1454",
+        "FJ1454M"
+      ],
+      "sourceFile": "./obj/FJ1454.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8e9a5c48482ba61dfe2ed19ced05121093a7bf3f8c6e0ac7d0c0b8ebe8bce45d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1454",
+          "sha256": "8e9a5c48482ba61dfe2ed19ced05121093a7bf3f8c6e0ac7d0c0b8ebe8bce45d",
+          "bytes": 7720469
+        },
+        {
+          "fileId": "FJ1454M",
+          "sha256": "7458ea18bdf836da68b0220da5421cddb1bb653da909d998dea14db3d5ef00c5",
+          "bytes": 7642908
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.transversus.thoracis",
+      "structureId": "FMA:9760",
+      "preferredName": "transversus thoracis",
+      "clinicalName": "Transversus thoracis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA9760",
+      "sourceRepresentationId": "BP9031",
+      "sourceElementFileId": "FJ1461",
+      "sourceElementFileIds": [
+        "FJ1461",
+        "FJ1461M"
+      ],
+      "sourceFile": "./obj/FJ1461.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bce9619bd5a8afcd77e28139313dd3d4c553127fc8832ecc2412931308bac390"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1461",
+          "sha256": "bce9619bd5a8afcd77e28139313dd3d4c553127fc8832ecc2412931308bac390",
+          "bytes": 421855
+        },
+        {
+          "fileId": "FJ1461M",
+          "sha256": "be04d1b4da0f157e45053496c8581dbc62f0b31ef20c576249d4debb54a75042",
+          "bytes": 417104
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.transversus.thoracis",
+      "structureId": "FMA:9761",
+      "preferredName": "right transversus thoracis",
+      "clinicalName": "Right transversus thoracis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA9761",
+      "sourceRepresentationId": "BP4963",
+      "sourceElementFileId": "FJ1461",
+      "sourceElementFileIds": [
+        "FJ1461"
+      ],
+      "sourceFile": "./obj/FJ1461.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bce9619bd5a8afcd77e28139313dd3d4c553127fc8832ecc2412931308bac390"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1461",
+          "sha256": "bce9619bd5a8afcd77e28139313dd3d4c553127fc8832ecc2412931308bac390",
+          "bytes": 421855
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.transversus.thoracis",
+      "structureId": "FMA:9762",
+      "preferredName": "left transversus thoracis",
+      "clinicalName": "Left transversus thoracis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA9762",
+      "sourceRepresentationId": "BP9030",
+      "sourceElementFileId": "FJ1461M",
+      "sourceElementFileIds": [
+        "FJ1461M"
+      ],
+      "sourceFile": "./obj/FJ1461M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "be04d1b4da0f157e45053496c8581dbc62f0b31ef20c576249d4debb54a75042"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1461M",
+          "sha256": "be04d1b4da0f157e45053496c8581dbc62f0b31ef20c576249d4debb54a75042",
+          "bytes": 417104
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.diaphragm",
+      "structureId": "FMA:13295",
+      "preferredName": "diaphragm",
+      "clinicalName": "Diaphragm",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA13295",
+      "sourceRepresentationId": "BP8798",
+      "sourceElementFileId": "FJ3131",
+      "sourceElementFileIds": [
+        "FJ3131"
+      ],
+      "sourceFile": "./obj/FJ3131.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "db97e5f8f8d46928ea54b42fb50789e8f5523ef973cc744b2c2f17930fc33dc8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3131",
+          "sha256": "db97e5f8f8d46928ea54b42fb50789e8f5523ef973cc744b2c2f17930fc33dc8",
+          "bytes": 4828611
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.external.oblique",
+      "structureId": "FMA:13335",
+      "preferredName": "external oblique",
+      "clinicalName": "External oblique",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA13335",
+      "sourceRepresentationId": "BP8155",
+      "sourceElementFileId": "FJ1452",
+      "sourceElementFileIds": [
+        "FJ1452",
+        "FJ1452M"
+      ],
+      "sourceFile": "./obj/FJ1452.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8fb254f196b1e249b1aea667d195f00c355f901f5fa89e37f586a8316c2fcdcd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1452",
+          "sha256": "8fb254f196b1e249b1aea667d195f00c355f901f5fa89e37f586a8316c2fcdcd",
+          "bytes": 8308376
+        },
+        {
+          "fileId": "FJ1452M",
+          "sha256": "2f0ba9782cf27bd57446c6f9f44a399bfb98e88a67136c7304e47098838fce1f",
+          "bytes": 8250599
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.external.oblique",
+      "structureId": "FMA:13336",
+      "preferredName": "right external oblique",
+      "clinicalName": "Right external oblique",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA13336",
+      "sourceRepresentationId": "BP4967",
+      "sourceElementFileId": "FJ1452",
+      "sourceElementFileIds": [
+        "FJ1452"
+      ],
+      "sourceFile": "./obj/FJ1452.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8fb254f196b1e249b1aea667d195f00c355f901f5fa89e37f586a8316c2fcdcd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1452",
+          "sha256": "8fb254f196b1e249b1aea667d195f00c355f901f5fa89e37f586a8316c2fcdcd",
+          "bytes": 8308376
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.external.oblique",
+      "structureId": "FMA:13337",
+      "preferredName": "left external oblique",
+      "clinicalName": "Left external oblique",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA13337",
+      "sourceRepresentationId": "BP8154",
+      "sourceElementFileId": "FJ1452M",
+      "sourceElementFileIds": [
+        "FJ1452M"
+      ],
+      "sourceFile": "./obj/FJ1452M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2f0ba9782cf27bd57446c6f9f44a399bfb98e88a67136c7304e47098838fce1f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1452M",
+          "sha256": "2f0ba9782cf27bd57446c6f9f44a399bfb98e88a67136c7304e47098838fce1f",
+          "bytes": 8250599
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.intercostal.muscle",
+      "structureId": "FMA:13354",
+      "preferredName": "intercostal muscle",
+      "clinicalName": "Intercostal muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA13354",
+      "sourceRepresentationId": "BP8019",
+      "sourceElementFileId": "FJ1451",
+      "sourceElementFileIds": [
+        "FJ1451",
+        "FJ1451M",
+        "FJ1454",
+        "FJ1454M",
+        "FJ1455",
+        "FJ1455M"
+      ],
+      "sourceFile": "./obj/FJ1451.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "588de751687a05ae711f9b8d65f78ddac891994158fa4a94ea2ca48d36dc1b61"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1451",
+          "sha256": "588de751687a05ae711f9b8d65f78ddac891994158fa4a94ea2ca48d36dc1b61",
+          "bytes": 9118989
+        },
+        {
+          "fileId": "FJ1451M",
+          "sha256": "d4c021ba00dbe2bd3c7e722cb5982df7659d7d68fe6f4ec980588bfd65d31214",
+          "bytes": 9040548
+        },
+        {
+          "fileId": "FJ1454",
+          "sha256": "8e9a5c48482ba61dfe2ed19ced05121093a7bf3f8c6e0ac7d0c0b8ebe8bce45d",
+          "bytes": 7720469
+        },
+        {
+          "fileId": "FJ1454M",
+          "sha256": "7458ea18bdf836da68b0220da5421cddb1bb653da909d998dea14db3d5ef00c5",
+          "bytes": 7642908
+        },
+        {
+          "fileId": "FJ1455",
+          "sha256": "aa71a14eb5d50c91569fb348ccf3747438bf0e5a4a8cd73784f7ae9ad2f801e3",
+          "bytes": 7706472
+        },
+        {
+          "fileId": "FJ1455M",
+          "sha256": "d92760297b5c8ceacf1013460e372abcb05f97192ffc514758d74ac0b73af373",
+          "bytes": 7632850
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.splenius.capitis",
+      "structureId": "FMA:22653",
+      "preferredName": "splenius capitis",
+      "clinicalName": "Splenius capitis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22653",
+      "sourceRepresentationId": "BP8023",
+      "sourceElementFileId": "FJ1545",
+      "sourceElementFileIds": [
+        "FJ1545",
+        "FJ1545M"
+      ],
+      "sourceFile": "./obj/FJ1545.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1545",
+          "sha256": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8",
+          "bytes": 556499
+        },
+        {
+          "fileId": "FJ1545M",
+          "sha256": "a80ad7dd892450090022cd108216c21a55dd70872c7cfa832c604c040c79cd98",
+          "bytes": 554265
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.splenius.cervicis",
+      "structureId": "FMA:22681",
+      "preferredName": "splenius cervicis",
+      "clinicalName": "Splenius cervicis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22681",
+      "sourceRepresentationId": "BP8242",
+      "sourceElementFileId": "FJ1546",
+      "sourceElementFileIds": [
+        "FJ1546",
+        "FJ1546M"
+      ],
+      "sourceFile": "./obj/FJ1546.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d1d911084f09a997efd08c69b15885cb20fe2fe849c5f8652bc6f46c1ca62fe5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1546",
+          "sha256": "d1d911084f09a997efd08c69b15885cb20fe2fe849c5f8652bc6f46c1ca62fe5",
+          "bytes": 486722
+        },
+        {
+          "fileId": "FJ1546M",
+          "sha256": "ead6661905f5316bb3865c7127d40eeda72feae4ec2abaa46b3e7679cfc6dc9a",
+          "bytes": 483632
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.iliocostalis.lumborum",
+      "structureId": "FMA:22702",
+      "preferredName": "iliocostalis lumborum",
+      "clinicalName": "Iliocostalis lumborum",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22702",
+      "sourceRepresentationId": "BP8938",
+      "sourceElementFileId": "FJ1527",
+      "sourceElementFileIds": [
+        "FJ1527",
+        "FJ1527M"
+      ],
+      "sourceFile": "./obj/FJ1527.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8a15295f08faac150ee5f16fe1035398dcfa60d3cba8b42b504b53764032b718"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1527",
+          "sha256": "8a15295f08faac150ee5f16fe1035398dcfa60d3cba8b42b504b53764032b718",
+          "bytes": 1189971
+        },
+        {
+          "fileId": "FJ1527M",
+          "sha256": "1c7f20b34a9639d1996e3ec18873beb6dc114169ae1d310e88e2c3d8b1ff2133",
+          "bytes": 1178614
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.iliocostalis.thoracis",
+      "structureId": "FMA:22703",
+      "preferredName": "iliocostalis thoracis",
+      "clinicalName": "Iliocostalis thoracis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22703",
+      "sourceRepresentationId": "BP8749",
+      "sourceElementFileId": "FJ1528",
+      "sourceElementFileIds": [
+        "FJ1528",
+        "FJ1528M"
+      ],
+      "sourceFile": "./obj/FJ1528.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0ee5ad819949cd4197dd96b00373547b42f7e1831b2add6baea4baf3661f38fa"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1528",
+          "sha256": "0ee5ad819949cd4197dd96b00373547b42f7e1831b2add6baea4baf3661f38fa",
+          "bytes": 618808
+        },
+        {
+          "fileId": "FJ1528M",
+          "sha256": "02a7addd5329689094506095570a458982b6dfc2f9509392bf310807183e3df7",
+          "bytes": 613804
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.iliocostalis.cervicis",
+      "structureId": "FMA:22704",
+      "preferredName": "iliocostalis cervicis",
+      "clinicalName": "Iliocostalis cervicis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22704",
+      "sourceRepresentationId": "BP8049",
+      "sourceElementFileId": "FJ1526",
+      "sourceElementFileIds": [
+        "FJ1526",
+        "FJ1526M"
+      ],
+      "sourceFile": "./obj/FJ1526.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0d2b4b780dd191b9e6518dc3a71ad8c032da0db3631a2a582969faf7dfdbb96b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1526",
+          "sha256": "0d2b4b780dd191b9e6518dc3a71ad8c032da0db3631a2a582969faf7dfdbb96b",
+          "bytes": 237546
+        },
+        {
+          "fileId": "FJ1526M",
+          "sha256": "edb4c7f871b6cee0ab8de9d31ad428b779a087a7b66dccf4421a806bfb11812d",
+          "bytes": 235971
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.longissimus.thoracis",
+      "structureId": "FMA:22709",
+      "preferredName": "longissimus thoracis",
+      "clinicalName": "Longissimus thoracis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22709",
+      "sourceRepresentationId": "BP8986",
+      "sourceElementFileId": "FJ1535",
+      "sourceElementFileIds": [
+        "FJ1535",
+        "FJ1535M"
+      ],
+      "sourceFile": "./obj/FJ1535.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b555761d298a4bea88a05d2067b0cfff507522546bfc0dcb9b3bad576a3449fa"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1535",
+          "sha256": "b555761d298a4bea88a05d2067b0cfff507522546bfc0dcb9b3bad576a3449fa",
+          "bytes": 1319188
+        },
+        {
+          "fileId": "FJ1535M",
+          "sha256": "d238f10400abb5754b2ef1e920eacc720b69835cd31a229ef3d68468f4064a57",
+          "bytes": 1306680
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.longissimus.cervicis",
+      "structureId": "FMA:22711",
+      "preferredName": "longissimus cervicis",
+      "clinicalName": "Longissimus cervicis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22711",
+      "sourceRepresentationId": "BP9127",
+      "sourceElementFileId": "FJ1534",
+      "sourceElementFileIds": [
+        "FJ1534",
+        "FJ1534M"
+      ],
+      "sourceFile": "./obj/FJ1534.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d89596561e6d76dc5d5e6895711d598201056b1c7a834ee0c593702ef9382608"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1534",
+          "sha256": "d89596561e6d76dc5d5e6895711d598201056b1c7a834ee0c593702ef9382608",
+          "bytes": 229177
+        },
+        {
+          "fileId": "FJ1534M",
+          "sha256": "4d8e49d6e29673284fc79376aafb0baec2cc1999b6440b19a5310c550828a8ac",
+          "bytes": 227947
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.longissimus.capitis",
+      "structureId": "FMA:22714",
+      "preferredName": "longissimus capitis",
+      "clinicalName": "Longissimus capitis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22714",
+      "sourceRepresentationId": "BP9082",
+      "sourceElementFileId": "FJ1533",
+      "sourceElementFileIds": [
+        "FJ1533",
+        "FJ1533M"
+      ],
+      "sourceFile": "./obj/FJ1533.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "845e65ab735bc49c5026fab485f8dd2eb9624ac7c2519927578d7d7508e644cd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1533",
+          "sha256": "845e65ab735bc49c5026fab485f8dd2eb9624ac7c2519927578d7d7508e644cd",
+          "bytes": 179817
+        },
+        {
+          "fileId": "FJ1533M",
+          "sha256": "900be066826b7ac1f38f92a243b28474694c42a1fafa2934d55db020820c7178",
+          "bytes": 178291
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.splenius.cervicis",
+      "structureId": "FMA:22726",
+      "preferredName": "right splenius cervicis",
+      "clinicalName": "Right splenius cervicis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22726",
+      "sourceRepresentationId": "BP4760",
+      "sourceElementFileId": "FJ1546",
+      "sourceElementFileIds": [
+        "FJ1546"
+      ],
+      "sourceFile": "./obj/FJ1546.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d1d911084f09a997efd08c69b15885cb20fe2fe849c5f8652bc6f46c1ca62fe5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1546",
+          "sha256": "d1d911084f09a997efd08c69b15885cb20fe2fe849c5f8652bc6f46c1ca62fe5",
+          "bytes": 486722
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.splenius.cervicis",
+      "structureId": "FMA:22727",
+      "preferredName": "left splenius cervicis",
+      "clinicalName": "Left splenius cervicis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22727",
+      "sourceRepresentationId": "BP8241",
+      "sourceElementFileId": "FJ1546M",
+      "sourceElementFileIds": [
+        "FJ1546M"
+      ],
+      "sourceFile": "./obj/FJ1546M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ead6661905f5316bb3865c7127d40eeda72feae4ec2abaa46b3e7679cfc6dc9a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1546M",
+          "sha256": "ead6661905f5316bb3865c7127d40eeda72feae4ec2abaa46b3e7679cfc6dc9a",
+          "bytes": 483632
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.splenius.capitis",
+      "structureId": "FMA:22728",
+      "preferredName": "right splenius capitis",
+      "clinicalName": "Right splenius capitis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22728",
+      "sourceRepresentationId": "BP4758",
+      "sourceElementFileId": "FJ1545",
+      "sourceElementFileIds": [
+        "FJ1545"
+      ],
+      "sourceFile": "./obj/FJ1545.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1545",
+          "sha256": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8",
+          "bytes": 556499
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.splenius.capitis",
+      "structureId": "FMA:22729",
+      "preferredName": "left splenius capitis",
+      "clinicalName": "Left splenius capitis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22729",
+      "sourceRepresentationId": "BP8022",
+      "sourceElementFileId": "FJ1545M",
+      "sourceElementFileIds": [
+        "FJ1545M"
+      ],
+      "sourceFile": "./obj/FJ1545M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a80ad7dd892450090022cd108216c21a55dd70872c7cfa832c604c040c79cd98"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1545M",
+          "sha256": "a80ad7dd892450090022cd108216c21a55dd70872c7cfa832c604c040c79cd98",
+          "bytes": 554265
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.iliocostalis.lumborum",
+      "structureId": "FMA:22740",
+      "preferredName": "right iliocostalis lumborum",
+      "clinicalName": "Right iliocostalis lumborum",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22740",
+      "sourceRepresentationId": "BP4753",
+      "sourceElementFileId": "FJ1527",
+      "sourceElementFileIds": [
+        "FJ1527"
+      ],
+      "sourceFile": "./obj/FJ1527.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8a15295f08faac150ee5f16fe1035398dcfa60d3cba8b42b504b53764032b718"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1527",
+          "sha256": "8a15295f08faac150ee5f16fe1035398dcfa60d3cba8b42b504b53764032b718",
+          "bytes": 1189971
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.iliocostalis.lumborum",
+      "structureId": "FMA:22741",
+      "preferredName": "left iliocostalis lumborum",
+      "clinicalName": "Left iliocostalis lumborum",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22741",
+      "sourceRepresentationId": "BP8937",
+      "sourceElementFileId": "FJ1527M",
+      "sourceElementFileIds": [
+        "FJ1527M"
+      ],
+      "sourceFile": "./obj/FJ1527M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1c7f20b34a9639d1996e3ec18873beb6dc114169ae1d310e88e2c3d8b1ff2133"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1527M",
+          "sha256": "1c7f20b34a9639d1996e3ec18873beb6dc114169ae1d310e88e2c3d8b1ff2133",
+          "bytes": 1178614
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.iliocostalis.thoracis",
+      "structureId": "FMA:22742",
+      "preferredName": "right iliocostalis thoracis",
+      "clinicalName": "Right iliocostalis thoracis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22742",
+      "sourceRepresentationId": "BP4751",
+      "sourceElementFileId": "FJ1528",
+      "sourceElementFileIds": [
+        "FJ1528"
+      ],
+      "sourceFile": "./obj/FJ1528.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0ee5ad819949cd4197dd96b00373547b42f7e1831b2add6baea4baf3661f38fa"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1528",
+          "sha256": "0ee5ad819949cd4197dd96b00373547b42f7e1831b2add6baea4baf3661f38fa",
+          "bytes": 618808
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.iliocostalis.thoracis",
+      "structureId": "FMA:22743",
+      "preferredName": "left iliocostalis thoracis",
+      "clinicalName": "Left iliocostalis thoracis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22743",
+      "sourceRepresentationId": "BP8748",
+      "sourceElementFileId": "FJ1528M",
+      "sourceElementFileIds": [
+        "FJ1528M"
+      ],
+      "sourceFile": "./obj/FJ1528M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "02a7addd5329689094506095570a458982b6dfc2f9509392bf310807183e3df7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1528M",
+          "sha256": "02a7addd5329689094506095570a458982b6dfc2f9509392bf310807183e3df7",
+          "bytes": 613804
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.iliocostalis.cervicis",
+      "structureId": "FMA:22744",
+      "preferredName": "right iliocostalis cervicis",
+      "clinicalName": "Right iliocostalis cervicis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22744",
+      "sourceRepresentationId": "BP4755",
+      "sourceElementFileId": "FJ1526",
+      "sourceElementFileIds": [
+        "FJ1526"
+      ],
+      "sourceFile": "./obj/FJ1526.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0d2b4b780dd191b9e6518dc3a71ad8c032da0db3631a2a582969faf7dfdbb96b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1526",
+          "sha256": "0d2b4b780dd191b9e6518dc3a71ad8c032da0db3631a2a582969faf7dfdbb96b",
+          "bytes": 237546
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.iliocostalis.cervicis",
+      "structureId": "FMA:22745",
+      "preferredName": "left iliocostalis cervicis",
+      "clinicalName": "Left iliocostalis cervicis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22745",
+      "sourceRepresentationId": "BP8048",
+      "sourceElementFileId": "FJ1526M",
+      "sourceElementFileIds": [
+        "FJ1526M"
+      ],
+      "sourceFile": "./obj/FJ1526M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "edb4c7f871b6cee0ab8de9d31ad428b779a087a7b66dccf4421a806bfb11812d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1526M",
+          "sha256": "edb4c7f871b6cee0ab8de9d31ad428b779a087a7b66dccf4421a806bfb11812d",
+          "bytes": 235971
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.longissimus.thoracis",
+      "structureId": "FMA:22751",
+      "preferredName": "right longissimus thoracis",
+      "clinicalName": "Right longissimus thoracis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22751",
+      "sourceRepresentationId": "BP4744",
+      "sourceElementFileId": "FJ1535",
+      "sourceElementFileIds": [
+        "FJ1535"
+      ],
+      "sourceFile": "./obj/FJ1535.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b555761d298a4bea88a05d2067b0cfff507522546bfc0dcb9b3bad576a3449fa"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1535",
+          "sha256": "b555761d298a4bea88a05d2067b0cfff507522546bfc0dcb9b3bad576a3449fa",
+          "bytes": 1319188
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.longissimus.thoracis",
+      "structureId": "FMA:22753",
+      "preferredName": "left longissimus thoracis",
+      "clinicalName": "Left longissimus thoracis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22753",
+      "sourceRepresentationId": "BP8985",
+      "sourceElementFileId": "FJ1535M",
+      "sourceElementFileIds": [
+        "FJ1535M"
+      ],
+      "sourceFile": "./obj/FJ1535M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d238f10400abb5754b2ef1e920eacc720b69835cd31a229ef3d68468f4064a57"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1535M",
+          "sha256": "d238f10400abb5754b2ef1e920eacc720b69835cd31a229ef3d68468f4064a57",
+          "bytes": 1306680
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.longissimus.capitis",
+      "structureId": "FMA:22754",
+      "preferredName": "right longissimus capitis",
+      "clinicalName": "Right longissimus capitis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22754",
+      "sourceRepresentationId": "BP4748",
+      "sourceElementFileId": "FJ1533",
+      "sourceElementFileIds": [
+        "FJ1533"
+      ],
+      "sourceFile": "./obj/FJ1533.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "845e65ab735bc49c5026fab485f8dd2eb9624ac7c2519927578d7d7508e644cd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1533",
+          "sha256": "845e65ab735bc49c5026fab485f8dd2eb9624ac7c2519927578d7d7508e644cd",
+          "bytes": 179817
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.longissimus.capitis",
+      "structureId": "FMA:22756",
+      "preferredName": "left longissimus capitis",
+      "clinicalName": "Left longissimus capitis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22756",
+      "sourceRepresentationId": "BP9081",
+      "sourceElementFileId": "FJ1533M",
+      "sourceElementFileIds": [
+        "FJ1533M"
+      ],
+      "sourceFile": "./obj/FJ1533M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "900be066826b7ac1f38f92a243b28474694c42a1fafa2934d55db020820c7178"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1533M",
+          "sha256": "900be066826b7ac1f38f92a243b28474694c42a1fafa2934d55db020820c7178",
+          "bytes": 178291
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.longissimus.cervicis",
+      "structureId": "FMA:22757",
+      "preferredName": "right longissimus cervicis",
+      "clinicalName": "Right longissimus cervicis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22757",
+      "sourceRepresentationId": "BP4746",
+      "sourceElementFileId": "FJ1534",
+      "sourceElementFileIds": [
+        "FJ1534"
+      ],
+      "sourceFile": "./obj/FJ1534.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d89596561e6d76dc5d5e6895711d598201056b1c7a834ee0c593702ef9382608"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1534",
+          "sha256": "d89596561e6d76dc5d5e6895711d598201056b1c7a834ee0c593702ef9382608",
+          "bytes": 229177
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.longissimus.cervicis",
+      "structureId": "FMA:22758",
+      "preferredName": "left longissimus cervicis",
+      "clinicalName": "Left longissimus cervicis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22758",
+      "sourceRepresentationId": "BP9126",
+      "sourceElementFileId": "FJ1534M",
+      "sourceElementFileIds": [
+        "FJ1534M"
+      ],
+      "sourceFile": "./obj/FJ1534M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4d8e49d6e29673284fc79376aafb0baec2cc1999b6440b19a5310c550828a8ac"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1534M",
+          "sha256": "4d8e49d6e29673284fc79376aafb0baec2cc1999b6440b19a5310c550828a8ac",
+          "bytes": 227947
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.spinalis.thoracis",
+      "structureId": "FMA:22765",
+      "preferredName": "spinalis thoracis",
+      "clinicalName": "Spinalis thoracis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22765",
+      "sourceRepresentationId": "BP8980",
+      "sourceElementFileId": "FJ1544",
+      "sourceElementFileIds": [
+        "FJ1544",
+        "FJ1544M"
+      ],
+      "sourceFile": "./obj/FJ1544.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d269ffdde57349435a3cfcc3c53c3b2532acf4ddaabfc7fdc8b0e3df66b15232"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1544",
+          "sha256": "d269ffdde57349435a3cfcc3c53c3b2532acf4ddaabfc7fdc8b0e3df66b15232",
+          "bytes": 598901
+        },
+        {
+          "fileId": "FJ1544M",
+          "sha256": "b9a3a13c4b797eb8f3115dac3e80b5a83b03b9b34c25f7f2ef721810fa0c52d2",
+          "bytes": 594041
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.spinalis.thoracis",
+      "structureId": "FMA:22779",
+      "preferredName": "right spinalis thoracis",
+      "clinicalName": "Right spinalis thoracis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22779",
+      "sourceRepresentationId": "BP4763",
+      "sourceElementFileId": "FJ1544",
+      "sourceElementFileIds": [
+        "FJ1544"
+      ],
+      "sourceFile": "./obj/FJ1544.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d269ffdde57349435a3cfcc3c53c3b2532acf4ddaabfc7fdc8b0e3df66b15232"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1544",
+          "sha256": "d269ffdde57349435a3cfcc3c53c3b2532acf4ddaabfc7fdc8b0e3df66b15232",
+          "bytes": 598901
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.spinalis.thoracis",
+      "structureId": "FMA:22780",
+      "preferredName": "left spinalis thoracis",
+      "clinicalName": "Left spinalis thoracis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22780",
+      "sourceRepresentationId": "BP8979",
+      "sourceElementFileId": "FJ1544M",
+      "sourceElementFileIds": [
+        "FJ1544M"
+      ],
+      "sourceFile": "./obj/FJ1544M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b9a3a13c4b797eb8f3115dac3e80b5a83b03b9b34c25f7f2ef721810fa0c52d2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1544M",
+          "sha256": "b9a3a13c4b797eb8f3115dac3e80b5a83b03b9b34c25f7f2ef721810fa0c52d2",
+          "bytes": 594041
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.semispinalis",
+      "structureId": "FMA:22823",
+      "preferredName": "semispinalis",
+      "clinicalName": "Semispinalis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22823",
+      "sourceRepresentationId": "BP8318",
+      "sourceElementFileId": "FJ1538",
+      "sourceElementFileIds": [
+        "FJ1538",
+        "FJ1538M",
+        "FJ1539",
+        "FJ1539M",
+        "FJ1540",
+        "FJ1540M"
+      ],
+      "sourceFile": "./obj/FJ1538.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1538",
+          "sha256": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315",
+          "bytes": 219002
+        },
+        {
+          "fileId": "FJ1538M",
+          "sha256": "8f587a9a50e0ca6555ffb086e60445a499904ce55a5664340cce8ed12d86bb77",
+          "bytes": 215105
+        },
+        {
+          "fileId": "FJ1539",
+          "sha256": "b8deb92bb40d683fc3dc88ef08c49143ecf123d3ab4bcfd5ec18a576095cfbc2",
+          "bytes": 294969
+        },
+        {
+          "fileId": "FJ1539M",
+          "sha256": "bb9bac24392c7578e7ef6cc096e871fc1b24191b0c37eb2eda4b9e46c54f78ea",
+          "bytes": 291523
+        },
+        {
+          "fileId": "FJ1540",
+          "sha256": "91211e5154f7ee9191e807ec3e33f6d3ec734aefd6db83f6777c5b2d1b2afc44",
+          "bytes": 448376
+        },
+        {
+          "fileId": "FJ1540M",
+          "sha256": "b2d28afd1fb9b2d08da28f10a13a042d3aba7defbd2ee27b22816a5cda1e2ca8",
+          "bytes": 444404
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.semispinalis.thoracis",
+      "structureId": "FMA:22828",
+      "preferredName": "semispinalis thoracis",
+      "clinicalName": "Semispinalis thoracis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22828",
+      "sourceRepresentationId": "BP8317",
+      "sourceElementFileId": "FJ1540",
+      "sourceElementFileIds": [
+        "FJ1540",
+        "FJ1540M"
+      ],
+      "sourceFile": "./obj/FJ1540.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "91211e5154f7ee9191e807ec3e33f6d3ec734aefd6db83f6777c5b2d1b2afc44"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1540",
+          "sha256": "91211e5154f7ee9191e807ec3e33f6d3ec734aefd6db83f6777c5b2d1b2afc44",
+          "bytes": 448376
+        },
+        {
+          "fileId": "FJ1540M",
+          "sha256": "b2d28afd1fb9b2d08da28f10a13a042d3aba7defbd2ee27b22816a5cda1e2ca8",
+          "bytes": 444404
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.semispinalis.cervicis",
+      "structureId": "FMA:22829",
+      "preferredName": "semispinalis cervicis",
+      "clinicalName": "Semispinalis cervicis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22829",
+      "sourceRepresentationId": "BP8931",
+      "sourceElementFileId": "FJ1539",
+      "sourceElementFileIds": [
+        "FJ1539",
+        "FJ1539M"
+      ],
+      "sourceFile": "./obj/FJ1539.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b8deb92bb40d683fc3dc88ef08c49143ecf123d3ab4bcfd5ec18a576095cfbc2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1539",
+          "sha256": "b8deb92bb40d683fc3dc88ef08c49143ecf123d3ab4bcfd5ec18a576095cfbc2",
+          "bytes": 294969
+        },
+        {
+          "fileId": "FJ1539M",
+          "sha256": "bb9bac24392c7578e7ef6cc096e871fc1b24191b0c37eb2eda4b9e46c54f78ea",
+          "bytes": 291523
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.semispinalis.capitis",
+      "structureId": "FMA:22830",
+      "preferredName": "semispinalis capitis",
+      "clinicalName": "Semispinalis capitis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22830",
+      "sourceRepresentationId": "BP8701",
+      "sourceElementFileId": "FJ1538",
+      "sourceElementFileIds": [
+        "FJ1538",
+        "FJ1538M"
+      ],
+      "sourceFile": "./obj/FJ1538.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1538",
+          "sha256": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315",
+          "bytes": 219002
+        },
+        {
+          "fileId": "FJ1538M",
+          "sha256": "8f587a9a50e0ca6555ffb086e60445a499904ce55a5664340cce8ed12d86bb77",
+          "bytes": 215105
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.interspinalis.muscle",
+      "structureId": "FMA:22841",
+      "preferredName": "interspinalis muscle",
+      "clinicalName": "Interspinalis muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22841",
+      "sourceRepresentationId": "BP9139",
+      "sourceElementFileId": "FJ1551",
+      "sourceElementFileIds": [
+        "FJ1551",
+        "FJ1551M"
+      ],
+      "sourceFile": "./obj/FJ1551.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9e16b2dd79e3da3c43afae531deb69faf3f0e59d547b72cfcda73e58073feae4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1551",
+          "sha256": "9e16b2dd79e3da3c43afae531deb69faf3f0e59d547b72cfcda73e58073feae4",
+          "bytes": 37133
+        },
+        {
+          "fileId": "FJ1551M",
+          "sha256": "392e9215469be48fbd56a29ce14e7d649d3eb693b6ce996adc0bac0b88a920dd",
+          "bytes": 36945
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.interspinalis.thoracis",
+      "structureId": "FMA:22846",
+      "preferredName": "interspinalis thoracis",
+      "clinicalName": "Interspinalis thoracis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22846",
+      "sourceRepresentationId": "BP9138",
+      "sourceElementFileId": "FJ1551",
+      "sourceElementFileIds": [
+        "FJ1551",
+        "FJ1551M"
+      ],
+      "sourceFile": "./obj/FJ1551.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9e16b2dd79e3da3c43afae531deb69faf3f0e59d547b72cfcda73e58073feae4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1551",
+          "sha256": "9e16b2dd79e3da3c43afae531deb69faf3f0e59d547b72cfcda73e58073feae4",
+          "bytes": 37133
+        },
+        {
+          "fileId": "FJ1551M",
+          "sha256": "392e9215469be48fbd56a29ce14e7d649d3eb693b6ce996adc0bac0b88a920dd",
+          "bytes": 36945
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.semispinalis.thoracis",
+      "structureId": "FMA:22872",
+      "preferredName": "right semispinalis thoracis",
+      "clinicalName": "Right semispinalis thoracis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22872",
+      "sourceRepresentationId": "BP4713",
+      "sourceElementFileId": "FJ1540",
+      "sourceElementFileIds": [
+        "FJ1540"
+      ],
+      "sourceFile": "./obj/FJ1540.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "91211e5154f7ee9191e807ec3e33f6d3ec734aefd6db83f6777c5b2d1b2afc44"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1540",
+          "sha256": "91211e5154f7ee9191e807ec3e33f6d3ec734aefd6db83f6777c5b2d1b2afc44",
+          "bytes": 448376
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.semispinalis.thoracis",
+      "structureId": "FMA:22873",
+      "preferredName": "left semispinalis thoracis",
+      "clinicalName": "Left semispinalis thoracis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22873",
+      "sourceRepresentationId": "BP8316",
+      "sourceElementFileId": "FJ1540M",
+      "sourceElementFileIds": [
+        "FJ1540M"
+      ],
+      "sourceFile": "./obj/FJ1540M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b2d28afd1fb9b2d08da28f10a13a042d3aba7defbd2ee27b22816a5cda1e2ca8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1540M",
+          "sha256": "b2d28afd1fb9b2d08da28f10a13a042d3aba7defbd2ee27b22816a5cda1e2ca8",
+          "bytes": 444404
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.semispinalis.cervicis",
+      "structureId": "FMA:22874",
+      "preferredName": "right semispinalis cervicis",
+      "clinicalName": "Right semispinalis cervicis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22874",
+      "sourceRepresentationId": "BP4715",
+      "sourceElementFileId": "FJ1539",
+      "sourceElementFileIds": [
+        "FJ1539"
+      ],
+      "sourceFile": "./obj/FJ1539.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b8deb92bb40d683fc3dc88ef08c49143ecf123d3ab4bcfd5ec18a576095cfbc2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1539",
+          "sha256": "b8deb92bb40d683fc3dc88ef08c49143ecf123d3ab4bcfd5ec18a576095cfbc2",
+          "bytes": 294969
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.semispinalis.cervicis",
+      "structureId": "FMA:22875",
+      "preferredName": "left semispinalis cervicis",
+      "clinicalName": "Left semispinalis cervicis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22875",
+      "sourceRepresentationId": "BP8930",
+      "sourceElementFileId": "FJ1539M",
+      "sourceElementFileIds": [
+        "FJ1539M"
+      ],
+      "sourceFile": "./obj/FJ1539M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bb9bac24392c7578e7ef6cc096e871fc1b24191b0c37eb2eda4b9e46c54f78ea"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1539M",
+          "sha256": "bb9bac24392c7578e7ef6cc096e871fc1b24191b0c37eb2eda4b9e46c54f78ea",
+          "bytes": 291523
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.semispinalis.capitis",
+      "structureId": "FMA:22876",
+      "preferredName": "right semispinalis capitis",
+      "clinicalName": "Right semispinalis capitis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22876",
+      "sourceRepresentationId": "BP4717",
+      "sourceElementFileId": "FJ1538",
+      "sourceElementFileIds": [
+        "FJ1538"
+      ],
+      "sourceFile": "./obj/FJ1538.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1538",
+          "sha256": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315",
+          "bytes": 219002
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.semispinalis.capitis",
+      "structureId": "FMA:22877",
+      "preferredName": "left semispinalis capitis",
+      "clinicalName": "Left semispinalis capitis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22877",
+      "sourceRepresentationId": "BP8700",
+      "sourceElementFileId": "FJ1538M",
+      "sourceElementFileIds": [
+        "FJ1538M"
+      ],
+      "sourceFile": "./obj/FJ1538M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8f587a9a50e0ca6555ffb086e60445a499904ce55a5664340cce8ed12d86bb77"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1538M",
+          "sha256": "8f587a9a50e0ca6555ffb086e60445a499904ce55a5664340cce8ed12d86bb77",
+          "bytes": 215105
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.interspinalis.thoracis",
+      "structureId": "FMA:22890",
+      "preferredName": "right interspinalis thoracis",
+      "clinicalName": "Right interspinalis thoracis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22890",
+      "sourceRepresentationId": "BP4725",
+      "sourceElementFileId": "FJ1551",
+      "sourceElementFileIds": [
+        "FJ1551"
+      ],
+      "sourceFile": "./obj/FJ1551.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9e16b2dd79e3da3c43afae531deb69faf3f0e59d547b72cfcda73e58073feae4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1551",
+          "sha256": "9e16b2dd79e3da3c43afae531deb69faf3f0e59d547b72cfcda73e58073feae4",
+          "bytes": 37133
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.interspinalis.thoracis",
+      "structureId": "FMA:22891",
+      "preferredName": "left interspinalis thoracis",
+      "clinicalName": "Left interspinalis thoracis",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA22891",
+      "sourceRepresentationId": "BP9137",
+      "sourceElementFileId": "FJ1551M",
+      "sourceElementFileIds": [
+        "FJ1551M"
+      ],
+      "sourceFile": "./obj/FJ1551M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "392e9215469be48fbd56a29ce14e7d649d3eb693b6ce996adc0bac0b88a920dd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1551M",
+          "sha256": "392e9215469be48fbd56a29ce14e7d649d3eb693b6ce996adc0bac0b88a920dd",
+          "bytes": 36945
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.prevertebral.muscle",
+      "structureId": "FMA:32514",
+      "preferredName": "prevertebral muscle",
+      "clinicalName": "Prevertebral muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA32514",
+      "sourceRepresentationId": "BP8375",
+      "sourceElementFileId": "FJ1431",
+      "sourceElementFileIds": [
+        "FJ1431",
+        "FJ1431M",
+        "FJ1561",
+        "FJ1566",
+        "FJ1569",
+        "FJ1582",
+        "FJ1588",
+        "FJ1591"
+      ],
+      "sourceFile": "./obj/FJ1431.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b66009da13d6241d66de3c0242288abfe0c90ce1c76b38000f9a92b02e2f1e0f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1431",
+          "sha256": "b66009da13d6241d66de3c0242288abfe0c90ce1c76b38000f9a92b02e2f1e0f",
+          "bytes": 379043
+        },
+        {
+          "fileId": "FJ1431M",
+          "sha256": "6ab42a645723e66a32b2c64e72be87e0a13fb497cbbf2ff29d26bc827fbaa0ce",
+          "bytes": 376391
+        },
+        {
+          "fileId": "FJ1561",
+          "sha256": "a805c03e24aadb8da137abb8533543f4561db28e050b7bc6bb6f7ba70a0f1ac0",
+          "bytes": 262624
+        },
+        {
+          "fileId": "FJ1566",
+          "sha256": "f063c76b3d4b1b6ebdd8f7504fa7a0d1d8f3b8d2e1e3bb45da9fb46ff42db15e",
+          "bytes": 61793
+        },
+        {
+          "fileId": "FJ1569",
+          "sha256": "d5cee1b4060b42602f81ab57e0fe7ae8da4288e8dd215928d2f369715524ee1d",
+          "bytes": 56282
+        },
+        {
+          "fileId": "FJ1582",
+          "sha256": "2b0def59b27f6f6c654983b04daf3401997517a7c93bfff5bf70d0d0eb875ac9",
+          "bytes": 278756
+        },
+        {
+          "fileId": "FJ1588",
+          "sha256": "b7ad7dca09e8946a29dbcabf3cd2a01e724df5b4a2e5da0d67eadd5017eb736b",
+          "bytes": 68249
+        },
+        {
+          "fileId": "FJ1591",
+          "sha256": "7c7266e6c06e8b74784c92b7be97c2bef843252fbb8a493d21db31e6c226b828",
+          "bytes": 52646
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.intermediate.postvertebral.muscle",
+      "structureId": "FMA:32560",
+      "preferredName": "intermediate postvertebral muscle",
+      "clinicalName": "Intermediate postvertebral muscle",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA32560",
+      "sourceRepresentationId": "BP8319",
+      "sourceElementFileId": "FJ1538",
+      "sourceElementFileIds": [
+        "FJ1538",
+        "FJ1538M",
+        "FJ1539",
+        "FJ1539M",
+        "FJ1540",
+        "FJ1540M"
+      ],
+      "sourceFile": "./obj/FJ1538.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1538",
+          "sha256": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315",
+          "bytes": 219002
+        },
+        {
+          "fileId": "FJ1538M",
+          "sha256": "8f587a9a50e0ca6555ffb086e60445a499904ce55a5664340cce8ed12d86bb77",
+          "bytes": 215105
+        },
+        {
+          "fileId": "FJ1539",
+          "sha256": "b8deb92bb40d683fc3dc88ef08c49143ecf123d3ab4bcfd5ec18a576095cfbc2",
+          "bytes": 294969
+        },
+        {
+          "fileId": "FJ1539M",
+          "sha256": "bb9bac24392c7578e7ef6cc096e871fc1b24191b0c37eb2eda4b9e46c54f78ea",
+          "bytes": 291523
+        },
+        {
+          "fileId": "FJ1540",
+          "sha256": "91211e5154f7ee9191e807ec3e33f6d3ec734aefd6db83f6777c5b2d1b2afc44",
+          "bytes": 448376
+        },
+        {
+          "fileId": "FJ1540M",
+          "sha256": "b2d28afd1fb9b2d08da28f10a13a042d3aba7defbd2ee27b22816a5cda1e2ca8",
+          "bytes": 444404
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.sternocostal.part.of.pectoralis.major",
+      "structureId": "FMA:34696",
+      "preferredName": "sternocostal part of pectoralis major",
+      "clinicalName": "Sternocostal part of pectoralis major",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA34696",
+      "sourceRepresentationId": "BP8324",
+      "sourceElementFileId": "FJ1464",
+      "sourceElementFileIds": [
+        "FJ1464",
+        "FJ1464M"
+      ],
+      "sourceFile": "./obj/FJ1464.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f446df845d19385cdbd5b86457c8690981cbc914f8f9595b50bdc4a44505aab7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1464",
+          "sha256": "f446df845d19385cdbd5b86457c8690981cbc914f8f9595b50bdc4a44505aab7",
+          "bytes": 556794
+        },
+        {
+          "fileId": "FJ1464M",
+          "sha256": "a2ffa047e9cff27df3ed7cb5f305491ce921f236cfe60ee90334cc5fead271c3",
+          "bytes": 551361
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.superior.oblique.part.of.longus.colli",
+      "structureId": "FMA:46280",
+      "preferredName": "superior oblique part of longus colli",
+      "clinicalName": "Superior oblique part of longus colli",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46280",
+      "sourceRepresentationId": "BP5594",
+      "sourceElementFileId": "FJ1600",
+      "sourceElementFileIds": [
+        "FJ1600"
+      ],
+      "sourceFile": "./obj/FJ1600.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "246c0e197149700a407255282bed9549927ebbad029169a936d1fe12289effe0"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1600",
+          "sha256": "246c0e197149700a407255282bed9549927ebbad029169a936d1fe12289effe0",
+          "bytes": 151215
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.inferior.oblique.part.of.longus.colli",
+      "structureId": "FMA:46281",
+      "preferredName": "inferior oblique part of longus colli",
+      "clinicalName": "Inferior oblique part of longus colli",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46281",
+      "sourceRepresentationId": "BP7686",
+      "sourceElementFileId": "FJ1557",
+      "sourceElementFileIds": [
+        "FJ1557"
+      ],
+      "sourceFile": "./obj/FJ1557.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fbef1ad6ba831d68d0f6e51269896e5c0275193cc41b7bb4a1321257bd56e27f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1557",
+          "sha256": "fbef1ad6ba831d68d0f6e51269896e5c0275193cc41b7bb4a1321257bd56e27f",
+          "bytes": 124773
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.superior.oblique.part.of.left.longus.colli",
+      "structureId": "FMA:46284",
+      "preferredName": "superior oblique part of left longus colli",
+      "clinicalName": "Superior oblique part of left longus colli",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46284",
+      "sourceRepresentationId": "BP5595",
+      "sourceElementFileId": "FJ1600",
+      "sourceElementFileIds": [
+        "FJ1600"
+      ],
+      "sourceFile": "./obj/FJ1600.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "246c0e197149700a407255282bed9549927ebbad029169a936d1fe12289effe0"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1600",
+          "sha256": "246c0e197149700a407255282bed9549927ebbad029169a936d1fe12289effe0",
+          "bytes": 151215
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.inferior.oblique.part.of.left.longus.colli",
+      "structureId": "FMA:46288",
+      "preferredName": "inferior oblique part of left longus colli",
+      "clinicalName": "Inferior oblique part of left longus colli",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46288",
+      "sourceRepresentationId": "BP7685",
+      "sourceElementFileId": "FJ1557",
+      "sourceElementFileIds": [
+        "FJ1557"
+      ],
+      "sourceFile": "./obj/FJ1557.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fbef1ad6ba831d68d0f6e51269896e5c0275193cc41b7bb4a1321257bd56e27f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1557",
+          "sha256": "fbef1ad6ba831d68d0f6e51269896e5c0275193cc41b7bb4a1321257bd56e27f",
+          "bytes": 124773
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.oblique.arytenoid",
+      "structureId": "FMA:46583",
+      "preferredName": "oblique arytenoid",
+      "clinicalName": "Oblique arytenoid",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46583",
+      "sourceRepresentationId": "BP8894",
+      "sourceElementFileId": "FJ2780",
+      "sourceElementFileIds": [
+        "FJ2780",
+        "FJ2798"
+      ],
+      "sourceFile": "./obj/FJ2780.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9ad13a6a95301607fa5968e68ae47efc458ebc67f9582f6fc0861672b7b4de17"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ2780",
+          "sha256": "9ad13a6a95301607fa5968e68ae47efc458ebc67f9582f6fc0861672b7b4de17",
+          "bytes": 467428
+        },
+        {
+          "fileId": "FJ2798",
+          "sha256": "706e265f99131c2bde1b61c4bc2cdfab7ae384ed2c84f10c8cbff91a295ca22c",
+          "bytes": 451755
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.oblique.arytenoid",
+      "structureId": "FMA:46584",
+      "preferredName": "right oblique arytenoid",
+      "clinicalName": "Right oblique arytenoid",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46584",
+      "sourceRepresentationId": "BP9152",
+      "sourceElementFileId": "FJ2798",
+      "sourceElementFileIds": [
+        "FJ2798"
+      ],
+      "sourceFile": "./obj/FJ2798.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "706e265f99131c2bde1b61c4bc2cdfab7ae384ed2c84f10c8cbff91a295ca22c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ2798",
+          "sha256": "706e265f99131c2bde1b61c4bc2cdfab7ae384ed2c84f10c8cbff91a295ca22c",
+          "bytes": 451755
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.oblique.arytenoid",
+      "structureId": "FMA:46585",
+      "preferredName": "left oblique arytenoid",
+      "clinicalName": "Left oblique arytenoid",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46585",
+      "sourceRepresentationId": "BP8893",
+      "sourceElementFileId": "FJ2780",
+      "sourceElementFileIds": [
+        "FJ2780"
+      ],
+      "sourceFile": "./obj/FJ2780.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9ad13a6a95301607fa5968e68ae47efc458ebc67f9582f6fc0861672b7b4de17"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ2780",
+          "sha256": "9ad13a6a95301607fa5968e68ae47efc458ebc67f9582f6fc0861672b7b4de17",
+          "bytes": 467428
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.zone.of.oblique.arytenoid",
+      "structureId": "FMA:46601",
+      "preferredName": "zone of oblique arytenoid",
+      "clinicalName": "Zone of oblique arytenoid",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA46601",
+      "sourceRepresentationId": "BP8572",
+      "sourceElementFileId": "FJ2774",
+      "sourceElementFileIds": [
+        "FJ2774",
+        "FJ2791"
+      ],
+      "sourceFile": "./obj/FJ2774.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a7922984f588cdb61a10fd9d6bc901cf843db3520ce0a5a38ba8edfb51e05bab"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ2774",
+          "sha256": "a7922984f588cdb61a10fd9d6bc901cf843db3520ce0a5a38ba8edfb51e05bab",
+          "bytes": 482718
+        },
+        {
+          "fileId": "FJ2791",
+          "sha256": "588ffa8fcec00eaa9ce1488576161a548941ba4dd3866a58063b5a78da7c891d",
+          "bytes": 431727
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.superior.oblique",
+      "structureId": "FMA:49039",
+      "preferredName": "superior oblique",
+      "clinicalName": "Superior oblique",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49039",
+      "sourceRepresentationId": "BP4931",
+      "sourceElementFileId": "FJ1322",
+      "sourceElementFileIds": [
+        "FJ1322",
+        "FJ1373"
+      ],
+      "sourceFile": "./obj/FJ1322.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3a84379998b92f3c359c41426dba02b79c9fe648cfb9e3e835ce63677c9f8e9a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1322",
+          "sha256": "3a84379998b92f3c359c41426dba02b79c9fe648cfb9e3e835ce63677c9f8e9a",
+          "bytes": 227279
+        },
+        {
+          "fileId": "FJ1373",
+          "sha256": "90d01a639fd51a3cb956e17dbb581f6d51e037cfacdcfccf21716e8a57f50c6e",
+          "bytes": 226350
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.inferior.oblique",
+      "structureId": "FMA:49040",
+      "preferredName": "inferior oblique",
+      "clinicalName": "Inferior oblique",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49040",
+      "sourceRepresentationId": "BP4946",
+      "sourceElementFileId": "FJ1294",
+      "sourceElementFileIds": [
+        "FJ1294",
+        "FJ1345"
+      ],
+      "sourceFile": "./obj/FJ1294.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fc7dd40ee970cbbeae8ee147d0e7638e94fb166d28d4b1e1e62314f19395d6a8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1294",
+          "sha256": "fc7dd40ee970cbbeae8ee147d0e7638e94fb166d28d4b1e1e62314f19395d6a8",
+          "bytes": 143313
+        },
+        {
+          "fileId": "FJ1345",
+          "sha256": "b5508969b711e3c7bbfff0fdffc7567157326ee0e88b28416326513e06263c41",
+          "bytes": 145259
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.inferior.oblique",
+      "structureId": "FMA:49050",
+      "preferredName": "right inferior oblique",
+      "clinicalName": "Right inferior oblique",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49050",
+      "sourceRepresentationId": "BP4947",
+      "sourceElementFileId": "FJ1345",
+      "sourceElementFileIds": [
+        "FJ1345"
+      ],
+      "sourceFile": "./obj/FJ1345.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b5508969b711e3c7bbfff0fdffc7567157326ee0e88b28416326513e06263c41"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1345",
+          "sha256": "b5508969b711e3c7bbfff0fdffc7567157326ee0e88b28416326513e06263c41",
+          "bytes": 145259
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.inferior.oblique",
+      "structureId": "FMA:49051",
+      "preferredName": "left inferior oblique",
+      "clinicalName": "Left inferior oblique",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49051",
+      "sourceRepresentationId": "BP4948",
+      "sourceElementFileId": "FJ1294",
+      "sourceElementFileIds": [
+        "FJ1294"
+      ],
+      "sourceFile": "./obj/FJ1294.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fc7dd40ee970cbbeae8ee147d0e7638e94fb166d28d4b1e1e62314f19395d6a8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1294",
+          "sha256": "fc7dd40ee970cbbeae8ee147d0e7638e94fb166d28d4b1e1e62314f19395d6a8",
+          "bytes": 143313
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.superior.oblique",
+      "structureId": "FMA:49052",
+      "preferredName": "right superior oblique",
+      "clinicalName": "Right superior oblique",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49052",
+      "sourceRepresentationId": "BP4932",
+      "sourceElementFileId": "FJ1373",
+      "sourceElementFileIds": [
+        "FJ1373"
+      ],
+      "sourceFile": "./obj/FJ1373.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "90d01a639fd51a3cb956e17dbb581f6d51e037cfacdcfccf21716e8a57f50c6e"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1373",
+          "sha256": "90d01a639fd51a3cb956e17dbb581f6d51e037cfacdcfccf21716e8a57f50c6e",
+          "bytes": 226350
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.left.superior.oblique",
+      "structureId": "FMA:49053",
+      "preferredName": "left superior oblique",
+      "clinicalName": "Left superior oblique",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49053",
+      "sourceRepresentationId": "BP4933",
+      "sourceElementFileId": "FJ1322",
+      "sourceElementFileIds": [
+        "FJ1322"
+      ],
+      "sourceFile": "./obj/FJ1322.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3a84379998b92f3c359c41426dba02b79c9fe648cfb9e3e835ce63677c9f8e9a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1322",
+          "sha256": "3a84379998b92f3c359c41426dba02b79c9fe648cfb9e3e835ce63677c9f8e9a",
+          "bytes": 227279
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.trochlea.of.superior.oblique",
+      "structureId": "FMA:49065",
+      "preferredName": "trochlea of superior oblique",
+      "clinicalName": "Trochlea of superior oblique",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49065",
+      "sourceRepresentationId": "BP5094",
+      "sourceElementFileId": "FJ1329",
+      "sourceElementFileIds": [
+        "FJ1329",
+        "FJ1380"
+      ],
+      "sourceFile": "./obj/FJ1329.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bd3bb98b659cc91865a50457124aac9353d98d21a5963404cad21cfb010dce2d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1329",
+          "sha256": "bd3bb98b659cc91865a50457124aac9353d98d21a5963404cad21cfb010dce2d",
+          "bytes": 25544
+        },
+        {
+          "fileId": "FJ1380",
+          "sha256": "eb522d2de22050bba2a6359cee767cd34d96e8a0bc135db043f9cf86f70d6d6e",
+          "bytes": 24797
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.trochlea.of.right.superior.oblique",
+      "structureId": "FMA:49067",
+      "preferredName": "trochlea of right superior oblique",
+      "clinicalName": "Trochlea of right superior oblique",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49067",
+      "sourceRepresentationId": "BP5095",
+      "sourceElementFileId": "FJ1380",
+      "sourceElementFileIds": [
+        "FJ1380"
+      ],
+      "sourceFile": "./obj/FJ1380.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "eb522d2de22050bba2a6359cee767cd34d96e8a0bc135db043f9cf86f70d6d6e"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1380",
+          "sha256": "eb522d2de22050bba2a6359cee767cd34d96e8a0bc135db043f9cf86f70d6d6e",
+          "bytes": 24797
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.trochlea.of.left.superior.oblique",
+      "structureId": "FMA:49068",
+      "preferredName": "trochlea of left superior oblique",
+      "clinicalName": "Trochlea of left superior oblique",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA49068",
+      "sourceRepresentationId": "BP5096",
+      "sourceElementFileId": "FJ1329",
+      "sourceElementFileIds": [
+        "FJ1329"
+      ],
+      "sourceFile": "./obj/FJ1329.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bd3bb98b659cc91865a50457124aac9353d98d21a5963404cad21cfb010dce2d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1329",
+          "sha256": "bd3bb98b659cc91865a50457124aac9353d98d21a5963404cad21cfb010dce2d",
+          "bytes": 25544
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.posterior.intercostal.arteries",
+      "structureId": "FMA:63822",
+      "preferredName": "posterior intercostal arteries",
+      "clinicalName": "Posterior intercostal arteries",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA63822",
+      "sourceRepresentationId": "BP6654",
+      "sourceElementFileId": "FJ1961",
+      "sourceElementFileIds": [
+        "FJ1961",
+        "FJ1975"
+      ],
+      "sourceFile": "./obj/FJ1961.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "54a416676ad62bdeb3d4b40a750fc1158669cce70d0d07d6a1ff730c0b4ff21a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1961",
+          "sha256": "54a416676ad62bdeb3d4b40a750fc1158669cce70d0d07d6a1ff730c0b4ff21a",
+          "bytes": 2589428
+        },
+        {
+          "fileId": "FJ1975",
+          "sha256": "3da1b8426c9c861be01e1e10cea1ab3019191e9eecd50fbeb5040496edbd814c",
+          "bytes": 2382075
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.iliocostalis",
+      "structureId": "FMA:77177",
+      "preferredName": "iliocostalis",
+      "clinicalName": "Iliocostalis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA77177",
+      "sourceRepresentationId": "BP8050",
+      "sourceElementFileId": "FJ1526",
+      "sourceElementFileIds": [
+        "FJ1526",
+        "FJ1526M",
+        "FJ1527",
+        "FJ1527M",
+        "FJ1528",
+        "FJ1528M"
+      ],
+      "sourceFile": "./obj/FJ1526.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0d2b4b780dd191b9e6518dc3a71ad8c032da0db3631a2a582969faf7dfdbb96b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1526",
+          "sha256": "0d2b4b780dd191b9e6518dc3a71ad8c032da0db3631a2a582969faf7dfdbb96b",
+          "bytes": 237546
+        },
+        {
+          "fileId": "FJ1526M",
+          "sha256": "edb4c7f871b6cee0ab8de9d31ad428b779a087a7b66dccf4421a806bfb11812d",
+          "bytes": 235971
+        },
+        {
+          "fileId": "FJ1527",
+          "sha256": "8a15295f08faac150ee5f16fe1035398dcfa60d3cba8b42b504b53764032b718",
+          "bytes": 1189971
+        },
+        {
+          "fileId": "FJ1527M",
+          "sha256": "1c7f20b34a9639d1996e3ec18873beb6dc114169ae1d310e88e2c3d8b1ff2133",
+          "bytes": 1178614
+        },
+        {
+          "fileId": "FJ1528",
+          "sha256": "0ee5ad819949cd4197dd96b00373547b42f7e1831b2add6baea4baf3661f38fa",
+          "bytes": 618808
+        },
+        {
+          "fileId": "FJ1528M",
+          "sha256": "02a7addd5329689094506095570a458982b6dfc2f9509392bf310807183e3df7",
+          "bytes": 613804
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.longissimus",
+      "structureId": "FMA:77178",
+      "preferredName": "longissimus",
+      "clinicalName": "Longissimus",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA77178",
+      "sourceRepresentationId": "BP8987",
+      "sourceElementFileId": "FJ1533",
+      "sourceElementFileIds": [
+        "FJ1533",
+        "FJ1533M",
+        "FJ1534",
+        "FJ1534M",
+        "FJ1535",
+        "FJ1535M"
+      ],
+      "sourceFile": "./obj/FJ1533.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "845e65ab735bc49c5026fab485f8dd2eb9624ac7c2519927578d7d7508e644cd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1533",
+          "sha256": "845e65ab735bc49c5026fab485f8dd2eb9624ac7c2519927578d7d7508e644cd",
+          "bytes": 179817
+        },
+        {
+          "fileId": "FJ1533M",
+          "sha256": "900be066826b7ac1f38f92a243b28474694c42a1fafa2934d55db020820c7178",
+          "bytes": 178291
+        },
+        {
+          "fileId": "FJ1534",
+          "sha256": "d89596561e6d76dc5d5e6895711d598201056b1c7a834ee0c593702ef9382608",
+          "bytes": 229177
+        },
+        {
+          "fileId": "FJ1534M",
+          "sha256": "4d8e49d6e29673284fc79376aafb0baec2cc1999b6440b19a5310c550828a8ac",
+          "bytes": 227947
+        },
+        {
+          "fileId": "FJ1535",
+          "sha256": "b555761d298a4bea88a05d2067b0cfff507522546bfc0dcb9b3bad576a3449fa",
+          "bytes": 1319188
+        },
+        {
+          "fileId": "FJ1535M",
+          "sha256": "d238f10400abb5754b2ef1e920eacc720b69835cd31a229ef3d68468f4064a57",
+          "bytes": 1306680
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.spinalis",
+      "structureId": "FMA:77179",
+      "preferredName": "spinalis",
+      "clinicalName": "Spinalis",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA77179",
+      "sourceRepresentationId": "BP8423",
+      "sourceElementFileId": "FJ1543",
+      "sourceElementFileIds": [
+        "FJ1543",
+        "FJ1543M",
+        "FJ1544",
+        "FJ1544M"
+      ],
+      "sourceFile": "./obj/FJ1543.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3dc2e6367ead09b94da4551212a36692ecf56586be7c27d8b5e834d4c32e1fcb"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1543",
+          "sha256": "3dc2e6367ead09b94da4551212a36692ecf56586be7c27d8b5e834d4c32e1fcb",
+          "bytes": 103745
+        },
+        {
+          "fileId": "FJ1543M",
+          "sha256": "44647555062b70a3535586a83fae2cfc38441870a29e6b8f95bd5ffdd1af2af9",
+          "bytes": 102979
+        },
+        {
+          "fileId": "FJ1544",
+          "sha256": "d269ffdde57349435a3cfcc3c53c3b2532acf4ddaabfc7fdc8b0e3df66b15232",
+          "bytes": 598901
+        },
+        {
+          "fileId": "FJ1544M",
+          "sha256": "b9a3a13c4b797eb8f3115dac3e80b5a83b03b9b34c25f7f2ef721810fa0c52d2",
+          "bytes": 594041
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.splenius",
+      "structureId": "FMA:77180",
+      "preferredName": "splenius",
+      "clinicalName": "Splenius",
+      "layer": "muscle",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA77180",
+      "sourceRepresentationId": "BP8024",
+      "sourceElementFileId": "FJ1545",
+      "sourceElementFileIds": [
+        "FJ1545",
+        "FJ1545M",
+        "FJ1546",
+        "FJ1546M"
+      ],
+      "sourceFile": "./obj/FJ1545.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1545",
+          "sha256": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8",
+          "bytes": 556499
+        },
+        {
+          "fileId": "FJ1545M",
+          "sha256": "a80ad7dd892450090022cd108216c21a55dd70872c7cfa832c604c040c79cd98",
+          "bytes": 554265
+        },
+        {
+          "fileId": "FJ1546",
+          "sha256": "d1d911084f09a997efd08c69b15885cb20fe2fe849c5f8652bc6f46c1ca62fe5",
+          "bytes": 486722
+        },
+        {
+          "fileId": "FJ1546M",
+          "sha256": "ead6661905f5316bb3865c7127d40eeda72feae4ec2abaa46b3e7679cfc6dc9a",
+          "bytes": 483632
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.sternocostal.part.of.right.pectoralis.major",
+      "structureId": "FMA:79979",
+      "preferredName": "sternocostal part of right pectoralis major",
+      "clinicalName": "Sternocostal part of right pectoralis major",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA79979",
+      "sourceRepresentationId": "BP5613",
+      "sourceElementFileId": "FJ1464",
+      "sourceElementFileIds": [
+        "FJ1464"
+      ],
+      "sourceFile": "./obj/FJ1464.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f446df845d19385cdbd5b86457c8690981cbc914f8f9595b50bdc4a44505aab7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1464",
+          "sha256": "f446df845d19385cdbd5b86457c8690981cbc914f8f9595b50bdc4a44505aab7",
+          "bytes": 556794
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.sternocostal.part.of.left.pectoralis.major",
+      "structureId": "FMA:79980",
+      "preferredName": "sternocostal part of left pectoralis major",
+      "clinicalName": "Sternocostal part of left pectoralis major",
+      "layer": "muscle",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "muscle-torso",
+      "sourceConceptId": "FMA79980",
+      "sourceRepresentationId": "BP8323",
+      "sourceElementFileId": "FJ1464M",
+      "sourceElementFileIds": [
+        "FJ1464M"
+      ],
+      "sourceFile": "./obj/FJ1464M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a2ffa047e9cff27df3ed7cb5f305491ce921f236cfe60ee90334cc5fead271c3"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1464M",
+          "sha256": "a2ffa047e9cff27df3ed7cb5f305491ce921f236cfe60ee90334cc5fead271c3",
+          "bytes": 551361
+        }
+      ]
+    }
+  ]
+}
