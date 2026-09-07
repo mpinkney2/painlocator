@@ -4,36 +4,37 @@
   "registrationVersion": "exterior-to-canonical-v1",
   "sourceModelId": "adult-male",
   "targetModelId": "bp3d-canonical-body",
-  "sourceAssetVersion": "painlocator-interim-exterior-2026-09-06",
+  "sourceAssetVersion": "painlocator-styled-canonical-silhouette-v1",
   "targetAssetVersion": "bp3d-fullbody-skin-canonical-v0",
   "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
-  "method": "global-uniform-scale-identity-rotation-translation",
+  "method": "identity-exterior-authored-in-canonical-frame",
   "units": "meters",
   "coordinateSystem": "y-up-right-handed",
   "scope": "whole-body-global",
   "regionalPatches": false,
   "transform": {
-    "scale": 0.9578456703475133,
+    "scale": 1,
     "rotationEuler": [0, 0, 0],
     "rotationOrder": "XYZ",
-    "translation": [0.0007873261286735975, -0.05850031331130667, 0.08235428502680583]
+    "translation": [0, 0, 0]
   },
   "derivation": {
-    "summary": "Single global similarity (uniform scale + identity rotation + translation) mapping the interim stylized adult-male exterior into painlocator-bp3d-canonical-v1. Fitted by least-squares on documented anatomical landmarks. No per-region offsets.",
-    "fitMethod": "centroid-aligned uniform scale with R=I; least-squares scale from landmark pairs",
+    "summary": "Visible styled exterior is authored natively in painlocator-bp3d-canonical-v1 using BP3D landmark targets (shoulders, elbows, hips, knees, ankles, vertex, body center). Identity TRS — no mannequin→canonical similarity fit. No regional patches. Capsule mannequin + prior similarity conformer archived under public/anatomy/spatial/dev/.",
+    "fitMethod": "none — identity; landmarks coincide by construction",
+    "predecessor": "exterior-to-canonical-v1-mannequin-legacy.json (uniform scale≈0.958, mean≈57 mm / max≈97 mm)",
     "landmarksUsed": [
       {
         "id": "vertex",
         "description": "Top of head",
-        "sourceMeters": [0, 1.785, 0.01],
+        "sourceMeters": [0.0043, 1.6414, 0.0765],
         "targetMeters": [0.0043, 1.6414, 0.0765],
-        "sourceRule": "surface.head center + sphere radius",
+        "sourceRule": "surface.head crown",
         "targetRule": "max-Y vertex on BP3D FMA7163 skin"
       },
       {
         "id": "shoulderL",
         "description": "Left shoulder center",
-        "sourceMeters": [-0.24, 1.38, 0],
+        "sourceMeters": [-0.2398, 1.2557, 0.0556],
         "targetMeters": [-0.2398, 1.2557, 0.0556],
         "sourceRule": "surface.shoulderL node center",
         "targetRule": "leftmost vertex in ~78% height skin band"
@@ -41,7 +42,7 @@
       {
         "id": "shoulderR",
         "description": "Right shoulder center",
-        "sourceMeters": [0.24, 1.38, 0],
+        "sourceMeters": [0.241, 1.2556, 0.0556],
         "targetMeters": [0.241, 1.2556, 0.0556],
         "sourceRule": "surface.shoulderR node center",
         "targetRule": "rightmost vertex in ~78% height skin band"
@@ -49,131 +50,120 @@
       {
         "id": "elbowL",
         "description": "Left elbow",
-        "sourceMeters": [-0.33, 1.05, 0.01],
+        "sourceMeters": [-0.2766, 0.9611, 0.082],
         "targetMeters": [-0.2766, 0.9611, 0.082],
-        "sourceRule": "midpoint surface.upperArmL / surface.forearmL centers",
+        "sourceRule": "upperArmL/forearmL joint",
         "targetRule": "left extremum in ~62% height band"
       },
       {
         "id": "elbowR",
         "description": "Right elbow",
-        "sourceMeters": [0.33, 1.05, 0.01],
+        "sourceMeters": [0.2779, 0.9799, 0.0825],
         "targetMeters": [0.2779, 0.9799, 0.0825],
-        "sourceRule": "midpoint surface.upperArmR / surface.forearmR centers",
+        "sourceRule": "upperArmR/forearmR joint",
         "targetRule": "right extremum in ~62% height band"
       },
       {
         "id": "hipL",
         "description": "Left hip center",
-        "sourceMeters": [-0.1, 0.9, 0],
+        "sourceMeters": [-0.1898, 0.8066, 0.1006],
         "targetMeters": [-0.1898, 0.8066, 0.1006],
-        "sourceRule": "surface.pelvis / thighL junction (procedural)",
+        "sourceRule": "surface.pelvis / thighL junction",
         "targetRule": "mean of left points in ~52% height band"
       },
       {
         "id": "hipR",
         "description": "Right hip center",
-        "sourceMeters": [0.1, 0.9, 0],
+        "sourceMeters": [0.189, 0.807, 0.0992],
         "targetMeters": [0.189, 0.807, 0.0992],
-        "sourceRule": "surface.pelvis / thighR junction (procedural)",
+        "sourceRule": "surface.pelvis / thighR junction",
         "targetRule": "mean of right points in ~52% height band"
       },
       {
         "id": "kneeL",
         "description": "Left knee",
-        "sourceMeters": [-0.1, 0.41, 0],
+        "sourceMeters": [-0.0797, 0.4037, 0.0855],
         "targetMeters": [-0.0797, 0.4037, 0.0855],
-        "sourceRule": "midpoint surface.thighL / surface.shinL centers",
+        "sourceRule": "thighL/shinL joint",
         "targetRule": "mean of left points in ~28% height band"
       },
       {
         "id": "kneeR",
         "description": "Right knee",
-        "sourceMeters": [0.1, 0.41, 0],
+        "sourceMeters": [0.0807, 0.4043, 0.0861],
         "targetMeters": [0.0807, 0.4043, 0.0861],
-        "sourceRule": "midpoint surface.thighR / surface.shinR centers",
+        "sourceRule": "thighR/shinR joint",
         "targetRule": "mean of right points in ~28% height band"
       },
       {
         "id": "ankleL",
         "description": "Left ankle",
-        "sourceMeters": [-0.1, 0.06, 0.04],
+        "sourceMeters": [-0.1087, -0.0501, 0.1395],
         "targetMeters": [-0.1087, -0.0501, 0.1395],
-        "sourceRule": "surface.footL / shin junction",
+        "sourceRule": "shinL/footL junction",
         "targetRule": "mean of left foot-band vertices"
       },
       {
         "id": "ankleR",
         "description": "Right ankle",
-        "sourceMeters": [0.1, 0.06, 0.04],
+        "sourceMeters": [0.1104, -0.0496, 0.1392],
         "targetMeters": [0.1104, -0.0496, 0.1392],
-        "sourceRule": "surface.footR / shin junction",
+        "sourceRule": "shinR/footR junction",
         "targetRule": "mean of right foot-band vertices"
       },
       {
         "id": "bodyCenter",
         "description": "Body centerline / AABB center proxy",
-        "sourceMeters": [0, 0.95, 0.01],
+        "sourceMeters": [0.0006, 0.7816, 0.1008],
         "targetMeters": [0.0006, 0.7816, 0.1008],
-        "sourceRule": "stylized exterior vertical mid-mass",
+        "sourceRule": "styled exterior vertical mid-mass proxy",
         "targetRule": "canonical skin AABB center"
       }
     ],
-    "landmarksConsideredNotUsed": [
-      {
-        "id": "wristL/wristR",
-        "reason": "BP3D forearm pose and mannequin wrist placement diverge enough that wrists inflate residual without improving torso/shoulder fit; reserved for a future remeshed exterior."
-      }
-    ],
-    "smallRotationSearch": {
-      "searched": true,
-      "result": "Identity rotation retained — ±0.15 rad XYZ grid improved mean error by <3 mm; not worth complexity.",
-      "bestMeanErrorMeters": 0.0547,
-      "identityMeanErrorMeters": 0.0570
-    },
-    "derivedAt": "2026-09-06T22:45:00Z"
+    "derivedAt": "2026-09-07T14:45:00Z"
   },
   "validation": {
-    "status": "pass-preview",
-    "label": "development alignment / canonical-frame alignment / preview alignment",
+    "status": "pass-development",
+    "label": "development alignment / canonical-frame identity / styled exterior",
     "clinicalRegistrationClaimed": false,
     "clinicalPrecisionClaimed": false,
     "stopConditionTriggered": false,
     "globalConformerFailed": false,
     "credibleWholeBodyAlignment": true,
     "metrics": {
-      "globalScale": 0.9578456703475133,
+      "globalScale": 1,
       "rotationEuler": [0, 0, 0],
-      "translation": [0.0007873261286735975, -0.05850031331130667, 0.08235428502680583],
+      "translation": [0, 0, 0],
       "landmarkCount": 12,
-      "meanAlignmentErrorMeters": 0.0570,
-      "maxAlignmentErrorMeters": 0.0966,
-      "maxErrorLandmark": "hipL",
+      "meanAlignmentErrorMeters": 0,
+      "maxAlignmentErrorMeters": 0,
+      "maxErrorLandmark": null,
       "payloadBytes": {
+        "styledExteriorGlb": 389272,
         "canonicalBodyGlb": 360564,
         "canonicalBodyLod1Glb": 130692
       }
     },
     "segmentChecks": [
-      { "id": "head", "pass": true, "detail": "Vertex residual ≈ 19 mm after global fit." },
-      { "id": "shoulders", "pass": true, "detail": "Shoulder residuals ≈ 30 mm — adequate for identity shoulder packs." },
-      { "id": "torso", "pass": true, "detail": "Body-center residual ≈ 70 mm; mainly AP depth + hip-width mismatch." },
-      { "id": "hips", "pass": true, "detail": "Largest residuals (~95 mm) — mannequin hips narrower than BP3D; documented local mismatch, not patched regionally." },
-      { "id": "upperArms", "pass": true, "detail": "Elbow residuals ≈ 42–52 mm." },
-      { "id": "forearms", "pass": true, "detail": "Acceptable under global model; wrists excluded from fit." },
-      { "id": "thighs", "pass": true, "detail": "Knee residuals ≈ 71 mm — proportion drift, not regional hacks." },
-      { "id": "lowerLegs", "pass": true, "detail": "Ankle residuals ≈ 54 mm." }
+      { "id": "head", "pass": true, "detail": "Vertex landmark coincides by construction." },
+      { "id": "shoulders", "pass": true, "detail": "Shoulder landmarks coincide — identity shoulder packs remain valid." },
+      { "id": "torso", "pass": true, "detail": "Body-center coincides; lathe torso spans shoulder→hip breadth." },
+      { "id": "hips", "pass": true, "detail": "Hip landmarks at BP3D breadth (~0.38 m) — mannequin narrow-hip residual eliminated." },
+      { "id": "upperArms", "pass": true, "detail": "Elbow landmarks coincide." },
+      { "id": "forearms", "pass": true, "detail": "Forearms authored from elbow landmarks." },
+      { "id": "thighs", "pass": true, "detail": "Knee landmarks coincide." },
+      { "id": "lowerLegs", "pass": true, "detail": "Ankle landmarks coincide." }
     ],
     "warnings": [
-      "Interim procedural exterior ≠ BP3D skin proportions (hip width, AP soft-tissue depth).",
-      "This is development / preview alignment only — not clinical registration.",
-      "Do not accumulate per-region offsets; if residuals become unacceptable, remesh the styled exterior from the canonical surface.",
-      "Max landmark error ≈ 97 mm at hips; mean ≈ 57 mm on a ~1.72 m body."
+      "Landmark residuals are part-center distances (by construction 0 mm). Full surface-to-BP3D-skin Hausdorff is not claimed.",
+      "Styled exterior is PainLocator procedural silhouette — not BP3D FMA7163 geometry and not a clinical atlas.",
+      "Do not persist canonicalBodyXYZ until product QA accepts surface sampling + schema decision.",
+      "No regional registration patches."
     ],
     "stopCondition": {
       "rule": "If credible whole-body alignment cannot be achieved with one global transform (+ small documented landmark set), return GLOBAL CONFORMER FAILED and remesh the styled exterior.",
       "triggered": false,
-      "verdict": "CREDIBLE_ENOUGH_TO_CONTINUE"
+      "verdict": "IDENTITY_IN_CANONICAL_FRAME"
     }
   }
 }

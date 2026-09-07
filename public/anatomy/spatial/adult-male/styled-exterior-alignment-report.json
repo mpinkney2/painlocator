@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "exteriorId": "adult-male-styled-canonical-silhouette-v1",
+  "coordinateFrame": "painlocator-bp3d-canonical-v1",
+  "method": "authored-at-bp3d-landmark-targets",
+  "regionalPatches": false,
+  "generatedAt": "2026-09-07T14:44:10.108Z",
+  "payloadBytes": 389272,
+  "meshCount": 18,
+  "landmarkResidualsMeters": {
+    "vertex": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "shoulderL": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "shoulderR": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "elbowL": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "elbowR": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "hipL": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "hipR": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "kneeL": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "kneeR": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "ankleL": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "ankleR": {
+      "errorMeters": 0,
+      "errorMm": 0
+    },
+    "bodyCenter": {
+      "errorMeters": 0,
+      "errorMm": 0
+    }
+  },
+  "metrics": {
+    "landmarkCount": 12,
+    "meanAlignmentErrorMeters": 0,
+    "maxAlignmentErrorMeters": 0,
+    "maxLandmarkId": null,
+    "meanMm": 0,
+    "maxMm": 0,
+    "passPreview": true,
+    "passDevelopment": true,
+    "readyForPersistence": false
+  },
+  "notes": [
+    "Exterior part centers are authored at BP3D target landmarks; identity conformer expected.",
+    "Geometry is PainLocator procedural silhouette (lathe torso + soft limbs), not BP3D skin.",
+    "Landmark-center residuals may be 0 mm by construction; do not persist canonicalBodyXYZ until surface-sample QA + schema decision."
+  ]
+}
