@@ -1442,6 +1442,7 @@ console.log('PainLocator tests\n');
     assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=1' }), true);
     assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalFrame=1' }), true);
     assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=false' }), false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=0' }), false);
   });
 
   test('canonical flag: shoulder registration URL switches with mode', () => {
@@ -1836,6 +1837,193 @@ console.log('PainLocator tests\n');
     assert.ok(docs.includes('CanonicalBodyLoader'));
     assert.ok(docs.includes('Slice 6'));
     assert.ok(statSync(join(root, 'src/engine/spatial/canonical-body-loader.js')).isFile());
+  });
+}
+
+// --- BP3D shell engagement (Patient + Clinician) ---
+{
+  const sandbox = {
+    console,
+    Math,
+    Object,
+    Number,
+    Array,
+    Map,
+    Set,
+    JSON,
+    Error,
+    Promise,
+    URLSearchParams,
+    setTimeout,
+    clearTimeout,
+    window: {},
+    document: {
+      addEventListener() {},
+      getElementById: () => null,
+      createElement: () => ({
+        getContext: () => null,
+        style: {},
+        classList: { add() {}, remove() {}, contains() { return false; } },
+        querySelector() { return null; },
+        querySelectorAll() { return []; },
+        appendChild() {},
+        setAttribute() {},
+        addEventListener() {}
+      })
+    },
+    location: { search: '' }
+  };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/spatial/canonical-body-flag.js', sandbox);
+  loadScript('src/app/bp3d-shell-engagement.js', sandbox);
+  const Flag = sandbox.CanonicalBodyFlag;
+  const Eng = sandbox.Bp3dShellEngagement;
+
+  test('bp3d engagement: product boot enables canonical unless opted out', () => {
+    sandbox.location.search = '';
+    delete sandbox.PAINLOCATOR_CANONICAL_BODY_MODE;
+    assert.equal(Eng.configureCanonicalEngagement(), true);
+    assert.equal(sandbox.PAINLOCATOR_CANONICAL_BODY_MODE, true);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '' }), true);
+  });
+
+  test('bp3d engagement: query opt-out disables canonical even after product default', () => {
+    sandbox.location.search = '?canonicalBodyMode=0';
+    assert.equal(Eng.configureCanonicalEngagement(), false);
+    assert.equal(sandbox.PAINLOCATOR_CANONICAL_BODY_MODE, false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=0' }), false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=false' }), false);
+  });
+
+  test('bp3d engagement: query opt-out beats product global true', () => {
+    sandbox.PAINLOCATOR_CANONICAL_BODY_MODE = true;
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=0' }), false);
+  });
+
+  test('bp3d engagement: plate query disables spatial preference', () => {
+    sandbox.location.search = '?plate=1';
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    sandbox.location.search = '?displayMode=plate';
+    assert.equal(Eng.shouldPreferSpatial(), false);
+  });
+
+  test('bp3d engagement: prefers spatial unless plate opted in (WebGL probe not a gate)', () => {
+    sandbox.location.search = '';
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
+    assert.equal(Eng.shouldPreferSpatial(), true);
+    // Embedded previews often fail the WebGL probe — still prefer Spatial and let mount decide.
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
+    assert.equal(Eng.shouldPreferSpatial(), true);
+  });
+
+  test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
+    sandbox.location.search = '';
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
+    let called = null;
+    const engine = {
+      async setDisplayMode(mode) {
+        called = mode;
+        return true;
+      }
+    };
+    const ok = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(ok, true);
+    assert.equal(called, 'spatial');
+  });
+
+  test('bp3d engagement: patient pack isolation still enforced', () => {
+    loadScript('src/engine/spatial/spatial-layer-loader.js', sandbox);
+    assert.equal(sandbox.SpatialLayerLoader.isPatientBlocked('patient'), true);
+  });
+
+  test('bp3d engagement: index wires engagement module before bootstrap', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const engIdx = html.indexOf('bp3d-shell-engagement.js');
+    const bootIdx = html.indexOf('src/app/bootstrap.js');
+    assert.ok(engIdx > 0 && bootIdx > engIdx);
+    assert.ok(html.includes('refreshPresentationShell') === false); // method is in renderer, not html
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    assert.ok(renderer.includes('refreshPresentationShell()'));
+    const docs = readFileSync(join(root, 'docs/BP3D_SHELL_ENGAGEMENT.md'), 'utf8');
+    assert.ok(docs.includes('Patient'));
+    assert.ok(docs.includes('Clinician'));
+  });
+
+  test('display mode dock is outside capture-tools (not buried under patient CTA)', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const dockIdx = html.indexOf('id="displayModeToggle"');
+    const captureIdx = html.indexOf('id="captureTools"');
+    assert.ok(dockIdx > 0 && captureIdx > 0);
+    // Dock lives before avatar-wrap/captureTools so patient CTA cannot cover it
+    assert.ok(dockIdx < captureIdx);
+    assert.ok(html.includes('display-mode-dock'));
+    assert.ok(html.includes('id="btnSpatialMode"'));
+    const css = readFileSync(join(root, 'src/layout/styles.css'), 'utf8');
+    assert.ok(css.includes('.display-mode-dock'));
+    assert.ok(css.includes('body.spatial-primary'));
+    const shell = readFileSync(join(root, 'src/layout/shell-styles.css'), 'utf8');
+    assert.ok(shell.includes('body.shell-patient .display-mode-dock'));
+    const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    assert.ok(engine.includes('return this.isSpatialMode()'));
+    assert.ok(engine.includes('_recoverSpatialFailure'));
+    assert.ok(engine.includes('showSpatialUnavailable'));
+    assert.ok(engine.includes('spatialPrimaryNoPlate'));
+  });
+
+  test('spatial-primary: chrome module hides plate toggle by default', () => {
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', sandbox);
+    assert.ok(sandbox.SpatialPrimaryChrome);
+    sandbox.location.search = '';
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), false);
+    sandbox.location.search = '?displayToggle=1';
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
+    sandbox.location.search = '?dev=1';
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
+    const docs = readFileSync(join(root, 'docs/BP3D_SHELL_ENGAGEMENT.md'), 'utf8');
+    assert.ok(docs.includes('Spatial is the interactive'));
+    assert.ok(docs.includes('fallback'));
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('spatial-primary-chrome.js'));
+  });
+
+  test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
+    loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
+    assert.ok(sandbox.SpatialBootUtils);
+    assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
+    let rejected = false;
+    try {
+      await sandbox.SpatialBootUtils.withTimeout(
+        new Promise(() => {}),
+        30,
+        'unit-test'
+      );
+    } catch (err) {
+      rejected = /timed out/i.test(String(err?.message || err));
+    }
+    assert.equal(rejected, true);
+    assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('spatial-boot-utils.js'));
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    assert.ok(renderer.includes('onProgress'));
+    assert.ok(renderer.includes('canonical frame skipped'));
+    assert.ok(renderer.includes('Tear down prior mount BEFORE loading Three'));
+    assert.ok(renderer.includes('SpatialThreeLoader failed to load'));
+    assert.ok(renderer.includes('global.SpatialThreeLoader') || renderer.includes('globalThis.SpatialThreeLoader'));
+    // Classic scripts must not contain source-level import() expressions — Vite
+    // rewrites those into ESM and classic tags then fail. String-inside-Function is OK.
+    const threeLoaderSrc = readFileSync(join(root, 'src/engine/spatial/spatial-three-loader.js'), 'utf8');
+    const bootSrc = readFileSync(join(root, 'src/engine/spatial/spatial-boot-utils.js'), 'utf8');
+    assert.ok(bootSrc.includes('new Function("u", "return import(u)")'));
+    assert.ok(threeLoaderSrc.includes('new Function("u", "return import(u)")'));
+    assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(bootSrc), false);
+    assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(threeLoaderSrc), false);
+    loadScript('src/engine/spatial/spatial-three-loader.js', sandbox);
+    assert.equal(typeof sandbox.SpatialThreeLoader?.loadThreeModule, 'function');
   });
 }
 

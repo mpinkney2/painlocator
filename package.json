@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "./start.sh",
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 5500 --strictPort",
     "build": "node scripts/build.mjs",
-    "preview": "vite preview",
+    "preview": "vite preview --host 0.0.0.0 --port 5500 --strictPort",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/run-tests.mjs",
     "bp3d:fetch": "node tools/bp3d-ingest/fetch-source.mjs",

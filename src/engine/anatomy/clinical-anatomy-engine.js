@@ -66,17 +66,26 @@ class ClinicalAnatomyEngine {
     }
     this.prototypeRenderer = new PrototypeBodyRenderer(this);
 
-    /** @type {"plate"|"spatial"} plate remains default/fallback */
+    /** @type {"plate"|"spatial"|"spatial-loading"|"spatial-unavailable"} */
     this.displayMode = config.displayMode === "spatial" ? "spatial" : "plate";
     this.spatialRenderer = null;
     /** Monotonic token so overlapping plate↔spatial switches discard stale work */
     this._displayModeToken = 0;
     /** Runtime-only 3D surface attachments (not persisted / not schema) */
     this.spatialAttachments = new Map();
+    /** Last Spatial failure reason (for status UI) */
+    this.lastSpatialFailure = null;
+    /**
+     * When true, Spatial failures show an unavailable panel instead of the plate PNG.
+     * Product Spatial-primary locate uses this so the 2D image is not the default UI.
+     */
+    this.spatialPrimaryNoPlate = !!config.spatialPrimaryNoPlate;
 
     this.initDOM();
     if (this.displayMode === "spatial") {
       this.setDisplayMode("spatial");
+    } else if (config.deferPlateRender) {
+      this.showSpatialLoading();
     } else {
       this.render();
     }
@@ -122,6 +131,15 @@ class ClinicalAnatomyEngine {
       return;
     }
 
+    // Spatial-primary boot / unavailable — never paint the plate PNG into the stage.
+    if (
+      this.displayMode === "spatial-loading" ||
+      this.displayMode === "spatial-unavailable" ||
+      (this.spatialPrimaryNoPlate && this.displayMode !== "plate")
+    ) {
+      return;
+    }
+
     this.render();
     if (this.clinicalRenderer.syncLayout) {
       this.clinicalRenderer.syncLayout();
@@ -134,51 +152,153 @@ class ClinicalAnatomyEngine {
   }
 
   /**
-   * Opt-in display mode. Plate remains default/fallback.
+   * Opt-in display mode. Plate remains explicit fallback / report compositor.
    * @param {"plate"|"spatial"} mode
    * @returns {Promise<boolean>}
    */
   async setDisplayMode(mode) {
-    if (mode === "spatial") return this.enableSpatialMode();
-    return this.enablePlateMode();
+    if (mode === "spatial") {
+      await this.enableSpatialMode();
+      return this.isSpatialMode();
+    }
+    this.enablePlateMode();
+    return !this.isSpatialMode();
   }
 
   isSpatialMode() {
     return this.displayMode === "spatial" && !!this.spatialRenderer?.ready;
   }
 
+  showSpatialLoading(message) {
+    this.displayMode = "spatial-loading";
+    this.stage?.classList?.remove("cae-plate-active", "cae-spatial-active");
+    this.stage?.classList?.add("cae-spatial-staging");
+    if (typeof SpatialPrimaryChrome !== "undefined") {
+      SpatialPrimaryChrome.renderStageStatus(
+        this.container,
+        "loading",
+        null,
+        message || "Loading 3D body…"
+      );
+    } else if (this.stage) {
+      this.stage.innerHTML =
+        '<div class="cae-spatial-status"><p class="cae-spatial-status-title">' +
+        (message || "Loading 3D body…") +
+        "</p></div>";
+    }
+    this.trigger("displaymodechanged", {
+      displayMode: "spatial-loading",
+      message: message || null
+    });
+  }
+
+  setSpatialLoadingProgress(message) {
+    if (this.displayMode !== "spatial-loading") return;
+    const title = this.stage?.querySelector?.(".cae-spatial-status-title");
+    if (title && message) title.textContent = message;
+    else if (typeof SpatialPrimaryChrome !== "undefined") {
+      SpatialPrimaryChrome.renderStageStatus(this.container, "loading", null, message);
+    }
+  }
+
+  showSpatialUnavailable(reason) {
+    this.lastSpatialFailure = reason || "spatial-unavailable";
+    this.spatialRenderer?.dispose?.();
+    this.spatialRenderer = null;
+    this.displayMode = "spatial-unavailable";
+    this.stage?.classList?.remove("cae-plate-active", "cae-spatial-active");
+    this.stage?.classList?.add("cae-spatial-staging");
+    // Clear any half-mounted viewport so the status card is the only UI.
+    if (this.stage) {
+      this.stage.querySelectorAll?.(".cae-spatial-viewport")?.forEach((el) => el.remove());
+    }
+    if (typeof SpatialPrimaryChrome !== "undefined") {
+      SpatialPrimaryChrome.renderStageStatus(
+        this.container,
+        "unavailable",
+        this.lastSpatialFailure
+      );
+      SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+    } else if (this.stage) {
+      this.stage.innerHTML =
+        '<div class="cae-spatial-status"><p class="cae-spatial-status-title">3D body unavailable</p></div>';
+    }
+    this.trigger("displaymodechanged", {
+      displayMode: "spatial-unavailable",
+      reason: this.lastSpatialFailure
+    });
+    return false;
+  }
+
+  _recoverSpatialFailure(reason) {
+    if (this.spatialPrimaryNoPlate) {
+      return this.showSpatialUnavailable(reason);
+    }
+    this.enablePlateMode(reason);
+    return false;
+  }
+
   async enableSpatialMode() {
+    this.lastSpatialFailure = null;
     if (!window.SpatialAnatomyRenderer) {
-      console.warn("[CAE] SpatialAnatomyRenderer not loaded — staying on plate");
-      return this.enablePlateMode("spatial-unavailable");
+      console.warn("[CAE] SpatialAnatomyRenderer not loaded");
+      return this._recoverSpatialFailure("spatial-renderer-missing");
     }
     const token = ++this._displayModeToken;
+    const withTimeout =
+      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
+        ? SpatialBootUtils.withTimeout
+        : (p) => p;
+    const mountMs =
+      (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.mountMs) || 45000;
+
     try {
+      this.showSpatialLoading("Loading 3D body…");
       this.spatialRenderer?.dispose?.();
       this.spatialRenderer = new SpatialAnatomyRenderer(this, {
-        // Mount failures are recovered by the caller via !ok → enablePlateMode.
-        // Avoid double enablePlateMode from both onFallback and the await path.
         onFallback: (_reason, err) => {
           console.warn("[CAE] Spatial mount fallback signal", _reason, err);
+          this.lastSpatialFailure = _reason || err?.message || "mount-failed";
         }
       });
-      this.stage.innerHTML = "";
-      const ok = await this.spatialRenderer.mount(this.stage);
+
+      // Keep the loading card in the stage; mount appends the viewport underneath.
+      this.stage.classList.remove("cae-plate-active");
+      this.stage.classList.add("cae-spatial-staging");
+
+      const ok = await withTimeout(
+        this.spatialRenderer.mount(this.stage, {
+          onProgress: (msg) => this.setSpatialLoadingProgress(msg)
+        }),
+        mountMs,
+        "Spatial mount"
+      );
+
       if (token !== this._displayModeToken) {
         this.spatialRenderer?.dispose?.();
         this.spatialRenderer = null;
-        return this.displayMode === "spatial";
+        return this.isSpatialMode();
       }
       if (!ok) {
-        return this.enablePlateMode("spatial-mount-failed");
+        return this._recoverSpatialFailure(
+          this.lastSpatialFailure || "spatial-mount-failed"
+        );
       }
+
+      // Remove loading overlay; keep Spatial viewport.
+      this.stage
+        .querySelectorAll?.(".cae-spatial-status")
+        ?.forEach((el) => el.remove());
       this.displayMode = "spatial";
+      this.stage.classList.remove("cae-spatial-staging");
+      this.stage.classList.add("cae-spatial-active");
       this.trigger("displaymodechanged", { displayMode: "spatial" });
       return true;
     } catch (err) {
       console.warn("[CAE] enableSpatialMode failed", err);
-      if (token !== this._displayModeToken) return this.displayMode === "spatial";
-      return this.enablePlateMode("spatial-exception");
+      if (token !== this._displayModeToken) return this.isSpatialMode();
+      this.lastSpatialFailure = err?.message || "spatial-exception";
+      return this._recoverSpatialFailure(this.lastSpatialFailure);
     }
   }
 
@@ -187,6 +307,9 @@ class ClinicalAnatomyEngine {
     this.spatialRenderer?.dispose?.();
     this.spatialRenderer = null;
     this.displayMode = "plate";
+    this.spatialPrimaryNoPlate = false;
+    this.stage?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
+    this.stage?.classList?.add("cae-plate-active");
     this.render();
     this.trigger("displaymodechanged", { displayMode: "plate", reason: reason || null });
     return true;
@@ -254,6 +377,13 @@ class ClinicalAnatomyEngine {
   render() {
     if (this.displayMode === "spatial" && this.spatialRenderer?.ready) {
       this.spatialRenderer.render(this.stage);
+      return;
+    }
+    if (
+      this.displayMode === "spatial-loading" ||
+      this.displayMode === "spatial-unavailable" ||
+      (this.spatialPrimaryNoPlate && this.displayMode !== "plate")
+    ) {
       return;
     }
     if (this.rendererMode === "clinical") {

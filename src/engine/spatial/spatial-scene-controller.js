@@ -12,6 +12,9 @@
      * @param {typeof import("three")} THREE
      */
     constructor(mountEl, THREE) {
+      if (!THREE?.WebGLRenderer) {
+        throw new Error("SpatialSceneController requires a valid Three.js module");
+      }
       this.THREE = THREE;
       this.mountEl = mountEl;
       this.disposed = false;
@@ -24,11 +27,26 @@
       this.modelId = null;
       this.provenance = null;
 
-      this.renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-        powerPreference: "default"
-      });
+      try {
+        this.renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+          powerPreference: "default",
+          failIfMajorPerformanceCaveat: false,
+          depth: true,
+          stencil: false
+        });
+      } catch (err) {
+        const detail = err?.message || String(err);
+        const e = new Error(
+          /webgl/i.test(detail) ? "WebGL unavailable" : `WebGLRenderer failed: ${detail}`
+        );
+        e.cause = err;
+        throw e;
+      }
+      if (!this.renderer) {
+        throw new Error("WebGL unavailable");
+      }
       this.renderer.setClearColor(0x000000, 0);
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
       this.canvas = this.renderer.domElement;

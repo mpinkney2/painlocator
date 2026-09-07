@@ -71,12 +71,17 @@
     if (typeof SpatialLayerLoader !== "undefined" && SpatialLayerLoader.getGltfLoader) {
       return SpatialLayerLoader.getGltfLoader();
     }
-    const mod = await import(/* webpackIgnore: true */ "/vendor/GLTFLoader.js");
+    const importVendor =
+      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
+        ? SpatialBootUtils.importVendorModule
+        : null;
+    if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
+    const mod = await importVendor("/vendor/GLTFLoader.js");
     const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;
     if (!Loader) throw new Error("GLTFLoader export missing");
     const loader = new Loader();
     try {
-      const meshMod = await import(/* webpackIgnore: true */ "/vendor/meshopt_decoder.module.js");
+      const meshMod = await importVendor("/vendor/meshopt_decoder.module.js");
       const decoder =
         meshMod.MeshoptDecoder || meshMod.default?.MeshoptDecoder || meshMod.default;
       if (decoder && typeof loader.setMeshoptDecoder === "function") {

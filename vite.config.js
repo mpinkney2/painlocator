@@ -5,12 +5,14 @@ export default defineConfig({
   root: '.',
   publicDir: 'public',
   server: {
+    host: '0.0.0.0',
     port: 5500,
-    strictPort: false,
+    strictPort: true,
   },
   preview: {
+    host: '0.0.0.0',
     port: 5500,
-    strictPort: false,
+    strictPort: true,
   },
   build: {
     outDir: 'dist',

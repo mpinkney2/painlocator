@@ -1,6 +1,6 @@
 #!/bin/bash
 # Start PainLocator dev server (Vite — matches Vercel public asset paths).
-# Usage: ./start.sh [port]   (default port: 5500)
+# Usage: ./start.sh [port]   (default / forced repo port: 5500)
 
 PORT="${1:-5500}"
 DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -18,4 +18,5 @@ if [ ! -d node_modules ]; then
   npm install
 fi
 
-exec npx vite --port "$PORT"
+# Fail if another process already owns the port (do not silently hop).
+exec npx vite --host 0.0.0.0 --port "$PORT" --strictPort

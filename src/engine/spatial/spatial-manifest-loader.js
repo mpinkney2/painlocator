@@ -139,7 +139,28 @@
 
     async _getGltfLoader(THREE) {
       if (this._gltfLoader) return this._gltfLoader;
-      const mod = await import(/* webpackIgnore: true */ "/vendor/GLTFLoader.js");
+      // Prefer shared loader (meshopt optional + timeouts) when available.
+      if (typeof SpatialLayerLoader !== "undefined" && SpatialLayerLoader.getGltfLoader) {
+        this._gltfLoader = await SpatialLayerLoader.getGltfLoader();
+        return this._gltfLoader;
+      }
+      const withTimeout =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
+          ? SpatialBootUtils.withTimeout
+          : (p) => p;
+      const gltfLoaderMs =
+        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.gltfLoaderMs) ||
+        10000;
+      const importVendor =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
+          ? SpatialBootUtils.importVendorModule
+          : null;
+      if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
+      const mod = await withTimeout(
+        importVendor("/vendor/GLTFLoader.js"),
+        gltfLoaderMs,
+        "GLTFLoader import"
+      );
       const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;
       if (!Loader) throw new Error("GLTFLoader export missing");
       this._gltfLoader = new Loader();
@@ -151,9 +172,20 @@
      * Applies stable meshId / structureId onto each Mesh.userData.
      */
     async loadExteriorSurface(THREE, modelId) {
+      const withTimeout =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
+          ? SpatialBootUtils.withTimeout
+          : (p) => p;
+      const exteriorMs =
+        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.exteriorMs) || 20000;
+
       const packed = await this.loadModelManifest(modelId);
       const loader = await this._getGltfLoader(THREE);
-      const gltf = await loader.loadAsync(packed.surfaceUrl);
+      const gltf = await withTimeout(
+        loader.loadAsync(packed.surfaceUrl),
+        exteriorMs,
+        "Exterior GLB"
+      );
       const root = gltf.scene || gltf.scenes?.[0];
       if (!root) throw new Error("GLB has no scene");
 

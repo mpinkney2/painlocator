@@ -49,25 +49,57 @@
       this._mountGeneration = 0;
     }
 
-    async mount(container) {
+    async mount(container, options = {}) {
       if (this.disposed) return false;
       this.container = container;
       const generation = ++this._mountGeneration;
-      try {
-        if (!SpatialThreeLoader.isWebGLAvailable()) {
-          throw new Error("WebGL unavailable");
-        }
-        this.THREE = await SpatialThreeLoader.loadThreeModule();
-        if (this.disposed || generation !== this._mountGeneration) return false;
+      const onProgress =
+        typeof options.onProgress === "function" ? options.onProgress : () => {};
+      const withTimeout =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
+          ? SpatialBootUtils.withTimeout
+          : (p) => p;
+      const timeouts =
+        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS) || {};
 
-        // Tear down any prior spatial DOM/listeners before remounting.
+      try {
+        const threeLoader =
+          (typeof global !== "undefined" && global.SpatialThreeLoader) ||
+          (typeof globalThis !== "undefined" && globalThis.SpatialThreeLoader) ||
+          null;
+        if (!threeLoader || typeof threeLoader.loadThreeModule !== "function") {
+          throw new Error("SpatialThreeLoader failed to load (script boot)");
+        }
+
+        onProgress("Checking WebGL…");
+        const probeOk = threeLoader.isWebGLAvailable();
+        // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.
+        // Also: never call loseContext during probe (poisons Electron/Cursor WebGL).
+        if (!probeOk) {
+          onProgress("WebGL probe inconclusive — starting 3D anyway…");
+        }
+
+        // Tear down prior mount BEFORE loading Three — teardown clears this.THREE.
         this._teardownMount({ keepAttachments: true });
+
+        onProgress("Loading 3D library…");
+        this.THREE = await withTimeout(
+          threeLoader.loadThreeModule(),
+          timeouts.threeMs || 12000,
+          "Three.js"
+        );
+        if (this.disposed || generation !== this._mountGeneration) return false;
+        if (!this.THREE?.WebGLRenderer) {
+          throw new Error("Three.js loaded without WebGLRenderer");
+        }
 
         container.classList.add("cae-spatial-active");
 
         this.mountEl = document.createElement("div");
         this.mountEl.className = "cae-spatial-viewport";
         this.mountEl.dataset.renderer = "spatial";
+        // Keep under any loading overlay; revealed when ready.
+        this.mountEl.style.visibility = "hidden";
         container.appendChild(this.mountEl);
 
         const hint = document.createElement("div");
@@ -79,19 +111,29 @@
           "<i class=\"cae-dot legacy\"></i> Legacy 2D (snap view only)</span>";
         this.mountEl.appendChild(hint);
 
-        this.scene = new SpatialSceneController(this.mountEl, this.THREE);
-        await this.scene.loadExteriorBody();
+        onProgress("Starting 3D scene…");
+        try {
+          this.scene = new SpatialSceneController(this.mountEl, this.THREE);
+        } catch (sceneErr) {
+          const msg = String(sceneErr?.message || sceneErr || "");
+          if (/webgl context|error creating webgl/i.test(msg)) {
+            throw new Error("WebGL unavailable");
+          }
+          throw sceneErr;
+        }
+
+        onProgress("Loading body model…");
+        await withTimeout(
+          this.scene.loadExteriorBody(),
+          timeouts.exteriorMs || 20000,
+          "Exterior body"
+        );
         if (this.disposed || generation !== this._mountGeneration) {
           this._teardownMount({ keepAttachments: true });
           return false;
         }
 
-        await this._initCanonicalFrameIfEnabled();
-        if (this.disposed || generation !== this._mountGeneration) {
-          this._teardownMount({ keepAttachments: true });
-          return false;
-        }
-
+        // Interactive ASAP — do not block on canonical BP3D frame (can hang Meshopt).
         this.annotations = new SpatialAnnotationLayer(this.scene, this.THREE);
         this._initLayerController();
         this._bindPointer();
@@ -102,15 +144,37 @@
           this.store.onChange(this._onStoreChange);
         }
         this.ready = true;
+        this.mountEl.style.visibility = "";
 
         const view = this.engine.viewType || "front";
         this.scene.snapToView(view, { animate: false });
         this._syncFromStore();
+
+        // Canonical frame is enhancement — timeout and continue without it.
+        onProgress("Aligning body frame…");
+        try {
+          await withTimeout(
+            this._initCanonicalFrameIfEnabled(),
+            timeouts.canonicalMs || 15000,
+            "Canonical body frame"
+          );
+        } catch (canonErr) {
+          console.warn(
+            "[CAE Spatial] canonical frame skipped after timeout/error — Spatial remains usable",
+            canonErr
+          );
+        }
+        if (this.disposed || generation !== this._mountGeneration) {
+          this._teardownMount({ keepAttachments: true });
+          return false;
+        }
+
+        onProgress("Ready");
         return true;
       } catch (err) {
         console.warn("[CAE Spatial] mount failed — falling back to plate renderer", err);
         this._teardownMount({ keepAttachments: true });
-        this.onFallback("mount-failed", err);
+        this.onFallback(err?.message || "mount-failed", err);
         return false;
       }
     }
@@ -666,6 +730,30 @@
       }
       if (document.body.classList.contains("shell-patient")) return "patient";
       return "clinician";
+    }
+
+    /**
+     * Re-bind clinician BP3D layer controls after Patient ↔ Clinician shell switch
+     * without tearing down the Spatial scene / canonical frame.
+     */
+    refreshPresentationShell() {
+      if (!this.ready || this.disposed) return;
+      const mode = this._presentationMode();
+      if (mode === "patient") {
+        this.layerController?.dispose?.();
+        this.layerController = null;
+        const accordion = document.getElementById("accAnatomyDepth");
+        if (accordion) accordion.hidden = true;
+        const controls = document.getElementById("clinicianLayerControls");
+        if (controls) controls.hidden = true;
+        this._updateAnatomyContextPanel(null);
+        // Keep canonical mesh hidden in patient shell.
+        this.canonicalFrame?.setReferenceVisible?.(false);
+        this.scene?.requestFrame?.();
+        return;
+      }
+      this._initLayerController();
+      this.scene?.requestFrame?.();
     }
 
     _initLayerController() {

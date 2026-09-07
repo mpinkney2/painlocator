@@ -425,6 +425,7 @@ body.col-resizing * {
 }
 
 .center-workspace {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -1119,12 +1120,15 @@ body.anatomy-enlarged .cae-image-frame {
   transform: translateX(-50%);
   z-index: 6;
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   padding: 4px;
+  max-width: calc(100% - 16px);
   background: var(--surface-elevated);
   border: 1px solid var(--border);
   border-radius: 8px;
   align-items: center;
+  justify-content: center;
 }
 
 body.shell-clinician .region-tools {
@@ -1154,6 +1158,37 @@ body.shell-clinician .region-tools {
   background: color-mix(in srgb, var(--surface-secondary) 80%, transparent);
 }
 
+/* Independent dock — never clipped by crowded capture-tools or buried under patient CTA */
+.display-mode-dock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  left: auto;
+  margin: 0;
+  transform: none;
+  z-index: 110;
+  pointer-events: auto;
+  box-shadow: var(--shadow-sm, 0 1px 4px rgba(0, 0, 0, 0.08));
+  background: var(--surface-elevated);
+}
+
+/* Anchor to the anatomy workspace, not inside overflow:hidden avatar-wrap */
+body.wf-review:not(.review-editing) .display-mode-dock {
+  display: none !important;
+}
+
+/* Product: Spatial-primary locate — hide 2D toggle unless ?displayToggle=1 */
+body.spatial-primary:not(.allow-plate-toggle) .display-mode-dock,
+.display-mode-dock[hidden] {
+  display: none !important;
+}
+
+body.spatial-primary .region-tool-zoom,
+body.spatial-primary .capture-tools .region-tool[data-tool="circle"],
+body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
+  display: none !important;
+}
+
 .display-mode-btn {
   min-width: 3.25rem;
 }
@@ -1176,6 +1211,102 @@ body.shell-clinician .region-tools {
   background:
     radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 55%),
     var(--surface-secondary);
+}
+
+/* Guarantees the 2D plate image cannot sit in front of a Spatial mount */
+.cae-spatial-active .cae-clinical-viewport,
+.cae-spatial-active .cae-anatomy-image,
+.cae-spatial-active .cae-image-frame,
+.cae-stage.cae-spatial-active > .cae-clinical-viewport {
+  display: none !important;
+}
+
+.cae-stage.cae-spatial-active,
+.cae-stage.cae-spatial-staging {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+}
+
+.cae-spatial-status {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%),
+    var(--surface-secondary);
+}
+
+.cae-spatial-status-card {
+  max-width: 28rem;
+  text-align: center;
+  padding: 20px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.08));
+}
+
+.cae-spatial-status-title {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.cae-spatial-status-copy {
+  margin: 0 0 14px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.cae-spatial-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.cae-spatial-status-tech {
+  margin: 12px 0 0;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  word-break: break-word;
+}
+
+.cae-spatial-status-spinner {
+  width: 28px;
+  height: 28px;
+  margin: 4px auto 0;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-top-color: var(--accent);
+  animation: cae-spatial-spin 0.8s linear infinite;
+}
+
+@keyframes cae-spatial-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cae-spatial-status-spinner {
+    animation: none;
+    border-top-color: color-mix(in srgb, var(--accent) 25%, transparent);
+    opacity: 0.7;
+  }
+}
+
+/* While Spatial-primary is booting / unavailable, never show the plate PNG */
+body.spatial-primary:not(.spatial-ready) .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+  display: none !important;
 }
 
 .cae-spatial-canvas {
@@ -1234,8 +1365,9 @@ body.shell-clinician .region-tools {
 }
 
 @media (max-width: 720px) {
-  .display-mode-toggle {
-    order: 2;
+  .display-mode-dock {
+    top: 8px;
+    right: 8px;
   }
   .cae-spatial-hint {
     font-size: 9px;
@@ -1835,7 +1967,7 @@ body.theme-dark .btn-share:hover {
     flex: none;
   }
   .region-tools {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: center;
     max-width: calc(100% - 12px);
     gap: 2px;
