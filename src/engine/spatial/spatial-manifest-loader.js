@@ -66,14 +66,30 @@
   }
 
   /**
+   * Interim exterior GLBs may store mesh names without dots (surfacehead)
+   * while the manifest uses dotted meshIds (surface.head). Canonicalize.
+   * @param {string} id
+   * @returns {string}
+   */
+  function canonicalizeSurfaceMeshId(id) {
+    const s = String(id || "");
+    if (!s) return s;
+    if (s.startsWith("surface.")) return s;
+    if (s.startsWith("surface") && s.length > "surface".length && s["surface".length] !== ".") {
+      return `surface.${s.slice("surface".length)}`;
+    }
+    return s;
+  }
+
+  /**
    * Manifest is authoritative. Every surface meshId must appear exactly once in the
    * GLB naming set, and the GLB must not introduce unknown body meshes.
    * @param {Iterable<string>} manifestMeshIds
    * @param {Iterable<string>} glbMeshIds
    */
   function assertManifestGlbIntegrity(manifestMeshIds, glbMeshIds) {
-    const expected = [...manifestMeshIds];
-    const actual = [...glbMeshIds];
+    const expected = [...manifestMeshIds].map(canonicalizeSurfaceMeshId);
+    const actual = [...glbMeshIds].map(canonicalizeSurfaceMeshId);
     const expectedSet = new Set(expected);
     const actualSet = new Set(actual);
 
@@ -139,26 +155,32 @@
 
     async _getGltfLoader(THREE) {
       if (this._gltfLoader) return this._gltfLoader;
-      // Prefer shared loader (meshopt optional + timeouts) when available.
-      if (typeof SpatialLayerLoader !== "undefined" && SpatialLayerLoader.getGltfLoader) {
-        this._gltfLoader = await SpatialLayerLoader.getGltfLoader();
+      const layerLoader =
+        (typeof globalThis !== "undefined" && globalThis.SpatialLayerLoader) ||
+        (typeof window !== "undefined" && window.SpatialLayerLoader) ||
+        null;
+      if (layerLoader && layerLoader.getGltfLoader) {
+        this._gltfLoader = await layerLoader.getGltfLoader();
         return this._gltfLoader;
       }
-      const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
-        || (typeof window !== "undefined" && window.SpatialBootUtils)
-        || null;
+      const threeLoader =
+        (typeof globalThis !== "undefined" && globalThis.SpatialThreeLoader) ||
+        (typeof window !== "undefined" && window.SpatialThreeLoader) ||
+        null;
+      if (!threeLoader || typeof threeLoader.createGLTFLoader !== "function") {
+        throw new Error("SpatialThreeLoader.createGLTFLoader required");
+      }
+      const boot =
+        (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils) ||
+        (typeof window !== "undefined" && window.SpatialBootUtils) ||
+        null;
       const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
       const gltfLoaderMs = (boot && boot.TIMEOUTS && boot.TIMEOUTS.gltfLoaderMs) || 10000;
-      const importVendor = boot && boot.importVendorModule ? boot.importVendorModule : null;
-      if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
-      const mod = await withTimeout(
-        importVendor("/vendor/GLTFLoader.js"),
+      this._gltfLoader = await withTimeout(
+        threeLoader.createGLTFLoader(),
         gltfLoaderMs,
-        "GLTFLoader import"
+        "GLTFLoader"
       );
-      const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;
-      if (!Loader) throw new Error("GLTFLoader export missing");
-      this._gltfLoader = new Loader();
       return this._gltfLoader;
     }
 
@@ -193,10 +215,11 @@
       root.updateMatrixWorld(true);
       root.traverse((obj) => {
         if (!obj.isMesh) return;
-        const meshId = obj.name || obj.userData?.meshId;
-        if (!meshId) {
+        const rawId = obj.name || obj.userData?.meshId;
+        if (!rawId) {
           throw new Error("GLB body mesh is missing a stable name/meshId");
         }
+        const meshId = canonicalizeSurfaceMeshId(rawId);
         glbMeshIds.push(meshId);
         const meta = known.get(meshId);
         // Binding still applied after integrity check; unknown IDs fail below.
@@ -252,6 +275,7 @@
     validateModelManifest,
     indexMeshes,
     assertManifestGlbIntegrity,
+    canonicalizeSurfaceMeshId,
     DEFAULT_CATALOG_URL
   };
 })(typeof window !== "undefined" ? window : globalThis);

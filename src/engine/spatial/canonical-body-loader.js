@@ -68,30 +68,21 @@
   }
 
   async function getGltfLoader() {
-    if (typeof SpatialLayerLoader !== "undefined" && SpatialLayerLoader.getGltfLoader) {
-      return SpatialLayerLoader.getGltfLoader();
+    const layerLoader =
+      (typeof globalThis !== "undefined" && globalThis.SpatialLayerLoader) ||
+      (typeof window !== "undefined" && window.SpatialLayerLoader) ||
+      null;
+    if (layerLoader && layerLoader.getGltfLoader) {
+      return layerLoader.getGltfLoader();
     }
-    const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
-      || (typeof window !== "undefined" && window.SpatialBootUtils)
-      || null;
-    const importVendor = boot && boot.importVendorModule ? boot.importVendorModule : null;
-    if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
-    const mod = await importVendor("/vendor/GLTFLoader.js");
-    const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;
-    if (!Loader) throw new Error("GLTFLoader export missing");
-    const loader = new Loader();
-    try {
-      const meshMod = await importVendor("/vendor/meshopt_decoder.module.js");
-      const decoder =
-        meshMod.MeshoptDecoder || meshMod.default?.MeshoptDecoder || meshMod.default;
-      if (decoder && typeof loader.setMeshoptDecoder === "function") {
-        await Promise.resolve(decoder.ready || Promise.resolve());
-        loader.setMeshoptDecoder(decoder);
-      }
-    } catch (_) {
-      /* optional */
+    const threeLoader =
+      (typeof globalThis !== "undefined" && globalThis.SpatialThreeLoader) ||
+      (typeof window !== "undefined" && window.SpatialThreeLoader) ||
+      null;
+    if (!threeLoader || typeof threeLoader.createGLTFLoader !== "function") {
+      throw new Error("SpatialThreeLoader.createGLTFLoader required");
     }
-    return loader;
+    return threeLoader.createGLTFLoader();
   }
 
   /**

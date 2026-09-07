@@ -38,3 +38,7 @@ selected). Do **not** add `three` as an application runtime dependency.
 `scripts/generate-exterior-glb.mjs` can regenerate the interim exterior GLB via
 `GLTFExporter` on a clean checkout. Keep the npm pin aligned with this vendor
 revision (r170).
+
+
+---
+Runtime note (2026-09-07): Spatial browser runtime loads three@0.170.0 via Vite ESM from npm (not public/vendor copies). This MIT notice still applies.
