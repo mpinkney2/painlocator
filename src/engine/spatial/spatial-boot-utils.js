@@ -41,7 +41,6 @@
         canvas.getContext("experimental-webgl", attrs);
       if (!gl) return false;
       if (typeof gl.isContextLost === "function" && gl.isContextLost()) return false;
-      // Touch a cheap GL call to ensure the context is usable.
       gl.viewport(0, 0, 1, 1);
       return true;
     } catch (_) {
@@ -49,9 +48,31 @@
     }
   }
 
+  /**
+   * Dynamically import a file from /public/vendor.
+   * Vite forbids analyzed imports of JS inside /public — use an absolute URL
+   * plus @vite-ignore so dev server and classic script boot both work.
+   * @param {string} path e.g. "/vendor/GLTFLoader.js"
+   * @returns {Promise<object>}
+   */
+  function importVendorModule(path) {
+    const rel = String(path || "").startsWith("/") ? String(path) : `/${path}`;
+    let href = rel;
+    try {
+      if (typeof location !== "undefined" && location?.origin) {
+        href = new URL(rel, location.origin).href;
+      }
+    } catch (_) {
+      href = rel;
+    }
+    // @vite-ignore: public vendor ESM is served as a static URL, not bundled.
+    return import(/* @vite-ignore */ /* webpackIgnore: true */ href);
+  }
+
   global.SpatialBootUtils = {
     withTimeout,
     isWebGLReallyAvailable,
+    importVendorModule,
     TIMEOUTS: {
       threeMs: 12000,
       gltfLoaderMs: 10000,

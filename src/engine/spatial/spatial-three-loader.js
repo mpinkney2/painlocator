@@ -10,6 +10,22 @@
     return "/vendor/three.module.min.js";
   }
 
+  function importVendor(path) {
+    if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule) {
+      return SpatialBootUtils.importVendorModule(path);
+    }
+    const rel = String(path || "").startsWith("/") ? String(path) : `/${path}`;
+    let href = rel;
+    try {
+      if (typeof location !== "undefined" && location?.origin) {
+        href = new URL(rel, location.origin).href;
+      }
+    } catch (_) {
+      href = rel;
+    }
+    return import(/* @vite-ignore */ /* webpackIgnore: true */ href);
+  }
+
   function loadThreeModule() {
     if (global.__PAINLOCATOR_THREE__?.WebGLRenderer) {
       return Promise.resolve(global.__PAINLOCATOR_THREE__);
@@ -27,11 +43,11 @@
       (async () => {
         let mod = null;
         try {
-          mod = await import(/* webpackIgnore: true */ resolveThreeUrl());
+          mod = await importVendor(resolveThreeUrl());
         } catch (urlErr) {
           // Fallback to import-map specifier when absolute URL import is blocked.
           try {
-            mod = await import(/* webpackIgnore: true */ "three");
+            mod = await import(/* @vite-ignore */ /* webpackIgnore: true */ "three");
           } catch (_) {
             throw urlErr;
           }
@@ -78,6 +94,7 @@
   global.SpatialThreeLoader = {
     loadThreeModule,
     isWebGLAvailable,
-    resolveThreeUrl
+    resolveThreeUrl,
+    importVendor
   };
 })(window);

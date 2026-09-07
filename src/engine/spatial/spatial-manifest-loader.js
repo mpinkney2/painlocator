@@ -151,8 +151,13 @@
       const gltfLoaderMs =
         (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.gltfLoaderMs) ||
         10000;
+      const importVendor =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
+          ? SpatialBootUtils.importVendorModule
+          : null;
+      if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
       const mod = await withTimeout(
-        import(/* webpackIgnore: true */ "/vendor/GLTFLoader.js"),
+        importVendor("/vendor/GLTFLoader.js"),
         gltfLoaderMs,
         "GLTFLoader import"
       );

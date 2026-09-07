@@ -88,8 +88,16 @@
     const meshoptMs =
       (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.meshoptMs) || 5000;
 
+    const importVendor =
+      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
+        ? SpatialBootUtils.importVendorModule
+        : null;
+    if (!importVendor) {
+      return Promise.reject(new Error("SpatialBootUtils.importVendorModule required"));
+    }
+
     meshoptReady = withTimeout(
-      import(/* webpackIgnore: true */ "/vendor/meshopt_decoder.module.js").then((mod) => {
+      importVendor("/vendor/meshopt_decoder.module.js").then((mod) => {
         const decoder = mod.MeshoptDecoder || mod.default?.MeshoptDecoder || mod.default;
         if (!decoder) throw new Error("MeshoptDecoder unavailable");
         return Promise.resolve(decoder.ready || Promise.resolve()).then(() => decoder);
@@ -113,9 +121,14 @@
       const gltfLoaderMs =
         (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.gltfLoaderMs) ||
         10000;
+      const importVendor =
+        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
+          ? SpatialBootUtils.importVendorModule
+          : null;
+      if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
 
       const mod = await withTimeout(
-        import(/* webpackIgnore: true */ "/vendor/GLTFLoader.js"),
+        importVendor("/vendor/GLTFLoader.js"),
         gltfLoaderMs,
         "GLTFLoader import"
       );
