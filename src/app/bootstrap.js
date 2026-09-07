@@ -33,6 +33,13 @@ function init() {
   initAnatomyZoom();
   initDisplayModeToggle();
 
+  // Engage BP3D-aligned Spatial across Patient + Clinician shells (opt-out via query).
+  if (typeof Bp3dShellEngagement !== "undefined") {
+    Bp3dShellEngagement.engageBp3dAcrossShells(state.engine).catch((err) => {
+      console.warn("[PainLocator] BP3D shell engagement failed", err);
+    });
+  }
+
   const onRegionUpdate = ({ entry } = {}) => {
     if (!entryStore.getActiveEntry() && entry) entryStore.activeEntryId = DRAFT_KEY;
     if (entry) populateFormFromEntry(entry);

@@ -143,6 +143,7 @@ function syncDisplayModeButtons(mode) {
     hint.classList.remove('hidden');
   }
 }
+if (typeof window !== 'undefined') window.syncDisplayModeButtons = syncDisplayModeButtons;
 
 function initDisplayModeToggle() {
   const plate = document.getElementById('btnPlateMode');

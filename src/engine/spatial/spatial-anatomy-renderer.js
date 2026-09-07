@@ -668,6 +668,30 @@
       return "clinician";
     }
 
+    /**
+     * Re-bind clinician BP3D layer controls after Patient ↔ Clinician shell switch
+     * without tearing down the Spatial scene / canonical frame.
+     */
+    refreshPresentationShell() {
+      if (!this.ready || this.disposed) return;
+      const mode = this._presentationMode();
+      if (mode === "patient") {
+        this.layerController?.dispose?.();
+        this.layerController = null;
+        const accordion = document.getElementById("accAnatomyDepth");
+        if (accordion) accordion.hidden = true;
+        const controls = document.getElementById("clinicianLayerControls");
+        if (controls) controls.hidden = true;
+        this._updateAnatomyContextPanel(null);
+        // Keep canonical mesh hidden in patient shell.
+        this.canonicalFrame?.setReferenceVisible?.(false);
+        this.scene?.requestFrame?.();
+        return;
+      }
+      this._initLayerController();
+      this.scene?.requestFrame?.();
+    }
+
     _initLayerController() {
       this.layerController?.dispose?.();
       this.layerController = null;

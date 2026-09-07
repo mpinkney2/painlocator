@@ -1,14 +1,13 @@
 /**
- * Canonical body feature flag (Phase 2 Slice 5).
+ * Canonical body feature flag (Phase 2 Slice 5+).
  *
- * Development-only opt-in. Default OFF — production Spatial behavior unchanged.
- * Not a patient-facing setting.
+ * Product engagement (Bp3dShellEngagement) sets
+ * `window.PAINLOCATOR_CANONICAL_BODY_MODE = true` at boot so Patient + Clinician
+ * Spatial share the BP3D canonical frame. Isolated unit tests still see default
+ * OFF unless that global (or a query param) is set.
  *
- * Enable with:
- *   ?canonicalBodyMode=true | ?canonicalBodyMode=1
- *   ?canonicalFrame=1          (alias from architecture §O)
- * Optional global override (tests / tooling):
- *   window.PAINLOCATOR_CANONICAL_BODY_MODE = true|false
+ * Explicit opt-out: ?canonicalBodyMode=0 | false
+ * Explicit opt-in:  ?canonicalBodyMode=true | ?canonicalFrame=1
  */
 (function (global) {
   const COORDINATE_FRAME_VERSION = "painlocator-bp3d-canonical-v1";
@@ -34,14 +33,17 @@
     return v === "1" || v === "true" || v === "yes" || v === "on";
   }
 
+  function falsyParam(value) {
+    if (value == null) return false;
+    const v = String(value).trim().toLowerCase();
+    return v === "0" || v === "false" || v === "no" || v === "off";
+  }
+
   /**
    * @param {{ search?: string, location?: { search?: string }, override?: boolean|null }} [options]
    */
   function resolveCanonicalBodyMode(options = {}) {
     if (typeof options.override === "boolean") return options.override;
-    if (typeof global.PAINLOCATOR_CANONICAL_BODY_MODE === "boolean") {
-      return global.PAINLOCATOR_CANONICAL_BODY_MODE;
-    }
     try {
       const search =
         options.search ??
@@ -49,12 +51,18 @@
         (typeof global.location !== "undefined" ? global.location.search : "") ??
         "";
       const params = new URLSearchParams(search || "");
-      if (truthyParam(params.get("canonicalBodyMode"))) return true;
-      if (truthyParam(params.get("canonicalFrame"))) return true;
-      return false;
+      const raw = params.get("canonicalBodyMode") ?? params.get("canonicalFrame");
+      if (raw != null && String(raw).trim() !== "") {
+        if (falsyParam(raw)) return false;
+        if (truthyParam(raw)) return true;
+      }
     } catch (_) {
-      return false;
+      /* fall through */
     }
+    if (typeof global.PAINLOCATOR_CANONICAL_BODY_MODE === "boolean") {
+      return global.PAINLOCATOR_CANONICAL_BODY_MODE;
+    }
+    return false;
   }
 
   /**

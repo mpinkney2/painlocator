@@ -1442,6 +1442,7 @@ console.log('PainLocator tests\n');
     assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=1' }), true);
     assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalFrame=1' }), true);
     assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=false' }), false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=0' }), false);
   });
 
   test('canonical flag: shoulder registration URL switches with mode', () => {
@@ -1836,6 +1837,105 @@ console.log('PainLocator tests\n');
     assert.ok(docs.includes('CanonicalBodyLoader'));
     assert.ok(docs.includes('Slice 6'));
     assert.ok(statSync(join(root, 'src/engine/spatial/canonical-body-loader.js')).isFile());
+  });
+}
+
+// --- BP3D shell engagement (Patient + Clinician) ---
+{
+  const sandbox = {
+    console,
+    Math,
+    Object,
+    Number,
+    Array,
+    Map,
+    Set,
+    JSON,
+    Error,
+    Promise,
+    URLSearchParams,
+    window: {},
+    document: {
+      addEventListener() {},
+      getElementById: () => null
+    },
+    location: { search: '' }
+  };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/spatial/canonical-body-flag.js', sandbox);
+  loadScript('src/app/bp3d-shell-engagement.js', sandbox);
+  const Flag = sandbox.CanonicalBodyFlag;
+  const Eng = sandbox.Bp3dShellEngagement;
+
+  test('bp3d engagement: product boot enables canonical unless opted out', () => {
+    sandbox.location.search = '';
+    delete sandbox.PAINLOCATOR_CANONICAL_BODY_MODE;
+    assert.equal(Eng.configureCanonicalEngagement(), true);
+    assert.equal(sandbox.PAINLOCATOR_CANONICAL_BODY_MODE, true);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '' }), true);
+  });
+
+  test('bp3d engagement: query opt-out disables canonical even after product default', () => {
+    sandbox.location.search = '?canonicalBodyMode=0';
+    assert.equal(Eng.configureCanonicalEngagement(), false);
+    assert.equal(sandbox.PAINLOCATOR_CANONICAL_BODY_MODE, false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=0' }), false);
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=false' }), false);
+  });
+
+  test('bp3d engagement: query opt-out beats product global true', () => {
+    sandbox.PAINLOCATOR_CANONICAL_BODY_MODE = true;
+    assert.equal(Flag.resolveCanonicalBodyMode({ search: '?canonicalBodyMode=0' }), false);
+  });
+
+  test('bp3d engagement: plate query disables spatial preference', () => {
+    sandbox.location.search = '?plate=1';
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    sandbox.location.search = '?displayMode=plate';
+    assert.equal(Eng.shouldPreferSpatial(), false);
+  });
+
+  test('bp3d engagement: prefers spatial when WebGL reports available', () => {
+    sandbox.location.search = '';
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
+    assert.equal(Eng.shouldPreferSpatial(), true);
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
+    assert.equal(Eng.shouldPreferSpatial(), false);
+  });
+
+  test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
+    sandbox.location.search = '';
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
+    let called = null;
+    const engine = {
+      async setDisplayMode(mode) {
+        called = mode;
+        return true;
+      }
+    };
+    const ok = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(ok, true);
+    assert.equal(called, 'spatial');
+  });
+
+  test('bp3d engagement: patient pack isolation still enforced', () => {
+    loadScript('src/engine/spatial/spatial-layer-loader.js', sandbox);
+    assert.equal(sandbox.SpatialLayerLoader.isPatientBlocked('patient'), true);
+  });
+
+  test('bp3d engagement: index wires engagement module before bootstrap', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const engIdx = html.indexOf('bp3d-shell-engagement.js');
+    const bootIdx = html.indexOf('src/app/bootstrap.js');
+    assert.ok(engIdx > 0 && bootIdx > engIdx);
+    assert.ok(html.includes('refreshPresentationShell') === false); // method is in renderer, not html
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    assert.ok(renderer.includes('refreshPresentationShell()'));
+    const docs = readFileSync(join(root, 'docs/BP3D_SHELL_ENGAGEMENT.md'), 'utf8');
+    assert.ok(docs.includes('Patient'));
+    assert.ok(docs.includes('Clinician'));
   });
 }
 
