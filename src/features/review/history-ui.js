@@ -137,6 +137,7 @@ function syncDisplayModeButtons(mode) {
       : 'Enlarge silhouette for precise marking';
   }
   document.getElementById('avatarWrap')?.classList.toggle('display-spatial', isSpatial);
+  document.getElementById('avatarStage')?.classList.toggle('cae-spatial-host', isSpatial);
   const hint = document.getElementById('avatarHint');
   if (hint && isSpatial) {
     hint.textContent = 'Spatial mode — drag to rotate, tap to mark. Marks stay on the surface.';
@@ -154,10 +155,12 @@ function initDisplayModeToggle() {
     state.engine?.setDisplayMode?.('plate');
   });
   spatial.addEventListener('click', async () => {
+    if (state.engine?.isSpatialMode?.()) return;
     spatial.disabled = true;
     spatial.textContent = 'Loading…';
     try {
       const ok = await state.engine?.setDisplayMode?.('spatial');
+      syncDisplayModeButtons(ok ? 'spatial' : 'plate');
       if (!ok) {
         showToast?.('Spatial mode unavailable — staying on 2D plate', 'warning');
       }
@@ -172,7 +175,7 @@ function initDisplayModeToggle() {
     if (displayMode === 'plate') syncEnlargeButton(state.engine?.isEnlarged?.());
     refreshUI?.();
   });
-  syncDisplayModeButtons(state.engine?.displayMode || 'plate');
+  syncDisplayModeButtons(state.engine?.isSpatialMode?.() ? 'spatial' : (state.engine?.displayMode || 'plate'));
 }
 
 function updateTrendSummary() {

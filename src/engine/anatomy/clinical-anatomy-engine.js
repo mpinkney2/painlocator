@@ -139,8 +139,13 @@ class ClinicalAnatomyEngine {
    * @returns {Promise<boolean>}
    */
   async setDisplayMode(mode) {
-    if (mode === "spatial") return this.enableSpatialMode();
-    return this.enablePlateMode();
+    if (mode === "spatial") {
+      await this.enableSpatialMode();
+      // Always report whether Spatial actually replaced the plate image.
+      return this.isSpatialMode();
+    }
+    this.enablePlateMode();
+    return !this.isSpatialMode();
   }
 
   isSpatialMode() {
@@ -150,7 +155,8 @@ class ClinicalAnatomyEngine {
   async enableSpatialMode() {
     if (!window.SpatialAnatomyRenderer) {
       console.warn("[CAE] SpatialAnatomyRenderer not loaded — staying on plate");
-      return this.enablePlateMode("spatial-unavailable");
+      this.enablePlateMode("spatial-unavailable");
+      return false;
     }
     const token = ++this._displayModeToken;
     try {
@@ -162,23 +168,33 @@ class ClinicalAnatomyEngine {
           console.warn("[CAE] Spatial mount fallback signal", _reason, err);
         }
       });
+      // Clear plate / prior DOM so Spatial is not covered by the 2D image.
       this.stage.innerHTML = "";
+      this.stage.classList.remove("cae-plate-active");
+      this.stage.classList.add("cae-spatial-staging");
       const ok = await this.spatialRenderer.mount(this.stage);
       if (token !== this._displayModeToken) {
         this.spatialRenderer?.dispose?.();
         this.spatialRenderer = null;
-        return this.displayMode === "spatial";
+        this.stage.classList.remove("cae-spatial-staging");
+        return this.isSpatialMode();
       }
       if (!ok) {
-        return this.enablePlateMode("spatial-mount-failed");
+        this.stage.classList.remove("cae-spatial-staging");
+        this.enablePlateMode("spatial-mount-failed");
+        return false;
       }
       this.displayMode = "spatial";
+      this.stage.classList.remove("cae-spatial-staging");
+      this.stage.classList.add("cae-spatial-active");
       this.trigger("displaymodechanged", { displayMode: "spatial" });
       return true;
     } catch (err) {
       console.warn("[CAE] enableSpatialMode failed", err);
-      if (token !== this._displayModeToken) return this.displayMode === "spatial";
-      return this.enablePlateMode("spatial-exception");
+      this.stage?.classList?.remove("cae-spatial-staging");
+      if (token !== this._displayModeToken) return this.isSpatialMode();
+      this.enablePlateMode("spatial-exception");
+      return false;
     }
   }
 
@@ -187,6 +203,8 @@ class ClinicalAnatomyEngine {
     this.spatialRenderer?.dispose?.();
     this.spatialRenderer = null;
     this.displayMode = "plate";
+    this.stage?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
+    this.stage?.classList?.add("cae-plate-active");
     this.render();
     this.trigger("displaymodechanged", { displayMode: "plate", reason: reason || null });
     return true;

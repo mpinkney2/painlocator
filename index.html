@@ -276,6 +276,11 @@
             <li data-patient-step="review"><span>3</span> Review</li>
           </ol>
         </nav>
+        <!-- Outside avatar-wrap so patient locate CTA (fixed, z-index 90) cannot cover it -->
+        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode">
+          <button type="button" class="region-tool display-mode-btn active" id="btnPlateMode" data-display="plate" title="2D clinical plate (default)" aria-pressed="true">2D</button>
+          <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="false">Spatial</button>
+        </div>
         <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
           <div class="region-tools review-tools show-review" id="reviewTools">
             <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
@@ -293,11 +298,6 @@
             <button type="button" class="region-tool" id="btnRedo" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>Redo</button>
             <span class="region-tool-divider" aria-hidden="true"></span>
             <button type="button" class="region-tool region-tool-zoom" id="btnEnlargeAnatomy" title="Enlarge silhouette for precise marking" aria-label="Enlarge silhouette for accuracy" aria-pressed="false">Enlarge</button>
-            <span class="region-tool-divider" aria-hidden="true"></span>
-            <div class="display-mode-toggle" id="displayModeToggle" role="group" aria-label="Anatomy display mode">
-              <button type="button" class="region-tool display-mode-btn active" id="btnPlateMode" data-display="plate" title="2D clinical plate (default)" aria-pressed="true">2D</button>
-              <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="false">Spatial</button>
-            </div>
           </div>
           <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Anatomy map — mark pain locations"></div>
           <p class="avatar-hint" id="avatarHint">Where does it hurt? Tap the body to mark pain.</p>

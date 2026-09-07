@@ -151,6 +151,19 @@ body.shell-patient .center-panel {
   background: transparent;
 }
 
+body.shell-clinician .display-mode-dock {
+  /* Sit over the anatomy stage top-right — clear of centered capture tools */
+  top: 14px;
+  right: 14px;
+  z-index: 20;
+}
+
+body.shell-clinician .region-tools.capture-tools {
+  /* Leave room on the right for the 2D/Spatial dock */
+  max-width: calc(100% - 9.5rem);
+  padding-right: 4px;
+}
+
 body.shell-patient .center-workspace {
   gap: 8px;
   min-height: 0;
@@ -278,8 +291,27 @@ body.shell-patient .capture-tools .region-tool-divider {
   display: none;
 }
 
-body.shell-patient .capture-tools .display-mode-toggle {
-  margin-left: 0;
+/* Patient: keep 2D/Spatial above the locate CTA and anatomy chrome */
+body.shell-patient .display-mode-dock {
+  position: fixed;
+  top: calc(var(--header-height, 56px) + 52px + env(safe-area-inset-top, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  left: auto;
+  bottom: auto;
+  z-index: 110;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface, #fff);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.1));
+}
+
+body.shell-patient .display-mode-dock .display-mode-btn {
+  min-height: 40px;
+  min-width: 4.5rem;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
 }
 
 body.shell-patient .avatar-hint {

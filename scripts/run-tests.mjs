@@ -1937,6 +1937,24 @@ console.log('PainLocator tests\n');
     assert.ok(docs.includes('Patient'));
     assert.ok(docs.includes('Clinician'));
   });
+
+  test('display mode dock is outside capture-tools (not buried under patient CTA)', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const dockIdx = html.indexOf('id="displayModeToggle"');
+    const captureIdx = html.indexOf('id="captureTools"');
+    assert.ok(dockIdx > 0 && captureIdx > 0);
+    // Dock lives before avatar-wrap/captureTools so patient CTA cannot cover it
+    assert.ok(dockIdx < captureIdx);
+    assert.ok(html.includes('display-mode-dock'));
+    assert.ok(html.includes('id="btnSpatialMode"'));
+    const css = readFileSync(join(root, 'src/layout/styles.css'), 'utf8');
+    assert.ok(css.includes('.display-mode-dock'));
+    const shell = readFileSync(join(root, 'src/layout/shell-styles.css'), 'utf8');
+    assert.ok(shell.includes('body.shell-patient .display-mode-dock'));
+    const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    assert.ok(engine.includes('return this.isSpatialMode()'));
+    assert.match(engine, /spatial-mount-failed[\s\S]*?return false/);
+  });
 }
 
 // --- BodyParts3D Phase 2 Slice 2 prototype integrity (offline pack) ---

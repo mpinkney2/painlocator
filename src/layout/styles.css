@@ -425,6 +425,7 @@ body.col-resizing * {
 }
 
 .center-workspace {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -1119,12 +1120,15 @@ body.anatomy-enlarged .cae-image-frame {
   transform: translateX(-50%);
   z-index: 6;
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   padding: 4px;
+  max-width: calc(100% - 16px);
   background: var(--surface-elevated);
   border: 1px solid var(--border);
   border-radius: 8px;
   align-items: center;
+  justify-content: center;
 }
 
 body.shell-clinician .region-tools {
@@ -1154,6 +1158,25 @@ body.shell-clinician .region-tools {
   background: color-mix(in srgb, var(--surface-secondary) 80%, transparent);
 }
 
+/* Independent dock — never clipped by crowded capture-tools or buried under patient CTA */
+.display-mode-dock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  left: auto;
+  margin: 0;
+  transform: none;
+  z-index: 110;
+  pointer-events: auto;
+  box-shadow: var(--shadow-sm, 0 1px 4px rgba(0, 0, 0, 0.08));
+  background: var(--surface-elevated);
+}
+
+/* Anchor to the anatomy workspace, not inside overflow:hidden avatar-wrap */
+body.wf-review:not(.review-editing) .display-mode-dock {
+  display: none !important;
+}
+
 .display-mode-btn {
   min-width: 3.25rem;
 }
@@ -1176,6 +1199,21 @@ body.shell-clinician .region-tools {
   background:
     radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 55%),
     var(--surface-secondary);
+}
+
+/* Guarantees the 2D plate image cannot sit in front of a Spatial mount */
+.cae-spatial-active .cae-clinical-viewport,
+.cae-spatial-active .cae-anatomy-image,
+.cae-spatial-active .cae-image-frame,
+.cae-stage.cae-spatial-active > .cae-clinical-viewport {
+  display: none !important;
+}
+
+.cae-stage.cae-spatial-active,
+.cae-stage.cae-spatial-staging {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
 }
 
 .cae-spatial-canvas {
@@ -1234,8 +1272,9 @@ body.shell-clinician .region-tools {
 }
 
 @media (max-width: 720px) {
-  .display-mode-toggle {
-    order: 2;
+  .display-mode-dock {
+    top: 8px;
+    right: 8px;
   }
   .cae-spatial-hint {
     font-size: 9px;
@@ -1835,7 +1874,7 @@ body.theme-dark .btn-share:hover {
     flex: none;
   }
   .region-tools {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: center;
     max-width: calc(100% - 12px);
     gap: 2px;
