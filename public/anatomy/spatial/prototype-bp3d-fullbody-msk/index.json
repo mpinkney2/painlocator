@@ -1,0 +1,398 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "structureCount": 851,
+  "packs": {
+    "muscle-head-neck": {
+      "packId": "muscle-head-neck",
+      "layer": "muscle",
+      "structureCount": 47,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-head-neck",
+      "manifest": "./packs/muscle-head-neck/manifest.json",
+      "glb": "./packs/muscle-head-neck/muscle.glb"
+    },
+    "muscle-lower": {
+      "packId": "muscle-lower",
+      "layer": "muscle",
+      "structureCount": 19,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-lower",
+      "manifest": "./packs/muscle-lower/manifest.json",
+      "glb": "./packs/muscle-lower/muscle.glb"
+    },
+    "muscle-lower-left": {
+      "packId": "muscle-lower-left",
+      "layer": "muscle",
+      "structureCount": 18,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-lower-left",
+      "manifest": "./packs/muscle-lower-left/manifest.json",
+      "glb": "./packs/muscle-lower-left/muscle.glb"
+    },
+    "muscle-lower-right": {
+      "packId": "muscle-lower-right",
+      "layer": "muscle",
+      "structureCount": 18,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-lower-right",
+      "manifest": "./packs/muscle-lower-right/manifest.json",
+      "glb": "./packs/muscle-lower-right/muscle.glb"
+    },
+    "muscle-other": {
+      "packId": "muscle-other",
+      "layer": "muscle",
+      "structureCount": 50,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-other",
+      "manifest": "./packs/muscle-other/manifest.json",
+      "glb": "./packs/muscle-other/muscle.glb"
+    },
+    "muscle-pelvis": {
+      "packId": "muscle-pelvis",
+      "layer": "muscle",
+      "structureCount": 43,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-pelvis",
+      "manifest": "./packs/muscle-pelvis/manifest.json",
+      "glb": "./packs/muscle-pelvis/muscle.glb"
+    },
+    "muscle-torso": {
+      "packId": "muscle-torso",
+      "layer": "muscle",
+      "structureCount": 79,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-torso",
+      "manifest": "./packs/muscle-torso/manifest.json",
+      "glb": "./packs/muscle-torso/muscle.glb"
+    },
+    "muscle-upper": {
+      "packId": "muscle-upper",
+      "layer": "muscle",
+      "structureCount": 85,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-upper",
+      "manifest": "./packs/muscle-upper/manifest.json",
+      "glb": "./packs/muscle-upper/muscle.glb"
+    },
+    "muscle-upper-left": {
+      "packId": "muscle-upper-left",
+      "layer": "muscle",
+      "structureCount": 73,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-upper-left",
+      "manifest": "./packs/muscle-upper-left/manifest.json",
+      "glb": "./packs/muscle-upper-left/muscle.glb"
+    },
+    "muscle-upper-right": {
+      "packId": "muscle-upper-right",
+      "layer": "muscle",
+      "structureCount": 73,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/muscle-upper-right",
+      "manifest": "./packs/muscle-upper-right/manifest.json",
+      "glb": "./packs/muscle-upper-right/muscle.glb"
+    },
+    "skeletal-lower": {
+      "packId": "skeletal-lower",
+      "layer": "skeletal",
+      "structureCount": 18,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-lower",
+      "manifest": "./packs/skeletal-lower/manifest.json",
+      "glb": "./packs/skeletal-lower/skeletal.glb"
+    },
+    "skeletal-lower-left": {
+      "packId": "skeletal-lower-left",
+      "layer": "skeletal",
+      "structureCount": 14,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-lower-left",
+      "manifest": "./packs/skeletal-lower-left/manifest.json",
+      "glb": "./packs/skeletal-lower-left/skeletal.glb"
+    },
+    "skeletal-lower-right": {
+      "packId": "skeletal-lower-right",
+      "layer": "skeletal",
+      "structureCount": 14,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-lower-right",
+      "manifest": "./packs/skeletal-lower-right/manifest.json",
+      "glb": "./packs/skeletal-lower-right/skeletal.glb"
+    },
+    "skeletal-other": {
+      "packId": "skeletal-other",
+      "layer": "skeletal",
+      "structureCount": 37,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-other",
+      "manifest": "./packs/skeletal-other/manifest.json",
+      "glb": "./packs/skeletal-other/skeletal.glb"
+    },
+    "skeletal-pelvis": {
+      "packId": "skeletal-pelvis",
+      "layer": "skeletal",
+      "structureCount": 3,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-pelvis",
+      "manifest": "./packs/skeletal-pelvis/manifest.json",
+      "glb": "./packs/skeletal-pelvis/skeletal.glb"
+    },
+    "skeletal-shoulder-girdle": {
+      "packId": "skeletal-shoulder-girdle",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-shoulder-girdle",
+      "manifest": "./packs/skeletal-shoulder-girdle/manifest.json",
+      "glb": "./packs/skeletal-shoulder-girdle/skeletal.glb"
+    },
+    "skeletal-shoulder-girdle-left": {
+      "packId": "skeletal-shoulder-girdle-left",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-shoulder-girdle-left",
+      "manifest": "./packs/skeletal-shoulder-girdle-left/manifest.json",
+      "glb": "./packs/skeletal-shoulder-girdle-left/skeletal.glb"
+    },
+    "skeletal-shoulder-girdle-right": {
+      "packId": "skeletal-shoulder-girdle-right",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-shoulder-girdle-right",
+      "manifest": "./packs/skeletal-shoulder-girdle-right/manifest.json",
+      "glb": "./packs/skeletal-shoulder-girdle-right/skeletal.glb"
+    },
+    "skeletal-skull": {
+      "packId": "skeletal-skull",
+      "layer": "skeletal",
+      "structureCount": 25,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-skull",
+      "manifest": "./packs/skeletal-skull/manifest.json",
+      "glb": "./packs/skeletal-skull/skeletal.glb"
+    },
+    "skeletal-spine": {
+      "packId": "skeletal-spine",
+      "layer": "skeletal",
+      "structureCount": 65,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-spine",
+      "manifest": "./packs/skeletal-spine/manifest.json",
+      "glb": "./packs/skeletal-spine/skeletal.glb"
+    },
+    "skeletal-thorax": {
+      "packId": "skeletal-thorax",
+      "layer": "skeletal",
+      "structureCount": 42,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-thorax",
+      "manifest": "./packs/skeletal-thorax/manifest.json",
+      "glb": "./packs/skeletal-thorax/skeletal.glb"
+    },
+    "skeletal-upper": {
+      "packId": "skeletal-upper",
+      "layer": "skeletal",
+      "structureCount": 50,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-upper",
+      "manifest": "./packs/skeletal-upper/manifest.json",
+      "glb": "./packs/skeletal-upper/skeletal.glb"
+    },
+    "skeletal-upper-left": {
+      "packId": "skeletal-upper-left",
+      "layer": "skeletal",
+      "structureCount": 36,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-upper-left",
+      "manifest": "./packs/skeletal-upper-left/manifest.json",
+      "glb": "./packs/skeletal-upper-left/skeletal.glb"
+    },
+    "skeletal-upper-right": {
+      "packId": "skeletal-upper-right",
+      "layer": "skeletal",
+      "structureCount": 36,
+      "baseUrl": "/anatomy/spatial/prototype-bp3d-fullbody-msk/packs/skeletal-upper-right",
+      "manifest": "./packs/skeletal-upper-right/manifest.json",
+      "glb": "./packs/skeletal-upper-right/skeletal.glb"
+    }
+  },
+  "registrationUrl": "/anatomy/spatial/registration/bp3d-shoulder-canonical-identity.json",
+  "generatedAt": "2026-09-07T19:25:32.802466+00:00",
+  "buildReports": [
+    {
+      "packId": "muscle-head-neck",
+      "layer": "muscle",
+      "structureCount": 47,
+      "glbBytes": 1706636,
+      "glbSha256": "e956b3e9af09cac71fa42a953644c796d25b4eac6f3d87163df20b452d446631",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-lower",
+      "layer": "muscle",
+      "structureCount": 19,
+      "glbBytes": 789992,
+      "glbSha256": "7f741cb2361d87a3288a90c5577e403a8636c2c7b2c78c71472c9e8f3c9b054c",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-lower-left",
+      "layer": "muscle",
+      "structureCount": 18,
+      "glbBytes": 372768,
+      "glbSha256": "01826c94a0bbefbb057a922432812293480e8f7cae2d1e964b53e2f53ae48181",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-lower-right",
+      "layer": "muscle",
+      "structureCount": 18,
+      "glbBytes": 372336,
+      "glbSha256": "4a78f1ec8cf18015b35c399af447f3890aa884177a1f320763059a6f0ffffe07",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-other",
+      "layer": "muscle",
+      "structureCount": 50,
+      "glbBytes": 3777136,
+      "glbSha256": "f1e76d3ae63f12efb59cb3c7dd2227df4a3dd49e4c4523eaccb63faf1dbdc3dd",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-pelvis",
+      "layer": "muscle",
+      "structureCount": 43,
+      "glbBytes": 1328216,
+      "glbSha256": "18e0b0d61d28669db3ad8d861a7ed02815f4a668b3c614bd22ccf38aee74bc56",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-torso",
+      "layer": "muscle",
+      "structureCount": 79,
+      "glbBytes": 13130940,
+      "glbSha256": "a24c59d0c1d0f2b9db933ce49c4aef4b68771211de54d6e5c85ef98eda619009",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-upper",
+      "layer": "muscle",
+      "structureCount": 85,
+      "glbBytes": 3594164,
+      "glbSha256": "cfee691f73b345a56f1567c0819200275fed0a9a15f3645340a151b6139dd554",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-upper-left",
+      "layer": "muscle",
+      "structureCount": 73,
+      "glbBytes": 1524532,
+      "glbSha256": "1d7d355d4c8942cdbd4ed0b99ef48a5f0db74b7effd6787c6dd7c3de9fb0e434",
+      "meshopt": true
+    },
+    {
+      "packId": "muscle-upper-right",
+      "layer": "muscle",
+      "structureCount": 73,
+      "glbBytes": 1525632,
+      "glbSha256": "9eabbd692469e080530b9bc0031d8981c40cfccc30b1545b029037dae919c2a7",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-lower",
+      "layer": "skeletal",
+      "structureCount": 18,
+      "glbBytes": 418772,
+      "glbSha256": "5974e72271a815533a2030c0c02f0465de153c7f0575adb8e6ad2ea826408337",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-lower-left",
+      "layer": "skeletal",
+      "structureCount": 14,
+      "glbBytes": 171436,
+      "glbSha256": "0154bacaf0f26f9d4314cc68cd89698d62e39303eeade3a306d41ed219458936",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-lower-right",
+      "layer": "skeletal",
+      "structureCount": 14,
+      "glbBytes": 171304,
+      "glbSha256": "984a4b10d4fb31f34c1feb6044ce76f15d813c2e90f878cf9a802630a1f50023",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-other",
+      "layer": "skeletal",
+      "structureCount": 37,
+      "glbBytes": 204228,
+      "glbSha256": "0c42eaada776b51b874102f68bc960c2945f9831afa3de59256aefcc4055e774",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-pelvis",
+      "layer": "skeletal",
+      "structureCount": 3,
+      "glbBytes": 51428,
+      "glbSha256": "43d4821d85d18261cdbb915ce05081b740386156798cf41c8a9fd372e5a5579f",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-shoulder-girdle",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "glbBytes": 230864,
+      "glbSha256": "1afa2c8f783b3ed49bbb5c80f7645c092888dcf65e6cf2711dd01f92eba18ee0",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-shoulder-girdle-left",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "glbBytes": 124772,
+      "glbSha256": "62fd05479f97ec881ed809d450eb9759066ec2a0f65dcf5f7e651178e40ee5b7",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-shoulder-girdle-right",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "glbBytes": 117412,
+      "glbSha256": "e528967f9d135c426f1f552f4bc906b250ec22d4d4d4f8602185e02bcd17b453",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-skull",
+      "layer": "skeletal",
+      "structureCount": 25,
+      "glbBytes": 925700,
+      "glbSha256": "a047c6621053132242c64e3e1e1bcf37a8aa1bfa7305ea25731988d36817206b",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-spine",
+      "layer": "skeletal",
+      "structureCount": 65,
+      "glbBytes": 1962468,
+      "glbSha256": "098a59eca2537ea5fd4949a8a28d4f59b65d4e10cacf52117601db318692246c",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-thorax",
+      "layer": "skeletal",
+      "structureCount": 42,
+      "glbBytes": 2336316,
+      "glbSha256": "36b9e0b96e3fb486d67a883a9b9cc8a12039cc4f197522aa6829160af87aa1b2",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-upper",
+      "layer": "skeletal",
+      "structureCount": 50,
+      "glbBytes": 417004,
+      "glbSha256": "18978104266dcb32472b79962c187396de8971e48ec2b08460e0f3981ce4f78e",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-upper-left",
+      "layer": "skeletal",
+      "structureCount": 36,
+      "glbBytes": 145076,
+      "glbSha256": "a0e8ccf9016ad46176da8b618539bc6ca69e8837dc0a2b23d3a9c36be9138a7e",
+      "meshopt": true
+    },
+    {
+      "packId": "skeletal-upper-right",
+      "layer": "skeletal",
+      "structureCount": 36,
+      "glbBytes": 145252,
+      "glbSha256": "894f0d78325bf1238336fb9e6564131ea9b6d0ffc42c28da0da60e56c40cc33f",
+      "meshopt": true
+    }
+  ],
+  "optimizedTotalBytes": 35544384
+}

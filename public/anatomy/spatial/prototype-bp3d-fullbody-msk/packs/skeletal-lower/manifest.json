@@ -1,0 +1,368 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-lower",
+  "displayName": "Skeletal Lower",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.femur",
+          "structureId": "FMA:9611",
+          "structureName": "femur",
+          "clinicalName": "Femur",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8921",
+          "sourceElementFileId": "FJ3259",
+          "sourceElementFileIds": [
+            "FJ3259",
+            "FJ3365"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.talus",
+          "structureId": "FMA:9708",
+          "structureName": "talus",
+          "clinicalName": "Talus",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8034",
+          "sourceElementFileId": "FJ3280",
+          "sourceElementFileIds": [
+            "FJ3280",
+            "FJ3385"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.tibia",
+          "structureId": "FMA:24476",
+          "structureName": "tibia",
+          "clinicalName": "Tibia",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8032",
+          "sourceElementFileId": "FJ3282",
+          "sourceElementFileIds": [
+            "FJ3282",
+            "FJ3387"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fibula",
+          "structureId": "FMA:24479",
+          "structureName": "fibula",
+          "clinicalName": "Fibula",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8010",
+          "sourceElementFileId": "FJ3260",
+          "sourceElementFileIds": [
+            "FJ3260",
+            "FJ3366"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.patella",
+          "structureId": "FMA:24485",
+          "structureName": "patella",
+          "clinicalName": "Patella",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8379",
+          "sourceElementFileId": "FJ3275",
+          "sourceElementFileIds": [
+            "FJ3275",
+            "FJ3381"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.metatarsal.bone",
+          "structureId": "FMA:24492",
+          "structureName": "metatarsal bone",
+          "clinicalName": "Metatarsal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7914",
+          "sourceElementFileId": "FJ3241",
+          "sourceElementFileIds": [
+            "FJ3241",
+            "FJ3244",
+            "FJ3247",
+            "FJ3250",
+            "FJ3253",
+            "FJ3351",
+            "FJ3353",
+            "FJ3355",
+            "FJ3357",
+            "FJ3359"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.calcaneus",
+          "structureId": "FMA:24496",
+          "structureName": "calcaneus",
+          "clinicalName": "Calcaneus",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8534",
+          "sourceElementFileId": "FJ3256",
+          "sourceElementFileIds": [
+            "FJ3256",
+            "FJ3360"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.first.metatarsal.bone",
+          "structureId": "FMA:24502",
+          "structureName": "first metatarsal bone",
+          "clinicalName": "First metatarsal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8161",
+          "sourceElementFileId": "FJ3241",
+          "sourceElementFileIds": [
+            "FJ3241",
+            "FJ3351"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.second.metatarsal.bone",
+          "structureId": "FMA:24503",
+          "structureName": "second metatarsal bone",
+          "clinicalName": "Second metatarsal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8628",
+          "sourceElementFileId": "FJ3244",
+          "sourceElementFileIds": [
+            "FJ3244",
+            "FJ3353"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.third.metatarsal.bone",
+          "structureId": "FMA:24504",
+          "structureName": "third metatarsal bone",
+          "clinicalName": "Third metatarsal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8803",
+          "sourceElementFileId": "FJ3247",
+          "sourceElementFileIds": [
+            "FJ3247",
+            "FJ3355"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fourth.metatarsal.bone",
+          "structureId": "FMA:24505",
+          "structureName": "fourth metatarsal bone",
+          "clinicalName": "Fourth metatarsal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8512",
+          "sourceElementFileId": "FJ3250",
+          "sourceElementFileIds": [
+            "FJ3250",
+            "FJ3357"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fifth.metatarsal.bone",
+          "structureId": "FMA:24506",
+          "structureName": "fifth metatarsal bone",
+          "clinicalName": "Fifth metatarsal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7913",
+          "sourceElementFileId": "FJ3253",
+          "sourceElementFileIds": [
+            "FJ3253",
+            "FJ3359"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.tarsal.ligament",
+          "structureId": "FMA:44197",
+          "structureName": "tarsal ligament",
+          "clinicalName": "Tarsal ligament",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9276",
+          "sourceElementFileId": "FJ1424",
+          "sourceElementFileIds": [
+            "FJ1424",
+            "FJ1424M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.plantar.tarsal.ligament",
+          "structureId": "FMA:44245",
+          "structureName": "plantar tarsal ligament",
+          "clinicalName": "Plantar tarsal ligament",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9275",
+          "sourceElementFileId": "FJ1424",
+          "sourceElementFileIds": [
+            "FJ1424",
+            "FJ1424M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.iliotibial.tract",
+          "structureId": "FMA:51048",
+          "structureName": "iliotibial tract",
+          "clinicalName": "Iliotibial tract",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8857",
+          "sourceElementFileId": "FJ1423",
+          "sourceElementFileIds": [
+            "FJ1423",
+            "FJ1423M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.tarsal.plate.of.eyelid",
+          "structureId": "FMA:59086",
+          "structureName": "tarsal plate of eyelid",
+          "clinicalName": "Tarsal plate of eyelid",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4637",
+          "sourceElementFileId": "FJ1324",
+          "sourceElementFileIds": [
+            "FJ1324",
+            "FJ1328",
+            "FJ1375",
+            "FJ1379"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.tarsal.plate.of.upper.eyelid",
+          "structureId": "FMA:59087",
+          "structureName": "tarsal plate of upper eyelid",
+          "clinicalName": "Tarsal plate of upper eyelid",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4638",
+          "sourceElementFileId": "FJ1324",
+          "sourceElementFileIds": [
+            "FJ1324",
+            "FJ1375"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.tarsal.plate.of.lower.eyelid",
+          "structureId": "FMA:59088",
+          "structureName": "tarsal plate of lower eyelid",
+          "clinicalName": "Tarsal plate of lower eyelid",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4641",
+          "sourceElementFileId": "FJ1328",
+          "sourceElementFileIds": [
+            "FJ1328",
+            "FJ1379"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

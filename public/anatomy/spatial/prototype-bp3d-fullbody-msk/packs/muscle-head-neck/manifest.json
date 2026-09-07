@@ -1,0 +1,848 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-head-neck",
+  "displayName": "Muscle Head Neck",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "muscle": {
+      "layerId": "muscle",
+      "displayName": "Muscle",
+      "file": "./muscle.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "muscle.stylohyoid",
+          "structureId": "FMA:9625",
+          "structureName": "stylohyoid",
+          "clinicalName": "Stylohyoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4900",
+          "sourceElementFileId": "FJ1576",
+          "sourceElementFileIds": [
+            "FJ1576",
+            "FJ1598"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.infrahyoid.muscle",
+          "structureId": "FMA:13338",
+          "structureName": "infrahyoid muscle",
+          "clinicalName": "Infrahyoid muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4913",
+          "sourceElementFileId": "FJ1565",
+          "sourceElementFileIds": [
+            "FJ1565",
+            "FJ1574",
+            "FJ1575",
+            "FJ1577",
+            "FJ1586",
+            "FJ1596",
+            "FJ1597",
+            "FJ1599"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.sternohyoid",
+          "structureId": "FMA:13341",
+          "structureName": "sternohyoid",
+          "clinicalName": "Sternohyoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4916",
+          "sourceElementFileId": "FJ1574",
+          "sourceElementFileIds": [
+            "FJ1574",
+            "FJ1596"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.omohyoid",
+          "structureId": "FMA:13342",
+          "structureName": "omohyoid",
+          "clinicalName": "Omohyoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4914",
+          "sourceElementFileId": "FJ1565",
+          "sourceElementFileIds": [
+            "FJ1565",
+            "FJ1586"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.thyrohyoid",
+          "structureId": "FMA:13344",
+          "structureName": "thyrohyoid",
+          "clinicalName": "Thyrohyoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4919",
+          "sourceElementFileId": "FJ1577",
+          "sourceElementFileIds": [
+            "FJ1577",
+            "FJ1599"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.sternohyoid",
+          "structureId": "FMA:13346",
+          "structureName": "right sternohyoid",
+          "clinicalName": "Right sternohyoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4917",
+          "sourceElementFileId": "FJ1596",
+          "sourceElementFileIds": [
+            "FJ1596"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.sternohyoid",
+          "structureId": "FMA:13347",
+          "structureName": "left sternohyoid",
+          "clinicalName": "Left sternohyoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4918",
+          "sourceElementFileId": "FJ1574",
+          "sourceElementFileIds": [
+            "FJ1574"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.omohyoid",
+          "structureId": "FMA:13348",
+          "structureName": "right omohyoid",
+          "clinicalName": "Right omohyoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4915",
+          "sourceElementFileId": "FJ1586",
+          "sourceElementFileIds": [
+            "FJ1586"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.omohyoid",
+          "structureId": "FMA:13349",
+          "structureName": "left omohyoid",
+          "clinicalName": "Left omohyoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7585",
+          "sourceElementFileId": "FJ1565",
+          "sourceElementFileIds": [
+            "FJ1565"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.thyrohyoid",
+          "structureId": "FMA:13352",
+          "structureName": "right thyrohyoid",
+          "clinicalName": "Right thyrohyoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4920",
+          "sourceElementFileId": "FJ1599",
+          "sourceElementFileIds": [
+            "FJ1599"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.thyrohyoid",
+          "structureId": "FMA:13353",
+          "structureName": "left thyrohyoid",
+          "clinicalName": "Left thyrohyoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4921",
+          "sourceElementFileId": "FJ1577",
+          "sourceElementFileIds": [
+            "FJ1577"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.sternocleidomastoid",
+          "structureId": "FMA:13407",
+          "structureName": "sternocleidomastoid",
+          "clinicalName": "Sternocleidomastoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4908",
+          "sourceElementFileId": "FJ1573",
+          "sourceElementFileIds": [
+            "FJ1573",
+            "FJ1595"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.sternocleidomastoid",
+          "structureId": "FMA:13408",
+          "structureName": "right sternocleidomastoid",
+          "clinicalName": "Right sternocleidomastoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4909",
+          "sourceElementFileId": "FJ1595",
+          "sourceElementFileIds": [
+            "FJ1595"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.sternocleidomastoid",
+          "structureId": "FMA:13409",
+          "structureName": "left sternocleidomastoid",
+          "clinicalName": "Left sternocleidomastoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4910",
+          "sourceElementFileId": "FJ1573",
+          "sourceElementFileIds": [
+            "FJ1573"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.platysma",
+          "structureId": "FMA:45738",
+          "structureName": "platysma",
+          "clinicalName": "Platysma",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4911",
+          "sourceElementFileId": "FJ1558",
+          "sourceElementFileIds": [
+            "FJ1558",
+            "FJ1587"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.platysma",
+          "structureId": "FMA:45739",
+          "structureName": "right platysma",
+          "clinicalName": "Right platysma",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4912",
+          "sourceElementFileId": "FJ1587",
+          "sourceElementFileIds": [
+            "FJ1587"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.platysma",
+          "structureId": "FMA:45740",
+          "structureName": "left platysma",
+          "clinicalName": "Left platysma",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7577",
+          "sourceElementFileId": "FJ1558",
+          "sourceElementFileIds": [
+            "FJ1558"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.stylohyoid",
+          "structureId": "FMA:45826",
+          "structureName": "right stylohyoid",
+          "clinicalName": "Right stylohyoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4901",
+          "sourceElementFileId": "FJ1598",
+          "sourceElementFileIds": [
+            "FJ1598"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.stylohyoid",
+          "structureId": "FMA:45827",
+          "structureName": "left stylohyoid",
+          "clinicalName": "Left stylohyoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4902",
+          "sourceElementFileId": "FJ1576",
+          "sourceElementFileIds": [
+            "FJ1576"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.suprahyoid.muscle",
+          "structureId": "FMA:46290",
+          "structureName": "suprahyoid muscle",
+          "clinicalName": "Suprahyoid muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4899",
+          "sourceElementFileId": "FJ1555",
+          "sourceElementFileIds": [
+            "FJ1555",
+            "FJ1556",
+            "FJ1559",
+            "FJ1560",
+            "FJ1562",
+            "FJ1576",
+            "FJ1578",
+            "FJ1579",
+            "FJ1580",
+            "FJ1583",
+            "FJ1598"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.digastric",
+          "structureId": "FMA:46291",
+          "structureName": "digastric",
+          "clinicalName": "Digastric",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7580",
+          "sourceElementFileId": "FJ1555",
+          "sourceElementFileIds": [
+            "FJ1555",
+            "FJ1556",
+            "FJ1560",
+            "FJ1578",
+            "FJ1579"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.digastric",
+          "structureId": "FMA:46292",
+          "structureName": "right digastric",
+          "clinicalName": "Right digastric",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7592",
+          "sourceElementFileId": "FJ1556",
+          "sourceElementFileIds": [
+            "FJ1556",
+            "FJ1579"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.digastric",
+          "structureId": "FMA:46293",
+          "structureName": "left digastric",
+          "clinicalName": "Left digastric",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7579",
+          "sourceElementFileId": "FJ1555",
+          "sourceElementFileIds": [
+            "FJ1555",
+            "FJ1560",
+            "FJ1578"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.mylohyoid",
+          "structureId": "FMA:46320",
+          "structureName": "mylohyoid",
+          "clinicalName": "Mylohyoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4903",
+          "sourceElementFileId": "FJ1562",
+          "sourceElementFileIds": [
+            "FJ1562",
+            "FJ1583"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.mylohyoid",
+          "structureId": "FMA:46321",
+          "structureName": "right mylohyoid",
+          "clinicalName": "Right mylohyoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4904",
+          "sourceElementFileId": "FJ1583",
+          "sourceElementFileIds": [
+            "FJ1583"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.mylohyoid",
+          "structureId": "FMA:46322",
+          "structureName": "left mylohyoid",
+          "clinicalName": "Left mylohyoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7582",
+          "sourceElementFileId": "FJ1562",
+          "sourceElementFileIds": [
+            "FJ1562"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.geniohyoid",
+          "structureId": "FMA:46325",
+          "structureName": "geniohyoid",
+          "clinicalName": "Geniohyoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4905",
+          "sourceElementFileId": "FJ1559",
+          "sourceElementFileIds": [
+            "FJ1559",
+            "FJ1580"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.geniohyoid",
+          "structureId": "FMA:46326",
+          "structureName": "right geniohyoid",
+          "clinicalName": "Right geniohyoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4906",
+          "sourceElementFileId": "FJ1580",
+          "sourceElementFileIds": [
+            "FJ1580"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.geniohyoid",
+          "structureId": "FMA:46327",
+          "structureName": "left geniohyoid",
+          "clinicalName": "Left geniohyoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7578",
+          "sourceElementFileId": "FJ1559",
+          "sourceElementFileIds": [
+            "FJ1559"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.genioglossus",
+          "structureId": "FMA:46690",
+          "structureName": "genioglossus",
+          "clinicalName": "Genioglossus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8441",
+          "sourceElementFileId": "FJ2738",
+          "sourceElementFileIds": [
+            "FJ2738",
+            "FJ2750"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.hyoglossus",
+          "structureId": "FMA:46691",
+          "structureName": "hyoglossus",
+          "clinicalName": "Hyoglossus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8077",
+          "sourceElementFileId": "FJ2739",
+          "sourceElementFileIds": [
+            "FJ2739",
+            "FJ2751"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.genioglossus",
+          "structureId": "FMA:46698",
+          "structureName": "right genioglossus",
+          "clinicalName": "Right genioglossus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8513",
+          "sourceElementFileId": "FJ2750",
+          "sourceElementFileIds": [
+            "FJ2750"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.genioglossus",
+          "structureId": "FMA:46702",
+          "structureName": "left genioglossus",
+          "clinicalName": "Left genioglossus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8440",
+          "sourceElementFileId": "FJ2738",
+          "sourceElementFileIds": [
+            "FJ2738"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.hyoglossus",
+          "structureId": "FMA:46703",
+          "structureName": "right hyoglossus",
+          "clinicalName": "Right hyoglossus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8076",
+          "sourceElementFileId": "FJ2751",
+          "sourceElementFileIds": [
+            "FJ2751"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.hyoglossus",
+          "structureId": "FMA:46704",
+          "structureName": "left hyoglossus",
+          "clinicalName": "Left hyoglossus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9231",
+          "sourceElementFileId": "FJ2739",
+          "sourceElementFileIds": [
+            "FJ2739"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.thyrohyoid.membrane",
+          "structureId": "FMA:55132",
+          "structureName": "thyrohyoid membrane",
+          "clinicalName": "Thyrohyoid membrane",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8305",
+          "sourceElementFileId": "FJ2786",
+          "sourceElementFileIds": [
+            "FJ2786",
+            "FJ2804"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.thyrohyoid.membrane",
+          "structureId": "FMA:55133",
+          "structureName": "right thyrohyoid membrane",
+          "clinicalName": "Right thyrohyoid membrane",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8304",
+          "sourceElementFileId": "FJ2804",
+          "sourceElementFileIds": [
+            "FJ2804"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.thyrohyoid.membrane",
+          "structureId": "FMA:55134",
+          "structureName": "left thyrohyoid membrane",
+          "clinicalName": "Left thyrohyoid membrane",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8736",
+          "sourceElementFileId": "FJ2786",
+          "sourceElementFileIds": [
+            "FJ2786"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.thyrohyoid.ligament",
+          "structureId": "FMA:55135",
+          "structureName": "thyrohyoid ligament",
+          "clinicalName": "Thyrohyoid ligament",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8166",
+          "sourceElementFileId": "FJ2779",
+          "sourceElementFileIds": [
+            "FJ2779",
+            "FJ2790",
+            "FJ2797"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.median.thyrohyoid.ligament",
+          "structureId": "FMA:55138",
+          "structureName": "median thyrohyoid ligament",
+          "clinicalName": "Median thyrohyoid ligament",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8311",
+          "sourceElementFileId": "FJ2790",
+          "sourceElementFileIds": [
+            "FJ2790"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.lateral.thyrohyoid.ligament",
+          "structureId": "FMA:55139",
+          "structureName": "lateral thyrohyoid ligament",
+          "clinicalName": "Lateral thyrohyoid ligament",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8165",
+          "sourceElementFileId": "FJ2779",
+          "sourceElementFileIds": [
+            "FJ2779",
+            "FJ2797"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.lateral.thyrohyoid.ligament",
+          "structureId": "FMA:55140",
+          "structureName": "right lateral thyrohyoid ligament",
+          "clinicalName": "Right lateral thyrohyoid ligament",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8164",
+          "sourceElementFileId": "FJ2797",
+          "sourceElementFileIds": [
+            "FJ2797"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.lateral.thyrohyoid.ligament",
+          "structureId": "FMA:55141",
+          "structureName": "left lateral thyrohyoid ligament",
+          "clinicalName": "Left lateral thyrohyoid ligament",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8424",
+          "sourceElementFileId": "FJ2779",
+          "sourceElementFileIds": [
+            "FJ2779"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.scalene.muscle",
+          "structureId": "FMA:64829",
+          "structureName": "scalene muscle",
+          "clinicalName": "Scalene muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4873",
+          "sourceElementFileId": "FJ1570",
+          "sourceElementFileIds": [
+            "FJ1570",
+            "FJ1571",
+            "FJ1572",
+            "FJ1592",
+            "FJ1593",
+            "FJ1594"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.stylohyoid.ligament",
+          "structureId": "FMA:72308",
+          "structureName": "stylohyoid ligament",
+          "clinicalName": "Stylohyoid ligament",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8290",
+          "sourceElementFileId": "FJ2763",
+          "sourceElementFileIds": [
+            "FJ2763",
+            "FJ2764"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.stylohyoid.ligament",
+          "structureId": "FMA:72309",
+          "structureName": "right stylohyoid ligament",
+          "clinicalName": "Right stylohyoid ligament",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8422",
+          "sourceElementFileId": "FJ2764",
+          "sourceElementFileIds": [
+            "FJ2764"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.stylohyoid.ligament",
+          "structureId": "FMA:72311",
+          "structureName": "left stylohyoid ligament",
+          "clinicalName": "Left stylohyoid ligament",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-head-neck",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8289",
+          "sourceElementFileId": "FJ2763",
+          "sourceElementFileIds": [
+            "FJ2763"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

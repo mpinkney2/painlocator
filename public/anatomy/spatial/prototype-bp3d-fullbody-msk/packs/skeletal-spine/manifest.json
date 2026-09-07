@@ -1,0 +1,1153 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-spine",
+  "displayName": "Skeletal Spine",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.thoracic.vertebra",
+          "structureId": "FMA:9139",
+          "structureName": "thoracic vertebra",
+          "clinicalName": "Thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8044",
+          "sourceElementFileId": "FJ3154",
+          "sourceElementFileIds": [
+            "FJ3154",
+            "FJ3155",
+            "FJ3156",
+            "FJ3158",
+            "FJ3160",
+            "FJ3163",
+            "FJ3166",
+            "FJ3169",
+            "FJ3171",
+            "FJ3173",
+            "FJ3174",
+            "FJ3175"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.first.thoracic.vertebra",
+          "structureId": "FMA:9165",
+          "structureName": "first thoracic vertebra",
+          "clinicalName": "First thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8981",
+          "sourceElementFileId": "FJ3158",
+          "sourceElementFileIds": [
+            "FJ3158"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.second.thoracic.vertebra",
+          "structureId": "FMA:9187",
+          "structureName": "second thoracic vertebra",
+          "clinicalName": "Second thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8475",
+          "sourceElementFileId": "FJ3160",
+          "sourceElementFileIds": [
+            "FJ3160"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.third.thoracic.vertebra",
+          "structureId": "FMA:9209",
+          "structureName": "third thoracic vertebra",
+          "clinicalName": "Third thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8726",
+          "sourceElementFileId": "FJ3163",
+          "sourceElementFileIds": [
+            "FJ3163"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fourth.thoracic.vertebra",
+          "structureId": "FMA:9248",
+          "structureName": "fourth thoracic vertebra",
+          "clinicalName": "Fourth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9156",
+          "sourceElementFileId": "FJ3166",
+          "sourceElementFileIds": [
+            "FJ3166"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.cervical.vertebra",
+          "structureId": "FMA:9915",
+          "structureName": "cervical vertebra",
+          "clinicalName": "Cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7846",
+          "sourceElementFileId": "FJ3161",
+          "sourceElementFileIds": [
+            "FJ3161",
+            "FJ3164",
+            "FJ3167",
+            "FJ3170",
+            "FJ3172",
+            "FJ3176",
+            "FJ3177"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.lumbar.vertebra",
+          "structureId": "FMA:9921",
+          "structureName": "lumbar vertebra",
+          "clinicalName": "Lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8134",
+          "sourceElementFileId": "FJ3157",
+          "sourceElementFileIds": [
+            "FJ3157",
+            "FJ3159",
+            "FJ3162",
+            "FJ3165",
+            "FJ3168"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fifth.thoracic.vertebra",
+          "structureId": "FMA:9922",
+          "structureName": "fifth thoracic vertebra",
+          "clinicalName": "Fifth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8643",
+          "sourceElementFileId": "FJ3169",
+          "sourceElementFileIds": [
+            "FJ3169"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.sixth.thoracic.vertebra",
+          "structureId": "FMA:9945",
+          "structureName": "sixth thoracic vertebra",
+          "clinicalName": "Sixth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8303",
+          "sourceElementFileId": "FJ3171",
+          "sourceElementFileIds": [
+            "FJ3171"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.seventh.thoracic.vertebra",
+          "structureId": "FMA:9968",
+          "structureName": "seventh thoracic vertebra",
+          "clinicalName": "Seventh thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8840",
+          "sourceElementFileId": "FJ3173",
+          "sourceElementFileIds": [
+            "FJ3173"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.eighth.thoracic.vertebra",
+          "structureId": "FMA:9991",
+          "structureName": "eighth thoracic vertebra",
+          "clinicalName": "Eighth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9221",
+          "sourceElementFileId": "FJ3174",
+          "sourceElementFileIds": [
+            "FJ3174"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.ninth.thoracic.vertebra",
+          "structureId": "FMA:10014",
+          "structureName": "ninth thoracic vertebra",
+          "clinicalName": "Ninth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8178",
+          "sourceElementFileId": "FJ3175",
+          "sourceElementFileIds": [
+            "FJ3175"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.tenth.thoracic.vertebra",
+          "structureId": "FMA:10037",
+          "structureName": "tenth thoracic vertebra",
+          "clinicalName": "Tenth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8412",
+          "sourceElementFileId": "FJ3154",
+          "sourceElementFileIds": [
+            "FJ3154"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.eleventh.thoracic.vertebra",
+          "structureId": "FMA:10059",
+          "structureName": "eleventh thoracic vertebra",
+          "clinicalName": "Eleventh thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8043",
+          "sourceElementFileId": "FJ3155",
+          "sourceElementFileIds": [
+            "FJ3155"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.twelfth.thoracic.vertebra",
+          "structureId": "FMA:10081",
+          "structureName": "twelfth thoracic vertebra",
+          "clinicalName": "Twelfth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9250",
+          "sourceElementFileId": "FJ3156",
+          "sourceElementFileIds": [
+            "FJ3156"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.thoracic.vertebra",
+          "structureId": "FMA:10455",
+          "structureName": "intervertebral disk of thoracic vertebra",
+          "clinicalName": "Intervertebral disk of thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7811",
+          "sourceElementFileId": "FJ3203",
+          "sourceElementFileIds": [
+            "FJ3203",
+            "FJ3204",
+            "FJ3205",
+            "FJ3206",
+            "FJ3207",
+            "FJ3208",
+            "FJ3209",
+            "FJ3210",
+            "FJ3222",
+            "FJ3223",
+            "FJ3224"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.first.thoracic.vertebra",
+          "structureId": "FMA:10458",
+          "structureName": "intervertebral disk of first thoracic vertebra",
+          "clinicalName": "Intervertebral disk of first thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9158",
+          "sourceElementFileId": "FJ3222",
+          "sourceElementFileIds": [
+            "FJ3222"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.atlas",
+          "structureId": "FMA:12519",
+          "structureName": "atlas",
+          "clinicalName": "Atlas",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8831",
+          "sourceElementFileId": "FJ3176",
+          "sourceElementFileIds": [
+            "FJ3176"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.axis",
+          "structureId": "FMA:12520",
+          "structureName": "axis",
+          "clinicalName": "Axis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8459",
+          "sourceElementFileId": "FJ3177",
+          "sourceElementFileIds": [
+            "FJ3177"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.third.cervical.vertebra",
+          "structureId": "FMA:12521",
+          "structureName": "third cervical vertebra",
+          "clinicalName": "Third cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9108",
+          "sourceElementFileId": "FJ3161",
+          "sourceElementFileIds": [
+            "FJ3161"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fourth.cervical.vertebra",
+          "structureId": "FMA:12522",
+          "structureName": "fourth cervical vertebra",
+          "clinicalName": "Fourth cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8003",
+          "sourceElementFileId": "FJ3164",
+          "sourceElementFileIds": [
+            "FJ3164"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fifth.cervical.vertebra",
+          "structureId": "FMA:12523",
+          "structureName": "fifth cervical vertebra",
+          "clinicalName": "Fifth cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8835",
+          "sourceElementFileId": "FJ3167",
+          "sourceElementFileIds": [
+            "FJ3167"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.sixth.cervical.vertebra",
+          "structureId": "FMA:12524",
+          "structureName": "sixth cervical vertebra",
+          "clinicalName": "Sixth cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7845",
+          "sourceElementFileId": "FJ3170",
+          "sourceElementFileIds": [
+            "FJ3170"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.seventh.cervical.vertebra",
+          "structureId": "FMA:12525",
+          "structureName": "seventh cervical vertebra",
+          "clinicalName": "Seventh cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7979",
+          "sourceElementFileId": "FJ3172",
+          "sourceElementFileIds": [
+            "FJ3172"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.first.lumbar.vertebra",
+          "structureId": "FMA:13072",
+          "structureName": "first lumbar vertebra",
+          "clinicalName": "First lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8948",
+          "sourceElementFileId": "FJ3157",
+          "sourceElementFileIds": [
+            "FJ3157"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.second.lumbar.vertebra",
+          "structureId": "FMA:13073",
+          "structureName": "second lumbar vertebra",
+          "clinicalName": "Second lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8995",
+          "sourceElementFileId": "FJ3159",
+          "sourceElementFileIds": [
+            "FJ3159"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.third.lumbar.vertebra",
+          "structureId": "FMA:13074",
+          "structureName": "third lumbar vertebra",
+          "clinicalName": "Third lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8227",
+          "sourceElementFileId": "FJ3162",
+          "sourceElementFileIds": [
+            "FJ3162"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fourth.lumbar.vertebra",
+          "structureId": "FMA:13075",
+          "structureName": "fourth lumbar vertebra",
+          "clinicalName": "Fourth lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8133",
+          "sourceElementFileId": "FJ3165",
+          "sourceElementFileIds": [
+            "FJ3165"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fifth.lumbar.vertebra",
+          "structureId": "FMA:13076",
+          "structureName": "fifth lumbar vertebra",
+          "clinicalName": "Fifth lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8280",
+          "sourceElementFileId": "FJ3168",
+          "sourceElementFileIds": [
+            "FJ3168"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.second.thoracic.vertebra",
+          "structureId": "FMA:13495",
+          "structureName": "intervertebral disk of second thoracic vertebra",
+          "clinicalName": "Intervertebral disk of second thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8514",
+          "sourceElementFileId": "FJ3223",
+          "sourceElementFileIds": [
+            "FJ3223"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.third.thoracic.vertebra",
+          "structureId": "FMA:13500",
+          "structureName": "intervertebral disk of third thoracic vertebra",
+          "clinicalName": "Intervertebral disk of third thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9007",
+          "sourceElementFileId": "FJ3224",
+          "sourceElementFileIds": [
+            "FJ3224"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.fourth.thoracic.vertebra",
+          "structureId": "FMA:13501",
+          "structureName": "intervertebral disk of fourth thoracic vertebra",
+          "clinicalName": "Intervertebral disk of fourth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9269",
+          "sourceElementFileId": "FJ3203",
+          "sourceElementFileIds": [
+            "FJ3203"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.fifth.thoracic.vertebra",
+          "structureId": "FMA:13502",
+          "structureName": "intervertebral disk of fifth thoracic vertebra",
+          "clinicalName": "Intervertebral disk of fifth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8610",
+          "sourceElementFileId": "FJ3204",
+          "sourceElementFileIds": [
+            "FJ3204"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.sixth.thoracic.vertebra",
+          "structureId": "FMA:13503",
+          "structureName": "intervertebral disk of sixth thoracic vertebra",
+          "clinicalName": "Intervertebral disk of sixth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8652",
+          "sourceElementFileId": "FJ3205",
+          "sourceElementFileIds": [
+            "FJ3205"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.seventh.thoracic.vertebra",
+          "structureId": "FMA:13504",
+          "structureName": "intervertebral disk of seventh thoracic vertebra",
+          "clinicalName": "Intervertebral disk of seventh thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8433",
+          "sourceElementFileId": "FJ3206",
+          "sourceElementFileIds": [
+            "FJ3206"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.eighth.thoracic.vertebra",
+          "structureId": "FMA:13505",
+          "structureName": "intervertebral disk of eighth thoracic vertebra",
+          "clinicalName": "Intervertebral disk of eighth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8829",
+          "sourceElementFileId": "FJ3207",
+          "sourceElementFileIds": [
+            "FJ3207"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.ninth.thoracic.vertebra",
+          "structureId": "FMA:13506",
+          "structureName": "intervertebral disk of ninth thoracic vertebra",
+          "clinicalName": "Intervertebral disk of ninth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8704",
+          "sourceElementFileId": "FJ3208",
+          "sourceElementFileIds": [
+            "FJ3208"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.tenth.thoracic.vertebra",
+          "structureId": "FMA:13507",
+          "structureName": "intervertebral disk of tenth thoracic vertebra",
+          "clinicalName": "Intervertebral disk of tenth thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9069",
+          "sourceElementFileId": "FJ3209",
+          "sourceElementFileIds": [
+            "FJ3209"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.eleventh.thoracic.vertebra",
+          "structureId": "FMA:13508",
+          "structureName": "intervertebral disk of eleventh thoracic vertebra",
+          "clinicalName": "Intervertebral disk of eleventh thoracic vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7810",
+          "sourceElementFileId": "FJ3210",
+          "sourceElementFileIds": [
+            "FJ3210"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.lumbar.vertebra",
+          "structureId": "FMA:13894",
+          "structureName": "intervertebral disk of lumbar vertebra",
+          "clinicalName": "Intervertebral disk of lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8047",
+          "sourceElementFileId": "FJ3212",
+          "sourceElementFileIds": [
+            "FJ3212",
+            "FJ3214",
+            "FJ3215",
+            "FJ3216",
+            "FJ3217"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.cervical.vertebra",
+          "structureId": "FMA:13895",
+          "structureName": "intervertebral disk of cervical vertebra",
+          "clinicalName": "Intervertebral disk of cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7935",
+          "sourceElementFileId": "FJ3202",
+          "sourceElementFileIds": [
+            "FJ3202",
+            "FJ3213",
+            "FJ3218",
+            "FJ3219",
+            "FJ3220",
+            "FJ3221"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.third.cervical.vertebra",
+          "structureId": "FMA:13896",
+          "structureName": "intervertebral disk of third cervical vertebra",
+          "clinicalName": "Intervertebral disk of third cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9201",
+          "sourceElementFileId": "FJ3213",
+          "sourceElementFileIds": [
+            "FJ3213"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.fourth.cervical.vertebra",
+          "structureId": "FMA:13897",
+          "structureName": "intervertebral disk of fourth cervical vertebra",
+          "clinicalName": "Intervertebral disk of fourth cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8718",
+          "sourceElementFileId": "FJ3218",
+          "sourceElementFileIds": [
+            "FJ3218"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.fifth.cervical.vertebra",
+          "structureId": "FMA:13898",
+          "structureName": "intervertebral disk of fifth cervical vertebra",
+          "clinicalName": "Intervertebral disk of fifth cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7934",
+          "sourceElementFileId": "FJ3219",
+          "sourceElementFileIds": [
+            "FJ3219"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.sixth.cervical.vertebra",
+          "structureId": "FMA:13899",
+          "structureName": "intervertebral disk of sixth cervical vertebra",
+          "clinicalName": "Intervertebral disk of sixth cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9190",
+          "sourceElementFileId": "FJ3220",
+          "sourceElementFileIds": [
+            "FJ3220"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.seventh.cervical.vertebra",
+          "structureId": "FMA:13900",
+          "structureName": "intervertebral disk of seventh cervical vertebra",
+          "clinicalName": "Intervertebral disk of seventh cervical vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8243",
+          "sourceElementFileId": "FJ3221",
+          "sourceElementFileIds": [
+            "FJ3221"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.first.lumbar.vertebra",
+          "structureId": "FMA:16033",
+          "structureName": "intervertebral disk of first lumbar vertebra",
+          "clinicalName": "Intervertebral disk of first lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8891",
+          "sourceElementFileId": "FJ3212",
+          "sourceElementFileIds": [
+            "FJ3212"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.second.lumbar.vertebra",
+          "structureId": "FMA:16034",
+          "structureName": "intervertebral disk of second lumbar vertebra",
+          "clinicalName": "Intervertebral disk of second lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8683",
+          "sourceElementFileId": "FJ3214",
+          "sourceElementFileIds": [
+            "FJ3214"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.third.lumbar.vertebra",
+          "structureId": "FMA:16035",
+          "structureName": "intervertebral disk of third lumbar vertebra",
+          "clinicalName": "Intervertebral disk of third lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8046",
+          "sourceElementFileId": "FJ3215",
+          "sourceElementFileIds": [
+            "FJ3215"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.fourth.lumbar.vertebra",
+          "structureId": "FMA:16036",
+          "structureName": "intervertebral disk of fourth lumbar vertebra",
+          "clinicalName": "Intervertebral disk of fourth lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8261",
+          "sourceElementFileId": "FJ3216",
+          "sourceElementFileIds": [
+            "FJ3216"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.fifth.lumbar.vertebra",
+          "structureId": "FMA:16037",
+          "structureName": "intervertebral disk of fifth lumbar vertebra",
+          "clinicalName": "Intervertebral disk of fifth lumbar vertebra",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8781",
+          "sourceElementFileId": "FJ3217",
+          "sourceElementFileIds": [
+            "FJ3217"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.sacrum",
+          "structureId": "FMA:16202",
+          "structureName": "sacrum",
+          "clinicalName": "Sacrum",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9174",
+          "sourceElementFileId": "FJ3393",
+          "sourceElementFileIds": [
+            "FJ3393"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intervertebral.disk.of.axis",
+          "structureId": "FMA:25058",
+          "structureName": "intervertebral disk of axis",
+          "clinicalName": "Intervertebral disk of axis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9151",
+          "sourceElementFileId": "FJ3202",
+          "sourceElementFileIds": [
+            "FJ3202"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.organ.component.of.neuraxis",
+          "structureId": "FMA:83153",
+          "structureName": "organ component of neuraxis",
+          "clinicalName": "Organ component of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6494",
+          "sourceElementFileId": "FJ1760",
+          "sourceElementFileIds": [
+            "FJ1760",
+            "FJ1782",
+            "FJ1808",
+            "FJ1827"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.stria.of.neuraxis",
+          "structureId": "FMA:83854",
+          "structureName": "stria of neuraxis",
+          "clinicalName": "Stria of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6561",
+          "sourceElementFileId": "FJ1777",
+          "sourceElementFileIds": [
+            "FJ1777",
+            "FJ1778",
+            "FJ1824",
+            "FJ1825"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.lamina.of.neuraxis",
+          "structureId": "FMA:83856",
+          "structureName": "lamina of neuraxis",
+          "clinicalName": "Lamina of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6556",
+          "sourceElementFileId": "FJ1764",
+          "sourceElementFileIds": [
+            "FJ1764",
+            "FJ1812"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.brachium.of.neuraxis",
+          "structureId": "FMA:83857",
+          "structureName": "brachium of neuraxis",
+          "clinicalName": "Brachium of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6567",
+          "sourceElementFileId": "FJ1735",
+          "sourceElementFileIds": [
+            "FJ1735",
+            "FJ1736",
+            "FJ1761",
+            "FJ1809"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.peduncle.of.neuraxis",
+          "structureId": "FMA:83860",
+          "structureName": "peduncle of neuraxis",
+          "clinicalName": "Peduncle of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6559",
+          "sourceElementFileId": "FJ1774",
+          "sourceElementFileIds": [
+            "FJ1774",
+            "FJ1821"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.fornix.of.neuraxis",
+          "structureId": "FMA:83865",
+          "structureName": "fornix of neuraxis",
+          "clinicalName": "Fornix of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6565",
+          "sourceElementFileId": "FJ1756",
+          "sourceElementFileIds": [
+            "FJ1756",
+            "FJ1804"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.septum.of.neuraxis",
+          "structureId": "FMA:83904",
+          "structureName": "septum of neuraxis",
+          "clinicalName": "Septum of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6579",
+          "sourceElementFileId": "FJ1832",
+          "sourceElementFileIds": [
+            "FJ1832"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.zone.of.neuraxis",
+          "structureId": "FMA:84054",
+          "structureName": "zone of neuraxis",
+          "clinicalName": "Zone of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6546",
+          "sourceElementFileId": "FJ1743",
+          "sourceElementFileIds": [
+            "FJ1743",
+            "FJ1780",
+            "FJ1828"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.nuclear.complex.of.neuraxis",
+          "structureId": "FMA:84059",
+          "structureName": "nuclear complex of neuraxis",
+          "clinicalName": "Nuclear complex of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6583",
+          "sourceElementFileId": "FJ1753",
+          "sourceElementFileIds": [
+            "FJ1753",
+            "FJ1829"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.circumventricular.organ.of.neuraxis",
+          "structureId": "FMA:84081",
+          "structureName": "circumventricular organ of neuraxis",
+          "clinicalName": "Circumventricular organ of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5524",
+          "sourceElementFileId": "FJ1795",
+          "sourceElementFileIds": [
+            "FJ1795"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.region.of.wall.of.ventricular.system.of.neuraxis",
+          "structureId": "FMA:242770",
+          "structureName": "region of wall of ventricular system of neuraxis",
+          "clinicalName": "Region of wall of ventricular system of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5506",
+          "sourceElementFileId": "FJ1755",
+          "sourceElementFileIds": [
+            "FJ1755",
+            "FJ1803"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.region.of.ventricular.system.of.neuraxis",
+          "structureId": "FMA:242789",
+          "structureName": "region of ventricular system of neuraxis",
+          "clinicalName": "Region of ventricular system of neuraxis",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-spine",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5510",
+          "sourceElementFileId": "FJ1730",
+          "sourceElementFileIds": [
+            "FJ1730",
+            "FJ1731",
+            "FJ1737",
+            "FJ1738",
+            "FJ1767",
+            "FJ1814"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

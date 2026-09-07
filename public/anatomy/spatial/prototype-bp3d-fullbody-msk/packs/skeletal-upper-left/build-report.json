@@ -1,0 +1,947 @@
+{
+  "packId": "skeletal-upper-left",
+  "layer": "skeletal",
+  "structureCount": 36,
+  "glbBytes": 489832,
+  "glbSha256": "a0e8ccf9016ad46176da8b618539bc6ca69e8837dc0a2b23d3a9c36be9138a7e",
+  "meshes": [
+    {
+      "meshId": "bone.left.humerus",
+      "structureId": "FMA:23131",
+      "sourceVertices": 2073,
+      "sourceFaces": 3844,
+      "vertices": 2073,
+      "faces": 3844,
+      "elementCount": 1,
+      "centroid": [
+        -0.19141428986691117,
+        1.1867534527554888,
+        0.0701781250681643
+      ],
+      "bounds": [
+        [
+          -0.24076,
+          1.02921,
+          0.0510559
+        ],
+        [
+          -0.140073,
+          1.33652,
+          0.100229
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.radius",
+      "structureId": "FMA:23465",
+      "sourceVertices": 368,
+      "sourceFaces": 632,
+      "vertices": 368,
+      "faces": 632,
+      "elementCount": 1,
+      "centroid": [
+        -0.2482257308936686,
+        0.917088691195818,
+        0.09237997592014369
+      ],
+      "bounds": [
+        [
+          -0.279143,
+          0.8061630000000001,
+          0.0614693
+        ],
+        [
+          -0.219836,
+          1.03501,
+          0.127252
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.ulna",
+      "structureId": "FMA:23468",
+      "sourceVertices": 496,
+      "sourceFaces": 824,
+      "vertices": 496,
+      "faces": 824,
+      "elementCount": 1,
+      "centroid": [
+        -0.2217779628015115,
+        0.9469509386744489,
+        0.07959499424230111
+      ],
+      "bounds": [
+        [
+          -0.24712,
+          0.805016,
+          0.0445523
+        ],
+        [
+          -0.196892,
+          1.05247,
+          0.123279
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.index.finger",
+      "structureId": "FMA:23938",
+      "sourceVertices": 188,
+      "sourceFaces": 306,
+      "vertices": 188,
+      "faces": 306,
+      "elementCount": 1,
+      "centroid": [
+        -0.3021014615758041,
+        0.6809867543266401,
+        0.16138135340383938
+      ],
+      "bounds": [
+        [
+          -0.30900099999999997,
+          0.670975,
+          0.151256
+        ],
+        [
+          -0.294389,
+          0.691453,
+          0.172057
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.middle.finger",
+      "structureId": "FMA:23940",
+      "sourceVertices": 229,
+      "sourceFaces": 384,
+      "vertices": 229,
+      "faces": 384,
+      "elementCount": 1,
+      "centroid": [
+        -0.2738348874337864,
+        0.67533335424843,
+        0.1688013360668663
+      ],
+      "bounds": [
+        [
+          -0.280205,
+          0.662409,
+          0.157858
+        ],
+        [
+          -0.266517,
+          0.687767,
+          0.180876
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.ring.finger",
+      "structureId": "FMA:23942",
+      "sourceVertices": 216,
+      "sourceFaces": 340,
+      "vertices": 216,
+      "faces": 340,
+      "elementCount": 1,
+      "centroid": [
+        -0.24893967491826305,
+        0.6817200942506426,
+        0.16779850423274298
+      ],
+      "bounds": [
+        [
+          -0.25453200000000004,
+          0.669821,
+          0.15679400000000002
+        ],
+        [
+          -0.24278200000000003,
+          0.693684,
+          0.180547
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.little.finger",
+      "structureId": "FMA:23944",
+      "sourceVertices": 192,
+      "sourceFaces": 254,
+      "vertices": 192,
+      "faces": 254,
+      "elementCount": 1,
+      "centroid": [
+        -0.22422239412194467,
+        0.6973700083106236,
+        0.16304405366496783
+      ],
+      "bounds": [
+        [
+          -0.230299,
+          0.687466,
+          0.15491200000000002
+        ],
+        [
+          -0.218921,
+          0.707061,
+          0.17147900000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.thumb",
+      "structureId": "FMA:23951",
+      "sourceVertices": 189,
+      "sourceFaces": 270,
+      "vertices": 189,
+      "faces": 270,
+      "elementCount": 1,
+      "centroid": [
+        -0.3173058385233429,
+        0.7319505520457901,
+        0.16551158113753503
+      ],
+      "bounds": [
+        [
+          -0.32393500000000003,
+          0.7192430000000001,
+          0.15724100000000002
+        ],
+        [
+          -0.310838,
+          0.742231,
+          0.173273
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.index.finger",
+      "structureId": "FMA:23953",
+      "sourceVertices": 204,
+      "sourceFaces": 328,
+      "vertices": 204,
+      "faces": 328,
+      "elementCount": 1,
+      "centroid": [
+        -0.3068745936018141,
+        0.6688612915662946,
+        0.1776606855076521
+      ],
+      "bounds": [
+        [
+          -0.31125400000000003,
+          0.661851,
+          0.16961400000000001
+        ],
+        [
+          -0.30126100000000006,
+          0.675567,
+          0.18671100000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.middle.finger",
+      "structureId": "FMA:23955",
+      "sourceVertices": 173,
+      "sourceFaces": 266,
+      "vertices": 173,
+      "faces": 266,
+      "elementCount": 1,
+      "centroid": [
+        -0.2766287051856699,
+        0.6601472082849705,
+        0.18593444092896821
+      ],
+      "bounds": [
+        [
+          -0.280854,
+          0.6533669999999999,
+          0.17808400000000002
+        ],
+        [
+          -0.271361,
+          0.666371,
+          0.195089
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.ring.finger",
+      "structureId": "FMA:23957",
+      "sourceVertices": 140,
+      "sourceFaces": 196,
+      "vertices": 140,
+      "faces": 196,
+      "elementCount": 1,
+      "centroid": [
+        -0.24969685455146584,
+        0.6694254528678706,
+        0.18563724193548342
+      ],
+      "bounds": [
+        [
+          -0.253646,
+          0.6648120000000001,
+          0.178756
+        ],
+        [
+          -0.24530000000000002,
+          0.673899,
+          0.19436
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.little.finger",
+      "structureId": "FMA:23959",
+      "sourceVertices": 154,
+      "sourceFaces": 198,
+      "vertices": 154,
+      "faces": 198,
+      "elementCount": 1,
+      "centroid": [
+        -0.22238514783880384,
+        0.6835186842503604,
+        0.17507081985312495
+      ],
+      "bounds": [
+        [
+          -0.227155,
+          0.676628,
+          0.16842
+        ],
+        [
+          -0.218894,
+          0.689309,
+          0.182284
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.first.metacarpal.bone",
+      "structureId": "FMA:24465",
+      "sourceVertices": 304,
+      "sourceFaces": 578,
+      "vertices": 304,
+      "faces": 578,
+      "elementCount": 1,
+      "centroid": [
+        -0.2923586364082284,
+        0.7792607408532546,
+        0.13749908246794984
+      ],
+      "bounds": [
+        [
+          -0.309625,
+          0.7602949999999999,
+          0.123406
+        ],
+        [
+          -0.272353,
+          0.7974070000000001,
+          0.153782
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.second.metacarpal.bone",
+      "structureId": "FMA:24467",
+      "sourceVertices": 420,
+      "sourceFaces": 774,
+      "vertices": 420,
+      "faces": 774,
+      "elementCount": 1,
+      "centroid": [
+        -0.2776778106959018,
+        0.7534777784973133,
+        0.12874007131481763
+      ],
+      "bounds": [
+        [
+          -0.292613,
+          0.7190420000000001,
+          0.11711700000000001
+        ],
+        [
+          -0.261841,
+          0.786869,
+          0.142433
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.third.metacarpal.bone",
+      "structureId": "FMA:24469",
+      "sourceVertices": 392,
+      "sourceFaces": 708,
+      "vertices": 392,
+      "faces": 708,
+      "elementCount": 1,
+      "centroid": [
+        -0.26255152381317126,
+        0.7526358464335318,
+        0.12659541415105716
+      ],
+      "bounds": [
+        [
+          -0.272252,
+          0.720649,
+          0.11241
+        ],
+        [
+          -0.25236000000000003,
+          0.785025,
+          0.142813
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fourth.metacarpal.bone",
+      "structureId": "FMA:24471",
+      "sourceVertices": 316,
+      "sourceFaces": 528,
+      "vertices": 316,
+      "faces": 528,
+      "elementCount": 1,
+      "centroid": [
+        -0.24786464174650827,
+        0.7534797618391079,
+        0.12773914303397194
+      ],
+      "bounds": [
+        [
+          -0.253774,
+          0.725253,
+          0.115898
+        ],
+        [
+          -0.241356,
+          0.785218,
+          0.141911
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fifth.metacarpal.bone",
+      "structureId": "FMA:24473",
+      "sourceVertices": 282,
+      "sourceFaces": 500,
+      "vertices": 282,
+      "faces": 500,
+      "elementCount": 1,
+      "centroid": [
+        -0.23483260023929145,
+        0.7581820781817078,
+        0.13103986691093228
+      ],
+      "bounds": [
+        [
+          -0.245394,
+          0.732031,
+          0.12022400000000001
+        ],
+        [
+          -0.22527000000000003,
+          0.786759,
+          0.14442
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.second.toe",
+      "structureId": "FMA:32635",
+      "sourceVertices": 233,
+      "sourceFaces": 380,
+      "vertices": 233,
+      "faces": 380,
+      "elementCount": 1,
+      "centroid": [
+        -0.12301768932109924,
+        -0.06016948911473092,
+        0.196287132996712
+      ],
+      "bounds": [
+        [
+          -0.133493,
+          -0.06684010000000001,
+          0.183485
+        ],
+        [
+          -0.111449,
+          -0.0544701,
+          0.211624
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.third.toe",
+      "structureId": "FMA:32637",
+      "sourceVertices": 248,
+      "sourceFaces": 408,
+      "vertices": 248,
+      "faces": 408,
+      "elementCount": 1,
+      "centroid": [
+        -0.13481634763277242,
+        -0.062225383486597154,
+        0.1876983033456503
+      ],
+      "bounds": [
+        [
+          -0.145808,
+          -0.0676983,
+          0.174617
+        ],
+        [
+          -0.12513200000000002,
+          -0.0559134,
+          0.20283400000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.fourth.toe",
+      "structureId": "FMA:32639",
+      "sourceVertices": 255,
+      "sourceFaces": 438,
+      "vertices": 255,
+      "faces": 438,
+      "elementCount": 1,
+      "centroid": [
+        -0.14517503134550452,
+        -0.06265795484100734,
+        0.17522207537432835
+      ],
+      "bounds": [
+        [
+          -0.1559,
+          -0.0697053,
+          0.164428
+        ],
+        [
+          -0.134309,
+          -0.0565251,
+          0.188425
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.little.toe",
+      "structureId": "FMA:32641",
+      "sourceVertices": 231,
+      "sourceFaces": 396,
+      "vertices": 231,
+      "faces": 396,
+      "elementCount": 1,
+      "centroid": [
+        -0.15363509462402536,
+        -0.06533364557205416,
+        0.16081975298108003
+      ],
+      "bounds": [
+        [
+          -0.16479,
+          -0.0698092,
+          0.14877500000000002
+        ],
+        [
+          -0.14293799999999998,
+          -0.0599871,
+          0.174019
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.second.toe",
+      "structureId": "FMA:32643",
+      "sourceVertices": 197,
+      "sourceFaces": 324,
+      "vertices": 197,
+      "faces": 324,
+      "elementCount": 1,
+      "centroid": [
+        -0.13216341740786666,
+        -0.06441548643914104,
+        0.21514280527318758
+      ],
+      "bounds": [
+        [
+          -0.139212,
+          -0.06795359999999999,
+          0.207529
+        ],
+        [
+          -0.125127,
+          -0.0593413,
+          0.224629
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.third.toe",
+      "structureId": "FMA:32645",
+      "sourceVertices": 185,
+      "sourceFaces": 294,
+      "vertices": 185,
+      "faces": 294,
+      "elementCount": 1,
+      "centroid": [
+        -0.14508775066151164,
+        -0.06547094677921483,
+        0.20654456743188673
+      ],
+      "bounds": [
+        [
+          -0.151811,
+          -0.06898359999999999,
+          0.198911
+        ],
+        [
+          -0.13891499999999998,
+          -0.0611089,
+          0.21585200000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.fourth.toe",
+      "structureId": "FMA:32647",
+      "sourceVertices": 183,
+      "sourceFaces": 284,
+      "vertices": 183,
+      "faces": 284,
+      "elementCount": 1,
+      "centroid": [
+        -0.155238234176086,
+        -0.0658852942381982,
+        0.19133113735222562
+      ],
+      "bounds": [
+        [
+          -0.16138999999999998,
+          -0.0697919,
+          0.185433
+        ],
+        [
+          -0.149044,
+          -0.0619695,
+          0.198779
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.big.toe",
+      "structureId": "FMA:32651",
+      "sourceVertices": 256,
+      "sourceFaces": 378,
+      "vertices": 256,
+      "faces": 378,
+      "elementCount": 1,
+      "centroid": [
+        -0.1141777819917062,
+        -0.06574655856004004,
+        0.22256846718915754
+      ],
+      "bounds": [
+        [
+          -0.125056,
+          -0.0700065,
+          0.210725
+        ],
+        [
+          -0.10250400000000001,
+          -0.0590411,
+          0.23591900000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.second.toe",
+      "structureId": "FMA:32653",
+      "sourceVertices": 169,
+      "sourceFaces": 240,
+      "vertices": 169,
+      "faces": 240,
+      "elementCount": 1,
+      "centroid": [
+        -0.1377936264357327,
+        -0.06715402637291557,
+        0.2268683978756341
+      ],
+      "bounds": [
+        [
+          -0.143397,
+          -0.07022679999999999,
+          0.220864
+        ],
+        [
+          -0.132153,
+          -0.0630226,
+          0.234017
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.third.toe",
+      "structureId": "FMA:32655",
+      "sourceVertices": 188,
+      "sourceFaces": 336,
+      "vertices": 188,
+      "faces": 336,
+      "elementCount": 1,
+      "centroid": [
+        -0.15079940999590147,
+        -0.06764352596570412,
+        0.2174733735729702
+      ],
+      "bounds": [
+        [
+          -0.154841,
+          -0.07026130000000001,
+          0.212314
+        ],
+        [
+          -0.14584200000000003,
+          -0.0643681,
+          0.22365100000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.fourth.toe",
+      "structureId": "FMA:32657",
+      "sourceVertices": 146,
+      "sourceFaces": 226,
+      "vertices": 146,
+      "faces": 226,
+      "elementCount": 1,
+      "centroid": [
+        -0.16001680021425127,
+        -0.06748717236431793,
+        0.20038537335566536
+      ],
+      "bounds": [
+        [
+          -0.164075,
+          -0.07030929999999999,
+          0.19543100000000002
+        ],
+        [
+          -0.155212,
+          -0.0634546,
+          0.20655300000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.little.toe",
+      "structureId": "FMA:32659",
+      "sourceVertices": 160,
+      "sourceFaces": 220,
+      "vertices": 160,
+      "faces": 220,
+      "elementCount": 1,
+      "centroid": [
+        -0.16564448959091943,
+        -0.06798045764805899,
+        0.18085705151851822
+      ],
+      "bounds": [
+        [
+          -0.169358,
+          -0.0704799,
+          0.17616
+        ],
+        [
+          -0.161261,
+          -0.065129,
+          0.186545
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.big.toe",
+      "structureId": "FMA:43254",
+      "sourceVertices": 318,
+      "sourceFaces": 516,
+      "vertices": 318,
+      "faces": 516,
+      "elementCount": 1,
+      "centroid": [
+        -0.10185107315311813,
+        -0.06126879098977319,
+        0.200683308747064
+      ],
+      "bounds": [
+        [
+          -0.11708199999999999,
+          -0.0684152,
+          0.186036
+        ],
+        [
+          -0.0867033,
+          -0.0515522,
+          0.219271
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.thumb",
+      "structureId": "FMA:65470",
+      "sourceVertices": 202,
+      "sourceFaces": 346,
+      "vertices": 202,
+      "faces": 346,
+      "elementCount": 1,
+      "centroid": [
+        -0.3092988665751665,
+        0.7522339028065147,
+        0.1527328596236603
+      ],
+      "bounds": [
+        [
+          -0.31861900000000004,
+          0.735529,
+          0.142629
+        ],
+        [
+          -0.298694,
+          0.7671680000000001,
+          0.16475299999999998
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.little.finger",
+      "structureId": "FMA:66791",
+      "sourceVertices": 164,
+      "sourceFaces": 274,
+      "vertices": 164,
+      "faces": 274,
+      "elementCount": 1,
+      "centroid": [
+        -0.22845739744662524,
+        0.7207432308959648,
+        0.14777579452480705
+      ],
+      "bounds": [
+        [
+          -0.236294,
+          0.703385,
+          0.138668
+        ],
+        [
+          -0.222227,
+          0.7357899999999999,
+          0.15946100000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.middle.finger",
+      "structureId": "FMA:71908",
+      "sourceVertices": 264,
+      "sourceFaces": 460,
+      "vertices": 264,
+      "faces": 460,
+      "elementCount": 1,
+      "centroid": [
+        -0.2689935040544252,
+        0.7055880365456256,
+        0.1481792635507244
+      ],
+      "bounds": [
+        [
+          -0.27738,
+          0.684299,
+          0.135192
+        ],
+        [
+          -0.259201,
+          0.724966,
+          0.16409600000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.index.finger",
+      "structureId": "FMA:71915",
+      "sourceVertices": 222,
+      "sourceFaces": 392,
+      "vertices": 222,
+      "faces": 392,
+      "elementCount": 1,
+      "centroid": [
+        -0.29248076960892816,
+        0.7058943122054523,
+        0.14433707218587943
+      ],
+      "bounds": [
+        [
+          -0.30281,
+          0.685721,
+          0.134089
+        ],
+        [
+          -0.280814,
+          0.723356,
+          0.157057
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.ring.finger",
+      "structureId": "FMA:71916",
+      "sourceVertices": 205,
+      "sourceFaces": 376,
+      "vertices": 205,
+      "faces": 376,
+      "elementCount": 1,
+      "centroid": [
+        -0.247532293705814,
+        0.7104001670211456,
+        0.14734705435987747
+      ],
+      "bounds": [
+        [
+          -0.253886,
+          0.690052,
+          0.135709
+        ],
+        [
+          -0.24049199999999998,
+          0.728958,
+          0.16193000000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.little.toe",
+      "structureId": "FMA:230988",
+      "sourceVertices": 143,
+      "sourceFaces": 226,
+      "vertices": 143,
+      "faces": 226,
+      "elementCount": 1,
+      "centroid": [
+        -0.1623298626104204,
+        -0.06731792458405766,
+        0.17483752003843786
+      ],
+      "bounds": [
+        [
+          -0.16667400000000002,
+          -0.0700543,
+          0.17155199999999998
+        ],
+        [
+          -0.1581,
+          -0.0637796,
+          0.178954
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:32.719011+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}

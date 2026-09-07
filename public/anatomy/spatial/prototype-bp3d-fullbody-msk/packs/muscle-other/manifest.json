@@ -1,0 +1,962 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-other",
+  "displayName": "Muscle Other",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "muscle": {
+      "layerId": "muscle",
+      "displayName": "Muscle",
+      "file": "./muscle.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "muscle.quadratus.femoris",
+          "structureId": "FMA:22321",
+          "structureName": "quadratus femoris",
+          "clinicalName": "Quadratus femoris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8662",
+          "sourceElementFileId": "FJ1432",
+          "sourceElementFileIds": [
+            "FJ1432",
+            "FJ1432M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.quadratus.femoris",
+          "structureId": "FMA:22338",
+          "structureName": "right quadratus femoris",
+          "clinicalName": "Right quadratus femoris",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5074",
+          "sourceElementFileId": "FJ1432",
+          "sourceElementFileIds": [
+            "FJ1432"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.quadratus.femoris",
+          "structureId": "FMA:22339",
+          "structureName": "left quadratus femoris",
+          "clinicalName": "Left quadratus femoris",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8661",
+          "sourceElementFileId": "FJ1432M",
+          "sourceElementFileIds": [
+            "FJ1432M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.tensor.fasciae.latae",
+          "structureId": "FMA:22423",
+          "structureName": "tensor fasciae latae",
+          "clinicalName": "Tensor fasciae latae",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9185",
+          "sourceElementFileId": "FJ1438",
+          "sourceElementFileIds": [
+            "FJ1438",
+            "FJ1438M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.tensor.fasciae.latae",
+          "structureId": "FMA:22425",
+          "structureName": "right tensor fasciae latae",
+          "clinicalName": "Right tensor fasciae latae",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5072",
+          "sourceElementFileId": "FJ1438",
+          "sourceElementFileIds": [
+            "FJ1438"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.tensor.fasciae.latae",
+          "structureId": "FMA:22426",
+          "structureName": "left tensor fasciae latae",
+          "clinicalName": "Left tensor fasciae latae",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9184",
+          "sourceElementFileId": "FJ1438M",
+          "sourceElementFileIds": [
+            "FJ1438M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.intertransversarius.muscle",
+          "structureId": "FMA:22848",
+          "structureName": "intertransversarius muscle",
+          "clinicalName": "Intertransversarius muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8811",
+          "sourceElementFileId": "FJ1547",
+          "sourceElementFileIds": [
+            "FJ1547",
+            "FJ1547M",
+            "FJ1548",
+            "FJ1548M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rotator.muscle",
+          "structureId": "FMA:23081",
+          "structureName": "rotator muscle",
+          "clinicalName": "Rotator muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8399",
+          "sourceElementFileId": "FJ1522",
+          "sourceElementFileIds": [
+            "FJ1522",
+            "FJ1522M",
+            "FJ1524",
+            "FJ1524M",
+            "FJ1525",
+            "FJ1525M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extrinsic.muscle.of.shoulder",
+          "structureId": "FMA:32516",
+          "structureName": "extrinsic muscle of shoulder",
+          "clinicalName": "Extrinsic muscle of shoulder",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8588",
+          "sourceElementFileId": "FJ1459",
+          "sourceElementFileIds": [
+            "FJ1459",
+            "FJ1459M",
+            "FJ1532",
+            "FJ1532M",
+            "FJ1536",
+            "FJ1536M",
+            "FJ1537",
+            "FJ1537M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.deep.extrinsic.muscle.of.shoulder",
+          "structureId": "FMA:32518",
+          "structureName": "deep extrinsic muscle of shoulder",
+          "clinicalName": "Deep extrinsic muscle of shoulder",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8587",
+          "sourceElementFileId": "FJ1459",
+          "sourceElementFileIds": [
+            "FJ1459",
+            "FJ1459M",
+            "FJ1532",
+            "FJ1532M",
+            "FJ1536",
+            "FJ1536M",
+            "FJ1537",
+            "FJ1537M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.intrinsic.muscle.of.shoulder",
+          "structureId": "FMA:32520",
+          "structureName": "intrinsic muscle of shoulder",
+          "clinicalName": "Intrinsic muscle of shoulder",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8216",
+          "sourceElementFileId": "FJ1500",
+          "sourceElementFileIds": [
+            "FJ1500",
+            "FJ1500M",
+            "FJ1504",
+            "FJ1504M",
+            "FJ1506",
+            "FJ1506M",
+            "FJ1507",
+            "FJ1507M",
+            "FJ1508",
+            "FJ1508M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rectus.capitis.posterior.major",
+          "structureId": "FMA:32525",
+          "structureName": "rectus capitis posterior major",
+          "clinicalName": "Rectus capitis posterior major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4735",
+          "sourceElementFileId": "FJ1567",
+          "sourceElementFileIds": [
+            "FJ1567",
+            "FJ1589"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rectus.capitis.posterior.minor",
+          "structureId": "FMA:32526",
+          "structureName": "rectus capitis posterior minor",
+          "clinicalName": "Rectus capitis posterior minor",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4733",
+          "sourceElementFileId": "FJ1568",
+          "sourceElementFileIds": [
+            "FJ1568",
+            "FJ1590"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.rectus.capitis.posterior.major",
+          "structureId": "FMA:32530",
+          "structureName": "right rectus capitis posterior major",
+          "clinicalName": "Right rectus capitis posterior major",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4736",
+          "sourceElementFileId": "FJ1589",
+          "sourceElementFileIds": [
+            "FJ1589"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.rectus.capitis.posterior.major",
+          "structureId": "FMA:32531",
+          "structureName": "left rectus capitis posterior major",
+          "clinicalName": "Left rectus capitis posterior major",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7587",
+          "sourceElementFileId": "FJ1567",
+          "sourceElementFileIds": [
+            "FJ1567"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.rectus.capitis.posterior.minor",
+          "structureId": "FMA:32532",
+          "structureName": "right rectus capitis posterior minor",
+          "clinicalName": "Right rectus capitis posterior minor",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4734",
+          "sourceElementFileId": "FJ1590",
+          "sourceElementFileIds": [
+            "FJ1590"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.rectus.capitis.posterior.minor",
+          "structureId": "FMA:32533",
+          "structureName": "left rectus capitis posterior minor",
+          "clinicalName": "Left rectus capitis posterior minor",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7588",
+          "sourceElementFileId": "FJ1568",
+          "sourceElementFileIds": [
+            "FJ1568"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.posterior.suboccipital.muscle",
+          "structureId": "FMA:32582",
+          "structureName": "posterior suboccipital muscle",
+          "clinicalName": "Posterior suboccipital muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4732",
+          "sourceElementFileId": "FJ1563",
+          "sourceElementFileIds": [
+            "FJ1563",
+            "FJ1564",
+            "FJ1567",
+            "FJ1568",
+            "FJ1584",
+            "FJ1585",
+            "FJ1589",
+            "FJ1590"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.pectoral.muscle",
+          "structureId": "FMA:37349",
+          "structureName": "pectoral muscle",
+          "clinicalName": "Pectoral muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8462",
+          "sourceElementFileId": "FJ1456",
+          "sourceElementFileIds": [
+            "FJ1456",
+            "FJ1456M",
+            "FJ1460",
+            "FJ1460M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.superficial.muscle.of.anterior.compartment.of.forearm",
+          "structureId": "FMA:38472",
+          "structureName": "superficial muscle of anterior compartment of forearm",
+          "clinicalName": "Superficial muscle of anterior compartment of forearm",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7783",
+          "sourceElementFileId": "FJ1475",
+          "sourceElementFileIds": [
+            "FJ1475",
+            "FJ1475M",
+            "FJ1496",
+            "FJ1496M",
+            "FJ1499",
+            "FJ1499M",
+            "FJ1502",
+            "FJ1502M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.deep.muscle.of.anterior.compartment.of.forearm",
+          "structureId": "FMA:38475",
+          "structureName": "deep muscle of anterior compartment of forearm",
+          "clinicalName": "Deep muscle of anterior compartment of forearm",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7828",
+          "sourceElementFileId": "FJ1497",
+          "sourceElementFileIds": [
+            "FJ1497",
+            "FJ1497M",
+            "FJ1498",
+            "FJ1498M",
+            "FJ1503",
+            "FJ1503M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.deep.muscle.of.posterior.compartment.of.forearm",
+          "structureId": "FMA:38509",
+          "structureName": "deep muscle of posterior compartment of forearm",
+          "clinicalName": "Deep muscle of posterior compartment of forearm",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8193",
+          "sourceElementFileId": "FJ1484",
+          "sourceElementFileIds": [
+            "FJ1484",
+            "FJ1484M",
+            "FJ1493",
+            "FJ1493M",
+            "FJ1494",
+            "FJ1494M",
+            "FJ1495",
+            "FJ1495M",
+            "FJ1505",
+            "FJ1505M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.intrinsic.muscle.of.hand",
+          "structureId": "FMA:42380",
+          "structureName": "intrinsic muscle of hand",
+          "clinicalName": "Intrinsic muscle of hand",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8207",
+          "sourceElementFileId": "FJ1466",
+          "sourceElementFileIds": [
+            "FJ1466",
+            "FJ1466M",
+            "FJ1469",
+            "FJ1469M",
+            "FJ1470",
+            "FJ1470M",
+            "FJ1482",
+            "FJ1482M",
+            "FJ1483",
+            "FJ1483M",
+            "FJ1501",
+            "FJ1501M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rectus.capitis.anterior",
+          "structureId": "FMA:46312",
+          "structureName": "rectus capitis anterior",
+          "clinicalName": "Rectus capitis anterior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4707",
+          "sourceElementFileId": "FJ1566",
+          "sourceElementFileIds": [
+            "FJ1566",
+            "FJ1588"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.rectus.capitis.anterior",
+          "structureId": "FMA:46313",
+          "structureName": "right rectus capitis anterior",
+          "clinicalName": "Right rectus capitis anterior",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4708",
+          "sourceElementFileId": "FJ1588",
+          "sourceElementFileIds": [
+            "FJ1588"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.rectus.capitis.anterior",
+          "structureId": "FMA:46314",
+          "structureName": "left rectus capitis anterior",
+          "clinicalName": "Left rectus capitis anterior",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7586",
+          "sourceElementFileId": "FJ1566",
+          "sourceElementFileIds": [
+            "FJ1566"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rectus.capitis.lateralis",
+          "structureId": "FMA:46316",
+          "structureName": "rectus capitis lateralis",
+          "clinicalName": "Rectus capitis lateralis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4705",
+          "sourceElementFileId": "FJ1569",
+          "sourceElementFileIds": [
+            "FJ1569",
+            "FJ1591"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.rectus.capitis.lateralis",
+          "structureId": "FMA:46317",
+          "structureName": "right rectus capitis lateralis",
+          "clinicalName": "Right rectus capitis lateralis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4706",
+          "sourceElementFileId": "FJ1591",
+          "sourceElementFileIds": [
+            "FJ1591"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.rectus.capitis.lateralis",
+          "structureId": "FMA:46318",
+          "structureName": "left rectus capitis lateralis",
+          "clinicalName": "Left rectus capitis lateralis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7589",
+          "sourceElementFileId": "FJ1569",
+          "sourceElementFileIds": [
+            "FJ1569"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.muscle.of.pharynx",
+          "structureId": "FMA:46619",
+          "structureName": "muscle of pharynx",
+          "clinicalName": "Muscle of pharynx",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7918",
+          "sourceElementFileId": "FJ2740",
+          "sourceElementFileIds": [
+            "FJ2740",
+            "FJ2742",
+            "FJ2743",
+            "FJ2745",
+            "FJ2746",
+            "FJ2747",
+            "FJ2752",
+            "FJ2754",
+            "FJ2755",
+            "FJ2757",
+            "FJ2758",
+            "FJ2759"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.constrictor.muscle.of.pharynx",
+          "structureId": "FMA:46620",
+          "structureName": "constrictor muscle of pharynx",
+          "clinicalName": "Constrictor muscle of pharynx",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7917",
+          "sourceElementFileId": "FJ2740",
+          "sourceElementFileIds": [
+            "FJ2740",
+            "FJ2742",
+            "FJ2747",
+            "FJ2752",
+            "FJ2754",
+            "FJ2759"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.muscle.of.tongue",
+          "structureId": "FMA:46689",
+          "structureName": "muscle of tongue",
+          "clinicalName": "Muscle of tongue",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8079",
+          "sourceElementFileId": "FJ2738",
+          "sourceElementFileIds": [
+            "FJ2738",
+            "FJ2739",
+            "FJ2750",
+            "FJ2751"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extrinsic.muscle.of.tongue",
+          "structureId": "FMA:46699",
+          "structureName": "extrinsic muscle of tongue",
+          "clinicalName": "Extrinsic muscle of tongue",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8078",
+          "sourceElementFileId": "FJ2738",
+          "sourceElementFileIds": [
+            "FJ2738",
+            "FJ2739",
+            "FJ2750",
+            "FJ2751"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.muscle.of.palate",
+          "structureId": "FMA:46726",
+          "structureName": "muscle of palate",
+          "clinicalName": "Muscle of palate",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8367",
+          "sourceElementFileId": "FJ2741",
+          "sourceElementFileIds": [
+            "FJ2741",
+            "FJ2748",
+            "FJ2753",
+            "FJ2760",
+            "FJ2762"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.tensor.veli.palatini",
+          "structureId": "FMA:46730",
+          "structureName": "tensor veli palatini",
+          "clinicalName": "Tensor veli palatini",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8502",
+          "sourceElementFileId": "FJ2748",
+          "sourceElementFileIds": [
+            "FJ2748",
+            "FJ2760"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.tensor.veli.palatini",
+          "structureId": "FMA:46731",
+          "structureName": "right tensor veli palatini",
+          "clinicalName": "Right tensor veli palatini",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8501",
+          "sourceElementFileId": "FJ2760",
+          "sourceElementFileIds": [
+            "FJ2760"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.tensor.veli.palatini",
+          "structureId": "FMA:46732",
+          "structureName": "left tensor veli palatini",
+          "clinicalName": "Left tensor veli palatini",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9103",
+          "sourceElementFileId": "FJ2748",
+          "sourceElementFileIds": [
+            "FJ2748"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.uvular.muscle",
+          "structureId": "FMA:46733",
+          "structureName": "uvular muscle",
+          "clinicalName": "Uvular muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9142",
+          "sourceElementFileId": "FJ2762",
+          "sourceElementFileIds": [
+            "FJ2762"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.superior.rectus",
+          "structureId": "FMA:49035",
+          "structureName": "superior rectus",
+          "clinicalName": "Superior rectus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4928",
+          "sourceElementFileId": "FJ1323",
+          "sourceElementFileIds": [
+            "FJ1323",
+            "FJ1374"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.inferior.rectus",
+          "structureId": "FMA:49036",
+          "structureName": "inferior rectus",
+          "clinicalName": "Inferior rectus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4943",
+          "sourceElementFileId": "FJ1295",
+          "sourceElementFileIds": [
+            "FJ1295",
+            "FJ1346"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.medial.rectus",
+          "structureId": "FMA:49037",
+          "structureName": "medial rectus",
+          "clinicalName": "Medial rectus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4934",
+          "sourceElementFileId": "FJ1308",
+          "sourceElementFileIds": [
+            "FJ1308",
+            "FJ1359"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.lateral.rectus",
+          "structureId": "FMA:49038",
+          "structureName": "lateral rectus",
+          "clinicalName": "Lateral rectus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4940",
+          "sourceElementFileId": "FJ1304",
+          "sourceElementFileIds": [
+            "FJ1304",
+            "FJ1355"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.superior.rectus",
+          "structureId": "FMA:49044",
+          "structureName": "right superior rectus",
+          "clinicalName": "Right superior rectus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4929",
+          "sourceElementFileId": "FJ1374",
+          "sourceElementFileIds": [
+            "FJ1374"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.superior.rectus",
+          "structureId": "FMA:49045",
+          "structureName": "left superior rectus",
+          "clinicalName": "Left superior rectus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4930",
+          "sourceElementFileId": "FJ1323",
+          "sourceElementFileIds": [
+            "FJ1323"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.inferior.rectus",
+          "structureId": "FMA:49046",
+          "structureName": "right inferior rectus",
+          "clinicalName": "Right inferior rectus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4944",
+          "sourceElementFileId": "FJ1346",
+          "sourceElementFileIds": [
+            "FJ1346"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.inferior.rectus",
+          "structureId": "FMA:49047",
+          "structureName": "left inferior rectus",
+          "clinicalName": "Left inferior rectus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4945",
+          "sourceElementFileId": "FJ1295",
+          "sourceElementFileIds": [
+            "FJ1295"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.lateral.rectus",
+          "structureId": "FMA:49054",
+          "structureName": "right lateral rectus",
+          "clinicalName": "Right lateral rectus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4941",
+          "sourceElementFileId": "FJ1355",
+          "sourceElementFileIds": [
+            "FJ1355"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.lateral.rectus",
+          "structureId": "FMA:49055",
+          "structureName": "left lateral rectus",
+          "clinicalName": "Left lateral rectus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4942",
+          "sourceElementFileId": "FJ1304",
+          "sourceElementFileIds": [
+            "FJ1304"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.medial.rectus",
+          "structureId": "FMA:49056",
+          "structureName": "right medial rectus",
+          "clinicalName": "Right medial rectus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4936",
+          "sourceElementFileId": "FJ1359",
+          "sourceElementFileIds": [
+            "FJ1359"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.medial.rectus",
+          "structureId": "FMA:49057",
+          "structureName": "left medial rectus",
+          "clinicalName": "Left medial rectus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4935",
+          "sourceElementFileId": "FJ1308",
+          "sourceElementFileIds": [
+            "FJ1308"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

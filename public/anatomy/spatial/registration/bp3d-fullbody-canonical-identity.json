@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "registrationId": "bp3d-fullbody-msk→bp3d-canonical-identity",
+  "registrationVersion": "bp3d-fullbody-canonical-identity-v1",
+  "sourceModelId": "bp3d-fullbody-msk-v1",
+  "targetModelId": "bp3d-canonical-body",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "targetAssetVersion": "bp3d-fullbody-skin-canonical-v0",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "method": "identity",
+  "units": "meters",
+  "coordinateSystem": "y-up-right-handed",
+  "transform": {
+    "scale": 1.0,
+    "rotationEuler": [0, 0, 0],
+    "rotationOrder": "XYZ",
+    "translation": [0, 0, 0]
+  },
+  "derivation": {
+    "summary": "Full-body MSK packs use the same BP3D ingest remap as FMA7163 skin; identity registration in painlocator-bp3d-canonical-v1.",
+    "derivedAt": "2026-09-07T19:00:00Z"
+  },
+  "validation": {
+    "status": "pass-development",
+    "clinicalPrecisionClaimed": false,
+    "stopConditionTriggered": false,
+    "checks": [
+      {
+        "id": "identity-transform",
+        "pass": true,
+        "detail": "scale=1, translation=[0,0,0], rotation=I"
+      }
+    ],
+    "warnings": [
+      "Enabled only when ?fullBodyAnatomy=1 (or PAINLOCATOR_FULL_BODY_ANATOMY)."
+    ]
+  }
+}

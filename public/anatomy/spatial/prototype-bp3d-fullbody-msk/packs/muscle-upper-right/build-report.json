@@ -1,0 +1,1909 @@
+{
+  "packId": "muscle-upper-right",
+  "layer": "muscle",
+  "structureCount": 73,
+  "glbBytes": 7226952,
+  "glbSha256": "9eabbd692469e080530b9bc0031d8981c40cfccc30b1545b029037dae919c2a7",
+  "meshes": [
+    {
+      "meshId": "muscle.right.pectoralis.minor",
+      "structureId": "FMA:13375",
+      "sourceVertices": 6741,
+      "sourceFaces": 9468,
+      "vertices": 6741,
+      "faces": 9468,
+      "elementCount": 1,
+      "centroid": [
+        0.10806822067336873,
+        1.2584534012233113,
+        0.13465137803449115
+      ],
+      "bounds": [
+        [
+          0.0697359,
+          1.1816600000000002,
+          0.0803492
+        ],
+        [
+          0.130176,
+          1.32667,
+          0.173047
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.rhomboid.major",
+      "structureId": "FMA:13381",
+      "sourceVertices": 5057,
+      "sourceFaces": 7202,
+      "vertices": 5057,
+      "faces": 7202,
+      "elementCount": 1,
+      "centroid": [
+        0.034155356415243664,
+        1.2763295593147541,
+        0.0035998802510860102
+      ],
+      "bounds": [
+        [
+          -0.0007767570000000001,
+          1.18819,
+          -0.00609221
+        ],
+        [
+          0.0895036,
+          1.36166,
+          0.0220981
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.rhomboid.minor",
+      "structureId": "FMA:13383",
+      "sourceVertices": 1506,
+      "sourceFaces": 2206,
+      "vertices": 1506,
+      "faces": 2206,
+      "elementCount": 1,
+      "centroid": [
+        0.03188073325900625,
+        1.3328155028962105,
+        0.014809774141172603
+      ],
+      "bounds": [
+        [
+          -0.0009160500000000001,
+          1.2808,
+          0.00481602
+        ],
+        [
+          0.0617054,
+          1.38751,
+          0.0360764
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.serratus.anterior",
+      "structureId": "FMA:13398",
+      "sourceVertices": 28465,
+      "sourceFaces": 49212,
+      "vertices": 28465,
+      "faces": 49212,
+      "elementCount": 1,
+      "centroid": [
+        0.11343366551131595,
+        1.2199345585197494,
+        0.06136438213279753
+      ],
+      "bounds": [
+        [
+          0.0577297,
+          1.07816,
+          -0.00526406
+        ],
+        [
+          0.144392,
+          1.3483800000000001,
+          0.157592
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.serratus.posterior.superior",
+      "structureId": "FMA:13403",
+      "sourceVertices": 6219,
+      "sourceFaces": 9066,
+      "vertices": 6219,
+      "faces": 9066,
+      "elementCount": 1,
+      "centroid": [
+        0.05214170248660977,
+        1.3248369576611718,
+        0.028622068407831585
+      ],
+      "bounds": [
+        [
+          -0.000703727,
+          1.25437,
+          0.0089894
+        ],
+        [
+          0.10314100000000001,
+          1.38549,
+          0.0736913
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.serratus.posterior.inferior",
+      "structureId": "FMA:13405",
+      "sourceVertices": 8698,
+      "sourceFaces": 13164,
+      "vertices": 8698,
+      "faces": 13164,
+      "elementCount": 1,
+      "centroid": [
+        0.04792364536786175,
+        1.0565932202088237,
+        0.01730503538484436
+      ],
+      "bounds": [
+        [
+          -0.00245107,
+          0.969515,
+          0.00128097
+        ],
+        [
+          0.106242,
+          1.13202,
+          0.0423157
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.subclavius",
+      "structureId": "FMA:13412",
+      "sourceVertices": 1155,
+      "sourceFaces": 1640,
+      "vertices": 1155,
+      "faces": 1640,
+      "elementCount": 1,
+      "centroid": [
+        0.07311564296525366,
+        1.3282695425746958,
+        0.1090635503401048
+      ],
+      "bounds": [
+        [
+          0.034288,
+          1.31146,
+          0.0740993
+        ],
+        [
+          0.104677,
+          1.34286,
+          0.134874
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.subscapularis",
+      "structureId": "FMA:13414",
+      "sourceVertices": 2775,
+      "sourceFaces": 2092,
+      "vertices": 2775,
+      "faces": 2092,
+      "elementCount": 1,
+      "centroid": [
+        0.10316220681966286,
+        1.2782229481655953,
+        0.04136436849051594
+      ],
+      "bounds": [
+        [
+          0.06318220000000001,
+          1.19516,
+          0.0027578299999999997
+        ],
+        [
+          0.166117,
+          1.3248,
+          0.09995470000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.hallucis.longus",
+      "structureId": "FMA:22546",
+      "sourceVertices": 1388,
+      "sourceFaces": 1668,
+      "vertices": 1388,
+      "faces": 1668,
+      "elementCount": 1,
+      "centroid": [
+        0.09467023137648443,
+        0.07576154188651833,
+        0.09430035902872697
+      ],
+      "bounds": [
+        [
+          0.0799472,
+          -0.0566407,
+          0.0656176
+        ],
+        [
+          0.107598,
+          0.215833,
+          0.209475
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.digitorum.longus",
+      "structureId": "FMA:22548",
+      "sourceVertices": 3964,
+      "sourceFaces": 4546,
+      "vertices": 3964,
+      "faces": 4546,
+      "elementCount": 1,
+      "centroid": [
+        0.11106476071284972,
+        0.1379428023401876,
+        0.09420462135915934
+      ],
+      "bounds": [
+        [
+          0.08934829999999999,
+          -0.0670626,
+          0.0583178
+        ],
+        [
+          0.166069,
+          0.359356,
+          0.223662
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.interosseous.membrane.of.right.forearm",
+      "structureId": "FMA:23707",
+      "sourceVertices": 1647,
+      "sourceFaces": 1588,
+      "vertices": 1647,
+      "faces": 1588,
+      "elementCount": 1,
+      "centroid": [
+        0.23945557653932353,
+        0.8888177009241572,
+        0.0972813123515836
+      ],
+      "bounds": [
+        [
+          0.228945,
+          0.821472,
+          0.0701171
+        ],
+        [
+          0.250676,
+          0.9777899999999999,
+          0.11823600000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.levator.scapulae",
+      "structureId": "FMA:32540",
+      "sourceVertices": 3311,
+      "sourceFaces": 4718,
+      "vertices": 3311,
+      "faces": 4718,
+      "elementCount": 1,
+      "centroid": [
+        0.044915599618414404,
+        1.378914587966282,
+        0.047752056146527735
+      ],
+      "bounds": [
+        [
+          0.0210748,
+          1.30932,
+          0.0120873
+        ],
+        [
+          0.0810786,
+          1.4685599999999999,
+          0.08245350000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.supraspinatus",
+      "structureId": "FMA:32544",
+      "sourceVertices": 843,
+      "sourceFaces": 878,
+      "vertices": 843,
+      "faces": 878,
+      "elementCount": 1,
+      "centroid": [
+        0.12578787434304234,
+        1.3279365121998223,
+        0.04983980298312793
+      ],
+      "bounds": [
+        [
+          0.063876,
+          1.30734,
+          0.0129613
+        ],
+        [
+          0.18844300000000003,
+          1.34236,
+          0.0919013
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.infraspinatus.muscle",
+      "structureId": "FMA:32547",
+      "sourceVertices": 743,
+      "sourceFaces": 866,
+      "vertices": 743,
+      "faces": 866,
+      "elementCount": 1,
+      "centroid": [
+        0.1147943517330134,
+        1.2802634815980125,
+        0.022437874617670297
+      ],
+      "bounds": [
+        [
+          0.060258400000000004,
+          1.20653,
+          -0.00366613
+        ],
+        [
+          0.18905000000000002,
+          1.33097,
+          0.077087
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.teres.major",
+      "structureId": "FMA:32551",
+      "sourceVertices": 1044,
+      "sourceFaces": 1042,
+      "vertices": 1044,
+      "faces": 1042,
+      "elementCount": 1,
+      "centroid": [
+        0.13232029400956952,
+        1.235273465699677,
+        0.03437614278999295
+      ],
+      "bounds": [
+        [
+          0.0861425,
+          1.18965,
+          -0.00155565
+        ],
+        [
+          0.172209,
+          1.28535,
+          0.0795569
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.teres.minor",
+      "structureId": "FMA:32553",
+      "sourceVertices": 392,
+      "sourceFaces": 506,
+      "vertices": 392,
+      "faces": 506,
+      "elementCount": 1,
+      "centroid": [
+        0.14881207994169618,
+        1.2790927208639453,
+        0.03963862197943929
+      ],
+      "bounds": [
+        [
+          0.105409,
+          1.2205599999999999,
+          0.012406200000000001
+        ],
+        [
+          0.190554,
+          1.31692,
+          0.0803106
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.ascending.part.of.right.trapezius",
+      "structureId": "FMA:33581",
+      "sourceVertices": 7533,
+      "sourceFaces": 10530,
+      "vertices": 7533,
+      "faces": 10530,
+      "elementCount": 1,
+      "centroid": [
+        0.04400213815906788,
+        1.2470298168299971,
+        -0.0037511181582137497
+      ],
+      "bounds": [
+        [
+          -0.0032543600000000004,
+          1.0540100000000001,
+          -0.0245467
+        ],
+        [
+          0.14858600000000002,
+          1.34297,
+          0.046963700000000004
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.transverse.part.of.right.trapezius",
+      "structureId": "FMA:33584",
+      "sourceVertices": 3535,
+      "sourceFaces": 4460,
+      "vertices": 3535,
+      "faces": 4460,
+      "elementCount": 1,
+      "centroid": [
+        0.06589691244751332,
+        1.3474775064124282,
+        0.016659470229095353
+      ],
+      "bounds": [
+        [
+          -0.00387271,
+          1.30362,
+          -0.010700900000000001
+        ],
+        [
+          0.163242,
+          1.38211,
+          0.06965389999999999
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.descending.part.of.right.trapezius",
+      "structureId": "FMA:33586",
+      "sourceVertices": 5023,
+      "sourceFaces": 7108,
+      "vertices": 5023,
+      "faces": 7108,
+      "elementCount": 1,
+      "centroid": [
+        0.04277917238195093,
+        1.4032817676718679,
+        0.04409303767208303
+      ],
+      "bounds": [
+        [
+          -0.0034884200000000003,
+          1.34059,
+          0.007613480000000001
+        ],
+        [
+          0.13084,
+          1.50624,
+          0.10066
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.clavicular.part.of.right.deltoid",
+      "structureId": "FMA:34680",
+      "sourceVertices": 2592,
+      "sourceFaces": 2206,
+      "vertices": 2592,
+      "faces": 2206,
+      "elementCount": 1,
+      "centroid": [
+        0.15953180861312224,
+        1.306173138536663,
+        0.10033298512005988
+      ],
+      "bounds": [
+        [
+          0.08855500000000001,
+          1.2038499999999999,
+          0.0751252
+        ],
+        [
+          0.203619,
+          1.35539,
+          0.12133100000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.acromial.part.of.right.deltoid",
+      "structureId": "FMA:34682",
+      "sourceVertices": 916,
+      "sourceFaces": 1300,
+      "vertices": 916,
+      "faces": 1300,
+      "elementCount": 1,
+      "centroid": [
+        0.19861919155949861,
+        1.2964933043061593,
+        0.07478089410152938
+      ],
+      "bounds": [
+        [
+          0.14658600000000002,
+          1.20509,
+          0.0408371
+        ],
+        [
+          0.227228,
+          1.34922,
+          0.103338
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.spinal.part.of.right.deltoid",
+      "structureId": "FMA:34684",
+      "sourceVertices": 1665,
+      "sourceFaces": 1900,
+      "vertices": 1665,
+      "faces": 1900,
+      "elementCount": 1,
+      "centroid": [
+        0.17633881847171265,
+        1.2791861428024596,
+        0.03434550260705515
+      ],
+      "bounds": [
+        [
+          0.08283410000000001,
+          1.18775,
+          0.00272512
+        ],
+        [
+          0.219171,
+          1.33984,
+          0.079253
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.clavicular.part.of.right.pectoralis.major",
+      "structureId": "FMA:34690",
+      "sourceVertices": 1492,
+      "sourceFaces": 1846,
+      "vertices": 1492,
+      "faces": 1846,
+      "elementCount": 1,
+      "centroid": [
+        0.11908829901447268,
+        1.2996976244449543,
+        0.11841541450498859
+      ],
+      "bounds": [
+        [
+          0.0264139,
+          1.23451,
+          0.082
+        ],
+        [
+          0.19426200000000002,
+          1.3359,
+          0.145096
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.interosseous.membrane.of.right.leg",
+      "structureId": "FMA:35192",
+      "sourceVertices": 4157,
+      "sourceFaces": 5640,
+      "vertices": 4157,
+      "faces": 5640,
+      "elementCount": 1,
+      "centroid": [
+        0.094732988545867,
+        0.18941243929939433,
+        0.07372652490420428
+      ],
+      "bounds": [
+        [
+          0.0850241,
+          0.0178544,
+          0.0628914
+        ],
+        [
+          0.103685,
+          0.336402,
+          0.0868888
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.pollicis.brevis",
+      "structureId": "FMA:37388",
+      "sourceVertices": 735,
+      "sourceFaces": 714,
+      "vertices": 735,
+      "faces": 714,
+      "elementCount": 1,
+      "centroid": [
+        -0.2785107503204096,
+        0.781130405620107,
+        0.13850385846357655
+      ],
+      "bounds": [
+        [
+          -0.30125,
+          0.766555,
+          0.125253
+        ],
+        [
+          -0.256014,
+          0.794053,
+          0.153121
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.flexor.digiti.minimi.brevis.of.right.hand",
+      "structureId": "FMA:37398",
+      "sourceVertices": 312,
+      "sourceFaces": 328,
+      "vertices": 312,
+      "faces": 328,
+      "elementCount": 1,
+      "centroid": [
+        0.23333457687729553,
+        0.761158833565628,
+        0.14118999237210647
+      ],
+      "bounds": [
+        [
+          0.226063,
+          0.731789,
+          0.13071100000000002
+        ],
+        [
+          0.244008,
+          0.791984,
+          0.148017
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.brevis",
+      "structureId": "FMA:37461",
+      "sourceVertices": 2468,
+      "sourceFaces": 2436,
+      "vertices": 2468,
+      "faces": 2436,
+      "elementCount": 1,
+      "centroid": [
+        0.10262235978021765,
+        -0.06476843884061513,
+        0.12311363065647134
+      ],
+      "bounds": [
+        [
+          0.058602600000000005,
+          -0.0728101,
+          0.0456258
+        ],
+        [
+          0.164326,
+          -0.0539255,
+          0.218194
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.accessorius",
+      "structureId": "FMA:37465",
+      "sourceVertices": 718,
+      "sourceFaces": 842,
+      "vertices": 718,
+      "faces": 842,
+      "elementCount": 1,
+      "centroid": [
+        0.08514799556304398,
+        -0.055435154106312196,
+        0.08629339292476661
+      ],
+      "bounds": [
+        [
+          0.0600618,
+          -0.0624437,
+          0.0502609
+        ],
+        [
+          0.10916100000000001,
+          -0.0464407,
+          0.11894400000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.flexor.digiti.minimi.brevis.of.right.foot",
+      "structureId": "FMA:37471",
+      "sourceVertices": 820,
+      "sourceFaces": 786,
+      "vertices": 820,
+      "faces": 786,
+      "elementCount": 1,
+      "centroid": [
+        0.12952123475777408,
+        -0.06309300688998627,
+        0.1256770146464612
+      ],
+      "bounds": [
+        [
+          0.109225,
+          -0.0710547,
+          0.0981942
+        ],
+        [
+          0.155761,
+          -0.0532491,
+          0.159947
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.fourth.lumbrical.of.right.foot",
+      "structureId": "FMA:37483",
+      "sourceVertices": 410,
+      "sourceFaces": 328,
+      "vertices": 410,
+      "faces": 328,
+      "elementCount": 1,
+      "centroid": [
+        0.12118083118677032,
+        -0.0624288509438096,
+        0.1349550356483148
+      ],
+      "bounds": [
+        [
+          0.09974899999999999,
+          -0.0678147,
+          0.11754099999999999
+        ],
+        [
+          0.145769,
+          -0.0537312,
+          0.158245
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.third.lumbrical.of.right.foot",
+      "structureId": "FMA:37485",
+      "sourceVertices": 508,
+      "sourceFaces": 368,
+      "vertices": 508,
+      "faces": 368,
+      "elementCount": 1,
+      "centroid": [
+        0.11417362293533123,
+        -0.061767456444217404,
+        0.14385820929848037
+      ],
+      "bounds": [
+        [
+          0.0940226,
+          -0.0680428,
+          0.118869
+        ],
+        [
+          0.137814,
+          -0.0538249,
+          0.173327
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.coracobrachialis",
+      "structureId": "FMA:37665",
+      "sourceVertices": 451,
+      "sourceFaces": 444,
+      "vertices": 451,
+      "faces": 444,
+      "elementCount": 1,
+      "centroid": [
+        0.15917655979916126,
+        1.251034685912208,
+        0.08439981866517102
+      ],
+      "bounds": [
+        [
+          0.13015100000000002,
+          1.1701300000000001,
+          0.0668605
+        ],
+        [
+          0.18942599999999998,
+          1.3278699999999999,
+          0.106175
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.brachialis",
+      "structureId": "FMA:37668",
+      "sourceVertices": 1266,
+      "sourceFaces": 1746,
+      "vertices": 1266,
+      "faces": 1746,
+      "elementCount": 1,
+      "centroid": [
+        0.20639658857637425,
+        1.1151803838339447,
+        0.0752883342574029
+      ],
+      "bounds": [
+        [
+          0.176385,
+          0.995361,
+          0.0605697
+        ],
+        [
+          0.23512100000000002,
+          1.2202000000000002,
+          0.086396
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.short.head.of.right.biceps.brachii",
+      "structureId": "FMA:37684",
+      "sourceVertices": 1739,
+      "sourceFaces": 1856,
+      "vertices": 1739,
+      "faces": 1856,
+      "elementCount": 1,
+      "centroid": [
+        0.17934153937801078,
+        1.1792055905091512,
+        0.09175451866715612
+      ],
+      "bounds": [
+        [
+          0.135237,
+          1.06522,
+          0.0759581
+        ],
+        [
+          0.21239,
+          1.32776,
+          0.109101
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.long.head.of.right.biceps.brachii",
+      "structureId": "FMA:37686",
+      "sourceVertices": 1053,
+      "sourceFaces": 1426,
+      "vertices": 1053,
+      "faces": 1426,
+      "elementCount": 1,
+      "centroid": [
+        0.20049631612889826,
+        1.1648143855078157,
+        0.08957086439473602
+      ],
+      "bounds": [
+        [
+          0.135268,
+          0.9940720000000001,
+          0.06780889999999999
+        ],
+        [
+          0.22986,
+          1.33942,
+          0.109292
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.medial.head.of.right.triceps.brachii",
+      "structureId": "FMA:37695",
+      "sourceVertices": 620,
+      "sourceFaces": 832,
+      "vertices": 620,
+      "faces": 832,
+      "elementCount": 1,
+      "centroid": [
+        0.18962557046196726,
+        1.1253382277470847,
+        0.05700215698961059
+      ],
+      "bounds": [
+        [
+          0.167373,
+          1.02935,
+          0.0463172
+        ],
+        [
+          0.226963,
+          1.25604,
+          0.07187990000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.lateral.head.of.right.triceps.brachii",
+      "structureId": "FMA:37697",
+      "sourceVertices": 1678,
+      "sourceFaces": 2606,
+      "vertices": 1678,
+      "faces": 2606,
+      "elementCount": 1,
+      "centroid": [
+        0.20308906104423566,
+        1.1724751660287975,
+        0.04572259420037813
+      ],
+      "bounds": [
+        [
+          0.174456,
+          1.03597,
+          0.0200842
+        ],
+        [
+          0.228005,
+          1.2921300000000002,
+          0.0687968
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.long.head.of.right.triceps.brachii",
+      "structureId": "FMA:37699",
+      "sourceVertices": 1105,
+      "sourceFaces": 1588,
+      "vertices": 1105,
+      "faces": 1588,
+      "elementCount": 1,
+      "centroid": [
+        0.17783189975714017,
+        1.1668096052580716,
+        0.0409888932632615
+      ],
+      "bounds": [
+        [
+          0.134691,
+          1.03524,
+          0.0187595
+        ],
+        [
+          0.216462,
+          1.30075,
+          0.0641021
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.anconeus",
+      "structureId": "FMA:37705",
+      "sourceVertices": 1105,
+      "sourceFaces": 1278,
+      "vertices": 1105,
+      "faces": 1278,
+      "elementCount": 1,
+      "centroid": [
+        0.21953455056612264,
+        1.0119461681521593,
+        0.050017507274551544
+      ],
+      "bounds": [
+        [
+          0.20633600000000002,
+          0.9595330000000001,
+          0.0418221
+        ],
+        [
+          0.22930799999999998,
+          1.06089,
+          0.06701800000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.first.lumbrical.of.right.foot",
+      "structureId": "FMA:37717",
+      "sourceVertices": 838,
+      "sourceFaces": 646,
+      "vertices": 838,
+      "faces": 646,
+      "elementCount": 1,
+      "centroid": [
+        0.09493370623880848,
+        -0.058231857875599174,
+        0.14914951848366076
+      ],
+      "bounds": [
+        [
+          0.0776868,
+          -0.0670652,
+          0.10613500000000001
+        ],
+        [
+          0.113108,
+          -0.047434199999999996,
+          0.191523
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.second.lumbrical.of.right.foot",
+      "structureId": "FMA:37719",
+      "sourceVertices": 266,
+      "sourceFaces": 266,
+      "vertices": 266,
+      "faces": 266,
+      "elementCount": 1,
+      "centroid": [
+        0.1059248403081366,
+        -0.06115981443674292,
+        0.1506638801524162
+      ],
+      "bounds": [
+        [
+          0.0885274,
+          -0.067591,
+          0.12178
+        ],
+        [
+          0.129189,
+          -0.053426,
+          0.18440199999999998
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.third.plantar.interosseous.of.right.foot",
+      "structureId": "FMA:37741",
+      "sourceVertices": 908,
+      "sourceFaces": 772,
+      "vertices": 908,
+      "faces": 772,
+      "elementCount": 1,
+      "centroid": [
+        0.1288445871142947,
+        -0.056960369381463184,
+        0.13672261849832068
+      ],
+      "bounds": [
+        [
+          0.113547,
+          -0.06445730000000001,
+          0.115483
+        ],
+        [
+          0.153817,
+          -0.050318100000000004,
+          0.159487
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.second.plantar.interosseous.of.right.foot",
+      "structureId": "FMA:37743",
+      "sourceVertices": 522,
+      "sourceFaces": 632,
+      "vertices": 522,
+      "faces": 632,
+      "elementCount": 1,
+      "centroid": [
+        0.12275949579775453,
+        -0.05151644308242504,
+        0.14803522903619887
+      ],
+      "bounds": [
+        [
+          0.11108499999999999,
+          -0.0623082,
+          0.12656
+        ],
+        [
+          0.138428,
+          -0.0420094,
+          0.173392
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.first.plantar.interosseous.of.right.foot",
+      "structureId": "FMA:37745",
+      "sourceVertices": 563,
+      "sourceFaces": 674,
+      "vertices": 563,
+      "faces": 674,
+      "elementCount": 1,
+      "centroid": [
+        0.11512197507964833,
+        -0.04924191461097972,
+        0.15761440227297321
+      ],
+      "bounds": [
+        [
+          0.104791,
+          -0.0626963,
+          0.133599
+        ],
+        [
+          0.13175,
+          -0.0391441,
+          0.183143
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.pronator.quadratus",
+      "structureId": "FMA:38454",
+      "sourceVertices": 2257,
+      "sourceFaces": 1838,
+      "vertices": 2257,
+      "faces": 1838,
+      "elementCount": 1,
+      "centroid": [
+        0.2473312924190065,
+        0.8444600435107339,
+        0.11403120060136376
+      ],
+      "bounds": [
+        [
+          0.226095,
+          0.820455,
+          0.102552
+        ],
+        [
+          0.27176799999999995,
+          0.8705710000000001,
+          0.126181
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.carpi.radialis",
+      "structureId": "FMA:38460",
+      "sourceVertices": 819,
+      "sourceFaces": 1148,
+      "vertices": 819,
+      "faces": 1148,
+      "elementCount": 1,
+      "centroid": [
+        0.2240885300510408,
+        0.9377498088061627,
+        0.11118314709905135
+      ],
+      "bounds": [
+        [
+          0.18436000000000002,
+          0.780697,
+          0.0708677
+        ],
+        [
+          0.272111,
+          1.05748,
+          0.136406
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.superficialis",
+      "structureId": "FMA:38470",
+      "sourceVertices": 6745,
+      "sourceFaces": 9564,
+      "vertices": 6745,
+      "faces": 9564,
+      "elementCount": 2,
+      "centroid": [
+        0.23000680721533337,
+        0.8994245437888619,
+        0.10935022042832969
+      ],
+      "bounds": [
+        [
+          0.178113,
+          0.675814,
+          0.067579
+        ],
+        [
+          0.30586900000000006,
+          1.05308,
+          0.16784800000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.profundus",
+      "structureId": "FMA:38479",
+      "sourceVertices": 3857,
+      "sourceFaces": 4838,
+      "vertices": 3857,
+      "faces": 4838,
+      "elementCount": 1,
+      "centroid": [
+        0.237686976297375,
+        0.864414331674802,
+        0.11211110985853906
+      ],
+      "bounds": [
+        [
+          0.203877,
+          0.6655359999999999,
+          0.0687278
+        ],
+        [
+          0.30693200000000004,
+          1.01886,
+          0.186878
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.pollicis.longus",
+      "structureId": "FMA:38482",
+      "sourceVertices": 1781,
+      "sourceFaces": 1442,
+      "vertices": 1781,
+      "faces": 1442,
+      "elementCount": 1,
+      "centroid": [
+        0.25839466669822697,
+        0.8751394654423137,
+        0.10739433150637251
+      ],
+      "bounds": [
+        [
+          0.238495,
+          0.735216,
+          0.0876318
+        ],
+        [
+          0.31405099999999997,
+          0.965909,
+          0.165883
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.brachioradialis",
+      "structureId": "FMA:38486",
+      "sourceVertices": 3270,
+      "sourceFaces": 4874,
+      "vertices": 3270,
+      "faces": 4874,
+      "elementCount": 1,
+      "centroid": [
+        0.24912206637945694,
+        0.9991696499240156,
+        0.08884917882749316
+      ],
+      "bounds": [
+        [
+          0.20815899999999998,
+          0.809712,
+          0.055824399999999996
+        ],
+        [
+          0.280586,
+          1.14761,
+          0.122878
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.carpi.radialis.longus",
+      "structureId": "FMA:38495",
+      "sourceVertices": 1696,
+      "sourceFaces": 2474,
+      "vertices": 1696,
+      "faces": 2474,
+      "elementCount": 1,
+      "centroid": [
+        0.25622816623970096,
+        0.9749450082622028,
+        0.07492655058297565
+      ],
+      "bounds": [
+        [
+          0.220086,
+          0.7791440000000001,
+          0.0532059
+        ],
+        [
+          0.277863,
+          1.10161,
+          0.120979
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.carpi.radialis.brevis",
+      "structureId": "FMA:38498",
+      "sourceVertices": 1564,
+      "sourceFaces": 2098,
+      "vertices": 1564,
+      "faces": 2098,
+      "elementCount": 1,
+      "centroid": [
+        0.25045819517139273,
+        0.9531413850282398,
+        0.07364493961587343
+      ],
+      "bounds": [
+        [
+          0.228364,
+          0.7760549999999999,
+          0.0502609
+        ],
+        [
+          0.272638,
+          1.07871,
+          0.115743
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.digitorum",
+      "structureId": "FMA:38501",
+      "sourceVertices": 3355,
+      "sourceFaces": 4294,
+      "vertices": 3355,
+      "faces": 4294,
+      "elementCount": 1,
+      "centroid": [
+        0.24973311524598307,
+        0.8650028923795192,
+        0.08912463656729817
+      ],
+      "bounds": [
+        [
+          0.222476,
+          0.6779810000000001,
+          0.0453127
+        ],
+        [
+          0.305054,
+          1.05996,
+          0.162529
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.digiti.minimi",
+      "structureId": "FMA:38504",
+      "sourceVertices": 1014,
+      "sourceFaces": 1434,
+      "vertices": 1014,
+      "faces": 1434,
+      "elementCount": 1,
+      "centroid": [
+        0.2369909843662058,
+        0.9017026403515412,
+        0.08172481663866323
+      ],
+      "bounds": [
+        [
+          0.226988,
+          0.724668,
+          0.053924900000000005
+        ],
+        [
+          0.24322200000000002,
+          1.04962,
+          0.143254
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.carpi.ulnaris",
+      "structureId": "FMA:38507",
+      "sourceVertices": 4089,
+      "sourceFaces": 3394,
+      "vertices": 4089,
+      "faces": 3394,
+      "elementCount": 2,
+      "centroid": [
+        0.2295644733210322,
+        0.9088998132292384,
+        0.0793944748031831
+      ],
+      "bounds": [
+        [
+          0.219476,
+          0.771166,
+          0.0496848
+        ],
+        [
+          0.23743,
+          1.05887,
+          0.126798
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.supinator",
+      "structureId": "FMA:38513",
+      "sourceVertices": 2368,
+      "sourceFaces": 3110,
+      "vertices": 2368,
+      "faces": 3110,
+      "elementCount": 1,
+      "centroid": [
+        0.23967739329052576,
+        0.9962246530420257,
+        0.07238044898807332
+      ],
+      "bounds": [
+        [
+          0.222361,
+          0.932534,
+          0.0562606
+        ],
+        [
+          0.254094,
+          1.05638,
+          0.0905488
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.pollicis.brevis",
+      "structureId": "FMA:38519",
+      "sourceVertices": 846,
+      "sourceFaces": 998,
+      "vertices": 846,
+      "faces": 998,
+      "elementCount": 1,
+      "centroid": [
+        0.2627994328176593,
+        0.8380915145549482,
+        0.10485751989415248
+      ],
+      "bounds": [
+        [
+          0.234923,
+          0.7584380000000001,
+          0.0909047
+        ],
+        [
+          0.311402,
+          0.893995,
+          0.147653
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.pollicis.longus",
+      "structureId": "FMA:38522",
+      "sourceVertices": 1177,
+      "sourceFaces": 1326,
+      "vertices": 1177,
+      "faces": 1326,
+      "elementCount": 1,
+      "centroid": [
+        0.25322461384005474,
+        0.8464509767416709,
+        0.10348563454885745
+      ],
+      "bounds": [
+        [
+          0.224628,
+          0.733037,
+          0.07568989999999999
+        ],
+        [
+          0.319379,
+          0.9350890000000001,
+          0.163375
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.indicis",
+      "structureId": "FMA:38525",
+      "sourceVertices": 690,
+      "sourceFaces": 720,
+      "vertices": 690,
+      "faces": 720,
+      "elementCount": 1,
+      "centroid": [
+        0.25975629479667744,
+        0.7918922791381224,
+        0.11514489411147924
+      ],
+      "bounds": [
+        [
+          0.229502,
+          0.668708,
+          0.0952863
+        ],
+        [
+          0.307647,
+          0.868257,
+          0.173595
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.humeral.head.of.right.pronator.teres",
+      "structureId": "FMA:38560",
+      "sourceVertices": 1588,
+      "sourceFaces": 1846,
+      "vertices": 1588,
+      "faces": 1846,
+      "elementCount": 1,
+      "centroid": [
+        0.22903812397786638,
+        0.9974004193837024,
+        0.09156847468088736
+      ],
+      "bounds": [
+        [
+          0.187418,
+          0.916652,
+          0.0676887
+        ],
+        [
+          0.257321,
+          1.0653800000000002,
+          0.102553
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.ulnar.head.of.right.pronator.teres",
+      "structureId": "FMA:38562",
+      "sourceVertices": 791,
+      "sourceFaces": 1040,
+      "vertices": 791,
+      "faces": 1040,
+      "elementCount": 1,
+      "centroid": [
+        0.2356333945471326,
+        0.9809351087702403,
+        0.0897721471963867
+      ],
+      "bounds": [
+        [
+          0.204265,
+          0.9277430000000001,
+          0.0740591
+        ],
+        [
+          0.25631400000000004,
+          1.02343,
+          0.0983823
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.humeral.head.of.right.flexor.carpi.ulnaris",
+      "structureId": "FMA:38617",
+      "sourceVertices": 1887,
+      "sourceFaces": 2656,
+      "vertices": 1887,
+      "faces": 2656,
+      "elementCount": 1,
+      "centroid": [
+        0.2014388145113852,
+        0.9346717708726398,
+        0.09160800400030847
+      ],
+      "bounds": [
+        [
+          0.17782900000000001,
+          0.781554,
+          0.0611693
+        ],
+        [
+          0.246452,
+          1.04834,
+          0.13657400000000003
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.ulnar.head.of.right.flexor.carpi.ulnaris",
+      "structureId": "FMA:38619",
+      "sourceVertices": 1715,
+      "sourceFaces": 1538,
+      "vertices": 1715,
+      "faces": 1538,
+      "elementCount": 1,
+      "centroid": [
+        0.2078587973631139,
+        0.9532359845628295,
+        0.07355631473437473
+      ],
+      "bounds": [
+        [
+          0.18938,
+          0.830476,
+          0.0473981
+        ],
+        [
+          0.22951400000000002,
+          1.0433599999999998,
+          0.116202
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.set.of.lumbricals.of.right.hand",
+      "structureId": "FMA:42398",
+      "sourceVertices": 3008,
+      "sourceFaces": 2668,
+      "vertices": 3008,
+      "faces": 2668,
+      "elementCount": 1,
+      "centroid": [
+        0.26218839565851076,
+        0.7354034438316939,
+        0.1389391978659789
+      ],
+      "bounds": [
+        [
+          0.22416999999999998,
+          0.684882,
+          0.126894
+        ],
+        [
+          0.300038,
+          0.774908,
+          0.158278
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.abdominal.part.of.right.pectoralis.major",
+      "structureId": "FMA:45874",
+      "sourceVertices": 1019,
+      "sourceFaces": 1536,
+      "vertices": 1019,
+      "faces": 1536,
+      "elementCount": 1,
+      "centroid": [
+        0.11436108224143768,
+        1.1832665854139486,
+        0.16602146867141898
+      ],
+      "bounds": [
+        [
+          0.048,
+          1.10478,
+          0.0817564
+        ],
+        [
+          0.180896,
+          1.27794,
+          0.21362799999999998
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.long.head.of.right.biceps.femoris",
+      "structureId": "FMA:45888",
+      "sourceVertices": 2838,
+      "sourceFaces": 5110,
+      "vertices": 2838,
+      "faces": 5110,
+      "elementCount": 1,
+      "centroid": [
+        0.0906240932047682,
+        0.561892165980979,
+        0.04709417883698977
+      ],
+      "bounds": [
+        [
+          0.0486928,
+          0.327905,
+          0.0183096
+        ],
+        [
+          0.126642,
+          0.764753,
+          0.0721878
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.short.head.of.right.biceps.femoris",
+      "structureId": "FMA:45891",
+      "sourceVertices": 1211,
+      "sourceFaces": 1728,
+      "vertices": 1211,
+      "faces": 1728,
+      "elementCount": 1,
+      "centroid": [
+        0.10037775397296479,
+        0.48257900682593197,
+        0.07022571365919604
+      ],
+      "bounds": [
+        [
+          0.0806712,
+          0.32819,
+          0.0508818
+        ],
+        [
+          0.11740900000000001,
+          0.64662,
+          0.0874787
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.medial.head.of.right.flexor.hallucis.brevis",
+      "structureId": "FMA:45971",
+      "sourceVertices": 1199,
+      "sourceFaces": 992,
+      "vertices": 1199,
+      "faces": 992,
+      "elementCount": 1,
+      "centroid": [
+        0.08254704600554488,
+        -0.05225851886384698,
+        0.15960573054074803
+      ],
+      "bounds": [
+        [
+          0.0681456,
+          -0.0690187,
+          0.118076
+        ],
+        [
+          0.0952413,
+          -0.0312599,
+          0.195006
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.lateral.head.of.right.flexor.hallucis.brevis",
+      "structureId": "FMA:45973",
+      "sourceVertices": 2213,
+      "sourceFaces": 1742,
+      "vertices": 2213,
+      "faces": 1742,
+      "elementCount": 1,
+      "centroid": [
+        0.08769964380262024,
+        -0.05317135632596947,
+        0.15081867759078624
+      ],
+      "bounds": [
+        [
+          0.0684896,
+          -0.07104940000000001,
+          0.118244
+        ],
+        [
+          0.10509500000000001,
+          -0.0337525,
+          0.195231
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.hallucis.brevis",
+      "structureId": "FMA:51144",
+      "sourceVertices": 1257,
+      "sourceFaces": 1230,
+      "vertices": 1257,
+      "faces": 1230,
+      "elementCount": 1,
+      "centroid": [
+        0.09596305152977158,
+        -0.023236345383488864,
+        0.12588894109860277
+      ],
+      "bounds": [
+        [
+          0.0903251,
+          -0.053359699999999996,
+          0.07813450000000001
+        ],
+        [
+          0.10434,
+          -0.0074344400000000005,
+          0.19803700000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.hallucis.longus",
+      "structureId": "FMA:65014",
+      "sourceVertices": 1847,
+      "sourceFaces": 2758,
+      "vertices": 1847,
+      "faces": 2758,
+      "elementCount": 1,
+      "centroid": [
+        0.08573223887989966,
+        0.09390626445929337,
+        0.06947437720803343
+      ],
+      "bounds": [
+        [
+          0.0521983,
+          -0.0711944,
+          0.0448784
+        ],
+        [
+          0.117846,
+          0.251607,
+          0.222611
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.longus",
+      "structureId": "FMA:65016",
+      "sourceVertices": 3037,
+      "sourceFaces": 4004,
+      "vertices": 3037,
+      "faces": 4004,
+      "elementCount": 1,
+      "centroid": [
+        0.07918609688968874,
+        0.07123281785993828,
+        0.09311062745686442
+      ],
+      "bounds": [
+        [
+          0.0393682,
+          -0.07198180000000001,
+          0.0560802
+        ],
+        [
+          0.165771,
+          0.29115199999999997,
+          0.22645400000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "muscle.superficial.head.of.right.flexor.pollicis.brevis",
+      "structureId": "FMA:65198",
+      "sourceVertices": 954,
+      "sourceFaces": 726,
+      "vertices": 954,
+      "faces": 726,
+      "elementCount": 1,
+      "centroid": [
+        0.27788791036258464,
+        0.7823194353412313,
+        0.1457988373104906
+      ],
+      "bounds": [
+        [
+          0.25978300000000004,
+          0.7668790000000001,
+          0.136637
+        ],
+        [
+          0.301995,
+          0.796813,
+          0.154202
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:28.770762+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}
