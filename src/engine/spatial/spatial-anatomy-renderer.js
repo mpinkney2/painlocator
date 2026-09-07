@@ -64,8 +64,11 @@
 
       try {
         onProgress("Checking WebGL…");
-        if (!SpatialThreeLoader.isWebGLAvailable()) {
-          throw new Error("WebGL unavailable");
+        const probeOk = SpatialThreeLoader.isWebGLAvailable();
+        // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.
+        // Also: never call loseContext during probe (poisons Electron/Cursor WebGL).
+        if (!probeOk) {
+          onProgress("WebGL probe inconclusive — starting 3D anyway…");
         }
 
         // Tear down prior mount BEFORE loading Three — teardown clears this.THREE.
@@ -101,7 +104,15 @@
         this.mountEl.appendChild(hint);
 
         onProgress("Starting 3D scene…");
-        this.scene = new SpatialSceneController(this.mountEl, this.THREE);
+        try {
+          this.scene = new SpatialSceneController(this.mountEl, this.THREE);
+        } catch (sceneErr) {
+          const msg = String(sceneErr?.message || sceneErr || "");
+          if (/webgl context|error creating webgl/i.test(msg)) {
+            throw new Error("WebGL unavailable");
+          }
+          throw sceneErr;
+        }
 
         onProgress("Loading body model…");
         await withTimeout(

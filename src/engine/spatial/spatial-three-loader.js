@@ -24,11 +24,18 @@
       (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.threeMs) || 12000;
 
     pending = withTimeout(
-      import(/* webpackIgnore: true */ resolveThreeUrl()),
-      threeMs,
-      "Three.js import"
-    )
-      .then((mod) => {
+      (async () => {
+        let mod = null;
+        try {
+          mod = await import(/* webpackIgnore: true */ resolveThreeUrl());
+        } catch (urlErr) {
+          // Fallback to import-map specifier when absolute URL import is blocked.
+          try {
+            mod = await import(/* webpackIgnore: true */ "three");
+          } catch (_) {
+            throw urlErr;
+          }
+        }
         // Named-export ESM namespace (three.module.min.js) — unwrap default if present.
         const THREE =
           mod && typeof mod.WebGLRenderer === "function"
@@ -42,11 +49,13 @@
         global.__PAINLOCATOR_THREE__ = THREE;
         pending = null;
         return THREE;
-      })
-      .catch((err) => {
-        pending = null;
-        throw err;
-      });
+      })(),
+      threeMs,
+      "Three.js import"
+    ).catch((err) => {
+      pending = null;
+      throw err;
+    });
     return pending;
   }
 

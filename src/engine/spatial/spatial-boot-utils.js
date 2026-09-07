@@ -21,12 +21,17 @@
     });
   }
 
+  /**
+   * Soft WebGL probe. Do NOT call loseContext() — that can poison the next
+   * real WebGLRenderer in Electron / Cursor Simple Browser.
+   */
   function isWebGLReallyAvailable() {
     try {
       const canvas = document.createElement("canvas");
       const attrs = {
         alpha: true,
-        antialias: true,
+        antialias: false,
+        depth: true,
         failIfMajorPerformanceCaveat: false,
         powerPreference: "default"
       };
@@ -35,10 +40,9 @@
         canvas.getContext("webgl", attrs) ||
         canvas.getContext("experimental-webgl", attrs);
       if (!gl) return false;
-      // Some embedded previews return a context that is already lost.
       if (typeof gl.isContextLost === "function" && gl.isContextLost()) return false;
-      const ext = gl.getExtension?.("WEBGL_lose_context");
-      ext?.loseContext?.();
+      // Touch a cheap GL call to ensure the context is usable.
+      gl.viewport(0, 0, 1, 1);
       return true;
     } catch (_) {
       return false;

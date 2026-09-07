@@ -44,10 +44,13 @@
   function humanReason(reason) {
     const r = String(reason || "");
     if (/^WebGL unavailable$/i.test(r) || /webgl unavailable/i.test(r)) {
-      return "This browser preview cannot run WebGL 3D. Open the app in Chrome/Edge (external tab), then Retry.";
+      return "WebGL 3D is blocked in this preview. Open http://localhost:5500 in system Chrome or Edge (not the Cursor preview panel), then Retry.";
+    }
+    if (/WebGLRenderer failed|Error creating WebGL context/i.test(r)) {
+      return "WebGL context could not start. Close other 3D tabs, then open localhost:5500 in system Chrome/Edge and Retry.";
     }
     if (/WebGLRenderer|Three\.js module loaded without/i.test(r)) {
-      return "The 3D library failed to initialize. Tap Retry 3D, or open in Chrome/Edge.";
+      return "The 3D library failed to initialize. Hard-refresh the page, then Retry.";
     }
     if (/timed out|timeout/i.test(r)) {
       return "3D loading took too long and was stopped. Check your network, then Retry.";
