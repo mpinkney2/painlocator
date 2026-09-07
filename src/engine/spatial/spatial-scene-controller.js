@@ -284,6 +284,69 @@
       return SpatialProjection.worldToNormalizedAnchors(this.THREE, this.camera, worldPoint);
     }
 
+    /**
+     * Capture the current Spatial frame as a PNG data URL for reports / snapshots.
+     * Forces a synchronous render then reads the drawing buffer immediately
+     * (no permanent preserveDrawingBuffer). Markers already in the scene are included.
+     *
+     * @param {{ width?: number, height?: number, background?: string|number, backgroundAlpha?: number }} [options]
+     * @returns {string|null}
+     */
+    captureFrameDataUrl(options = {}) {
+      if (this.disposed || !this.renderer || !this.canvas || !this.scene || !this.camera) {
+        return null;
+      }
+      const THREE = this.THREE;
+      const width = Math.max(1, Math.round(options.width || this.canvas.width || 512));
+      const height = Math.max(1, Math.round(options.height || this.canvas.height || 512));
+
+      const prevPixelRatio = this.renderer.getPixelRatio();
+      const prevSize = new THREE.Vector2();
+      this.renderer.getSize(prevSize);
+      const prevClear = new THREE.Color();
+      this.renderer.getClearColor(prevClear);
+      const prevAlpha = this.renderer.getClearAlpha();
+      const prevAspect = this.camera.aspect;
+
+      let dataUrl = null;
+      try {
+        this.renderer.setPixelRatio(1);
+        this.renderer.setSize(width, height, false);
+        this.camera.aspect = width / Math.max(1, height);
+        this.camera.updateProjectionMatrix();
+
+        const bg = options.background;
+        const bgAlpha = options.backgroundAlpha != null ? options.backgroundAlpha : 1;
+        if (bg != null && bg !== "") {
+          this.renderer.setClearColor(bg, bgAlpha);
+        } else {
+          // Solid clinical backdrop for print/PDF (Spatial interactive canvas is transparent).
+          this.renderer.setClearColor(0x0f172a, 1);
+        }
+
+        this.renderer.render(this.scene, this.camera);
+        dataUrl = this.canvas.toDataURL("image/png");
+      } catch (err) {
+        console.warn("[CAE Spatial] frame capture failed", err);
+        dataUrl = null;
+      } finally {
+        try {
+          this.renderer.setClearColor(prevClear, prevAlpha);
+          this.renderer.setPixelRatio(prevPixelRatio);
+          if (prevSize.x > 0 && prevSize.y > 0) {
+            this.renderer.setSize(prevSize.x, prevSize.y, false);
+          }
+          this.camera.aspect = prevAspect || this.camera.aspect;
+          this.camera.updateProjectionMatrix();
+        } catch (_) {
+          /* ignore restore errors */
+        }
+        this.resize();
+        this.requestFrame();
+      }
+      return dataUrl;
+    }
+
     dispose() {
       if (this.disposed) return;
       this.disposed = true;

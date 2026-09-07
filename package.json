@@ -20,6 +20,8 @@
     "bp3d:build": "node tools/bp3d-ingest/build.mjs",
     "bp3d:curate-fullbody": "python3 tools/bp3d-ingest/curate-fullbody.py",
     "bp3d:ingest-fullbody": "python3 tools/bp3d-ingest/ingest-fullbody.py",
+    "bp3d:compare-source-tiers": "python3 tools/bp3d-ingest/compare-source-tiers.py",
+    "bp3d:build:production": "node tools/bp3d-ingest/build-production.mjs",
     "test:fullbody-browser": "node scripts/fullbody-browser-smoke.mjs"
   },
   "dependencies": {

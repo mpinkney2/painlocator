@@ -4,6 +4,12 @@
 **Branch:** `cursor/fullbody-bp3d-anatomy-83c7`  
 **Flag:** `?fullBodyAnatomy=1` (or `window.PAINLOCATOR_FULL_BODY_ANATOMY = true`)
 
+> **Source-tier update (2026-09-07):** This full-body pack is built from the official
+> **99%** archive and remains a **prototype / coverage** milestone.
+> It is **not** the approved production visual target.
+> See [`BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md`](./BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md)
+> (verdict: **NO** — obtain BP3D 4.0 HD before production cutover).
+
 ## Objective
 
 Deliver the first credible **full-body** BodyParts3D musculoskeletal clinician

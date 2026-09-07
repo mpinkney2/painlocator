@@ -278,6 +278,47 @@
       this._refreshLegacy(view);
     }
 
+    /**
+     * Capture a Spatial view for PNG/PDF clinical exports.
+     * Snaps yaw without animation, reads one frame, optionally restores prior yaw.
+     * Does not alter presentation shell or anatomy depth — exports match the live body.
+     *
+     * @param {string} [viewType]
+     * @param {{ width?: number, height?: number, background?: string|number, restoreView?: boolean }} [options]
+     * @returns {Promise<string|null>}
+     */
+    async captureViewDataUrl(viewType, options = {}) {
+      if (!this.ready || !this.scene || this.disposed) return null;
+      const Projection =
+        (global.SpatialBootUtils && global.SpatialBootUtils.getGlobal
+          ? global.SpatialBootUtils.getGlobal("SpatialProjection")
+          : null) || global.SpatialProjection;
+      const views = Projection?.SPATIAL_VIEWS || ["front", "back", "left", "right"];
+      const view = views.includes(viewType) ? viewType : "front";
+      const restoreView = options.restoreView !== false;
+      const prevYaw = typeof this.scene.getYaw === "function" ? this.scene.getYaw() : null;
+
+      this.scene.snapToView(view, { animate: false });
+      // Yield one frame so layout/resize observers settle before capture sizing.
+      await new Promise((resolve) => {
+        if (typeof requestAnimationFrame === "function") requestAnimationFrame(() => resolve());
+        else setTimeout(resolve, 0);
+      });
+      if (this.disposed || !this.scene) return null;
+
+      const dataUrl = this.scene.captureFrameDataUrl({
+        width: options.width,
+        height: options.height,
+        background: options.background,
+        backgroundAlpha: options.backgroundAlpha
+      });
+
+      if (restoreView && prevYaw != null && typeof this.scene.setYawImmediate === "function") {
+        this.scene.setYawImmediate(prevYaw);
+      }
+      return dataUrl;
+    }
+
     resize() {
       this.scene?.resize?.();
     }
@@ -929,8 +970,8 @@
         live.textContent = loading
           ? "Loading anatomy layer…"
           : depth === "surface"
-            ? "Surface (styled exterior)"
-            : depth === "muscle"
+            ? "Surface (fallback silhouette — not production exterior)"
+              : depth === "muscle"
               ? "Muscle (BP3D)"
               : "Skeletal (BP3D)";
       }

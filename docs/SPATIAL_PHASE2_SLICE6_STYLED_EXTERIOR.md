@@ -4,6 +4,12 @@
 **Branch:** `cursor/canonical-styled-exterior-83c7`  
 **Depends on:** Vite ESM Spatial runtime (PR #16 / validated desktop Safari)
 
+## Status (2026-09-07)
+
+**Not the production human representation.** This silhouette remains a
+development / failure / legacy fallback until a canonical-derived smooth
+exterior exists (see `BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md`).
+
 ## Objective
 
 Replace the interim capsule mannequin with a **calm medical silhouette** authored

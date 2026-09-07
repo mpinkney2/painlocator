@@ -1,0 +1,363 @@
+{
+  "generatedAt": "2026-09-07T20:21:24.374443+00:00",
+  "transform": "(x,y,z)_mm \u2192 (-x,z,-y)*0.001",
+  "simplificationPolicy": "none beyond nondegenerate cleanup",
+  "sources": {
+    "A": {
+      "archive": "isa_BP3D_4.0_obj_99.zip",
+      "version": "BodyParts3D 4.0",
+      "reduction": "99%",
+      "sha256": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e",
+      "license": "CC BY 4.0 (current LATEST)",
+      "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip"
+    },
+    "B": {
+      "archive": "BodyParts3D_3.0_obj_95.zip",
+      "version": "BodyParts3D 3.0 (historical)",
+      "reduction": "95%",
+      "sha256": "4b4faf3b043f54aa9e5de3cdef584381793434ddb7472855b8d9abebdee002de",
+      "license": "CC BY-SA 2.1 Japan (historical release README)",
+      "url": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/20110915/BodyParts3D_3.0_obj_95.zip",
+      "caveats": [
+        "Not available for Release 4.0",
+        "Release 4.0 altered skeletal coordinates \u2014 not same frame as A",
+        "ShareAlike license differs from current 4.0 CC BY 4.0",
+        "File naming uses FMA*.obj (pre-FJ element IDs)"
+      ]
+    }
+  },
+  "structures": [
+    {
+      "structureId": "FMA:34683",
+      "fmaConceptId": "FMA34683",
+      "preferredName": "acromial part of left deltoid",
+      "role": "shoulder / acromial left deltoid",
+      "layer": "muscle",
+      "A": {
+        "elementFileIds": [
+          "FJ1467M"
+        ],
+        "sourceVertices": 918,
+        "sourceTriangles": 1300,
+        "glbBytes": 31296,
+        "objBytes": 91869
+      },
+      "B": {
+        "sourceFile": "FMA34683.obj",
+        "sourceVertices": 15678,
+        "sourceTriangles": 29076,
+        "glbBytes": 600776,
+        "objBytes": 1975945
+      },
+      "triangleRatio_B_over_A": 22.37,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:34691",
+      "fmaConceptId": "FMA34691",
+      "preferredName": "clavicular part of left pectoralis major",
+      "role": "torso / clavicular left pectoralis major",
+      "layer": "muscle",
+      "A": {
+        "elementFileIds": [
+          "FJ1447M"
+        ],
+        "sourceVertices": 1495,
+        "sourceTriangles": 1846,
+        "glbBytes": 47084,
+        "objBytes": 140158
+      },
+      "B": {
+        "sourceFile": "FMA34691.obj",
+        "sourceVertices": 6541,
+        "sourceTriangles": 9212,
+        "glbBytes": 216208,
+        "objBytes": 654658
+      },
+      "triangleRatio_B_over_A": 4.99,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:13378",
+      "fmaConceptId": "FMA13378",
+      "preferredName": "torso / left rectus abdominis",
+      "role": "torso / left rectus abdominis",
+      "layer": "muscle",
+      "A": null,
+      "B": {
+        "sourceFile": "FMA13378.obj",
+        "sourceVertices": 99700,
+        "sourceTriangles": 188862,
+        "glbBytes": 3862564,
+        "objBytes": 12927111
+      },
+      "triangleRatio_B_over_A": null,
+      "status": "missing-in-4.0-element-map"
+    },
+    {
+      "structureId": "FMA:13396",
+      "fmaConceptId": "FMA13396",
+      "preferredName": "left scapula",
+      "role": "shoulder / left scapula",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3279"
+        ],
+        "sourceVertices": 14068,
+        "sourceTriangles": 28106,
+        "glbBytes": 563388,
+        "objBytes": 1865738
+      },
+      "B": {
+        "sourceFile": "FMA13396.obj",
+        "sourceVertices": 60949,
+        "sourceTriangles": 121816,
+        "glbBytes": 2438004,
+        "objBytes": 8396189
+      },
+      "triangleRatio_B_over_A": 4.33,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:23131",
+      "fmaConceptId": "FMA23131",
+      "preferredName": "left humerus",
+      "role": "shoulder / left humerus",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3262"
+        ],
+        "sourceVertices": 2073,
+        "sourceTriangles": 3844,
+        "glbBytes": 80312,
+        "objBytes": 247429
+      },
+      "B": {
+        "sourceFile": "FMA23131.obj",
+        "sourceVertices": 8473,
+        "sourceTriangles": 16492,
+        "glbBytes": 334488,
+        "objBytes": 1058641
+      },
+      "triangleRatio_B_over_A": 4.29,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:24465",
+      "fmaConceptId": "FMA24465",
+      "preferredName": "left first metacarpal bone",
+      "role": "hand / left first metacarpal",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3240"
+        ],
+        "sourceVertices": 304,
+        "sourceTriangles": 578,
+        "glbBytes": 12808,
+        "objBytes": 34523
+      },
+      "B": {
+        "sourceFile": "FMA24465.obj",
+        "sourceVertices": 1253,
+        "sourceTriangles": 2480,
+        "glbBytes": 50816,
+        "objBytes": 146917
+      },
+      "triangleRatio_B_over_A": 4.29,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:16587",
+      "fmaConceptId": "FMA16587",
+      "preferredName": "left hip bone",
+      "role": "pelvis / left hip bone",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3288"
+        ],
+        "sourceVertices": 1257,
+        "sourceTriangles": 2332,
+        "glbBytes": 49116,
+        "objBytes": 144965
+      },
+      "B": {
+        "sourceFile": "FMA16587.obj",
+        "sourceVertices": 4805,
+        "sourceTriangles": 9470,
+        "glbBytes": 191536,
+        "objBytes": 598043
+      },
+      "triangleRatio_B_over_A": 4.06,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:38931",
+      "fmaConceptId": "FMA38931",
+      "preferredName": "left vastus lateralis",
+      "role": "thigh / left vastus lateralis",
+      "layer": "muscle",
+      "A": {
+        "elementFileIds": [
+          "FJ1442M"
+        ],
+        "sourceVertices": 3974,
+        "sourceTriangles": 6688,
+        "glbBytes": 144856,
+        "objBytes": 460942
+      },
+      "B": {
+        "sourceFile": "FMA38931.obj",
+        "sourceVertices": 52800,
+        "sourceTriangles": 94474,
+        "glbBytes": 1979508,
+        "objBytes": 6730750
+      },
+      "triangleRatio_B_over_A": 14.13,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:24487",
+      "fmaConceptId": "FMA24487",
+      "preferredName": "left patella",
+      "role": "knee / left patella",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3275"
+        ],
+        "sourceVertices": 180,
+        "sourceTriangles": 310,
+        "glbBytes": 7608,
+        "objBytes": 19168
+      },
+      "B": {
+        "sourceFile": "FMA24487.obj",
+        "sourceVertices": 680,
+        "sourceTriangles": 1338,
+        "glbBytes": 27940,
+        "objBytes": 77139
+      },
+      "triangleRatio_B_over_A": 4.32,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:24475",
+      "fmaConceptId": "FMA24475",
+      "preferredName": "left femur",
+      "role": "thigh / left femur",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3259"
+        ],
+        "sourceVertices": 1623,
+        "sourceTriangles": 3204,
+        "glbBytes": 65432,
+        "objBytes": 197175
+      },
+      "B": {
+        "sourceFile": "FMA24475.obj",
+        "sourceVertices": 6626,
+        "sourceTriangles": 13202,
+        "glbBytes": 265452,
+        "objBytes": 834489
+      },
+      "triangleRatio_B_over_A": 4.12,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:24478",
+      "fmaConceptId": "FMA24478",
+      "preferredName": "left tibia",
+      "role": "lower leg / left tibia",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3282"
+        ],
+        "sourceVertices": 880,
+        "sourceTriangles": 1692,
+        "glbBytes": 35404,
+        "objBytes": 101389
+      },
+      "B": {
+        "sourceFile": "FMA24478.obj",
+        "sourceVertices": 3428,
+        "sourceTriangles": 6822,
+        "glbBytes": 137724,
+        "objBytes": 425271
+      },
+      "triangleRatio_B_over_A": 4.03,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:45958",
+      "fmaConceptId": "FMA45958",
+      "preferredName": "medial head of left gastrocnemius",
+      "role": "lower leg / medial head left gastrocnemius",
+      "layer": "muscle",
+      "A": {
+        "elementFileIds": [
+          "FJ1397M"
+        ],
+        "sourceVertices": 2264,
+        "sourceTriangles": 3842,
+        "glbBytes": 83340,
+        "objBytes": 258641
+      },
+      "B": {
+        "sourceFile": "FMA45958.obj",
+        "sourceVertices": 35251,
+        "sourceTriangles": 65138,
+        "glbBytes": 1346696,
+        "objBytes": 4592499
+      },
+      "triangleRatio_B_over_A": 16.95,
+      "status": "ok"
+    },
+    {
+      "structureId": "FMA:24498",
+      "fmaConceptId": "FMA24498",
+      "preferredName": "left calcaneus",
+      "role": "foot / left calcaneus",
+      "layer": "skeletal",
+      "A": {
+        "elementFileIds": [
+          "FJ3256"
+        ],
+        "sourceVertices": 719,
+        "sourceTriangles": 1288,
+        "glbBytes": 27980,
+        "objBytes": 80416
+      },
+      "B": {
+        "sourceFile": "FMA24498.obj",
+        "sourceVertices": 2896,
+        "sourceTriangles": 5652,
+        "glbBytes": 115180,
+        "objBytes": 353147
+      },
+      "triangleRatio_B_over_A": 4.39,
+      "status": "ok"
+    }
+  ],
+  "summary": {
+    "compared": 12,
+    "medianTriangleRatio_B_over_A": 4.325,
+    "meanTriangleRatio_B_over_A": 7.689166666666668,
+    "minRatio": 4.03,
+    "maxRatio": 22.37,
+    "official_4_0_higher_detail_available": false,
+    "verdict_99_percent_vs_approved_mockup": "NO",
+    "verdict_notes": [
+      "BodyParts3D 4.0 LATEST publishes only 99% reduction OBJ archives.",
+      "Historical 3.0 95% shows ~3\u20136\u00d7 triangle density on matched FMA concepts \u2014 geometry-limited, not materials-limited.",
+      "3.0 95% cannot be production master: different release coordinates, ShareAlike license, obsolete file-ID model.",
+      "Even 3.0 95% remains CAD/atlas geometry; it improves recognizability but is not guaranteed mockup-illustration parity."
+    ]
+  }
+}

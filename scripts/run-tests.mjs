@@ -2240,13 +2240,44 @@ console.log('PainLocator tests\n');
     assert.ok(statSync(join(root, 'data/bodyparts3d/subset/fullbody/catalog.json')).isFile());
   });
 
+  test('production source decision: 99% is NOT the production master', () => {
+    const doc = readFileSync(join(root, 'docs/BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md'), 'utf8');
+    assert.ok(doc.includes('# **NO**') || doc.includes('**NO**'));
+    assert.ok(doc.includes('isa_BP3D_4.0_obj_99.zip'));
+    assert.ok(doc.includes('BodyParts3D_3.0_obj_95.zip'));
+    assert.ok(doc.includes('official_4_0_higher_detail_available') || doc.includes('does not publish'));
+    assert.ok(statSync(join(root, 'docs/visual-targets/bp3d-source-tier-comparison/comparison-report.json')).isFile());
+    const report = JSON.parse(
+      readFileSync(
+        join(root, 'docs/visual-targets/bp3d-source-tier-comparison/comparison-report.json'),
+        'utf8'
+      )
+    );
+    assert.equal(report.summary.official_4_0_higher_detail_available, false);
+    assert.equal(report.summary.verdict_99_percent_vs_approved_mockup, 'NO');
+    assert.ok(report.summary.medianTriangleRatio_B_over_A >= 3);
+    assert.ok(report.structures.length >= 10);
+    assert.ok(statSync(join(root, 'data/bodyparts3d/EVALUATION_v3_95.sha256')).isFile());
+    assert.ok(statSync(join(root, 'tools/bp3d-ingest/compare-source-tiers.py')).isFile());
+  });
+
+  test('spatial capture API exists for report/PNG anatomy snapshots', () => {
+    const scene = readFileSync(join(root, 'src/engine/spatial/spatial-scene-controller.js'), 'utf8');
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    const report = readFileSync(join(root, 'src/engine/reporting/clinical-report.js'), 'utf8');
+    assert.ok(scene.includes('captureFrameDataUrl'));
+    assert.ok(renderer.includes('captureViewDataUrl'));
+    assert.ok(report.includes('captureSpatialAnatomyDataUrl'));
+    assert.ok(report.includes('isSpatialMode'));
+  });
+
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {
     const ctrl = readFileSync(join(root, 'src/engine/spatial/spatial-layer-controller.js'), 'utf8');
     assert.ok(ctrl.includes('presentationMode === "patient"') || ctrl.includes("presentationMode === 'patient'"));
     assert.ok(ctrl.includes('isPatientBlocked') || ctrl.includes('patient'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('_initLayerController'));
-    assert.ok(renderer.includes('Surface (styled exterior)') || renderer.includes('Muscle (BP3D)'));
+    assert.ok(renderer.includes('Muscle (BP3D)') || renderer.includes('fallback silhouette'));
   });
 }
 
