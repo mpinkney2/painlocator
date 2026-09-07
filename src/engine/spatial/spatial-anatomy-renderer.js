@@ -110,7 +110,7 @@
       } catch (err) {
         console.warn("[CAE Spatial] mount failed — falling back to plate renderer", err);
         this._teardownMount({ keepAttachments: true });
-        this.onFallback("mount-failed", err);
+        this.onFallback(err?.message || "mount-failed", err);
         return false;
       }
     }

@@ -169,10 +169,16 @@ function initDisplayModeToggle() {
   });
 
   state.engine?.on?.('displaymodechanged', ({ displayMode }) => {
-    syncDisplayModeButtons(displayMode);
+    if (displayMode === 'spatial') {
+      syncDisplayModeButtons('spatial');
+    } else if (displayMode === 'plate') {
+      syncDisplayModeButtons('plate');
+    } else if (typeof SpatialPrimaryChrome !== 'undefined') {
+      SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+    }
     refreshUI?.();
   });
-  syncDisplayModeButtons(state.engine?.isSpatialMode?.() ? 'spatial' : (state.engine?.displayMode || 'plate'));
+  syncDisplayModeButtons(state.engine?.isSpatialMode?.() ? 'spatial' : (state.engine?.displayMode === 'plate' ? 'plate' : 'spatial'));
 }
 
 function updateTrendSummary() {

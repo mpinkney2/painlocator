@@ -3,8 +3,8 @@
  *
  * Product default:
  * - Patient + Clinician: rotatable 3D body (snap views + tap to mark)
- * - CAE 2D plate image is NOT shown alongside Spatial (fallback only)
- * - Opt out to plate: ?displayMode=plate | ?plate=1
+ * - CAE 2D plate image is NOT shown on failure (status panel + Retry instead)
+ * - Opt in to plate: ?displayMode=plate | ?plate=1 | "Use 2D diagram"
  * - Show 2D/Spatial toggle: ?displayToggle=1 | ?dev=1
  */
 (function (global) {
@@ -28,10 +28,6 @@
     }
   }
 
-  /**
-   * Configure canonical-frame engagement before Spatial mounts.
-   * Does not itself load GLBs — only sets the runtime flag.
-   */
   function configureCanonicalEngagement() {
     const params = readParams();
     const raw =
@@ -41,7 +37,6 @@
       return false;
     }
     if (isTruthyFlag(raw) || raw === "") {
-      // Product default: engage BP3D canonical frame for Spatial in both shells.
       global.PAINLOCATOR_CANONICAL_BODY_MODE = true;
       return true;
     }
@@ -49,28 +44,24 @@
     return true;
   }
 
+  /**
+   * Prefer Spatial unless the user explicitly opted into plate.
+   * Do NOT gate on the WebGL probe — probes are flaky in embedded previews;
+   * always attempt the real mount and surface failure in the status panel.
+   */
   function shouldPreferSpatial() {
     const params = readParams();
     if (params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"))) {
       return false;
     }
-    if (params.get("displayMode") === "spatial" || isTruthyFlag(params.get("spatial"))) {
-      return true;
-    }
-    try {
-      if (typeof SpatialThreeLoader !== "undefined" && SpatialThreeLoader.isWebGLAvailable) {
-        return !!SpatialThreeLoader.isWebGLAvailable();
-      }
-    } catch (_) {
-      /* ignore */
-    }
-    // Soft default: prefer Spatial even before Three loader probes, when not opted out.
     return true;
   }
 
   function syncSpatialChrome(isSpatial) {
     if (typeof global.SpatialPrimaryChrome?.applySpatialPrimaryChrome === "function") {
-      global.SpatialPrimaryChrome.applySpatialPrimaryChrome(!!isSpatial);
+      global.SpatialPrimaryChrome.applySpatialPrimaryChrome(!!isSpatial, {
+        keepSpatialPrimary: shouldPreferSpatial()
+      });
       return;
     }
     const sync =
@@ -82,22 +73,26 @@
     if (sync) sync(isSpatial ? "spatial" : "plate");
   }
 
-  /**
-   * Mount Spatial as the sole interactive locate surface when possible.
-   * Falls back to plate only when Spatial cannot mount (kept off-stage otherwise).
-   */
   async function preferSpatialAcrossShells(engine) {
     if (!engine || typeof engine.setDisplayMode !== "function") return false;
     if (!shouldPreferSpatial()) {
       syncSpatialChrome(false);
       return false;
     }
+    engine.spatialPrimaryNoPlate = true;
     try {
       const ok = await engine.setDisplayMode("spatial");
       syncSpatialChrome(!!ok);
+      if (!ok && engine.displayMode === "plate") {
+        // Belt-and-suspenders: never leave the plate PNG as Spatial-primary UI.
+        engine.showSpatialUnavailable?.(
+          engine.lastSpatialFailure || "spatial-mount-failed"
+        );
+      }
       return !!ok;
     } catch (err) {
-      console.warn("[PainLocator] Spatial primary failed — plate fallback", err);
+      console.warn("[PainLocator] Spatial primary failed", err);
+      engine.showSpatialUnavailable?.(err?.message || "spatial-exception");
       syncSpatialChrome(false);
       return false;
     }
@@ -118,9 +113,6 @@
     });
   }
 
-  /**
-   * @param {object} engine ClinicalAnatomyEngine
-   */
   async function engageBp3dAcrossShells(engine) {
     const canonicalOn = configureCanonicalEngagement();
     bindPresentationShellRefresh(engine);
@@ -129,7 +121,9 @@
       console.info("[PainLocator] Spatial-primary locate engagement", {
         canonicalBodyMode: canonicalOn,
         spatialPrimary: spatialOn,
-        plateFallback: !spatialOn,
+        plateFallback: engine?.displayMode === "plate",
+        spatialStatus: engine?.displayMode,
+        lastSpatialFailure: engine?.lastSpatialFailure || null,
         presentationMode:
           typeof state !== "undefined" ? state.presentationMode : null
       });

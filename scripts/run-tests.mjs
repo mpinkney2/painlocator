@@ -1897,12 +1897,13 @@ console.log('PainLocator tests\n');
     assert.equal(Eng.shouldPreferSpatial(), false);
   });
 
-  test('bp3d engagement: prefers spatial when WebGL reports available', () => {
+  test('bp3d engagement: prefers spatial unless plate opted in (WebGL probe not a gate)', () => {
     sandbox.location.search = '';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
     assert.equal(Eng.shouldPreferSpatial(), true);
+    // Embedded previews often fail the WebGL probe — still prefer Spatial and let mount decide.
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
-    assert.equal(Eng.shouldPreferSpatial(), false);
+    assert.equal(Eng.shouldPreferSpatial(), true);
   });
 
   test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
@@ -1954,7 +1955,9 @@ console.log('PainLocator tests\n');
     assert.ok(shell.includes('body.shell-patient .display-mode-dock'));
     const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
     assert.ok(engine.includes('return this.isSpatialMode()'));
-    assert.match(engine, /spatial-mount-failed[\s\S]*?return false/);
+    assert.ok(engine.includes('_recoverSpatialFailure'));
+    assert.ok(engine.includes('showSpatialUnavailable'));
+    assert.ok(engine.includes('spatialPrimaryNoPlate'));
   });
 
   test('spatial-primary: chrome module hides plate toggle by default', () => {

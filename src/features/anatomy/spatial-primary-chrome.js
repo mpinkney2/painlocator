@@ -2,10 +2,9 @@
  * Spatial-primary locate chrome.
  *
  * Product rule: interactive locate is the rotatable 3D body (snap views + tap to mark).
- * The CAE 2D plate image is not shown alongside Spatial — it remains only as
- * silent fallback (no WebGL) and off-stage report/PDF compositing.
- *
- * Show the 2D/Spatial toggle only with ?displayToggle=1 | ?dev=1 | ?plate=1.
+ * The CAE 2D plate image must NOT appear as the default locate surface.
+ * Plate is only for explicit opt-in (?plate=1) or the "Use 2D diagram" control,
+ * plus off-stage report/PDF compositing.
  */
 (function (global) {
   function readParams() {
@@ -22,13 +21,17 @@
     return v === "1" || v === "true" || v === "yes" || v === "on";
   }
 
+  function wantsPlateOptIn() {
+    const params = readParams();
+    return params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"));
+  }
+
   function allowPlateToggle() {
     const params = readParams();
     return (
       isTruthyFlag(params.get("displayToggle")) ||
       isTruthyFlag(params.get("dev")) ||
-      params.get("displayMode") === "plate" ||
-      isTruthyFlag(params.get("plate"))
+      wantsPlateOptIn()
     );
   }
 
@@ -38,16 +41,97 @@
     });
   }
 
+  function humanReason(reason) {
+    const r = String(reason || "");
+    if (/webgl/i.test(r)) {
+      return "This browser preview cannot run WebGL 3D. Open the app in Chrome/Edge, or use an external browser tab.";
+    }
+    if (/three|import/i.test(r)) return "The 3D library failed to load.";
+    if (/glb|manifest|exterior|fetch|network/i.test(r)) return "The 3D body model failed to load.";
+    if (/mount|unavailable|exception/i.test(r)) return "The 3D body could not start in this session.";
+    return "The 3D body is not available in this preview yet.";
+  }
+
   /**
-   * Apply locate chrome for Spatial-primary vs plate-fallback.
-   * @param {boolean} isSpatial
+   * Replace stage contents with a Spatial status panel (never the plate PNG).
+   * @param {HTMLElement|null} stage
+   * @param {"loading"|"unavailable"} kind
+   * @param {string} [reason]
    */
-  function applySpatialPrimaryChrome(isSpatial) {
+  function renderStageStatus(stage, kind, reason) {
+    if (!stage) stage = document.getElementById("avatarStage");
+    const host =
+      stage?.querySelector?.(".cae-stage") ||
+      stage ||
+      document.getElementById("avatarStage");
+    if (!host) return;
+
+    // Prefer writing into .cae-stage when present so engine.stage stays valid.
+    const target =
+      host.classList?.contains("cae-stage")
+        ? host
+        : host.querySelector?.(".cae-stage") || host;
+
+    const detail = humanReason(reason);
+    const loading = kind === "loading";
+    target.classList.remove("cae-plate-active", "cae-spatial-active");
+    target.classList.add("cae-spatial-staging");
+    target.innerHTML =
+      '<div class="cae-spatial-status" role="status" aria-live="polite">' +
+      '<div class="cae-spatial-status-card">' +
+      (loading
+        ? '<p class="cae-spatial-status-title">Loading 3D body…</p>' +
+          '<p class="cae-spatial-status-copy">Preparing the rotatable model for pain locate.</p>'
+        : '<p class="cae-spatial-status-title">3D body unavailable</p>' +
+          '<p class="cae-spatial-status-copy">' +
+          detail +
+          "</p>" +
+          '<div class="cae-spatial-status-actions">' +
+          '<button type="button" class="btn btn-primary" id="btnRetrySpatial">Retry 3D</button>' +
+          '<button type="button" class="btn btn-ghost" id="btnUsePlateFallback">Use 2D diagram</button>' +
+          "</div>" +
+          (reason
+            ? '<p class="cae-spatial-status-tech">' +
+              String(reason).replace(/[<>&]/g, "") +
+              "</p>"
+            : "")) +
+      "</div></div>";
+
+    if (!loading) {
+      target.querySelector("#btnRetrySpatial")?.addEventListener("click", () => {
+        const engine = global.state?.engine;
+        renderStageStatus(stage, "loading");
+        engine?.setDisplayMode?.("spatial")?.then((ok) => {
+          if (!ok) {
+            const why =
+              engine?.lastSpatialFailure ||
+              "spatial-mount-failed";
+            renderStageStatus(stage, "unavailable", why);
+            applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+          } else {
+            applySpatialPrimaryChrome(true);
+          }
+        });
+      });
+      target.querySelector("#btnUsePlateFallback")?.addEventListener("click", () => {
+        global.state?.engine?.setDisplayMode?.("plate");
+        applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+      });
+    }
+  }
+
+  /**
+   * @param {boolean} isSpatial
+   * @param {{ keepSpatialPrimary?: boolean }} [opts]
+   */
+  function applySpatialPrimaryChrome(isSpatial, opts = {}) {
     const body = document.body;
     if (!body) return;
 
-    body.classList.toggle("spatial-primary", !!isSpatial);
+    const spatialPrimaryShell = opts.keepSpatialPrimary || !!isSpatial || !wantsPlateOptIn();
+    body.classList.toggle("spatial-primary", spatialPrimaryShell);
     body.classList.toggle("allow-plate-toggle", allowPlateToggle());
+    body.classList.toggle("spatial-ready", !!isSpatial);
 
     const dock = document.getElementById("displayModeToggle");
     if (dock) {
@@ -58,18 +142,19 @@
 
     const enlarge = document.getElementById("btnEnlargeAnatomy");
     if (enlarge) {
-      enlarge.hidden = !!isSpatial;
-      enlarge.disabled = !!isSpatial;
+      const hidePlateTools = spatialPrimaryShell && !wantsPlateOptIn();
+      enlarge.hidden = hidePlateTools || !!isSpatial;
+      enlarge.disabled = !!isSpatial || hidePlateTools;
     }
 
-    // Plate-only drawing tools conflict with Spatial tap-to-mark.
     document
       .querySelectorAll(
         '.capture-tools .region-tool[data-tool="circle"], .capture-tools .region-tool[data-tool="polygon"]'
       )
       .forEach((btn) => {
-        btn.hidden = !!isSpatial;
-        if (isSpatial) btn.classList.remove("active");
+        const hide = (spatialPrimaryShell && !wantsPlateOptIn()) || !!isSpatial;
+        btn.hidden = hide;
+        if (hide) btn.classList.remove("active");
       });
 
     const hint = document.getElementById("avatarHint");
@@ -81,7 +166,6 @@
           ? entryStore
           : global.entryStore || global.state?.engine?.markerStore;
       const current = store?.activeTool || "point";
-      // Spatial marks via raycast tap — plate circle/polygon tools do not apply.
       const next =
         current === "select" || current === "eraser" || current === "point" ? current : "point";
       if (store?.setTool) store.setTool(next);
@@ -96,28 +180,16 @@
       if (locatePrompt) {
         locatePrompt.textContent = "Where does it hurt? Rotate and tap the body to mark pain.";
       }
-      const stage = document.getElementById("avatarStage");
-      if (stage) {
-        stage.setAttribute(
+      document
+        .getElementById("avatarStage")
+        ?.setAttribute(
           "aria-label",
           "3D anatomy — drag to rotate, tap to mark pain at snap views"
         );
-      }
-    } else {
-      if (enlarge) enlarge.hidden = false;
-      document
-        .querySelectorAll(
-          '.capture-tools .region-tool[data-tool="circle"], .capture-tools .region-tool[data-tool="polygon"]'
-        )
-        .forEach((btn) => {
-          btn.hidden = false;
-        });
-      if (hint && hint.textContent.includes("Drag to rotate")) {
-        hint.textContent =
-          "Choose a tool, mark where you feel pain, then describe intensity and symptoms";
-      }
-      if (locatePrompt) {
-        locatePrompt.textContent = "Where does it hurt? Tap the body to mark pain.";
+    } else if (spatialPrimaryShell && !wantsPlateOptIn()) {
+      if (hint) {
+        hint.textContent = "Waiting for the 3D body — rotate and tap once it loads.";
+        hint.classList.remove("hidden");
       }
     }
 
@@ -127,6 +199,9 @@
 
   global.SpatialPrimaryChrome = {
     allowPlateToggle,
-    applySpatialPrimaryChrome
+    wantsPlateOptIn,
+    applySpatialPrimaryChrome,
+    renderStageStatus,
+    humanReason
   };
 })(typeof window !== "undefined" ? window : globalThis);

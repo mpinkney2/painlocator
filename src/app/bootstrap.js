@@ -18,6 +18,14 @@ function init() {
   });
 
   const stageEl = document.getElementById('avatarStage');
+  const preferSpatial =
+    typeof Bp3dShellEngagement !== 'undefined' &&
+    Bp3dShellEngagement.shouldPreferSpatial();
+
+  if (preferSpatial) {
+    document.body?.classList.add('spatial-primary');
+  }
+
   state.engine = new ClinicalAnatomyEngine(stageEl, {
     modelType: state.modelType,
     viewType: state.view,
@@ -25,7 +33,10 @@ function init() {
     physicianMode: state.physicianMode,
     rendererMode: 'clinical',
     markerStore: entryStore,
-    activeLayers: { skin: true, muscle: false, skeletal: false, nerve: false, organ: false, vessel: false, lymphatic: false }
+    activeLayers: { skin: true, muscle: false, skeletal: false, nerve: false, organ: false, vessel: false, lymphatic: false },
+    // Do not flash the 2D plate PNG while Spatial boots.
+    deferPlateRender: preferSpatial,
+    spatialPrimaryNoPlate: preferSpatial
   });
 
   state.vizController.attachEngine(state.engine);
@@ -33,10 +44,11 @@ function init() {
   initAnatomyZoom();
   initDisplayModeToggle();
 
-  // Spatial-primary locate: rotatable 3D across Patient + Clinician (plate = fallback only).
+  // Spatial-primary locate: rotatable 3D across Patient + Clinician (plate = explicit only).
   if (typeof Bp3dShellEngagement !== "undefined") {
     Bp3dShellEngagement.engageBp3dAcrossShells(state.engine).catch((err) => {
       console.warn("[PainLocator] Spatial-primary engagement failed", err);
+      state.engine?.showSpatialUnavailable?.(err?.message || "engagement-failed");
     });
   }
 

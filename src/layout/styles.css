@@ -1228,6 +1228,65 @@ body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
   min-height: 280px;
 }
 
+.cae-spatial-status {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%),
+    var(--surface-secondary);
+}
+
+.cae-spatial-status-card {
+  max-width: 28rem;
+  text-align: center;
+  padding: 20px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.08));
+}
+
+.cae-spatial-status-title {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.cae-spatial-status-copy {
+  margin: 0 0 14px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.cae-spatial-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.cae-spatial-status-tech {
+  margin: 12px 0 0;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  word-break: break-word;
+}
+
+/* While Spatial-primary is booting / unavailable, never show the plate PNG */
+body.spatial-primary:not(.spatial-ready) .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+  display: none !important;
+}
+
 .cae-spatial-canvas {
   display: block;
   width: 100%;
