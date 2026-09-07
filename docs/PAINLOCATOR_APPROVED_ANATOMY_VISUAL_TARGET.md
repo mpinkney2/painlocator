@@ -56,11 +56,12 @@ Verdict: **NO** — official BodyParts3D **4.0 publishes only 99%** meshes. Hist
 ## Path to close the gap (ordered)
 
 1. ~~Visual fidelity audit of 99%~~ → **DONE: 99% cannot meet target.**
-2. **Obtain official BP3D 4.0 ≤95% / HD elemental OBJs** from DBCLS (same FJ/FMA + 4.0 coordinates + CC BY 4.0).
-3. Build production muscle/skeletal packs + LODs **from that master only** (never upsample 99%).
-4. **Surface** production exterior derived from the same canonical HD frame.
-5. Materials / lighting / camera polish on HD geometry.
-6. Spatial PNG/PDF capture (in progress) then default-cutover after human visual QA.
+2. **Vendor geometry path (preferred):** SciePro evaluation sample → FMA map → global canonical registration → Realtime license — see [`PRODUCTION_ANATOMY_VENDOR_DECISION.md`](./PRODUCTION_ANATOMY_VENDOR_DECISION.md).
+3. **Optional parallel:** obtain official BP3D 4.0 ≤95% / HD elemental OBJs from DBCLS if ever published.
+4. Build production muscle/skeletal packs + LODs **from the chosen visual master** (never upsample 99%).
+5. **Surface** production exterior derived from the same canonical frame.
+6. Materials / lighting / camera polish on production geometry.
+7. Spatial PNG/PDF capture then default-cutover after human visual QA.
 
 ## Non-negotiables
 

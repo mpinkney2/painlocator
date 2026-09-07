@@ -64,12 +64,13 @@ DBCLS Release 3.0 README: *“A polygon mesh with the reduction rate of 95% is m
 
 ### What source/data change is required next
 
-1. **Request from DBCLS / NBDC** an official **BodyParts3D 4.0 higher-detail** elemental mesh distribution (≤95% reduction or full resolution), under the current **CC BY 4.0** license, with:
+1. **Preferred path (2026-09-07 vendor pass):** evaluate **SciePro** as production visual geometry behind a vendor→FMA adapter while retaining BP3D/FMA as semantic backbone — see [`PRODUCTION_ANATOMY_VENDOR_DECISION.md`](./PRODUCTION_ANATOMY_VENDOR_DECISION.md) (recommendation **A**).
+2. **Parallel / backup:** request from DBCLS / NBDC an official **BodyParts3D 4.0 higher-detail** elemental mesh distribution (≤95% reduction or full resolution), under the current **CC BY 4.0** license, with:
    - FJ element file IDs (or an authoritative map to them)
    - Identical 4.0 coordinate system (Release 4.0 *shifted* skeletal coordinates vs 3.0)
    - SHA-256 pins publishable in `ARCHIVE.sha256`
-2. Until that exists, PainLocator **must not claim** mockup-grade anatomy from BP3D.
-3. Do **not** silently substitute a non-BP3D commercial atlas without an explicit product/legal decision.
+3. Until a production visual source is licensed or BP3D HD appears, PainLocator **must not claim** mockup-grade anatomy from BP3D 99%.
+4. Do **not** silently substitute a non-BP3D commercial atlas without an explicit product/legal decision (vendor decision doc is that evaluation gate).
 
 ---
 

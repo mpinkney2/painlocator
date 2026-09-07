@@ -2261,6 +2261,19 @@ console.log('PainLocator tests\n');
     assert.ok(statSync(join(root, 'tools/bp3d-ingest/compare-source-tiers.py')).isFile());
   });
 
+  test('production vendor decision prefers SciePro (A) over Zygote/BioDigital/wait', () => {
+    const doc = readFileSync(join(root, 'docs/PRODUCTION_ANATOMY_VENDOR_DECISION.md'), 'utf8');
+    assert.ok(doc.includes('SciePro is preferred production geometry candidate'));
+    assert.ok(doc.includes('# **A. SciePro is preferred production geometry candidate.**') || doc.includes('**A. SciePro'));
+    assert.ok(doc.includes('painlocator-bp3d-canonical-v1'));
+    assert.ok(doc.includes('anatomyVendor'));
+    assert.ok(doc.includes('fmaStructureId'));
+    assert.ok(doc.includes('HIGH-CONFIDENCE'));
+    assert.ok(doc.includes('Compiled Form') || doc.includes('anti-extraction'));
+    assert.ok(!doc.includes('Zygote is preferred production geometry candidate.'));
+    assert.ok(doc.includes('Do not purchase') || doc.includes('Do **not** purchase'));
+  });
+
   test('spatial capture API exists for report/PNG anatomy snapshots', () => {
     const scene = readFileSync(join(root, 'src/engine/spatial/spatial-scene-controller.js'), 'utf8');
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
