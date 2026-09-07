@@ -9,12 +9,13 @@
  * - boot state helpers + health classification
  */
 (function (global) {
-  /** Bump together with all Spatial classic-script ?v= query tokens in index.html */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-07-bp3d-boot-1";
+  /** Bump for classic-script cache tokens when Spatial bridge contract changes */
+  const SPATIAL_RUNTIME_VERSION = "2026-09-07-vite-esm-1";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",
-    LOADING_THREE: "loading-three",
+    LOADING_SPATIAL_RUNTIME: "loading-spatial-runtime",
+    LOADING_THREE: "loading-spatial-runtime", // alias for diagnostics compatibility
     STARTING_WEBGL: "starting-webgl",
     LOADING_EXTERIOR: "loading-exterior",
     READY_SPATIAL: "ready-spatial",
@@ -24,10 +25,13 @@
     CANONICAL_DEGRADED: "canonical-degraded"
   });
 
-  const REQUIRED_VENDOR = Object.freeze([
-    "/vendor/three.module.min.js",
-    "/vendor/GLTFLoader.js",
-    "/vendor/meshopt_decoder.module.js"
+  const REQUIRED_ANATOMY_ASSETS = Object.freeze([
+    "/anatomy/spatial/manifest.json",
+    "/anatomy/spatial/adult-male/manifest.json",
+    "/anatomy/spatial/adult-male/exterior-lod0.glb",
+    "/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb",
+    "/anatomy/spatial/prototype-bp3d/muscle.glb",
+    "/anatomy/spatial/prototype-bp3d/skeletal.glb"
   ]);
 
   /**
@@ -123,12 +127,9 @@
   }
 
   /**
-   * Runtime ESM import that Vite must not statically rewrite.
-   * Classic <script> tags cannot survive Vite injecting `import … from "/@vite/client"`.
-   * Uses Function-built import so the keyword is invisible to Vite transform.
-   * Document import maps still apply to this dynamic import().
-   * @param {string} url Absolute URL, root path, or bare specifier
-   * @returns {Promise<object>}
+   * Runtime ESM import helper retained for non-Spatial callers.
+   * Spatial Three/GLTF/Meshopt MUST use PainLocatorSpatialRuntime (Vite chunk),
+   * not /public/vendor dynamic imports.
    */
   function importEsm(url) {
     const href = resolveModuleHref(url);
@@ -144,11 +145,18 @@
   }
 
   /**
-   * Dynamically import a file from /public/vendor (or bare specifier).
-   * @param {string} path e.g. "/vendor/GLTFLoader.js" or "three"
-   * @returns {Promise<object>}
+   * @deprecated Spatial must use SpatialThreeLoader.createGLTFLoader / Vite runtime.
+   * Kept only to avoid hard breaks for incidental callers.
    */
   function importVendorModule(path) {
+    const rel = String(path || "");
+    if (/\/vendor\/(three|GLTFLoader|meshopt)/i.test(rel)) {
+      return Promise.reject(
+        new Error(
+          "Obsolete /public/vendor Spatial import — use loadPainLocatorSpatialRuntime()"
+        )
+      );
+    }
     return importEsm(path);
   }
 
@@ -232,7 +240,11 @@
    */
   function collectDiagnostics(engine) {
     const boot = (engine && engine.spatialBootState) || createBootState();
-    const three = getGlobal("__PAINLOCATOR_THREE__");
+    const three =
+      (engine && engine.spatialRenderer && engine.spatialRenderer.THREE) ||
+      getGlobal("__PAINLOCATOR_THREE__") ||
+      (getGlobal("PainLocatorSpatialRuntime") && getGlobal("PainLocatorSpatialRuntime").THREE);
+    const runtime = getGlobal("PainLocatorSpatialRuntime");
     const flag = getGlobal("CanonicalBodyFlag");
     const loader = getGlobal("CanonicalBodyLoader");
     const presentation =
@@ -261,6 +273,8 @@
 
     const snap = {
       runtimeVersion: SPATIAL_RUNTIME_VERSION,
+      runtimeSource: (runtime && runtime.source) || boot.runtimeSource || null,
+      viteRuntimeReady: !!(runtime && runtime.ready),
       spatialReady,
       canonicalReady,
       canonicalDegraded:
@@ -268,7 +282,9 @@
         boot.canonicalStatus === "degraded" ||
         boot.canonicalStatus === "failed",
       canonicalExpected,
-      threeRevision: boot.threeRevision || (three && three.REVISION) || null,
+      threeRevision: boot.threeRevision || (three && three.REVISION) || (runtime && runtime.threeRevision) || null,
+      gltfLoaderReady: !!(runtime && runtime.createGLTFLoader),
+      meshoptReady: !!(runtime && runtime.MeshoptDecoder),
       exteriorModelId: boot.exteriorModelId || null,
       exteriorLoaded: spatialReady,
       meshCount,
@@ -335,7 +351,7 @@
   global.SpatialBootUtils = {
     SPATIAL_RUNTIME_VERSION,
     BOOT_STATES,
-    REQUIRED_VENDOR,
+    REQUIRED_ANATOMY_ASSETS,
     getGlobal,
     withTimeout,
     isWebGLReallyAvailable,
