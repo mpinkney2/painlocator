@@ -130,18 +130,20 @@ async function main() {
     assert(snap.viewportCount >= 1, 'Expected Spatial viewport');
     assert(!/SpatialThreeLoader failed|GLTFLoader\.js|\/vendor\/three/i.test(snap.lastFailure || ''), `Stale vendor error: ${snap.lastFailure}`);
 
-    // Network: Vite assets + exterior; no obsolete vendor three/gltf runtime imports required.
-    const vendorThreeHits = network.filter((n) => /\/vendor\/three\.module/.test(n.url));
+    // Hard acceptance: production build must NEVER request obsolete vendor Three/GLTFLoader.
+    const vendorThreeHits = network.filter((n) => /\/vendor\/three\.module(\.min)?\.js/.test(n.url));
     const vendorGltfHits = network.filter((n) => /\/vendor\/GLTFLoader\.js/.test(n.url));
-    assert(vendorThreeHits.length === 0, `Unexpected /vendor/three request: ${JSON.stringify(vendorThreeHits)}`);
-    assert(vendorGltfHits.length === 0, `Unexpected /vendor/GLTFLoader request: ${JSON.stringify(vendorGltfHits)}`);
+    const vendorMeshoptHits = network.filter((n) => /\/vendor\/meshopt_decoder/.test(n.url));
+    assert(vendorThreeHits.length === 0, `Forbidden runtime request /vendor/three.module.min.js: ${JSON.stringify(vendorThreeHits)}`);
+    assert(vendorGltfHits.length === 0, `Forbidden runtime request /vendor/GLTFLoader.js: ${JSON.stringify(vendorGltfHits)}`);
+    assert(vendorMeshoptHits.length === 0, `Forbidden runtime request /vendor/meshopt_decoder: ${JSON.stringify(vendorMeshoptHits)}`);
     assert(
       network.some((n) => /exterior-lod0\.glb/.test(n.url) && n.status === 200),
       'Exterior GLB was not fetched successfully'
     );
     assert(
-      network.some((n) => /\/assets\/.+\.js/.test(n.url) && n.status === 200),
-      'Vite Spatial asset chunk was not fetched'
+      network.some((n) => /\/assets\/spatial-runtime-entry[^/]*\.js/.test(n.url) && n.status === 200),
+      'Vite Spatial runtime chunk was not fetched from /assets/'
     );
 
     // Clinician Muscle / Skeletal — must use real presentation switch so layerController mounts.
@@ -208,7 +210,11 @@ async function main() {
       health: snap.health,
       threeRevision: snap.threeRevision,
       muscle: muscleOk.depth,
-      skeletal: skeletalOk.depth
+      skeletal: skeletalOk.depth,
+      vendorThreeRequests: 0,
+      vendorGltfRequests: 0,
+      vendorMeshoptRequests: 0,
+      viteSpatialChunk: true
     });
   } finally {
     await browser.close();
