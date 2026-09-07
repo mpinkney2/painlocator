@@ -31,9 +31,25 @@ if (!existsSync(anatomyFront)) {
 
 const spatialGlb = join(dist, 'anatomy', 'spatial', 'adult-male', 'exterior-lod0.glb');
 const spatialManifest = join(dist, 'anatomy', 'spatial', 'manifest.json');
-if (!existsSync(spatialGlb) || !existsSync(spatialManifest)) {
-  console.error('Build verification failed: missing spatial exterior assets');
-  process.exit(1);
+const adultManifest = join(dist, 'anatomy', 'spatial', 'adult-male', 'manifest.json');
+const vendorThree = join(dist, 'vendor', 'three.module.min.js');
+const vendorGltf = join(dist, 'vendor', 'GLTFLoader.js');
+const vendorMeshopt = join(dist, 'vendor', 'meshopt_decoder.module.js');
+const canonicalGlb = join(dist, 'anatomy', 'spatial', 'prototype-bp3d-fullbody', 'canonical-body.glb');
+const requiredSpatialRuntime = [
+  vendorThree,
+  vendorGltf,
+  vendorMeshopt,
+  spatialManifest,
+  adultManifest,
+  spatialGlb,
+  canonicalGlb
+];
+for (const asset of requiredSpatialRuntime) {
+  if (!existsSync(asset)) {
+    console.error('Build verification failed: missing spatial runtime asset', asset);
+    process.exit(1);
+  }
 }
 
 const layerMuscle = join(dist, 'anatomy', 'spatial', 'prototype-bp3d', 'muscle.glb');

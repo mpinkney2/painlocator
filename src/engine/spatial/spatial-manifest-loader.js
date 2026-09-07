@@ -144,17 +144,12 @@
         this._gltfLoader = await SpatialLayerLoader.getGltfLoader();
         return this._gltfLoader;
       }
-      const withTimeout =
-        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
-          ? SpatialBootUtils.withTimeout
-          : (p) => p;
-      const gltfLoaderMs =
-        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.gltfLoaderMs) ||
-        10000;
-      const importVendor =
-        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
-          ? SpatialBootUtils.importVendorModule
-          : null;
+      const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
+        || (typeof window !== "undefined" && window.SpatialBootUtils)
+        || null;
+      const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
+      const gltfLoaderMs = (boot && boot.TIMEOUTS && boot.TIMEOUTS.gltfLoaderMs) || 10000;
+      const importVendor = boot && boot.importVendorModule ? boot.importVendorModule : null;
       if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
       const mod = await withTimeout(
         importVendor("/vendor/GLTFLoader.js"),
@@ -172,12 +167,12 @@
      * Applies stable meshId / structureId onto each Mesh.userData.
      */
     async loadExteriorSurface(THREE, modelId) {
-      const withTimeout =
-        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
-          ? SpatialBootUtils.withTimeout
-          : (p) => p;
+      const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
+        || (typeof window !== "undefined" && window.SpatialBootUtils)
+        || null;
+      const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
       const exteriorMs =
-        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.exteriorMs) || 20000;
+        (boot && boot.TIMEOUTS && boot.TIMEOUTS.exteriorMs) || 20000;
 
       const packed = await this.loadModelManifest(modelId);
       const loader = await this._getGltfLoader(THREE);

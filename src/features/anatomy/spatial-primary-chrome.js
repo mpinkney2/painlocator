@@ -87,6 +87,11 @@
 
     const detail = humanReason(reason);
     const loading = kind === "loading";
+    const showTech =
+      !loading &&
+      reason &&
+      !!(global.SpatialBootUtils && global.SpatialBootUtils.wantsSpatialDiagnostics &&
+        global.SpatialBootUtils.wantsSpatialDiagnostics());
     target.classList.remove("cae-plate-active", "cae-spatial-active");
     target.classList.add("cae-spatial-staging");
 
@@ -119,7 +124,7 @@
           '<button type="button" class="btn btn-primary" id="btnRetrySpatial">Retry 3D</button>' +
           '<button type="button" class="btn btn-ghost" id="btnUsePlateFallback">Use 2D diagram</button>' +
           "</div>" +
-          (reason
+          (showTech
             ? '<p class="cae-spatial-status-tech">' +
               String(reason).replace(/[<>&]/g, "") +
               "</p>"
@@ -129,6 +134,8 @@
     if (!loading) {
       status.querySelector("#btnRetrySpatial")?.addEventListener("click", () => {
         const engine = global.state?.engine;
+        global.SpatialThreeLoader?.clearThreeCache?.();
+        global.SpatialBootUtils?.resetDiagnosticsLogFlag?.();
         renderStageStatus(stage, "loading", null, "Retrying 3D body…");
         engine?.setDisplayMode?.("spatial")?.then((ok) => {
           if (!ok) {

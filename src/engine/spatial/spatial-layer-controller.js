@@ -16,6 +16,11 @@
  * detaches on dispose without freeing shared geometries.
  */
 (function (global) {
+  function layerLoader() {
+    return global.SpatialLayerLoader
+      || (typeof globalThis !== "undefined" ? globalThis.SpatialLayerLoader : null);
+  }
+
   const DEPTHS = Object.freeze(["surface", "muscle", "skeletal"]);
 
   const MATERIALS = Object.freeze({
@@ -79,8 +84,8 @@
       this.registrationUrl =
         options.registrationUrl ||
         (this.canonicalBodyMode
-          ? SpatialLayerLoader.IDENTITY_REGISTRATION_URL
-          : SpatialLayerLoader.DEFAULT_REGISTRATION_URL);
+          ? layerLoader().IDENTITY_REGISTRATION_URL
+          : layerLoader().DEFAULT_REGISTRATION_URL);
 
       this.depth = "surface";
       this.loading = false;
@@ -116,7 +121,7 @@
       if (this._disposed) return { ok: false, reason: "disposed" };
       if (!DEPTHS.includes(depth)) return { ok: false, reason: "invalid-depth" };
 
-      if (this.presentationMode === "patient" || SpatialLayerLoader.isPatientBlocked(this.presentationMode)) {
+      if (this.presentationMode === "patient" || layerLoader().isPatientBlocked(this.presentationMode)) {
         this.depth = "surface";
         this._applyVisibility();
         this._emit();
@@ -136,7 +141,7 @@
       this._emit();
 
       try {
-        const hadCache = SpatialLayerLoader.hasCachedPack(depth) || this._packs.has(depth);
+        const hadCache = layerLoader().hasCachedPack(depth) || this._packs.has(depth);
         await this._ensurePack(depth);
         if (this._disposed) return { ok: false, reason: "disposed" };
         this.depth = depth;
@@ -164,12 +169,12 @@
 
     async _ensurePack(layerId) {
       if (this._packs.has(layerId)) return this._packs.get(layerId);
-      const pack = await SpatialLayerLoader.loadLayerPack(this.THREE, layerId, {
+      const pack = await layerLoader().loadLayerPack(this.THREE, layerId, {
         presentationMode: this.presentationMode,
         registrationUrl: this.registrationUrl
       });
       if (this._disposed) {
-        SpatialLayerLoader.detachPack(pack);
+        layerLoader().detachPack(pack);
         throw new Error("Layer controller disposed during load");
       }
       this._stylePack(pack, layerId);
@@ -446,7 +451,7 @@
       for (const pack of this._packs.values()) {
         try {
           // Detach only — leave cached geometries/materials intact for remount.
-          SpatialLayerLoader.detachPack(pack);
+          layerLoader().detachPack(pack);
         } catch (_) { /* ignore */ }
       }
       this._packs.clear();

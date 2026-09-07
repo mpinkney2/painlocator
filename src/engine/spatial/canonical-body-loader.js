@@ -71,10 +71,10 @@
     if (typeof SpatialLayerLoader !== "undefined" && SpatialLayerLoader.getGltfLoader) {
       return SpatialLayerLoader.getGltfLoader();
     }
-    const importVendor =
-      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
-        ? SpatialBootUtils.importVendorModule
-        : null;
+    const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
+      || (typeof window !== "undefined" && window.SpatialBootUtils)
+      || null;
+    const importVendor = boot && boot.importVendorModule ? boot.importVendorModule : null;
     if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
     const mod = await importVendor("/vendor/GLTFLoader.js");
     const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;

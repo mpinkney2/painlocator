@@ -275,4 +275,4 @@
   }
 
   global.SpatialSceneController = SpatialSceneController;
-})(window);
+})(typeof window !== "undefined" ? window : globalThis);

@@ -1,39 +1,30 @@
 /**
  * Lazy-load Three.js only when spatial mode is requested.
- * Dynamic import keeps classic script boot free of Three.js cost.
- *
- * Must not contain a source-level `import()` — Vite rewrites those and injects
- * ESM into classic <script> tags, which then fail and never define this global.
+ * All vendor ESM goes through SpatialBootUtils.importVendorModule — never source-level import().
  */
 (function (global) {
   let pending = null;
+
+  function boot() {
+    return global.SpatialBootUtils || (typeof globalThis !== "undefined" ? globalThis.SpatialBootUtils : null);
+  }
 
   function resolveThreeUrl() {
     if (global.PAINLOCATOR_THREE_URL) return global.PAINLOCATOR_THREE_URL;
     return "/vendor/three.module.min.js";
   }
 
-  function importEsm(url) {
-    if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importEsm) {
-      return SpatialBootUtils.importEsm(url);
+  function importVendor(path) {
+    const utils = boot();
+    if (utils && typeof utils.importVendorModule === "function") {
+      return utils.importVendorModule(path);
     }
-    return new Function("u", "return import(u)")(url);
+    throw new Error("SpatialBootUtils.importVendorModule required before Three load");
   }
 
-  function importVendor(path) {
-    if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule) {
-      return SpatialBootUtils.importVendorModule(path);
-    }
-    const rel = String(path || "").startsWith("/") ? String(path) : `/${path}`;
-    let href = rel;
-    try {
-      if (typeof location !== "undefined" && location && location.origin) {
-        href = new URL(rel, location.origin).href;
-      }
-    } catch (_) {
-      href = rel;
-    }
-    return importEsm(href);
+  function clearThreeCache() {
+    pending = null;
+    global.__PAINLOCATOR_THREE__ = null;
   }
 
   function loadThreeModule() {
@@ -42,28 +33,25 @@
     }
     global.__PAINLOCATOR_THREE__ = null;
     if (pending) return pending;
-    const withTimeout =
-      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
-        ? SpatialBootUtils.withTimeout
-        : (p) => p;
-    const threeMs =
-      (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS && SpatialBootUtils.TIMEOUTS.threeMs) ||
-      12000;
+    const utils = boot();
+    const withTimeout = utils && utils.withTimeout ? utils.withTimeout : (p) => p;
+    const threeMs = (utils && utils.TIMEOUTS && utils.TIMEOUTS.threeMs) || 12000;
 
     pending = withTimeout(
       (async () => {
         let mod = null;
+        let primaryErr = null;
         try {
           mod = await importVendor(resolveThreeUrl());
         } catch (urlErr) {
-          // Fallback to import-map specifier when absolute URL import is blocked.
+          primaryErr = urlErr;
+          // Fallback to import-map bare specifier when absolute URL import is blocked.
           try {
-            mod = await importEsm("three");
+            mod = await importVendor("three");
           } catch (_) {
-            throw urlErr;
+            throw primaryErr;
           }
         }
-        // Named-export ESM namespace (three.module.min.js) — unwrap default if present.
         const THREE =
           mod && typeof mod.WebGLRenderer === "function"
             ? mod
@@ -87,8 +75,9 @@
   }
 
   function isWebGLAvailable() {
-    if (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.isWebGLReallyAvailable) {
-      return SpatialBootUtils.isWebGLReallyAvailable();
+    const utils = boot();
+    if (utils && typeof utils.isWebGLReallyAvailable === "function") {
+      return utils.isWebGLReallyAvailable();
     }
     try {
       const canvas = document.createElement("canvas");
@@ -106,6 +95,7 @@
     loadThreeModule,
     isWebGLAvailable,
     resolveThreeUrl,
-    importVendor
+    importVendor,
+    clearThreeCache
   };
 })(typeof window !== "undefined" ? window : globalThis);
