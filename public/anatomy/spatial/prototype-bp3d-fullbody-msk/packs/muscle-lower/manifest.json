@@ -1,0 +1,377 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-lower",
+  "displayName": "Muscle Lower",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "muscle": {
+      "layerId": "muscle",
+      "displayName": "Muscle",
+      "file": "./muscle.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "muscle.sartorius",
+          "structureId": "FMA:22353",
+          "structureName": "sartorius",
+          "clinicalName": "Sartorius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8877",
+          "sourceElementFileId": "FJ1434",
+          "sourceElementFileIds": [
+            "FJ1434",
+            "FJ1434M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.semitendinosus",
+          "structureId": "FMA:22357",
+          "structureName": "semitendinosus",
+          "clinicalName": "Semitendinosus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9067",
+          "sourceElementFileId": "FJ1436",
+          "sourceElementFileIds": [
+            "FJ1436",
+            "FJ1436M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rectus.femoris",
+          "structureId": "FMA:22430",
+          "structureName": "rectus femoris",
+          "clinicalName": "Rectus femoris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8095",
+          "sourceElementFileId": "FJ1433",
+          "sourceElementFileIds": [
+            "FJ1433",
+            "FJ1433M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.vastus.lateralis",
+          "structureId": "FMA:22431",
+          "structureName": "vastus lateralis",
+          "clinicalName": "Vastus lateralis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8755",
+          "sourceElementFileId": "FJ1442",
+          "sourceElementFileIds": [
+            "FJ1442",
+            "FJ1442M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.vastus.medialis",
+          "structureId": "FMA:22432",
+          "structureName": "vastus medialis",
+          "clinicalName": "Vastus medialis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9129",
+          "sourceElementFileId": "FJ1443",
+          "sourceElementFileIds": [
+            "FJ1443",
+            "FJ1443M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.vastus.intermedius",
+          "structureId": "FMA:22433",
+          "structureName": "vastus intermedius",
+          "clinicalName": "Vastus intermedius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9208",
+          "sourceElementFileId": "FJ1441",
+          "sourceElementFileIds": [
+            "FJ1441",
+            "FJ1441M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.semimembranosus",
+          "structureId": "FMA:22438",
+          "structureName": "semimembranosus",
+          "clinicalName": "Semimembranosus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7830",
+          "sourceElementFileId": "FJ1435",
+          "sourceElementFileIds": [
+            "FJ1435",
+            "FJ1435M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.tibialis.anterior",
+          "structureId": "FMA:22532",
+          "structureName": "tibialis anterior",
+          "clinicalName": "Tibialis anterior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8721",
+          "sourceElementFileId": "FJ1439",
+          "sourceElementFileIds": [
+            "FJ1439",
+            "FJ1439M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.fibularis.tertius",
+          "structureId": "FMA:22538",
+          "structureName": "fibularis tertius",
+          "clinicalName": "Fibularis tertius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9229",
+          "sourceElementFileId": "FJ1411",
+          "sourceElementFileIds": [
+            "FJ1411",
+            "FJ1411M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.fibularis.longus",
+          "structureId": "FMA:22539",
+          "structureName": "fibularis longus",
+          "clinicalName": "Fibularis longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8847",
+          "sourceElementFileId": "FJ1410",
+          "sourceElementFileIds": [
+            "FJ1410",
+            "FJ1410M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.fibularis.brevis",
+          "structureId": "FMA:22540",
+          "structureName": "fibularis brevis",
+          "clinicalName": "Fibularis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8978",
+          "sourceElementFileId": "FJ1409",
+          "sourceElementFileIds": [
+            "FJ1409",
+            "FJ1409M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.soleus",
+          "structureId": "FMA:22542",
+          "structureName": "soleus",
+          "clinicalName": "Soleus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8820",
+          "sourceElementFileId": "FJ1437",
+          "sourceElementFileIds": [
+            "FJ1437",
+            "FJ1437M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.plantaris",
+          "structureId": "FMA:22543",
+          "structureName": "plantaris",
+          "clinicalName": "Plantaris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8853",
+          "sourceElementFileId": "FJ1429",
+          "sourceElementFileIds": [
+            "FJ1429",
+            "FJ1429M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.popliteus",
+          "structureId": "FMA:22590",
+          "structureName": "popliteus",
+          "clinicalName": "Popliteus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9242",
+          "sourceElementFileId": "FJ1430",
+          "sourceElementFileIds": [
+            "FJ1430",
+            "FJ1430M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gracilis",
+          "structureId": "FMA:43882",
+          "structureName": "gracilis",
+          "clinicalName": "Gracilis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8927",
+          "sourceElementFileId": "FJ1421",
+          "sourceElementFileIds": [
+            "FJ1421",
+            "FJ1421M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.head.of.gastrocnemius",
+          "structureId": "FMA:45950",
+          "structureName": "head of gastrocnemius",
+          "clinicalName": "Head of gastrocnemius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7941",
+          "sourceElementFileId": "FJ1394",
+          "sourceElementFileIds": [
+            "FJ1394",
+            "FJ1394M",
+            "FJ1397",
+            "FJ1397M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.medial.head.of.gastrocnemius",
+          "structureId": "FMA:45956",
+          "structureName": "medial head of gastrocnemius",
+          "clinicalName": "Medial head of gastrocnemius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9218",
+          "sourceElementFileId": "FJ1397",
+          "sourceElementFileIds": [
+            "FJ1397",
+            "FJ1397M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.lateral.head.of.gastrocnemius",
+          "structureId": "FMA:45959",
+          "structureName": "lateral head of gastrocnemius",
+          "clinicalName": "Lateral head of gastrocnemius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7940",
+          "sourceElementFileId": "FJ1394",
+          "sourceElementFileIds": [
+            "FJ1394",
+            "FJ1394M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.tibialis.posterior",
+          "structureId": "FMA:51099",
+          "structureName": "tibialis posterior",
+          "clinicalName": "Tibialis posterior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-lower",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9160",
+          "sourceElementFileId": "FJ1440",
+          "sourceElementFileIds": [
+            "FJ1440",
+            "FJ1440M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

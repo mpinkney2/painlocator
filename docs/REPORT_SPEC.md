@@ -43,12 +43,13 @@ The HTML report (`<article class="clinical-report">`) includes:
 
 `captureAnatomyMapDataUrl()`:
 
-1. Draws clinical plate for current `model` + `view`
-2. Overlays pain regions with intensity colors from `PAIN_COLORS`
-3. Labels regions with entry region IDs (e.g. `1A`)
-4. Returns a PNG data URL embedded in the report
+1. **Prefer Spatial WebGL** when `state.engine.isSpatialMode()` — snap view, force one frame, return PNG (`SpatialAnatomyRenderer.captureViewDataUrl` / `SpatialSceneController.captureFrameDataUrl`). Pain markers already in the 3D scene are included.
+2. Otherwise draw the clinical **2D plate** for `model` + `view` and overlay intensity-colored regions (legacy / `?plate=1` path).
+3. Returns a PNG data URL embedded in the report or downloaded as “Anatomy snapshot”.
 
-**Scope:** Current view only in v0.1.0. Multi-view composites are planned ([ROADMAP.md](./ROADMAP.md)).
+**Note:** Spatial exports match the live body (Surface / Muscle / Skeletal). They do not yet equal the approved mockup until a higher-detail BP3D 4.0 source exists ([BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md](./BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md)).
+
+**Scope:** Multi-view PDF figures call the same capture helper per view.
 
 ## AI Observations Block
 

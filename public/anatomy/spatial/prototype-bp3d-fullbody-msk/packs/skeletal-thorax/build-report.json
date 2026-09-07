@@ -1,0 +1,1103 @@
+{
+  "packId": "skeletal-thorax",
+  "layer": "skeletal",
+  "structureCount": 42,
+  "glbBytes": 12953872,
+  "glbSha256": "36b9e0b96e3fb486d67a883a9b9cc8a12039cc4f197522aa6829160af87aa1b2",
+  "meshes": [
+    {
+      "meshId": "bone.body.of.sternum",
+      "structureId": "FMA:7487",
+      "sourceVertices": 3691,
+      "sourceFaces": 4646,
+      "vertices": 3691,
+      "faces": 4646,
+      "elementCount": 1,
+      "centroid": [
+        -5.263008622074161e-05,
+        1.2314625311941962,
+        0.19063188327652636
+      ],
+      "bounds": [
+        [
+          -0.0239556,
+          1.17965,
+          0.165166
+        ],
+        [
+          0.023614899999999998,
+          1.2896400000000001,
+          0.213832
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.typical.rib",
+      "structureId": "FMA:7593",
+      "sourceVertices": 46425,
+      "sourceFaces": 92184,
+      "vertices": 46425,
+      "faces": 92184,
+      "elementCount": 10,
+      "centroid": [
+        0.0006532301084644445,
+        1.2287299920705723,
+        0.08602940652684289
+      ],
+      "bounds": [
+        [
+          -0.13577799999999998,
+          1.1051900000000001,
+          0.0036414100000000003
+        ],
+        [
+          0.137085,
+          1.33598,
+          0.197688
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.false.rib",
+      "structureId": "FMA:7594",
+      "sourceVertices": 30552,
+      "sourceFaces": 60838,
+      "vertices": 30552,
+      "faces": 60838,
+      "elementCount": 10,
+      "centroid": [
+        0.0006509637470227196,
+        1.104573075813934,
+        0.05275799617756182
+      ],
+      "bounds": [
+        [
+          -0.131638,
+          1.00806,
+          0.00456449
+        ],
+        [
+          0.132968,
+          1.21133,
+          0.162678
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.floating.rib",
+      "structureId": "FMA:7595",
+      "sourceVertices": 7695,
+      "sourceFaces": 15368,
+      "vertices": 7695,
+      "faces": 15368,
+      "elementCount": 4,
+      "centroid": [
+        0.0006575641009601303,
+        1.061367919479696,
+        0.044443990848663094
+      ],
+      "bounds": [
+        [
+          -0.110054,
+          1.00806,
+          0.017961400000000002
+        ],
+        [
+          0.111353,
+          1.12174,
+          0.0960183
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.atypical.rib",
+      "structureId": "FMA:7596",
+      "sourceVertices": 9006,
+      "sourceFaces": 17740,
+      "vertices": 9006,
+      "faces": 17740,
+      "elementCount": 4,
+      "centroid": [
+        0.0006576959516660872,
+        1.3267787444610895,
+        0.09729405020071447
+      ],
+      "bounds": [
+        [
+          -0.09566100000000001,
+          1.27351,
+          0.0506468
+        ],
+        [
+          0.0969721,
+          1.3704800000000001,
+          0.16715700000000003
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.first.rib",
+      "structureId": "FMA:7597",
+      "sourceVertices": 3283,
+      "sourceFaces": 6552,
+      "vertices": 3283,
+      "faces": 6552,
+      "elementCount": 2,
+      "centroid": [
+        0.0006601141224819484,
+        1.3399907900546448,
+        0.09437163579928227
+      ],
+      "bounds": [
+        [
+          -0.0684546,
+          1.31007,
+          0.06441459999999999
+        ],
+        [
+          0.0697641,
+          1.3704800000000001,
+          0.130424
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.second.rib",
+      "structureId": "FMA:7620",
+      "sourceVertices": 5723,
+      "sourceFaces": 11188,
+      "vertices": 5723,
+      "faces": 11188,
+      "elementCount": 2,
+      "centroid": [
+        0.0006563075171523106,
+        1.319192820430972,
+        0.09897200487296871
+      ],
+      "bounds": [
+        [
+          -0.09566100000000001,
+          1.27351,
+          0.0506468
+        ],
+        [
+          0.0969721,
+          1.35903,
+          0.16715700000000003
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.third.rib",
+      "structureId": "FMA:7638",
+      "sourceVertices": 7271,
+      "sourceFaces": 14508,
+      "vertices": 7271,
+      "faces": 14508,
+      "elementCount": 2,
+      "centroid": [
+        0.0006514198752939088,
+        1.293789854319072,
+        0.09671215283952143
+      ],
+      "bounds": [
+        [
+          -0.10763299999999999,
+          1.24382,
+          0.036829
+        ],
+        [
+          0.108947,
+          1.33598,
+          0.179268
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.fourth.rib",
+      "structureId": "FMA:7749",
+      "sourceVertices": 8880,
+      "sourceFaces": 17682,
+      "vertices": 8880,
+      "faces": 17682,
+      "elementCount": 2,
+      "centroid": [
+        0.0006520326356623656,
+        1.2644180760197137,
+        0.09630454613106541
+      ],
+      "bounds": [
+        [
+          -0.11628100000000001,
+          1.2110999999999998,
+          0.0231919
+        ],
+        [
+          0.117593,
+          1.31535,
+          0.192195
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.fifth.rib",
+      "structureId": "FMA:7776",
+      "sourceVertices": 9822,
+      "sourceFaces": 19420,
+      "vertices": 9822,
+      "faces": 19420,
+      "elementCount": 2,
+      "centroid": [
+        0.0006548360655634988,
+        1.2345159041433755,
+        0.08713042279346016
+      ],
+      "bounds": [
+        [
+          -0.125768,
+          1.17216,
+          0.0127227
+        ],
+        [
+          0.127079,
+          1.29132,
+          0.197688
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.seventh.rib",
+      "structureId": "FMA:7830",
+      "sourceVertices": 10112,
+      "sourceFaces": 20064,
+      "vertices": 10112,
+      "faces": 20064,
+      "elementCount": 2,
+      "centroid": [
+        0.0006565819662199163,
+        1.1730590473459261,
+        0.07299016187330884
+      ],
+      "bounds": [
+        [
+          -0.13577799999999998,
+          1.1051900000000001,
+          0.00448691
+        ],
+        [
+          0.137085,
+          1.24027,
+          0.180208
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.first.rib",
+      "structureId": "FMA:7857",
+      "sourceVertices": 1642,
+      "sourceFaces": 3276,
+      "vertices": 1642,
+      "faces": 3276,
+      "elementCount": 1,
+      "centroid": [
+        0.049328728986783255,
+        1.3399892057875291,
+        0.0943727486529168
+      ],
+      "bounds": [
+        [
+          0.015110900000000002,
+          1.31007,
+          0.06441459999999999
+        ],
+        [
+          0.0697641,
+          1.3704800000000001,
+          0.130424
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.second.rib",
+      "structureId": "FMA:7882",
+      "sourceVertices": 2861,
+      "sourceFaces": 5594,
+      "vertices": 2861,
+      "faces": 5594,
+      "elementCount": 1,
+      "centroid": [
+        0.06555213323054761,
+        1.3191905677285203,
+        0.09897446566930317
+      ],
+      "bounds": [
+        [
+          0.016049499999999998,
+          1.27355,
+          0.0506529
+        ],
+        [
+          0.0969721,
+          1.35903,
+          0.16715700000000003
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.third.rib",
+      "structureId": "FMA:7909",
+      "sourceVertices": 3634,
+      "sourceFaces": 7254,
+      "vertices": 3634,
+      "faces": 7254,
+      "elementCount": 1,
+      "centroid": [
+        0.07608008888435636,
+        1.2937873248443066,
+        0.09671681523398104
+      ],
+      "bounds": [
+        [
+          0.014024,
+          1.24382,
+          0.036829
+        ],
+        [
+          0.108947,
+          1.33597,
+          0.179268
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.fourth.rib",
+      "structureId": "FMA:7957",
+      "sourceVertices": 4435,
+      "sourceFaces": 8832,
+      "vertices": 4435,
+      "faces": 8832,
+      "elementCount": 1,
+      "centroid": [
+        0.08421677828008134,
+        1.264382848991816,
+        0.09633971149953557
+      ],
+      "bounds": [
+        [
+          0.015011900000000002,
+          1.2110999999999998,
+          0.023194500000000003
+        ],
+        [
+          0.117593,
+          1.31535,
+          0.192192
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.first.rib",
+      "structureId": "FMA:7987",
+      "sourceVertices": 1641,
+      "sourceFaces": 3276,
+      "vertices": 1641,
+      "faces": 3276,
+      "elementCount": 1,
+      "centroid": [
+        -0.04801840058793675,
+        1.339992374644022,
+        0.09437052271927841
+      ],
+      "bounds": [
+        [
+          -0.0684546,
+          1.31007,
+          0.064417
+        ],
+        [
+          -0.0138004,
+          1.3704800000000001,
+          0.13041999999999998
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.second.rib",
+      "structureId": "FMA:8012",
+      "sourceVertices": 2862,
+      "sourceFaces": 5594,
+      "vertices": 2862,
+      "faces": 5594,
+      "elementCount": 1,
+      "centroid": [
+        -0.06424136574307165,
+        1.3191950731975661,
+        0.09896954400657784
+      ],
+      "bounds": [
+        [
+          -0.09566100000000001,
+          1.27351,
+          0.0506468
+        ],
+        [
+          -0.0147349,
+          1.35903,
+          0.16712700000000003
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.third.rib",
+      "structureId": "FMA:8039",
+      "sourceVertices": 3637,
+      "sourceFaces": 7254,
+      "vertices": 3637,
+      "faces": 7254,
+      "elementCount": 1,
+      "centroid": [
+        -0.07476810721596201,
+        1.29379238348727,
+        0.09670749101014137
+      ],
+      "bounds": [
+        [
+          -0.10763299999999999,
+          1.2438399999999998,
+          0.0368579
+        ],
+        [
+          -0.0127243,
+          1.33598,
+          0.179257
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.fifth.rib",
+      "structureId": "FMA:8066",
+      "sourceVertices": 4910,
+      "sourceFaces": 9710,
+      "vertices": 4910,
+      "faces": 9710,
+      "elementCount": 1,
+      "centroid": [
+        0.09297095363205571,
+        1.2345171444739709,
+        0.08712829518896124
+      ],
+      "bounds": [
+        [
+          0.0153142,
+          1.17216,
+          0.0127276
+        ],
+        [
+          0.127079,
+          1.29132,
+          0.19765100000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fifth.rib",
+      "structureId": "FMA:8093",
+      "sourceVertices": 4912,
+      "sourceFaces": 9710,
+      "vertices": 4912,
+      "faces": 9710,
+      "elementCount": 1,
+      "centroid": [
+        -0.09166182474334453,
+        1.23451466380547,
+        0.08713255041047867
+      ],
+      "bounds": [
+        [
+          -0.125768,
+          1.1721700000000002,
+          0.0127227
+        ],
+        [
+          -0.014004500000000001,
+          1.29132,
+          0.197688
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.eighth.rib",
+      "structureId": "FMA:8120",
+      "sourceVertices": 8410,
+      "sourceFaces": 16672,
+      "vertices": 8410,
+      "faces": 16672,
+      "elementCount": 2,
+      "centroid": [
+        0.0006510904881204484,
+        1.1443212603113353,
+        0.0635828769586557
+      ],
+      "bounds": [
+        [
+          -0.131638,
+          1.07465,
+          0.00456449
+        ],
+        [
+          0.132968,
+          1.21133,
+          0.162678
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.sixth.rib",
+      "structureId": "FMA:8147",
+      "sourceVertices": 10340,
+      "sourceFaces": 20510,
+      "vertices": 10340,
+      "faces": 20510,
+      "elementCount": 2,
+      "centroid": [
+        0.0006506511660060393,
+        1.2024905205785041,
+        0.0817075929588083
+      ],
+      "bounds": [
+        [
+          -0.133054,
+          1.1379000000000001,
+          0.0036414100000000003
+        ],
+        [
+          0.134349,
+          1.26683,
+          0.193505
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fourth.rib",
+      "structureId": "FMA:8148",
+      "sourceVertices": 4445,
+      "sourceFaces": 8850,
+      "vertices": 4445,
+      "faces": 8850,
+      "elementCount": 1,
+      "centroid": [
+        -0.08278469432286907,
+        1.264453249080851,
+        0.09626943463488534
+      ],
+      "bounds": [
+        [
+          -0.11628100000000001,
+          1.2110999999999998,
+          0.0231919
+        ],
+        [
+          -0.012905699999999999,
+          1.31535,
+          0.192195
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.sixth.rib",
+      "structureId": "FMA:8175",
+      "sourceVertices": 5168,
+      "sourceFaces": 10246,
+      "vertices": 5168,
+      "faces": 10246,
+      "elementCount": 1,
+      "centroid": [
+        0.0971530139476124,
+        1.202403004793259,
+        0.08175322215761052
+      ],
+      "bounds": [
+        [
+          0.014837300000000001,
+          1.1379100000000002,
+          0.0036414100000000003
+        ],
+        [
+          0.134349,
+          1.2657,
+          0.193505
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.sixth.rib",
+      "structureId": "FMA:8202",
+      "sourceVertices": 5172,
+      "sourceFaces": 10264,
+      "vertices": 5172,
+      "faces": 10264,
+      "elementCount": 1,
+      "centroid": [
+        -0.09566655938267413,
+        1.202577868453432,
+        0.08166205130551062
+      ],
+      "bounds": [
+        [
+          -0.133054,
+          1.1379000000000001,
+          0.0036444000000000003
+        ],
+        [
+          -0.0127754,
+          1.26683,
+          0.193495
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.seventh.rib",
+      "structureId": "FMA:8229",
+      "sourceVertices": 5058,
+      "sourceFaces": 10032,
+      "vertices": 5058,
+      "faces": 10032,
+      "elementCount": 1,
+      "centroid": [
+        0.09988164205142325,
+        1.1730604968718559,
+        0.07298908424251885
+      ],
+      "bounds": [
+        [
+          0.0136897,
+          1.1051900000000001,
+          0.00448691
+        ],
+        [
+          0.137085,
+          1.24027,
+          0.180203
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.seventh.rib",
+      "structureId": "FMA:8256",
+      "sourceVertices": 5054,
+      "sourceFaces": 10032,
+      "vertices": 5054,
+      "faces": 10032,
+      "elementCount": 1,
+      "centroid": [
+        -0.09857336439405621,
+        1.1730575977486195,
+        0.07299123955716547
+      ],
+      "bounds": [
+        [
+          -0.13577799999999998,
+          1.1051900000000001,
+          0.0044979500000000006
+        ],
+        [
+          -0.012382500000000001,
+          1.24025,
+          0.180208
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.eighth.rib",
+      "structureId": "FMA:8283",
+      "sourceVertices": 4199,
+      "sourceFaces": 8336,
+      "vertices": 4199,
+      "faces": 8336,
+      "elementCount": 1,
+      "centroid": [
+        0.09530453783993381,
+        1.1443214692087582,
+        0.06358193144716112
+      ],
+      "bounds": [
+        [
+          0.013676500000000001,
+          1.0746600000000002,
+          0.00456449
+        ],
+        [
+          0.132968,
+          1.21133,
+          0.162678
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.eighth.rib",
+      "structureId": "FMA:8310",
+      "sourceVertices": 4211,
+      "sourceFaces": 8336,
+      "vertices": 4211,
+      "faces": 8336,
+      "elementCount": 1,
+      "centroid": [
+        -0.09399435476610735,
+        1.1443210514315663,
+        0.06358382239021544
+      ],
+      "bounds": [
+        [
+          -0.131638,
+          1.07465,
+          0.004569569999999999
+        ],
+        [
+          -0.0123704,
+          1.21132,
+          0.16267500000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.ninth.rib",
+      "structureId": "FMA:8337",
+      "sourceVertices": 7613,
+      "sourceFaces": 15152,
+      "vertices": 7613,
+      "faces": 15152,
+      "elementCount": 2,
+      "centroid": [
+        0.0006534407928612065,
+        1.1172436333994014,
+        0.05269142037228577
+      ],
+      "bounds": [
+        [
+          -0.127783,
+          1.05009,
+          0.00752766
+        ],
+        [
+          0.12909800000000002,
+          1.1853699999999998,
+          0.135632
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.ninth.rib",
+      "structureId": "FMA:8364",
+      "sourceVertices": 3808,
+      "sourceFaces": 7576,
+      "vertices": 3808,
+      "faces": 7576,
+      "elementCount": 1,
+      "centroid": [
+        0.08997257140271238,
+        1.1172452244876023,
+        0.052692107400851375
+      ],
+      "bounds": [
+        [
+          0.0158646,
+          1.05009,
+          0.00752907
+        ],
+        [
+          0.12909800000000002,
+          1.1853699999999998,
+          0.135632
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.ninth.rib",
+      "structureId": "FMA:8391",
+      "sourceVertices": 3805,
+      "sourceFaces": 7576,
+      "vertices": 3805,
+      "faces": 7576,
+      "elementCount": 1,
+      "centroid": [
+        -0.08866542168302034,
+        1.1172420423159684,
+        0.0526907333457824
+      ],
+      "bounds": [
+        [
+          -0.127783,
+          1.05009,
+          0.00752766
+        ],
+        [
+          -0.0145582,
+          1.18536,
+          0.135602
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.tenth.rib",
+      "structureId": "FMA:8418",
+      "sourceVertices": 6834,
+      "sourceFaces": 13646,
+      "vertices": 6834,
+      "faces": 13646,
+      "elementCount": 2,
+      "centroid": [
+        0.0006403888016335637,
+        1.0891475401698365,
+        0.04863752224017061
+      ],
+      "bounds": [
+        [
+          -0.122349,
+          1.02296,
+          0.0113545
+        ],
+        [
+          0.123648,
+          1.15899,
+          0.117715
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.tenth.rib",
+      "structureId": "FMA:8445",
+      "sourceVertices": 3415,
+      "sourceFaces": 6820,
+      "vertices": 3415,
+      "faces": 6820,
+      "elementCount": 1,
+      "centroid": [
+        0.08277732473136251,
+        1.0891491552327282,
+        0.048635456849458115
+      ],
+      "bounds": [
+        [
+          0.016872900000000003,
+          1.02298,
+          0.0113593
+        ],
+        [
+          0.123648,
+          1.1589800000000001,
+          0.117687
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.tenth.rib",
+      "structureId": "FMA:8472",
+      "sourceVertices": 3419,
+      "sourceFaces": 6826,
+      "vertices": 3419,
+      "faces": 6826,
+      "elementCount": 1,
+      "centroid": [
+        -0.08146758951534659,
+        1.0891459256763363,
+        0.04863958690272346
+      ],
+      "bounds": [
+        [
+          -0.122349,
+          1.02296,
+          0.0113545
+        ],
+        [
+          -0.015562300000000001,
+          1.15899,
+          0.117715
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.eleventh.rib",
+      "structureId": "FMA:8499",
+      "sourceVertices": 4872,
+      "sourceFaces": 9732,
+      "vertices": 4872,
+      "faces": 9732,
+      "elementCount": 2,
+      "centroid": [
+        0.0006523562624796132,
+        1.0663087108665896,
+        0.04449402392786856
+      ],
+      "bounds": [
+        [
+          -0.110054,
+          1.00806,
+          0.017961400000000002
+        ],
+        [
+          0.111353,
+          1.12174,
+          0.0960183
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.twelfth.rib",
+      "structureId": "FMA:8515",
+      "sourceVertices": 2823,
+      "sourceFaces": 5636,
+      "vertices": 2823,
+      "faces": 5636,
+      "elementCount": 2,
+      "centroid": [
+        0.0006665828482071791,
+        1.0528116347785565,
+        0.04435734536282191
+      ],
+      "bounds": [
+        [
+          -0.08522110000000001,
+          1.01133,
+          0.027992200000000002
+        ],
+        [
+          0.08653319999999999,
+          1.0891700000000002,
+          0.06609730000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.eleventh.rib",
+      "structureId": "FMA:8531",
+      "sourceVertices": 2437,
+      "sourceFaces": 4866,
+      "vertices": 2437,
+      "faces": 4866,
+      "elementCount": 1,
+      "centroid": [
+        0.07088201663584576,
+        1.066307626663762,
+        0.04449419470843814
+      ],
+      "bounds": [
+        [
+          0.0175963,
+          1.00808,
+          0.017962
+        ],
+        [
+          0.111353,
+          1.1217300000000001,
+          0.0960183
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.eleventh.rib",
+      "structureId": "FMA:8532",
+      "sourceVertices": 2435,
+      "sourceFaces": 4866,
+      "vertices": 2435,
+      "faces": 4866,
+      "elementCount": 1,
+      "centroid": [
+        -0.06956945519626768,
+        1.0663097949482412,
+        0.044493853166385613
+      ],
+      "bounds": [
+        [
+          -0.110054,
+          1.00806,
+          0.017961400000000002
+        ],
+        [
+          -0.016279000000000002,
+          1.12174,
+          0.0960117
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.right.twelfth.rib",
+      "structureId": "FMA:8533",
+      "sourceVertices": 1412,
+      "sourceFaces": 2818,
+      "vertices": 1412,
+      "faces": 2818,
+      "elementCount": 1,
+      "centroid": [
+        0.05356390115285407,
+        1.0528105179050358,
+        0.04435794026059578
+      ],
+      "bounds": [
+        [
+          0.0182125,
+          1.0113400000000001,
+          0.027992200000000002
+        ],
+        [
+          0.08653319999999999,
+          1.0891700000000002,
+          0.06609730000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.twelfth.rib",
+      "structureId": "FMA:8534",
+      "sourceVertices": 1411,
+      "sourceFaces": 2818,
+      "vertices": 1411,
+      "faces": 2818,
+      "elementCount": 1,
+      "centroid": [
+        -0.052251245587006445,
+        1.0528127520851305,
+        0.044356750234385366
+      ],
+      "bounds": [
+        [
+          -0.08522110000000001,
+          1.01133,
+          0.028014900000000002
+        ],
+        [
+          -0.0168903,
+          1.0891600000000001,
+          0.0660698
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.zone.of.sternum",
+      "structureId": "FMA:12215",
+      "sourceVertices": 1446,
+      "sourceFaces": 2546,
+      "vertices": 1446,
+      "faces": 2546,
+      "elementCount": 1,
+      "centroid": [
+        1.747184572316801e-05,
+        1.3017184749605595,
+        0.1520922051887799
+      ],
+      "bounds": [
+        [
+          -0.0274497,
+          1.28027,
+          0.130801
+        ],
+        [
+          0.0274497,
+          1.32525,
+          0.178588
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:32.335165+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}

@@ -2,7 +2,7 @@
  * Minimal Node test runner for PainLocator pure logic.
  * Loads modules by evaluating source with stubs where needed.
  */
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -1474,21 +1474,52 @@ console.log('PainLocator tests\n');
     );
   });
 
-  test('canonical conformer: shipped artifact is pass-preview (not failed)', () => {
+  test('canonical conformer: shipped artifact is identity in-frame (not failed)', () => {
     const cfg = JSON.parse(
       readFileSync(join(root, 'public/anatomy/spatial/registration/exterior-to-canonical-v1.json'), 'utf8')
     );
     Conf.validateConformerConfig(cfg);
     assert.equal(cfg.validation.globalConformerFailed, false);
     assert.equal(cfg.validation.stopConditionTriggered, false);
-    assert.equal(cfg.validation.status, 'pass-preview');
+    assert.ok(
+      cfg.validation.status === 'pass-development' || cfg.validation.status === 'pass-preview',
+      cfg.validation.status
+    );
     assert.equal(cfg.regionalPatches, false);
+    assert.equal(cfg.transform.scale, 1);
+    assert.deepEqual(cfg.transform.translation, [0, 0, 0]);
     assert.ok(cfg.derivation.landmarksUsed.length >= 8);
-    assert.ok(cfg.validation.metrics.meanAlignmentErrorMeters < 0.12);
-    assert.ok(cfg.validation.metrics.maxAlignmentErrorMeters < 0.15);
+    assert.ok(cfg.validation.metrics.meanAlignmentErrorMeters < 0.02);
+    assert.ok(cfg.validation.metrics.maxAlignmentErrorMeters < 0.05);
     const report = Conf.buildAlignmentReport(cfg);
     assert.equal(report.clinicalRegistrationClaimed, false);
     assert.equal(report.landmarkDistances.length, cfg.derivation.landmarksUsed.length);
+  });
+
+  test('styled exterior: GLB + alignment report + mannequin archive exist', () => {
+    assert.ok(statSync(join(root, 'public/anatomy/spatial/adult-male/exterior-lod0.glb')).isFile());
+    assert.ok(statSync(join(root, 'public/anatomy/spatial/adult-male/styled-exterior-alignment-report.json')).isFile());
+    assert.ok(
+      statSync(join(root, 'public/anatomy/spatial/dev/interim-mannequin/exterior-lod0-capsule-mannequin.glb')).isFile()
+    );
+    assert.ok(
+      statSync(join(root, 'public/anatomy/spatial/registration/exterior-to-canonical-v1-mannequin-legacy.json')).isFile()
+    );
+    const report = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/styled-exterior-alignment-report.json'), 'utf8')
+    );
+    assert.equal(report.coordinateFrame, 'painlocator-bp3d-canonical-v1');
+    assert.equal(report.regionalPatches, false);
+    assert.equal(report.metrics.meanAlignmentErrorMeters, 0);
+    assert.equal(report.metrics.maxAlignmentErrorMeters, 0);
+    assert.equal(report.meshCount, 18);
+    assert.ok(report.payloadBytes > 0 && report.payloadBytes <= 5 * 1024 * 1024);
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    assert.equal(manifest.coordinateFrame.frameId, 'painlocator-bp3d-canonical-v1');
+    assert.equal(manifest.layers.surface.meshes.length, 18);
+    assert.ok(readFileSync(join(root, 'scripts/generate-styled-exterior-glb.mjs'), 'utf8').includes('painlocator-bp3d-canonical-v1'));
   });
 
   test('canonical identity shoulder registration is identity transform', () => {
@@ -1994,7 +2025,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-fullbody-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2040,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-09-07-fullbody-1'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2021,12 +2052,13 @@ console.log('PainLocator tests\n');
     // rewrites those into ESM and classic tags then fail. String-inside-Function is OK.
     const threeLoaderSrc = readFileSync(join(root, 'src/engine/spatial/spatial-three-loader.js'), 'utf8');
     const bootSrc = readFileSync(join(root, 'src/engine/spatial/spatial-boot-utils.js'), 'utf8');
-    assert.ok(bootSrc.includes('new Function("u", "return import(u)")'));
-    assert.ok(threeLoaderSrc.includes('importVendorModule'));
-    assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(bootSrc), false);
+    assert.ok(threeLoaderSrc.includes('loadPainLocatorSpatialRuntime') || threeLoaderSrc.includes('loadSpatialRuntime'));
+    assert.ok(threeLoaderSrc.includes('createGLTFLoader'));
+    assert.equal(/\/vendor\/three\.module/.test(threeLoaderSrc), false);
     assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(threeLoaderSrc), false);
     loadScript('src/engine/spatial/spatial-three-loader.js', sandbox);
     assert.equal(typeof sandbox.SpatialThreeLoader?.loadThreeModule, 'function');
+    assert.equal(typeof sandbox.SpatialThreeLoader?.createGLTFLoader, 'function');
     assert.equal(typeof sandbox.SpatialThreeLoader?.clearThreeCache, 'function');
   });
 
@@ -2046,8 +2078,8 @@ console.log('PainLocator tests\n');
     );
     assert.equal(u.classifySpatialHealth({ spatialReady: false, state: 'failed-spatial' }), 'FAILED');
     const engine = { spatialBootState: null, trigger() {} };
-    u.setBootState(engine, u.BOOT_STATES.LOADING_THREE, { stage: 'loading-three' });
-    assert.equal(engine.spatialBootState.state, 'loading-three');
+    u.setBootState(engine, u.BOOT_STATES.LOADING_SPATIAL_RUNTIME, { stage: 'loading-spatial-runtime' });
+    assert.equal(engine.spatialBootState.state, 'loading-spatial-runtime');
     u.setBootState(engine, u.BOOT_STATES.READY_SPATIAL, { exteriorModelId: 'adult-male' });
     assert.equal(engine.spatialBootState.state, 'ready-spatial');
     u.setBootState(engine, u.BOOT_STATES.CANONICAL_DEGRADED, { canonicalStatus: 'degraded' });
@@ -2093,15 +2125,15 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: runtime assets exist for production', () => {
     const required = [
-      'public/vendor/three.module.min.js',
-      'public/vendor/GLTFLoader.js',
-      'public/vendor/meshopt_decoder.module.js',
+      'src/spatial-bootstrap.js',
+      'src/engine/spatial/spatial-runtime-entry.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
       'public/anatomy/spatial/adult-male/exterior-lod0.glb',
       'public/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb',
       'public/anatomy/spatial/prototype-bp3d/muscle.glb',
-      'public/anatomy/spatial/prototype-bp3d/skeletal.glb'
+      'public/anatomy/spatial/prototype-bp3d/skeletal.glb',
+      'public/vendor/THREE_LICENSE'
     ];
     for (const rel of required) {
       let ok = false;
@@ -2109,13 +2141,18 @@ console.log('PainLocator tests\n');
       assert.ok(ok, `missing ${rel}`);
     }
     const buildSrc = readFileSync(join(root, 'scripts/build.mjs'), 'utf8');
-    assert.ok(buildSrc.includes('meshopt_decoder.module.js'));
+    assert.ok(buildSrc.includes('vite build'));
     assert.ok(buildSrc.includes('canonical-body.glb'));
+    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+    assert.equal(pkg.dependencies?.three, '0.170.0');
   });
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-09-07-fullbody-1';
+    assert.ok(html.includes('spatial-bootstrap.js'));
+    assert.ok(html.includes('type="module"'));
+    assert.equal(html.includes('type="importmap"'), false);
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2129,6 +2166,122 @@ console.log('PainLocator tests\n');
     ]) {
       assert.ok(html.includes(`${file}?v=${ver}`), file);
     }
+    const entry = readFileSync(join(root, 'src/engine/spatial/spatial-runtime-entry.js'), 'utf8');
+    assert.ok(entry.includes('from "three"'));
+    assert.ok(entry.includes('GLTFLoader'));
+    assert.ok(entry.includes('MeshoptDecoder'));
+    assert.equal(/\/vendor\/(three|GLTFLoader)/.test(entry), false);
+  });
+
+
+  test('fullbody flag: off by default; on via query', () => {
+    loadScript('src/engine/spatial/canonical-body-flag.js', sandbox);
+    assert.equal(sandbox.CanonicalBodyFlag.resolveFullBodyAnatomy({ search: '' }), false);
+    assert.equal(sandbox.CanonicalBodyFlag.resolveFullBodyAnatomy({ search: '?fullBodyAnatomy=1' }), true);
+    assert.equal(sandbox.CanonicalBodyFlag.resolveFullBodyAnatomy({ search: '?fullBodyAnatomy=0' }), false);
+    assert.ok(sandbox.CanonicalBodyFlag.FULLBODY_INDEX_URL.includes('prototype-bp3d-fullbody-msk'));
+  });
+
+  test('fullbody assets: index + packs + identity registration exist', () => {
+    const index = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/prototype-bp3d-fullbody-msk/index.json'), 'utf8')
+    );
+    assert.equal(index.modelId, 'bp3d-fullbody-msk-v1');
+    assert.equal(index.coordinateFrameVersion, 'painlocator-bp3d-canonical-v1');
+    assert.ok(index.structureCount >= 400);
+    assert.ok(Object.keys(index.packs).length >= 10);
+    let total = 0;
+    const meshIds = new Set();
+    const fmas = new Set();
+    for (const [packId, meta] of Object.entries(index.packs)) {
+      const manifest = JSON.parse(
+        readFileSync(
+          join(root, 'public/anatomy/spatial/prototype-bp3d-fullbody-msk/packs', packId, 'manifest.json'),
+          'utf8'
+        )
+      );
+      const layer = meta.layer;
+      const meshes = manifest.layers[layer].meshes;
+      assert.equal(meshes.length, meta.structureCount);
+      for (const m of meshes) {
+        assert.ok(m.meshId);
+        assert.ok(/^FMA:\d+$/.test(m.structureId), m.structureId);
+        assert.ok(['left', 'right', 'midline'].includes(m.laterality));
+        assert.ok(!meshIds.has(m.meshId), `duplicate meshId ${m.meshId}`);
+        meshIds.add(m.meshId);
+        fmas.add(m.structureId);
+      }
+      const glb = join(
+        root,
+        'public/anatomy/spatial/prototype-bp3d-fullbody-msk/packs',
+        packId,
+        `${layer}.glb`
+      );
+      assert.ok(statSync(glb).isFile(), glb);
+      total += statSync(glb).size;
+    }
+    assert.equal(meshIds.size, index.structureCount);
+    assert.ok(total > 1_000_000 && total < 80_000_000, `unexpected payload ${total}`);
+    const reg = JSON.parse(
+      readFileSync(
+        join(root, 'public/anatomy/spatial/registration/bp3d-fullbody-canonical-identity.json'),
+        'utf8'
+      )
+    );
+    assert.equal(reg.transform.scale, 1);
+    assert.deepEqual(reg.transform.translation, [0, 0, 0]);
+    assert.equal(reg.sourceModelId, 'bp3d-fullbody-msk-v1');
+  });
+
+  test('fullbody docs + curator scripts exist', () => {
+    assert.ok(statSync(join(root, 'docs/SPATIAL_FULLBODY_BP3D_ANATOMY.md')).isFile());
+    assert.ok(statSync(join(root, 'tools/bp3d-ingest/curate-fullbody.py')).isFile());
+    assert.ok(statSync(join(root, 'tools/bp3d-ingest/ingest-fullbody.py')).isFile());
+    assert.ok(statSync(join(root, 'data/bodyparts3d/subset/fullbody/catalog.json')).isFile());
+  });
+
+  test('production source decision: 99% is NOT the production master', () => {
+    const doc = readFileSync(join(root, 'docs/BODYPARTS3D_PRODUCTION_SOURCE_DECISION.md'), 'utf8');
+    assert.ok(doc.includes('# **NO**') || doc.includes('**NO**'));
+    assert.ok(doc.includes('isa_BP3D_4.0_obj_99.zip'));
+    assert.ok(doc.includes('BodyParts3D_3.0_obj_95.zip'));
+    assert.ok(doc.includes('official_4_0_higher_detail_available') || doc.includes('does not publish'));
+    assert.ok(statSync(join(root, 'docs/visual-targets/bp3d-source-tier-comparison/comparison-report.json')).isFile());
+    const report = JSON.parse(
+      readFileSync(
+        join(root, 'docs/visual-targets/bp3d-source-tier-comparison/comparison-report.json'),
+        'utf8'
+      )
+    );
+    assert.equal(report.summary.official_4_0_higher_detail_available, false);
+    assert.equal(report.summary.verdict_99_percent_vs_approved_mockup, 'NO');
+    assert.ok(report.summary.medianTriangleRatio_B_over_A >= 3);
+    assert.ok(report.structures.length >= 10);
+    assert.ok(statSync(join(root, 'data/bodyparts3d/EVALUATION_v3_95.sha256')).isFile());
+    assert.ok(statSync(join(root, 'tools/bp3d-ingest/compare-source-tiers.py')).isFile());
+  });
+
+  test('production vendor decision prefers SciePro (A) over Zygote/BioDigital/wait', () => {
+    const doc = readFileSync(join(root, 'docs/PRODUCTION_ANATOMY_VENDOR_DECISION.md'), 'utf8');
+    assert.ok(doc.includes('SciePro is preferred production geometry candidate'));
+    assert.ok(doc.includes('# **A. SciePro is preferred production geometry candidate.**') || doc.includes('**A. SciePro'));
+    assert.ok(doc.includes('painlocator-bp3d-canonical-v1'));
+    assert.ok(doc.includes('anatomyVendor'));
+    assert.ok(doc.includes('fmaStructureId'));
+    assert.ok(doc.includes('HIGH-CONFIDENCE'));
+    assert.ok(doc.includes('Compiled Form') || doc.includes('anti-extraction'));
+    assert.ok(!doc.includes('Zygote is preferred production geometry candidate.'));
+    assert.ok(doc.includes('Do not purchase') || doc.includes('Do **not** purchase'));
+  });
+
+  test('spatial capture API exists for report/PNG anatomy snapshots', () => {
+    const scene = readFileSync(join(root, 'src/engine/spatial/spatial-scene-controller.js'), 'utf8');
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    const report = readFileSync(join(root, 'src/engine/reporting/clinical-report.js'), 'utf8');
+    assert.ok(scene.includes('captureFrameDataUrl'));
+    assert.ok(renderer.includes('captureViewDataUrl'));
+    assert.ok(report.includes('captureSpatialAnatomyDataUrl'));
+    assert.ok(report.includes('isSpatialMode'));
   });
 
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {
@@ -2137,7 +2290,212 @@ console.log('PainLocator tests\n');
     assert.ok(ctrl.includes('isPatientBlocked') || ctrl.includes('patient'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('_initLayerController'));
-    assert.ok(renderer.includes('Surface (styled exterior)') || renderer.includes('Muscle (BP3D)'));
+    assert.ok(renderer.includes('Muscle (BP3D)') || renderer.includes('fallback silhouette'));
+  });
+}
+
+// --- Vendor-neutral anatomy adapter + SciePro evaluation harness ---
+{
+  const sandbox = createSandbox();
+  loadScript('src/engine/anatomy/vendor/anatomy-vendor-types.js', sandbox);
+  loadScript('src/engine/anatomy/vendor/anatomy-vendor-adapter.js', sandbox);
+  const Types = sandbox.AnatomyVendorTypes;
+  const Adapter = sandbox.AnatomyVendorAdapter;
+  const template = JSON.parse(
+    readFileSync(join(root, 'data/anatomy-vendor/sciepro-to-fma-v0.template.json'), 'utf8')
+  );
+  const landmarks = JSON.parse(
+    readFileSync(join(root, 'data/anatomy-vendor/canonical-landmarks-v1.json'), 'utf8')
+  );
+
+  test('vendor adapter: schema validates SciePro mapping template', () => {
+    const summary = Adapter.validateMappingDocument(template);
+    assert.equal(summary.ok, true);
+    assert.ok(summary.structureCount >= 20);
+    assert.equal(summary.filledVendorIds, 0);
+    assert.equal(summary.missingVendorIds, summary.structureCount);
+  });
+
+  test('vendor adapter: missing vendor IDs are placeholders (not invented)', () => {
+    for (const row of template.structures) {
+      assert.equal(row.vendorStructureId, null);
+    }
+    const unresolved = Adapter.listUnresolved(template);
+    assert.equal(unresolved.length, template.structures.length);
+  });
+
+  test('vendor adapter: rejects duplicate FMA mappings', () => {
+    const dup = structuredClone(template);
+    dup.structures.push({ ...dup.structures[0], role: 'dup' });
+    assert.throws(() => Adapter.validateMappingDocument(dup), /Duplicate FMA/);
+  });
+
+  test('vendor adapter: laterality and confidence enums enforced', () => {
+    const badLat = structuredClone(template);
+    badLat.structures[0].laterality = 'bilateral';
+    assert.throws(() => Adapter.validateMappingDocument(badLat), /laterality/i);
+
+    const badConf = structuredClone(template);
+    badConf.structures[0].mappingConfidence = 'LIKELY';
+    assert.throws(() => Adapter.validateMappingDocument(badConf), /mappingConfidence/i);
+
+    for (const c of Object.values(Types.MAPPING_CONFIDENCE)) {
+      assert.ok(['EXACT', 'HIGH_CONFIDENCE', 'MANUAL_REVIEW', 'NO_MATCH'].includes(c));
+    }
+  });
+
+  test('vendor adapter: unknown structure and patient isolation', () => {
+    const filled = structuredClone(template);
+    filled.structures[0].vendorStructureId = 'SP-EVAL-SKULL-001';
+    filled.structures[0].mappingConfidence = 'EXACT';
+
+    assert.throws(
+      () =>
+        Adapter.resolveSelection(filled, {
+          vendorStructureId: 'SP-EVAL-SKULL-001',
+          presentationMode: 'patient'
+        }),
+      /Patient/
+    );
+
+    assert.throws(
+      () =>
+        Adapter.resolveSelection(filled, {
+          vendorStructureId: 'DOES-NOT-EXIST',
+          presentationMode: 'clinician'
+        }),
+      /Unknown vendorStructureId/
+    );
+
+    const sel = Adapter.resolveSelection(filled, {
+      vendorStructureId: 'SP-EVAL-SKULL-001',
+      presentationMode: 'clinician'
+    });
+    assert.equal(sel.fmaStructureId, 'FMA:46565');
+    assert.equal(sel.clinicalName, 'Skull');
+    assert.equal(sel.laterality, 'midline');
+    assert.equal(sel.region, 'head');
+    assert.equal(sel.layer, 'skeletal');
+  });
+
+  test('vendor adapter: NO_MATCH blocks selection; contract fields present', () => {
+    const filled = structuredClone(template);
+    filled.structures[0].vendorStructureId = 'SP-NO-MATCH';
+    filled.structures[0].mappingConfidence = 'NO_MATCH';
+    assert.throws(
+      () =>
+        Adapter.resolveSelection(filled, {
+          vendorStructureId: 'SP-NO-MATCH',
+          presentationMode: 'clinician'
+        }),
+      /NO_MATCH/
+    );
+
+    const structure = Adapter.toVendorStructure(filled, {
+      ...filled.structures[1],
+      vendorStructureId: 'SP-DELTOID-L'
+    });
+    for (const key of [
+      'anatomyVendor',
+      'vendorModelVersion',
+      'vendorStructureId',
+      'vendorStructureName',
+      'fmaStructureId',
+      'clinicalName',
+      'laterality',
+      'region',
+      'layer',
+      'sourceCoordinateSystem',
+      'canonicalRegistrationVersion',
+      'meshId',
+      'runtimeAssetRef'
+    ]) {
+      assert.ok(key in structure, `missing ${key}`);
+    }
+    assert.equal(structure.canonicalRegistrationVersion, Types.CANONICAL_FRAME);
+  });
+
+  test('vendor adapter: forbidden public path helpers catch eval leaks', () => {
+    assert.equal(Adapter.isForbiddenPublicPath('public/vendor-eval/sciepro/a.glb'), true);
+    assert.equal(Adapter.isForbiddenPublicPath('dist/anatomy/sciepro-sample.glb'), true);
+    assert.equal(Adapter.isForbiddenPublicPath('public/anatomy/spatial/adult-male/exterior-lod0.glb'), false);
+    assert.ok(Adapter.EVAL_ASSET_ROOTS.some((r) => r.includes('data/vendor-eval')));
+  });
+
+  test('vendor adapter: canonical landmarks cover required set', () => {
+    const ids = new Set((landmarks.landmarks || []).map((l) => l.id));
+    for (const id of Types.REQUIRED_LANDMARK_IDS) {
+      assert.ok(ids.has(id), `missing landmark ${id}`);
+    }
+  });
+
+  test('vendor registration: identical landmarks → near-zero residual', async () => {
+    const { computeRegistrationResiduals, MEAN_FAIL_M, MAX_FAIL_M } = await import(
+      join(root, 'tools/anatomy-vendor/lib/umeyama.mjs')
+    );
+    const ids = Types.REQUIRED_LANDMARK_IDS;
+    const pts = ids.map((id) => landmarks.landmarks.find((l) => l.id === id).meters);
+    const fit = computeRegistrationResiduals(pts, pts, ids);
+    assert.ok(Math.abs(fit.scale - 1) < 1e-6);
+    assert.ok(fit.meanMeters < 1e-6);
+    assert.ok(fit.maxMeters < 1e-6);
+    assert.ok(fit.meanMeters < MEAN_FAIL_M);
+    assert.ok(fit.maxMeters < MAX_FAIL_M);
+  });
+
+  test('vendor registration: scaled+translated cloud recovers residual near zero', async () => {
+    const { computeRegistrationResiduals } = await import(
+      join(root, 'tools/anatomy-vendor/lib/umeyama.mjs')
+    );
+    const ids = Types.REQUIRED_LANDMARK_IDS.slice(0, 8);
+    const Y = ids.map((id) => landmarks.landmarks.find((l) => l.id === id).meters);
+    const X = Y.map((p) => [p[0] * 2 + 0.1, p[1] * 2 - 0.2, p[2] * 2 + 0.05]);
+    const fit = computeRegistrationResiduals(X, Y, ids);
+    assert.ok(Math.abs(fit.scale - 0.5) < 1e-4);
+    assert.ok(fit.meanMeters < 1e-5);
+  });
+}
+
+{
+  const { spawnSync } = await import('node:child_process');
+  test('vendor eval: verify-eval-exclusion exits 0', () => {
+    const r = spawnSync(process.execPath, [join(root, 'tools/anatomy-vendor/verify-eval-exclusion.mjs')], {
+      cwd: root,
+      encoding: 'utf8'
+    });
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  });
+
+  test('vendor eval: harness docs and scripts exist', () => {
+    for (const rel of [
+      'docs/SCIEPRO_RUNTIME_DELIVERY_ARCHITECTURE.md',
+      'docs/SCIEPRO_EVALUATION_HARNESS.md',
+      'docs/visual-targets/VENDOR_MOCKUP_ACCEPTANCE_CHECKLIST.md',
+      'tools/anatomy-vendor/qa/index.html',
+      'tools/anatomy-vendor/serve-eval.mjs',
+      'tools/anatomy-vendor/report-mesh-metrics.mjs',
+      'data/vendor-eval/README.md',
+      'data/vendor-eval/sciepro/.gitkeep',
+      'data/vendor-eval/zygote/.gitkeep'
+    ]) {
+      assert.ok(statSync(join(root, rel)).isFile() || existsSync(join(root, rel)), rel);
+    }
+    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+    assert.ok(pkg.scripts['vendor-eval:verify-exclusion']);
+    assert.ok(pkg.scripts['vendor-eval:register']);
+    assert.ok(pkg.scripts['vendor-eval:serve']);
+    assert.ok(pkg.scripts['vendor-eval:metrics']);
+    const gitignore = readFileSync(join(root, '.gitignore'), 'utf8');
+    assert.ok(gitignore.includes('data/vendor-eval'));
+    const build = readFileSync(join(root, 'scripts/build.mjs'), 'utf8');
+    assert.ok(build.includes('vendor-eval:verify-exclusion'));
+  });
+
+  test('vendor-neutral renderer contract: patient workflow files unchanged by vendor packs', () => {
+    const patientFlow = readFileSync(join(root, 'src/features/shell/patient-flow.js'), 'utf8');
+    assert.ok(!/vendor-eval|sciepro|AnatomyVendorAdapter/i.test(patientFlow));
+    const presentation = readFileSync(join(root, 'src/state/presentation.js'), 'utf8');
+    assert.ok(!/vendor-eval|sciepro/i.test(presentation));
   });
 }
 

@@ -11,11 +11,42 @@ function loadAnatomyImage(src) {
   });
 }
 
+/**
+ * Prefer live Spatial WebGL when Spatial-primary is active so PNG/PDF match
+ * clinician/patient anatomy (not legacy 2D plates). Falls back to plate compositor.
+ */
+async function captureSpatialAnatomyDataUrl(options = {}) {
+  const engine = (typeof state !== 'undefined' && state.engine) || null;
+  if (!engine?.isSpatialMode?.()) return null;
+  const renderer = engine.spatialRenderer;
+  if (!renderer?.ready || typeof renderer.captureViewDataUrl !== 'function') return null;
+
+  const view = options.view || state.view || 'front';
+  const size = options.size || 512;
+  const bgToken = typeof getThemeToken === 'function' ? getThemeToken('--background') : null;
+  try {
+    return await renderer.captureViewDataUrl(view, {
+      width: size,
+      height: size,
+      background: bgToken || '#0f172a',
+      backgroundAlpha: 1,
+      restoreView: true
+    });
+  } catch (err) {
+    console.warn('[PainLocator] Spatial anatomy capture failed — falling back to plate', err);
+    return null;
+  }
+}
+
 async function captureAnatomyMapDataUrl(options = {}) {
   const model = normalizeModelType(options.model || state.modelType);
   const view = options.view || state.view;
   const size = options.size || 512;
   const regions = entryStore.getRegionsForView(model, view);
+
+  // Spatial-primary path: export the same 3D body the user sees (Surface / Muscle / Skeletal).
+  const spatialUrl = await captureSpatialAnatomyDataUrl({ model, view, size });
+  if (spatialUrl) return spatialUrl;
 
   let img = null;
   if (view === state.view && normalizeModelType(state.modelType) === model) {

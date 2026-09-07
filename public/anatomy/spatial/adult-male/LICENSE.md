@@ -2,25 +2,29 @@
 
 ## Status
 
-**Interim Slice 1 asset** for PainLocator Spatial Anatomy.
+**Canonical-frame styled exterior (Option B visible layer)** for PainLocator Spatial Anatomy.
 
-This is **not** a BodyParts3D redistribution. It is original PainLocator-authored
-**procedural geometry** (capsules/spheres/boxes), not medically validated anatomy,
-exported to GLB for production-path wiring
-(manifest → meshId → raycast → attachment) while a BodyParts3D-derived
-exterior pipeline is prepared.
+This is **not** a BodyParts3D redistribution and **not** a clinical atlas.
+It is PainLocator-authored **procedural silhouette geometry** (lathe torso + soft
+limb ellipsoids/capsules) placed at BP3D landmark targets so the visible exterior
+lives natively in `painlocator-bp3d-canonical-v1`.
+
+The prior capsule mannequin is archived at
+`public/anatomy/spatial/dev/interim-mannequin/` for provenance only.
 
 ## Source
 
 | Field | Value |
 | --- | --- |
-| Source | PainLocator authored procedural geometry |
-| Generator script | `scripts/generate-exterior-glb.mjs` |
+| Source | PainLocator authored procedural silhouette |
+| Generator script | `scripts/generate-styled-exterior-glb.mjs` |
 | Export tool | three.js `GLTFExporter` (**build-time / npm `three@0.170.0` only**) |
-| Runtime loader | Vendored `public/vendor/GLTFLoader.js` + `public/vendor/three.module.min.js` (r170) |
-| Retrieved / generated | 2026-09-06 |
+| Runtime loader | Vite ESM Spatial runtime (`spatial-runtime-entry.js` → npm `three` + GLTFLoader) |
+| Retrieved / generated | 2026-09-07 |
 | Canonical identifier | `painlocator:spatial:adult-male:exterior-lod0` |
-| Intended successor | BodyParts3D (DBCLS) exterior subset, CC BY 4.0 — see `docs/SPATIAL_ANATOMY_PHASE2_DECISION.md` |
+| Coordinate frame | `painlocator-bp3d-canonical-v1` (identity conformer) |
+| Alignment report | `./styled-exterior-alignment-report.json` |
+| Intended evolution | Optional remesh/style from BP3D FMA7163 (CC BY 4.0) or commercial exterior in the same frame — see `docs/CANONICAL_BODY_ARCHITECTURE.md` |
 
 ## Structure IDs
 
@@ -38,32 +42,10 @@ asset **as part of PainLocator** under the same terms as the PainLocator
 application repository.
 
 This mesh is a **locator surface**, not a clinical anatomy atlas. Do not
-claim BodyParts3D provenance or diagnostic anatomical accuracy for this
-interim file.
+present it as patient-specific anatomy or as a diagnostic model.
 
-## Attribution requirements
+## Attribution note (canonical frame)
 
-When distributing PainLocator builds that include this file, retain this
-`LICENSE.md` beside the GLB / reference it from the spatial manifest
-`provenance.licenseRef`.
-
-three.js / GLTFExporter are MIT-licensed; see `public/vendor/THREE_LICENSE`.
-
-## Modifications
-
-- Generated as multi-mesh humanoid capsules/spheres/boxes with clinical-neutral
-  materials and stable `meshId` names (`surface.*`).
-- No third-party anatomy mesh files were imported.
-
-## Commercial redistribution
-
-Allowed with the PainLocator product distribution, subject to the
-application repository license. Replace with BodyParts3D-derived assets
-before claiming FMA-backed clinical structure coverage.
-
-## Payload
-
-`exterior-lod0.glb` is **293,968 bytes** (~287 KiB) as of regeneration with
-`three@0.170.0` / `GLTFExporter` — well under the 3–5 MB initial exterior
-transfer target. Exact bytes may vary slightly across regenerations; do not
-treat the GLB as byte-identical across exports.
+Hidden BP3D canonical skin (`prototype-bp3d-fullbody/`) remains **CC BY 4.0**
+(DBCLS BodyParts3D). Landmark targets used to place this silhouette are derived
+from that frame; the visible mesh geometry itself is original to PainLocator.

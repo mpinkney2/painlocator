@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogId": "bp3d-fullbody-msk-v1",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "archiveChecksum": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e",
+  "structureCount": 851,
+  "packCount": 24,
+  "packs": {
+    "muscle-head-neck": {
+      "packId": "muscle-head-neck",
+      "layer": "muscle",
+      "structureCount": 47,
+      "manifest": "./packs/muscle-head-neck/source-manifest.json"
+    },
+    "muscle-lower": {
+      "packId": "muscle-lower",
+      "layer": "muscle",
+      "structureCount": 19,
+      "manifest": "./packs/muscle-lower/source-manifest.json"
+    },
+    "muscle-lower-left": {
+      "packId": "muscle-lower-left",
+      "layer": "muscle",
+      "structureCount": 18,
+      "manifest": "./packs/muscle-lower-left/source-manifest.json"
+    },
+    "muscle-lower-right": {
+      "packId": "muscle-lower-right",
+      "layer": "muscle",
+      "structureCount": 18,
+      "manifest": "./packs/muscle-lower-right/source-manifest.json"
+    },
+    "muscle-other": {
+      "packId": "muscle-other",
+      "layer": "muscle",
+      "structureCount": 50,
+      "manifest": "./packs/muscle-other/source-manifest.json"
+    },
+    "muscle-pelvis": {
+      "packId": "muscle-pelvis",
+      "layer": "muscle",
+      "structureCount": 43,
+      "manifest": "./packs/muscle-pelvis/source-manifest.json"
+    },
+    "muscle-torso": {
+      "packId": "muscle-torso",
+      "layer": "muscle",
+      "structureCount": 79,
+      "manifest": "./packs/muscle-torso/source-manifest.json"
+    },
+    "muscle-upper": {
+      "packId": "muscle-upper",
+      "layer": "muscle",
+      "structureCount": 85,
+      "manifest": "./packs/muscle-upper/source-manifest.json"
+    },
+    "muscle-upper-left": {
+      "packId": "muscle-upper-left",
+      "layer": "muscle",
+      "structureCount": 73,
+      "manifest": "./packs/muscle-upper-left/source-manifest.json"
+    },
+    "muscle-upper-right": {
+      "packId": "muscle-upper-right",
+      "layer": "muscle",
+      "structureCount": 73,
+      "manifest": "./packs/muscle-upper-right/source-manifest.json"
+    },
+    "skeletal-lower": {
+      "packId": "skeletal-lower",
+      "layer": "skeletal",
+      "structureCount": 18,
+      "manifest": "./packs/skeletal-lower/source-manifest.json"
+    },
+    "skeletal-lower-left": {
+      "packId": "skeletal-lower-left",
+      "layer": "skeletal",
+      "structureCount": 14,
+      "manifest": "./packs/skeletal-lower-left/source-manifest.json"
+    },
+    "skeletal-lower-right": {
+      "packId": "skeletal-lower-right",
+      "layer": "skeletal",
+      "structureCount": 14,
+      "manifest": "./packs/skeletal-lower-right/source-manifest.json"
+    },
+    "skeletal-other": {
+      "packId": "skeletal-other",
+      "layer": "skeletal",
+      "structureCount": 37,
+      "manifest": "./packs/skeletal-other/source-manifest.json"
+    },
+    "skeletal-pelvis": {
+      "packId": "skeletal-pelvis",
+      "layer": "skeletal",
+      "structureCount": 3,
+      "manifest": "./packs/skeletal-pelvis/source-manifest.json"
+    },
+    "skeletal-shoulder-girdle": {
+      "packId": "skeletal-shoulder-girdle",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "manifest": "./packs/skeletal-shoulder-girdle/source-manifest.json"
+    },
+    "skeletal-shoulder-girdle-left": {
+      "packId": "skeletal-shoulder-girdle-left",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "manifest": "./packs/skeletal-shoulder-girdle-left/source-manifest.json"
+    },
+    "skeletal-shoulder-girdle-right": {
+      "packId": "skeletal-shoulder-girdle-right",
+      "layer": "skeletal",
+      "structureCount": 2,
+      "manifest": "./packs/skeletal-shoulder-girdle-right/source-manifest.json"
+    },
+    "skeletal-skull": {
+      "packId": "skeletal-skull",
+      "layer": "skeletal",
+      "structureCount": 25,
+      "manifest": "./packs/skeletal-skull/source-manifest.json"
+    },
+    "skeletal-spine": {
+      "packId": "skeletal-spine",
+      "layer": "skeletal",
+      "structureCount": 65,
+      "manifest": "./packs/skeletal-spine/source-manifest.json"
+    },
+    "skeletal-thorax": {
+      "packId": "skeletal-thorax",
+      "layer": "skeletal",
+      "structureCount": 42,
+      "manifest": "./packs/skeletal-thorax/source-manifest.json"
+    },
+    "skeletal-upper": {
+      "packId": "skeletal-upper",
+      "layer": "skeletal",
+      "structureCount": 50,
+      "manifest": "./packs/skeletal-upper/source-manifest.json"
+    },
+    "skeletal-upper-left": {
+      "packId": "skeletal-upper-left",
+      "layer": "skeletal",
+      "structureCount": 36,
+      "manifest": "./packs/skeletal-upper-left/source-manifest.json"
+    },
+    "skeletal-upper-right": {
+      "packId": "skeletal-upper-right",
+      "layer": "skeletal",
+      "structureCount": 36,
+      "manifest": "./packs/skeletal-upper-right/source-manifest.json"
+    }
+  },
+  "notes": [
+    "Curated musculoskeletal presentation set from BP3D 4.0 99% archive.",
+    "Excludes vessels/organs/nerves and some deep/tiny facial spinal minutiae for payload.",
+    "Multi-element FMA concepts with \u226412 FJ files are merged into one mesh."
+  ]
+}

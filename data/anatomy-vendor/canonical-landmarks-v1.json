@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "landmarkSetId": "painlocator-canonical-landmarks-v1",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "units": "meters",
+  "coordinateSystem": "y-up-right-handed",
+  "notes": [
+    "Canonical landmark targets for global vendor registration.",
+    "Copied from public/anatomy/spatial/registration/exterior-to-canonical-v1.json targetMeters.",
+    "Humeral heads currently alias shoulder centers until vendor sample provides explicit heads.",
+    "No regional patches — registration harness uses these as the single target cloud."
+  ],
+  "landmarks": [
+    { "id": "vertex", "description": "Top of head", "meters": [0.0043, 1.6414, 0.0765] },
+    { "id": "shoulderL", "description": "Left shoulder center", "meters": [-0.2398, 1.2557, 0.0556] },
+    { "id": "shoulderR", "description": "Right shoulder center", "meters": [0.241, 1.2556, 0.0556] },
+    { "id": "humeralHeadL", "description": "Left humeral head (approx. shoulder)", "meters": [-0.2398, 1.2557, 0.0556] },
+    { "id": "humeralHeadR", "description": "Right humeral head (approx. shoulder)", "meters": [0.241, 1.2556, 0.0556] },
+    { "id": "elbowL", "description": "Left elbow", "meters": [-0.2766, 0.9611, 0.082] },
+    { "id": "elbowR", "description": "Right elbow", "meters": [0.2779, 0.9799, 0.0825] },
+    { "id": "hipL", "description": "Left hip center", "meters": [-0.1898, 0.8066, 0.1006] },
+    { "id": "hipR", "description": "Right hip center", "meters": [0.189, 0.807, 0.0992] },
+    { "id": "kneeL", "description": "Left knee", "meters": [-0.0797, 0.4037, 0.0855] },
+    { "id": "kneeR", "description": "Right knee", "meters": [0.0807, 0.4043, 0.0861] },
+    { "id": "ankleL", "description": "Left ankle", "meters": [-0.1087, -0.0501, 0.1395] },
+    { "id": "ankleR", "description": "Right ankle", "meters": [0.1104, -0.0496, 0.1392] },
+    { "id": "bodyCenter", "description": "Body center", "meters": [0.0006, 0.7816, 0.1008] }
+  ]
+}

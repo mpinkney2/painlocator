@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-pelvis",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-pelvis",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.hip.bone",
+      "structureId": "FMA:16585",
+      "preferredName": "hip bone",
+      "clinicalName": "Hip bone",
+      "layer": "skeletal",
+      "laterality": "midline",
+      "parentStructureId": null,
+      "region": "skeletal-pelvis",
+      "sourceConceptId": "FMA16585",
+      "sourceRepresentationId": "BP8769",
+      "sourceElementFileId": "FJ3152",
+      "sourceElementFileIds": [
+        "FJ3152",
+        "FJ3288"
+      ],
+      "sourceFile": "./obj/FJ3152.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3152",
+          "sha256": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9",
+          "bytes": 149387
+        },
+        {
+          "fileId": "FJ3288",
+          "sha256": "bfc8b489fee0945cd1d387cf64bd3691af8e033fa72f9fccae45cfd55ac88694",
+          "bytes": 144965
+        }
+      ]
+    },
+    {
+      "meshId": "bone.right.hip.bone",
+      "structureId": "FMA:16586",
+      "preferredName": "right hip bone",
+      "clinicalName": "Right hip bone",
+      "layer": "skeletal",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "skeletal-pelvis",
+      "sourceConceptId": "FMA16586",
+      "sourceRepresentationId": "BP8768",
+      "sourceElementFileId": "FJ3152",
+      "sourceElementFileIds": [
+        "FJ3152"
+      ],
+      "sourceFile": "./obj/FJ3152.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3152",
+          "sha256": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9",
+          "bytes": 149387
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.hip.bone",
+      "structureId": "FMA:16587",
+      "preferredName": "left hip bone",
+      "clinicalName": "Left hip bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-pelvis",
+      "sourceConceptId": "FMA16587",
+      "sourceRepresentationId": "BP8950",
+      "sourceElementFileId": "FJ3288",
+      "sourceElementFileIds": [
+        "FJ3288"
+      ],
+      "sourceFile": "./obj/FJ3288.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "bfc8b489fee0945cd1d387cf64bd3691af8e033fa72f9fccae45cfd55ac88694"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3288",
+          "sha256": "bfc8b489fee0945cd1d387cf64bd3691af8e033fa72f9fccae45cfd55ac88694",
+          "bytes": 144965
+        }
+      ]
+    }
+  ]
+}

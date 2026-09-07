@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BP3D source-tier comparison — PainLocator</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; margin: 0; background: #0b1220; color: #e2e8f0; }
+    header { padding: 1.5rem 2rem; border-bottom: 1px solid #1e293b; }
+    h1 { margin: 0 0 .5rem; font-size: 1.35rem; }
+    .meta { color: #94a3b8; max-width: 70ch; line-height: 1.45; }
+    main { padding: 1rem 2rem 3rem; display: grid; gap: 1.25rem; }
+    .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 1rem; }
+    .card h2 { margin: 0 0 .25rem; font-size: 1.05rem; }
+    .role { margin: 0 0 .75rem; color: #94a3b8; font-size: .9rem; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    figcaption { margin-top: .4rem; font-size: .85rem; color: #cbd5e1; }
+    @media (max-width: 900px) { .pair { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BodyParts3D source-tier comparison</h1>
+    <p class="meta">
+      A = official Release 4.0 99% (current PainLocator pin).
+      B = historical Release 3.0 95% (5× polygon policy per DBCLS README; coordinates differ after 4.0 skeletal shift).
+      Same transform and materials — geometry quality only.
+      Median triangle ratio B/A ≈ 4.325.
+    </p>
+  </header>
+  <main>
+    
+      <section class="card">
+        <h2>acromial part of left deltoid</h2>
+        <p class="role">shoulder / acromial left deltoid · FMA:34683 · ratio B/A = 22.37</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA34683.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>1300 tris · 31296 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA34683.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>29076 tris · 600776 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>clavicular part of left pectoralis major</h2>
+        <p class="role">torso / clavicular left pectoralis major · FMA:34691 · ratio B/A = 4.99</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA34691.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>1846 tris · 47084 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA34691.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>9212 tris · 216208 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>torso / left rectus abdominis</h2>
+        <p class="role">torso / left rectus abdominis · FMA:13378 · ratio B/A = None</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>n/a</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA13378.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>188862 tris · 3862564 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left scapula</h2>
+        <p class="role">shoulder / left scapula · FMA:13396 · ratio B/A = 4.33</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA13396.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>28106 tris · 563388 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA13396.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>121816 tris · 2438004 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left humerus</h2>
+        <p class="role">shoulder / left humerus · FMA:23131 · ratio B/A = 4.29</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA23131.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>3844 tris · 80312 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA23131.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>16492 tris · 334488 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left first metacarpal bone</h2>
+        <p class="role">hand / left first metacarpal · FMA:24465 · ratio B/A = 4.29</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA24465.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>578 tris · 12808 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA24465.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>2480 tris · 50816 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left hip bone</h2>
+        <p class="role">pelvis / left hip bone · FMA:16587 · ratio B/A = 4.06</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA16587.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>2332 tris · 49116 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA16587.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>9470 tris · 191536 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left vastus lateralis</h2>
+        <p class="role">thigh / left vastus lateralis · FMA:38931 · ratio B/A = 14.13</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA38931.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>6688 tris · 144856 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA38931.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>94474 tris · 1979508 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left patella</h2>
+        <p class="role">knee / left patella · FMA:24487 · ratio B/A = 4.32</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA24487.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>310 tris · 7608 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA24487.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>1338 tris · 27940 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left femur</h2>
+        <p class="role">thigh / left femur · FMA:24475 · ratio B/A = 4.12</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA24475.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>3204 tris · 65432 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA24475.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>13202 tris · 265452 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left tibia</h2>
+        <p class="role">lower leg / left tibia · FMA:24478 · ratio B/A = 4.03</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA24478.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>1692 tris · 35404 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA24478.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>6822 tris · 137724 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>medial head of left gastrocnemius</h2>
+        <p class="role">lower leg / medial head left gastrocnemius · FMA:45958 · ratio B/A = 16.95</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA45958.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>3842 tris · 83340 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA45958.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>65138 tris · 1346696 B</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="card">
+        <h2>left calcaneus</h2>
+        <p class="role">foot / left calcaneus · FMA:24498 · ratio B/A = 4.39</p>
+        <div class="pair">
+          <figure>
+            <model-viewer src="./glb/a-4.0-99/FMA24498.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>A · BP3D 4.0 99%<br/>1288 tris · 27980 B</figcaption>
+          </figure>
+          <figure>
+            <model-viewer src="./glb/b-3.0-95/FMA24498.glb" camera-controls touch-action="pan-y" exposure="1.0" shadow-intensity="0.2" style="width:100%;height:280px;background:#0f172a"></model-viewer>
+            <figcaption>B · BP3D 3.0 95% (historical)<br/>5652 tris · 115180 B</figcaption>
+          </figure>
+        </div>
+      </section>
+  </main>
+</body>
+</html>

@@ -81,10 +81,11 @@
 
         onProgress("Checking WebGL…");
         const probeOk = threeLoader.isWebGLAvailable();
-        setBoot(STATES.LOADING_THREE || "loading-three", {
+        setBoot(STATES.LOADING_SPATIAL_RUNTIME || STATES.LOADING_THREE || "loading-spatial-runtime", {
           webglAvailable: !!probeOk,
           error: null,
-          canonicalStatus: "idle"
+          canonicalStatus: "idle",
+          runtimeSource: "vite-esm"
         });
         // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.
         // Also: never call loseContext during probe (poisons Electron/Cursor WebGL).
@@ -96,11 +97,21 @@
         this._teardownMount({ keepAttachments: true });
 
         onProgress("Loading 3D library…");
-        this.THREE = await withTimeout(
-          threeLoader.loadThreeModule(),
-          timeouts.threeMs || 12000,
-          "Three.js"
-        );
+        const runtime =
+          typeof threeLoader.loadSpatialRuntime === "function"
+            ? await withTimeout(
+                threeLoader.loadSpatialRuntime(),
+                timeouts.threeMs || 12000,
+                "Spatial Vite runtime"
+              )
+            : null;
+        this.THREE = runtime?.THREE
+          ? runtime.THREE
+          : await withTimeout(
+              threeLoader.loadThreeModule(),
+              timeouts.threeMs || 12000,
+              "Three.js"
+            );
         if (this.disposed || generation !== this._mountGeneration) return false;
         if (!this.THREE?.WebGLRenderer) {
           throw new Error("Three.js loaded without WebGLRenderer");
@@ -265,6 +276,47 @@
       // Keep persisted view + anchors aligned with button snaps (same as drag-snap).
       this._reprojectSpatial(view);
       this._refreshLegacy(view);
+    }
+
+    /**
+     * Capture a Spatial view for PNG/PDF clinical exports.
+     * Snaps yaw without animation, reads one frame, optionally restores prior yaw.
+     * Does not alter presentation shell or anatomy depth — exports match the live body.
+     *
+     * @param {string} [viewType]
+     * @param {{ width?: number, height?: number, background?: string|number, restoreView?: boolean }} [options]
+     * @returns {Promise<string|null>}
+     */
+    async captureViewDataUrl(viewType, options = {}) {
+      if (!this.ready || !this.scene || this.disposed) return null;
+      const Projection =
+        (global.SpatialBootUtils && global.SpatialBootUtils.getGlobal
+          ? global.SpatialBootUtils.getGlobal("SpatialProjection")
+          : null) || global.SpatialProjection;
+      const views = Projection?.SPATIAL_VIEWS || ["front", "back", "left", "right"];
+      const view = views.includes(viewType) ? viewType : "front";
+      const restoreView = options.restoreView !== false;
+      const prevYaw = typeof this.scene.getYaw === "function" ? this.scene.getYaw() : null;
+
+      this.scene.snapToView(view, { animate: false });
+      // Yield one frame so layout/resize observers settle before capture sizing.
+      await new Promise((resolve) => {
+        if (typeof requestAnimationFrame === "function") requestAnimationFrame(() => resolve());
+        else setTimeout(resolve, 0);
+      });
+      if (this.disposed || !this.scene) return null;
+
+      const dataUrl = this.scene.captureFrameDataUrl({
+        width: options.width,
+        height: options.height,
+        background: options.background,
+        backgroundAlpha: options.backgroundAlpha
+      });
+
+      if (restoreView && prevYaw != null && typeof this.scene.setYawImmediate === "function") {
+        this.scene.setYawImmediate(prevYaw);
+      }
+      return dataUrl;
     }
 
     resize() {
@@ -918,8 +970,8 @@
         live.textContent = loading
           ? "Loading anatomy layer…"
           : depth === "surface"
-            ? "Surface (styled exterior)"
-            : depth === "muscle"
+            ? "Surface (fallback silhouette — not production exterior)"
+              : depth === "muscle"
               ? "Muscle (BP3D)"
               : "Skeletal (BP3D)";
       }

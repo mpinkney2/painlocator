@@ -7,3 +7,15 @@ data/bodyparts3d/cache/
 data/bodyparts3d/mapping/
 data/bodyparts3d/subset/*/obj/
 public/anatomy/spatial/prototype-bp3d/raw-pre-meshopt/
+
+# Source-tier comparison regenerable OBJ extracts (GLBs + screenshots are committed)
+docs/visual-targets/bp3d-source-tier-comparison/obj/
+
+# Proprietary vendor evaluation samples (SciePro / Zygote) — never commit binaries
+data/vendor-eval/**/source/
+data/vendor-eval/**/derived/
+data/vendor-eval/**/landmarks.json
+data/vendor-eval/**/*.{obj,fbx,gltf,glb,bin,zip,7z,rar,exr,tif,tiff,stl,ply}
+data/vendor-eval/**/*-to-fma*.json
+!data/vendor-eval/**/README.md
+!data/vendor-eval/**/.gitkeep
