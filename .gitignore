@@ -7,3 +7,6 @@ data/bodyparts3d/cache/
 data/bodyparts3d/mapping/
 data/bodyparts3d/subset/*/obj/
 public/anatomy/spatial/prototype-bp3d/raw-pre-meshopt/
+
+# Source-tier comparison regenerable OBJ extracts (GLBs + screenshots are committed)
+docs/visual-targets/bp3d-source-tier-comparison/obj/

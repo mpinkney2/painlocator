@@ -18,6 +18,10 @@
     "/anatomy/spatial/registration/bp3d-shoulder-canonical-identity.json";
   const LEGACY_SHOULDER_REGISTRATION_URL =
     "/anatomy/spatial/registration/bp3d-shoulder-adult-male.json";
+  const FULLBODY_IDENTITY_REGISTRATION_URL =
+    "/anatomy/spatial/registration/bp3d-fullbody-canonical-identity.json";
+  const FULLBODY_INDEX_URL =
+    "/anatomy/spatial/prototype-bp3d-fullbody-msk/index.json";
   const EXTERIOR_CONFORMER_URL =
     "/anatomy/spatial/registration/exterior-to-canonical-v1.json";
   const CANONICAL_MANIFEST_URL =
@@ -37,6 +41,41 @@
     if (value == null) return false;
     const v = String(value).trim().toLowerCase();
     return v === "0" || v === "false" || v === "no" || v === "off";
+  }
+
+  function readSearch(options = {}) {
+    try {
+      return (
+        options.search ??
+        options.location?.search ??
+        (typeof global.location !== "undefined" ? global.location.search : "") ??
+        ""
+      );
+    } catch (_) {
+      return "";
+    }
+  }
+
+  /**
+   * Development flag: clinician full-body BP3D MSK packs.
+   * ?fullBodyAnatomy=1 | window.PAINLOCATOR_FULL_BODY_ANATOMY = true
+   */
+  function resolveFullBodyAnatomy(options = {}) {
+    if (typeof options.override === "boolean") return options.override;
+    try {
+      const params = new URLSearchParams(readSearch(options) || "");
+      const raw = params.get("fullBodyAnatomy") ?? params.get("fullBody");
+      if (raw != null && String(raw).trim() !== "") {
+        if (falsyParam(raw)) return false;
+        if (truthyParam(raw)) return true;
+      }
+    } catch (_) {
+      /* fall through */
+    }
+    if (typeof global.PAINLOCATOR_FULL_BODY_ANATOMY === "boolean") {
+      return global.PAINLOCATOR_FULL_BODY_ANATOMY;
+    }
+    return false;
   }
 
   /**
@@ -98,6 +137,9 @@
   }
 
   function shoulderRegistrationUrlForMode(canonicalMode) {
+    if (resolveFullBodyAnatomy()) {
+      return FULLBODY_IDENTITY_REGISTRATION_URL;
+    }
     return canonicalMode
       ? IDENTITY_SHOULDER_REGISTRATION_URL
       : LEGACY_SHOULDER_REGISTRATION_URL;
@@ -106,6 +148,7 @@
   global.CanonicalBodyFlag = {
     resolveCanonicalBodyMode,
     resolveCanonicalAlignmentValidation,
+    resolveFullBodyAnatomy,
     getCanonicalFrameConstants,
     shoulderRegistrationUrlForMode,
     COORDINATE_FRAME_VERSION,
@@ -114,6 +157,8 @@
     EXTERIOR_CONFORMER_VERSION,
     IDENTITY_SHOULDER_REGISTRATION_URL,
     LEGACY_SHOULDER_REGISTRATION_URL,
+    FULLBODY_IDENTITY_REGISTRATION_URL,
+    FULLBODY_INDEX_URL,
     EXTERIOR_CONFORMER_URL,
     CANONICAL_MANIFEST_URL,
     CANONICAL_BODY_URL,

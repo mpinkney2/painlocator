@@ -3,7 +3,7 @@
 **Date:** 2026-09-06  
 **Slice:** Phase 2 Slice 4 (architecture + offline prototype)  
 **Base:** `main` after PR #11 merge  
-**Status:** Decision record (Slice 4) + runtime hook (Slice 5 feature-flagged, default OFF) — see [`SPATIAL_PHASE2_SLICE5_CANONICAL_FRAME.md`](./SPATIAL_PHASE2_SLICE5_CANONICAL_FRAME.md)
+**Status:** Decision record (Slice 4) + runtime hook (Slice 5) + **styled exterior in-frame (Slice 6)** — see [`SPATIAL_PHASE2_SLICE6_STYLED_EXTERIOR.md`](./SPATIAL_PHASE2_SLICE6_STYLED_EXTERIOR.md) and [`SPATIAL_PHASE2_SLICE5_CANONICAL_FRAME.md`](./SPATIAL_PHASE2_SLICE5_CANONICAL_FRAME.md)
 
 **Companion docs:**  
 [`SPATIAL_PHASE2_SLICE3_REGISTRATION.md`](./SPATIAL_PHASE2_SLICE3_REGISTRATION.md) ·  

@@ -1,0 +1,628 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-upper-right",
+  "displayName": "Skeletal Upper Right",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.right.humerus",
+          "structureId": "FMA:23130",
+          "structureName": "right humerus",
+          "clinicalName": "Right humerus",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9206",
+          "sourceElementFileId": "FJ3368",
+          "sourceElementFileIds": [
+            "FJ3368"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.radius",
+          "structureId": "FMA:23464",
+          "structureName": "right radius",
+          "clinicalName": "Right radius",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8464",
+          "sourceElementFileId": "FJ3349",
+          "sourceElementFileIds": [
+            "FJ3349"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.ulna",
+          "structureId": "FMA:23467",
+          "structureName": "right ulna",
+          "clinicalName": "Right ulna",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8233",
+          "sourceElementFileId": "FJ3391",
+          "sourceElementFileIds": [
+            "FJ3391"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.thumb",
+          "structureId": "FMA:24450",
+          "structureName": "proximal phalanx of right thumb",
+          "clinicalName": "Proximal phalanx of right thumb",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8017",
+          "sourceElementFileId": "FJ3327",
+          "sourceElementFileIds": [
+            "FJ3327"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.index.finger",
+          "structureId": "FMA:24451",
+          "structureName": "proximal phalanx of right index finger",
+          "clinicalName": "Proximal phalanx of right index finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8914",
+          "sourceElementFileId": "FJ3322",
+          "sourceElementFileIds": [
+            "FJ3322"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.middle.finger",
+          "structureId": "FMA:24452",
+          "structureName": "proximal phalanx of right middle finger",
+          "clinicalName": "Proximal phalanx of right middle finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9025",
+          "sourceElementFileId": "FJ3325",
+          "sourceElementFileIds": [
+            "FJ3325"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.ring.finger",
+          "structureId": "FMA:24453",
+          "structureName": "proximal phalanx of right ring finger",
+          "clinicalName": "Proximal phalanx of right ring finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8330",
+          "sourceElementFileId": "FJ3326",
+          "sourceElementFileIds": [
+            "FJ3326"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.little.finger",
+          "structureId": "FMA:24454",
+          "structureName": "proximal phalanx of right little finger",
+          "clinicalName": "Proximal phalanx of right little finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8100",
+          "sourceElementFileId": "FJ3323",
+          "sourceElementFileIds": [
+            "FJ3323"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.index.finger",
+          "structureId": "FMA:24455",
+          "structureName": "middle phalanx of right index finger",
+          "clinicalName": "Middle phalanx of right index finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8523",
+          "sourceElementFileId": "FJ3303",
+          "sourceElementFileIds": [
+            "FJ3303"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.middle.finger",
+          "structureId": "FMA:24456",
+          "structureName": "middle phalanx of right middle finger",
+          "clinicalName": "Middle phalanx of right middle finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9150",
+          "sourceElementFileId": "FJ3306",
+          "sourceElementFileIds": [
+            "FJ3306"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.ring.finger",
+          "structureId": "FMA:24457",
+          "structureName": "middle phalanx of right ring finger",
+          "clinicalName": "Middle phalanx of right ring finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8451",
+          "sourceElementFileId": "FJ3292",
+          "sourceElementFileIds": [
+            "FJ3292"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.little.finger",
+          "structureId": "FMA:24458",
+          "structureName": "middle phalanx of right little finger",
+          "clinicalName": "Middle phalanx of right little finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8491",
+          "sourceElementFileId": "FJ3304",
+          "sourceElementFileIds": [
+            "FJ3304"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.thumb",
+          "structureId": "FMA:24459",
+          "structureName": "distal phalanx of right thumb",
+          "clinicalName": "Distal phalanx of right thumb",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8436",
+          "sourceElementFileId": "FJ3198",
+          "sourceElementFileIds": [
+            "FJ3198"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.index.finger",
+          "structureId": "FMA:24460",
+          "structureName": "distal phalanx of right index finger",
+          "clinicalName": "Distal phalanx of right index finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8939",
+          "sourceElementFileId": "FJ3193",
+          "sourceElementFileIds": [
+            "FJ3193"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.middle.finger",
+          "structureId": "FMA:24461",
+          "structureName": "distal phalanx of right middle finger",
+          "clinicalName": "Distal phalanx of right middle finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8483",
+          "sourceElementFileId": "FJ3196",
+          "sourceElementFileIds": [
+            "FJ3196"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.ring.finger",
+          "structureId": "FMA:24462",
+          "structureName": "distal phalanx of right ring finger",
+          "clinicalName": "Distal phalanx of right ring finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7961",
+          "sourceElementFileId": "FJ3197",
+          "sourceElementFileIds": [
+            "FJ3197"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.little.finger",
+          "structureId": "FMA:24463",
+          "structureName": "distal phalanx of right little finger",
+          "clinicalName": "Distal phalanx of right little finger",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8637",
+          "sourceElementFileId": "FJ3194",
+          "sourceElementFileIds": [
+            "FJ3194"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.first.metacarpal.bone",
+          "structureId": "FMA:24464",
+          "structureName": "right first metacarpal bone",
+          "clinicalName": "Right first metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8547",
+          "sourceElementFileId": "FJ3350",
+          "sourceElementFileIds": [
+            "FJ3350"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.second.metacarpal.bone",
+          "structureId": "FMA:24466",
+          "structureName": "right second metacarpal bone",
+          "clinicalName": "Right second metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8219",
+          "sourceElementFileId": "FJ3352",
+          "sourceElementFileIds": [
+            "FJ3352"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.third.metacarpal.bone",
+          "structureId": "FMA:24468",
+          "structureName": "right third metacarpal bone",
+          "clinicalName": "Right third metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8629",
+          "sourceElementFileId": "FJ3354",
+          "sourceElementFileIds": [
+            "FJ3354"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.fourth.metacarpal.bone",
+          "structureId": "FMA:24470",
+          "structureName": "right fourth metacarpal bone",
+          "clinicalName": "Right fourth metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8444",
+          "sourceElementFileId": "FJ3356",
+          "sourceElementFileIds": [
+            "FJ3356"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.fifth.metacarpal.bone",
+          "structureId": "FMA:24472",
+          "structureName": "right fifth metacarpal bone",
+          "clinicalName": "Right fifth metacarpal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8925",
+          "sourceElementFileId": "FJ3358",
+          "sourceElementFileIds": [
+            "FJ3358"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.second.toe",
+          "structureId": "FMA:32634",
+          "structureName": "proximal phalanx of right second toe",
+          "clinicalName": "Proximal phalanx of right second toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9196",
+          "sourceElementFileId": "FJ3319",
+          "sourceElementFileIds": [
+            "FJ3319"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.third.toe",
+          "structureId": "FMA:32636",
+          "structureName": "proximal phalanx of right third toe",
+          "clinicalName": "Proximal phalanx of right third toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8762",
+          "sourceElementFileId": "FJ3320",
+          "sourceElementFileIds": [
+            "FJ3320"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.fourth.toe",
+          "structureId": "FMA:32638",
+          "structureName": "proximal phalanx of right fourth toe",
+          "clinicalName": "Proximal phalanx of right fourth toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8281",
+          "sourceElementFileId": "FJ3321",
+          "sourceElementFileIds": [
+            "FJ3321"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.little.toe",
+          "structureId": "FMA:32640",
+          "structureName": "proximal phalanx of right little toe",
+          "clinicalName": "Proximal phalanx of right little toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8417",
+          "sourceElementFileId": "FJ3324",
+          "sourceElementFileIds": [
+            "FJ3324"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.second.toe",
+          "structureId": "FMA:32642",
+          "structureName": "middle phalanx of right second toe",
+          "clinicalName": "Middle phalanx of right second toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8488",
+          "sourceElementFileId": "FJ3300",
+          "sourceElementFileIds": [
+            "FJ3300"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.third.toe",
+          "structureId": "FMA:32644",
+          "structureName": "middle phalanx of right third toe",
+          "clinicalName": "Middle phalanx of right third toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9047",
+          "sourceElementFileId": "FJ3301",
+          "sourceElementFileIds": [
+            "FJ3301"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.fourth.toe",
+          "structureId": "FMA:32646",
+          "structureName": "middle phalanx of right fourth toe",
+          "clinicalName": "Middle phalanx of right fourth toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8576",
+          "sourceElementFileId": "FJ3302",
+          "sourceElementFileIds": [
+            "FJ3302"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.big.toe",
+          "structureId": "FMA:32650",
+          "structureName": "distal phalanx of right big toe",
+          "clinicalName": "Distal phalanx of right big toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9282",
+          "sourceElementFileId": "FJ3192",
+          "sourceElementFileIds": [
+            "FJ3192"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.second.toe",
+          "structureId": "FMA:32652",
+          "structureName": "distal phalanx of right second toe",
+          "clinicalName": "Distal phalanx of right second toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8472",
+          "sourceElementFileId": "FJ3189",
+          "sourceElementFileIds": [
+            "FJ3189"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.third.toe",
+          "structureId": "FMA:32654",
+          "structureName": "distal phalanx of right third toe",
+          "clinicalName": "Distal phalanx of right third toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9005",
+          "sourceElementFileId": "FJ3190",
+          "sourceElementFileIds": [
+            "FJ3190"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.fourth.toe",
+          "structureId": "FMA:32656",
+          "structureName": "distal phalanx of right fourth toe",
+          "clinicalName": "Distal phalanx of right fourth toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9261",
+          "sourceElementFileId": "FJ3191",
+          "sourceElementFileIds": [
+            "FJ3191"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.distal.phalanx.of.right.little.toe",
+          "structureId": "FMA:32658",
+          "structureName": "distal phalanx of right little toe",
+          "clinicalName": "Distal phalanx of right little toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8695",
+          "sourceElementFileId": "FJ3195",
+          "sourceElementFileIds": [
+            "FJ3195"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.proximal.phalanx.of.right.big.toe",
+          "structureId": "FMA:43253",
+          "structureName": "proximal phalanx of right big toe",
+          "clinicalName": "Proximal phalanx of right big toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8785",
+          "sourceElementFileId": "FJ3310",
+          "sourceElementFileIds": [
+            "FJ3310"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.middle.phalanx.of.right.little.toe",
+          "structureId": "FMA:230986",
+          "structureName": "middle phalanx of right little toe",
+          "clinicalName": "Middle phalanx of right little toe",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-upper-right",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9234",
+          "sourceElementFileId": "FJ3305",
+          "sourceElementFileIds": [
+            "FJ3305"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

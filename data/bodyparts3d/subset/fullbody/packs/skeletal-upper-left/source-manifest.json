@@ -1,0 +1,1036 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "skeletal-upper-left",
+  "regionRationale": "Full-body curated skeletal pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-upper-left",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "bone.left.humerus",
+      "structureId": "FMA:23131",
+      "preferredName": "left humerus",
+      "clinicalName": "Left humerus",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23131",
+      "sourceRepresentationId": "BP9191",
+      "sourceElementFileId": "FJ3262",
+      "sourceElementFileIds": [
+        "FJ3262"
+      ],
+      "sourceFile": "./obj/FJ3262.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4a07066d7c7f17dfeb61797dc31c529d0d6fd3fda8136912ebd8a92ccc1ac6fc"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3262",
+          "sha256": "4a07066d7c7f17dfeb61797dc31c529d0d6fd3fda8136912ebd8a92ccc1ac6fc",
+          "bytes": 247429
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.radius",
+      "structureId": "FMA:23465",
+      "preferredName": "left radius",
+      "clinicalName": "Left radius",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23465",
+      "sourceRepresentationId": "BP9059",
+      "sourceElementFileId": "FJ3277",
+      "sourceElementFileIds": [
+        "FJ3277"
+      ],
+      "sourceFile": "./obj/FJ3277.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c41a7de7eddf5b91543fb22cf34c7dcad50241ffe1faae6ae22e1be30ca9390a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3277",
+          "sha256": "c41a7de7eddf5b91543fb22cf34c7dcad50241ffe1faae6ae22e1be30ca9390a",
+          "bytes": 39875
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.ulna",
+      "structureId": "FMA:23468",
+      "preferredName": "left ulna",
+      "clinicalName": "Left ulna",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23468",
+      "sourceRepresentationId": "BP9070",
+      "sourceElementFileId": "FJ3286",
+      "sourceElementFileIds": [
+        "FJ3286"
+      ],
+      "sourceFile": "./obj/FJ3286.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0e3c48a4b664ffc37ef11eb4754c6c7f4adc8fd1d3e54d1286307432c7d04bfc"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3286",
+          "sha256": "0e3c48a4b664ffc37ef11eb4754c6c7f4adc8fd1d3e54d1286307432c7d04bfc",
+          "bytes": 53061
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.index.finger",
+      "structureId": "FMA:23938",
+      "preferredName": "middle phalanx of left index finger",
+      "clinicalName": "Middle phalanx of left index finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23938",
+      "sourceRepresentationId": "BP9063",
+      "sourceElementFileId": "FJ3296",
+      "sourceElementFileIds": [
+        "FJ3296"
+      ],
+      "sourceFile": "./obj/FJ3296.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a2f1986d020da3ec013aeefb14b11223b18ab4181f0e7f2e56d54faee672e34f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3296",
+          "sha256": "a2f1986d020da3ec013aeefb14b11223b18ab4181f0e7f2e56d54faee672e34f",
+          "bytes": 19633
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.middle.finger",
+      "structureId": "FMA:23940",
+      "preferredName": "middle phalanx of left middle finger",
+      "clinicalName": "Middle phalanx of left middle finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23940",
+      "sourceRepresentationId": "BP8456",
+      "sourceElementFileId": "FJ3299",
+      "sourceElementFileIds": [
+        "FJ3299"
+      ],
+      "sourceFile": "./obj/FJ3299.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f0404230992ffcf77f1d3834c6015305abe10c2c40a84e2e920a21d9cc0743f2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3299",
+          "sha256": "f0404230992ffcf77f1d3834c6015305abe10c2c40a84e2e920a21d9cc0743f2",
+          "bytes": 24416
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.ring.finger",
+      "structureId": "FMA:23942",
+      "preferredName": "middle phalanx of left ring finger",
+      "clinicalName": "Middle phalanx of left ring finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23942",
+      "sourceRepresentationId": "BP8611",
+      "sourceElementFileId": "FJ3291",
+      "sourceElementFileIds": [
+        "FJ3291"
+      ],
+      "sourceFile": "./obj/FJ3291.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5c352c5c4329997419f731995176a2e293c749bc4896de37e6feb9d8b122cfac"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3291",
+          "sha256": "5c352c5c4329997419f731995176a2e293c749bc4896de37e6feb9d8b122cfac",
+          "bytes": 22300
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.little.finger",
+      "structureId": "FMA:23944",
+      "preferredName": "middle phalanx of left little finger",
+      "clinicalName": "Middle phalanx of left little finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23944",
+      "sourceRepresentationId": "BP8595",
+      "sourceElementFileId": "FJ3297",
+      "sourceElementFileIds": [
+        "FJ3297"
+      ],
+      "sourceFile": "./obj/FJ3297.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "536be862531dc82ab85bc0f7a49f1492574a39d613db552a1dc98b535e2c83f5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3297",
+          "sha256": "536be862531dc82ab85bc0f7a49f1492574a39d613db552a1dc98b535e2c83f5",
+          "bytes": 18370
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.thumb",
+      "structureId": "FMA:23951",
+      "preferredName": "distal phalanx of left thumb",
+      "clinicalName": "Distal phalanx of left thumb",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23951",
+      "sourceRepresentationId": "BP9118",
+      "sourceElementFileId": "FJ3188",
+      "sourceElementFileIds": [
+        "FJ3188"
+      ],
+      "sourceFile": "./obj/FJ3188.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cafb49c4af872d990b2cd7a3ea279e088ea596cea25ee2fdce16b8ebbb04d37c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3188",
+          "sha256": "cafb49c4af872d990b2cd7a3ea279e088ea596cea25ee2fdce16b8ebbb04d37c",
+          "bytes": 18734
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.index.finger",
+      "structureId": "FMA:23953",
+      "preferredName": "distal phalanx of left index finger",
+      "clinicalName": "Distal phalanx of left index finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23953",
+      "sourceRepresentationId": "BP8295",
+      "sourceElementFileId": "FJ3183",
+      "sourceElementFileIds": [
+        "FJ3183"
+      ],
+      "sourceFile": "./obj/FJ3183.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "53cd2e02023923e93f7651aed2b7b198fdaa9e0c8c8e83167b7ba371a2467396"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3183",
+          "sha256": "53cd2e02023923e93f7651aed2b7b198fdaa9e0c8c8e83167b7ba371a2467396",
+          "bytes": 21250
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.middle.finger",
+      "structureId": "FMA:23955",
+      "preferredName": "distal phalanx of left middle finger",
+      "clinicalName": "Distal phalanx of left middle finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23955",
+      "sourceRepresentationId": "BP8844",
+      "sourceElementFileId": "FJ3186",
+      "sourceElementFileIds": [
+        "FJ3186"
+      ],
+      "sourceFile": "./obj/FJ3186.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "52a6da87eb85141fbfc47457b45704fbb360a64d30a9fe13b44edbfcdfcc7a8a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3186",
+          "sha256": "52a6da87eb85141fbfc47457b45704fbb360a64d30a9fe13b44edbfcdfcc7a8a",
+          "bytes": 17608
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.ring.finger",
+      "structureId": "FMA:23957",
+      "preferredName": "distal phalanx of left ring finger",
+      "clinicalName": "Distal phalanx of left ring finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23957",
+      "sourceRepresentationId": "BP9065",
+      "sourceElementFileId": "FJ3187",
+      "sourceElementFileIds": [
+        "FJ3187"
+      ],
+      "sourceFile": "./obj/FJ3187.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "30fde420c59b5e151de258f9c358c4cc1463de8b85c60e7c4b0a4d7ff573b9ad"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3187",
+          "sha256": "30fde420c59b5e151de258f9c358c4cc1463de8b85c60e7c4b0a4d7ff573b9ad",
+          "bytes": 13637
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.little.finger",
+      "structureId": "FMA:23959",
+      "preferredName": "distal phalanx of left little finger",
+      "clinicalName": "Distal phalanx of left little finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA23959",
+      "sourceRepresentationId": "BP8799",
+      "sourceElementFileId": "FJ3184",
+      "sourceElementFileIds": [
+        "FJ3184"
+      ],
+      "sourceFile": "./obj/FJ3184.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "56799202f865a5f250cf43da0619baebccde1dae3ee6cd3295e8e8171b4b6158"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3184",
+          "sha256": "56799202f865a5f250cf43da0619baebccde1dae3ee6cd3295e8e8171b4b6158",
+          "bytes": 14522
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.first.metacarpal.bone",
+      "structureId": "FMA:24465",
+      "preferredName": "left first metacarpal bone",
+      "clinicalName": "Left first metacarpal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA24465",
+      "sourceRepresentationId": "BP8887",
+      "sourceElementFileId": "FJ3240",
+      "sourceElementFileIds": [
+        "FJ3240"
+      ],
+      "sourceFile": "./obj/FJ3240.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f512f1433a67003297c3ca0fca775c94372313cf3c3de28774a1cd7556e08362"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3240",
+          "sha256": "f512f1433a67003297c3ca0fca775c94372313cf3c3de28774a1cd7556e08362",
+          "bytes": 34523
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.second.metacarpal.bone",
+      "structureId": "FMA:24467",
+      "preferredName": "left second metacarpal bone",
+      "clinicalName": "Left second metacarpal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA24467",
+      "sourceRepresentationId": "BP8909",
+      "sourceElementFileId": "FJ3243",
+      "sourceElementFileIds": [
+        "FJ3243"
+      ],
+      "sourceFile": "./obj/FJ3243.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "728fb5278b0e3d2ac9fb0af78ade721c5cb8764144e318a85f07ff9cdb9d7f7d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3243",
+          "sha256": "728fb5278b0e3d2ac9fb0af78ade721c5cb8764144e318a85f07ff9cdb9d7f7d",
+          "bytes": 47129
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.third.metacarpal.bone",
+      "structureId": "FMA:24469",
+      "preferredName": "left third metacarpal bone",
+      "clinicalName": "Left third metacarpal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA24469",
+      "sourceRepresentationId": "BP8863",
+      "sourceElementFileId": "FJ3246",
+      "sourceElementFileIds": [
+        "FJ3246"
+      ],
+      "sourceFile": "./obj/FJ3246.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fa86f28ff85a3a1e3ac6872a05912deece4d3f8489e08ea4d21b432db304938b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3246",
+          "sha256": "fa86f28ff85a3a1e3ac6872a05912deece4d3f8489e08ea4d21b432db304938b",
+          "bytes": 43628
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fourth.metacarpal.bone",
+      "structureId": "FMA:24471",
+      "preferredName": "left fourth metacarpal bone",
+      "clinicalName": "Left fourth metacarpal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA24471",
+      "sourceRepresentationId": "BP9203",
+      "sourceElementFileId": "FJ3249",
+      "sourceElementFileIds": [
+        "FJ3249"
+      ],
+      "sourceFile": "./obj/FJ3249.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c5f7a10a04542437ff52fde75f81c5b0b2cba6a4a68c56b829c9e0de2fe1b72f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3249",
+          "sha256": "c5f7a10a04542437ff52fde75f81c5b0b2cba6a4a68c56b829c9e0de2fe1b72f",
+          "bytes": 33761
+        }
+      ]
+    },
+    {
+      "meshId": "bone.left.fifth.metacarpal.bone",
+      "structureId": "FMA:24473",
+      "preferredName": "left fifth metacarpal bone",
+      "clinicalName": "Left fifth metacarpal bone",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA24473",
+      "sourceRepresentationId": "BP8000",
+      "sourceElementFileId": "FJ3252",
+      "sourceElementFileIds": [
+        "FJ3252"
+      ],
+      "sourceFile": "./obj/FJ3252.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ca8db2999ff2d7a14a61e9cbeb83a01011a3557df844ff1c47bb7ac3eaeccdb8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3252",
+          "sha256": "ca8db2999ff2d7a14a61e9cbeb83a01011a3557df844ff1c47bb7ac3eaeccdb8",
+          "bytes": 30808
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.second.toe",
+      "structureId": "FMA:32635",
+      "preferredName": "proximal phalanx of left second toe",
+      "clinicalName": "Proximal phalanx of left second toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32635",
+      "sourceRepresentationId": "BP9088",
+      "sourceElementFileId": "FJ3328",
+      "sourceElementFileIds": [
+        "FJ3328"
+      ],
+      "sourceFile": "./obj/FJ3328.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fd7064f417423cb6224e68867b0f3c5fd46c165a76fba035199e4db235d0616b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3328",
+          "sha256": "fd7064f417423cb6224e68867b0f3c5fd46c165a76fba035199e4db235d0616b",
+          "bytes": 24728
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.third.toe",
+      "structureId": "FMA:32637",
+      "preferredName": "proximal phalanx of left third toe",
+      "clinicalName": "Proximal phalanx of left third toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32637",
+      "sourceRepresentationId": "BP8837",
+      "sourceElementFileId": "FJ3311",
+      "sourceElementFileIds": [
+        "FJ3311"
+      ],
+      "sourceFile": "./obj/FJ3311.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4787599e0e9fefaa45c40736f38ccacc8ec7e7e867cde692c5ea4f775e97364b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3311",
+          "sha256": "4787599e0e9fefaa45c40736f38ccacc8ec7e7e867cde692c5ea4f775e97364b",
+          "bytes": 26453
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.fourth.toe",
+      "structureId": "FMA:32639",
+      "preferredName": "proximal phalanx of left fourth toe",
+      "clinicalName": "Proximal phalanx of left fourth toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32639",
+      "sourceRepresentationId": "BP8346",
+      "sourceElementFileId": "FJ3312",
+      "sourceElementFileIds": [
+        "FJ3312"
+      ],
+      "sourceFile": "./obj/FJ3312.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "32b171c096dfe9993503b4f14e58d5b2996dadf73352efc506c04d1098370a5b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3312",
+          "sha256": "32b171c096dfe9993503b4f14e58d5b2996dadf73352efc506c04d1098370a5b",
+          "bytes": 27741
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.little.toe",
+      "structureId": "FMA:32641",
+      "preferredName": "proximal phalanx of left little toe",
+      "clinicalName": "Proximal phalanx of left little toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32641",
+      "sourceRepresentationId": "BP8594",
+      "sourceElementFileId": "FJ3315",
+      "sourceElementFileIds": [
+        "FJ3315"
+      ],
+      "sourceFile": "./obj/FJ3315.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4488ac24e66f25118feb375fbdf19e6e123595cbd26c726c3df1604bec59c7f8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3315",
+          "sha256": "4488ac24e66f25118feb375fbdf19e6e123595cbd26c726c3df1604bec59c7f8",
+          "bytes": 25033
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.second.toe",
+      "structureId": "FMA:32643",
+      "preferredName": "middle phalanx of left second toe",
+      "clinicalName": "Middle phalanx of left second toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32643",
+      "sourceRepresentationId": "BP7873",
+      "sourceElementFileId": "FJ3293",
+      "sourceElementFileIds": [
+        "FJ3293"
+      ],
+      "sourceFile": "./obj/FJ3293.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "72afe21185eed25dbab98a1bb7cb28e64012f672bfb3a76d81fdbf5b531f4958"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3293",
+          "sha256": "72afe21185eed25dbab98a1bb7cb28e64012f672bfb3a76d81fdbf5b531f4958",
+          "bytes": 20887
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.third.toe",
+      "structureId": "FMA:32645",
+      "preferredName": "middle phalanx of left third toe",
+      "clinicalName": "Middle phalanx of left third toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32645",
+      "sourceRepresentationId": "BP7748",
+      "sourceElementFileId": "FJ3294",
+      "sourceElementFileIds": [
+        "FJ3294"
+      ],
+      "sourceFile": "./obj/FJ3294.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "036f7e9bca027b8b7e6075976249ba90178a9639591878a1b5954d0f7d237c17"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3294",
+          "sha256": "036f7e9bca027b8b7e6075976249ba90178a9639591878a1b5954d0f7d237c17",
+          "bytes": 19296
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.fourth.toe",
+      "structureId": "FMA:32647",
+      "preferredName": "middle phalanx of left fourth toe",
+      "clinicalName": "Middle phalanx of left fourth toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32647",
+      "sourceRepresentationId": "BP9004",
+      "sourceElementFileId": "FJ3295",
+      "sourceElementFileIds": [
+        "FJ3295"
+      ],
+      "sourceFile": "./obj/FJ3295.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cffbba99a2d64e833cac9545d91dc21092b2d7ecef35dd276a80ff7d35157239"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3295",
+          "sha256": "cffbba99a2d64e833cac9545d91dc21092b2d7ecef35dd276a80ff7d35157239",
+          "bytes": 18898
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.big.toe",
+      "structureId": "FMA:32651",
+      "preferredName": "distal phalanx of left big toe",
+      "clinicalName": "Distal phalanx of left big toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32651",
+      "sourceRepresentationId": "BP9247",
+      "sourceElementFileId": "FJ3182",
+      "sourceElementFileIds": [
+        "FJ3182"
+      ],
+      "sourceFile": "./obj/FJ3182.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "aa0a98125fc8e3cfafa4eb1a4a00df9f21b7eefbd6d66327561a70be6f15c5d9"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3182",
+          "sha256": "aa0a98125fc8e3cfafa4eb1a4a00df9f21b7eefbd6d66327561a70be6f15c5d9",
+          "bytes": 26065
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.second.toe",
+      "structureId": "FMA:32653",
+      "preferredName": "distal phalanx of left second toe",
+      "clinicalName": "Distal phalanx of left second toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32653",
+      "sourceRepresentationId": "BP8108",
+      "sourceElementFileId": "FJ3179",
+      "sourceElementFileIds": [
+        "FJ3179"
+      ],
+      "sourceFile": "./obj/FJ3179.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "99c76669f09d0758cd2baadbba001728458615370705ef255b933f184689941b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3179",
+          "sha256": "99c76669f09d0758cd2baadbba001728458615370705ef255b933f184689941b",
+          "bytes": 16797
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.third.toe",
+      "structureId": "FMA:32655",
+      "preferredName": "distal phalanx of left third toe",
+      "clinicalName": "Distal phalanx of left third toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32655",
+      "sourceRepresentationId": "BP7955",
+      "sourceElementFileId": "FJ3180",
+      "sourceElementFileIds": [
+        "FJ3180"
+      ],
+      "sourceFile": "./obj/FJ3180.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4b3b06a548ec2cf7eec686f9314dc0fb10fd7a72afc216b88d0b2bf857bb7bf1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3180",
+          "sha256": "4b3b06a548ec2cf7eec686f9314dc0fb10fd7a72afc216b88d0b2bf857bb7bf1",
+          "bytes": 20679
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.fourth.toe",
+      "structureId": "FMA:32657",
+      "preferredName": "distal phalanx of left fourth toe",
+      "clinicalName": "Distal phalanx of left fourth toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32657",
+      "sourceRepresentationId": "BP8789",
+      "sourceElementFileId": "FJ3181",
+      "sourceElementFileIds": [
+        "FJ3181"
+      ],
+      "sourceFile": "./obj/FJ3181.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "71e7e83288bde730b7f2c04b3150de2d27236f0ed8e9db6a88704f6c1b9c9721"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3181",
+          "sha256": "71e7e83288bde730b7f2c04b3150de2d27236f0ed8e9db6a88704f6c1b9c9721",
+          "bytes": 15002
+        }
+      ]
+    },
+    {
+      "meshId": "bone.distal.phalanx.of.left.little.toe",
+      "structureId": "FMA:32659",
+      "preferredName": "distal phalanx of left little toe",
+      "clinicalName": "Distal phalanx of left little toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA32659",
+      "sourceRepresentationId": "BP8818",
+      "sourceElementFileId": "FJ3185",
+      "sourceElementFileIds": [
+        "FJ3185"
+      ],
+      "sourceFile": "./obj/FJ3185.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5978ed3c7d728bc03a558c5fe2a7db6fd272d02dc6ed67a1fbb21ce1693d659f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3185",
+          "sha256": "5978ed3c7d728bc03a558c5fe2a7db6fd272d02dc6ed67a1fbb21ce1693d659f",
+          "bytes": 15693
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.big.toe",
+      "structureId": "FMA:43254",
+      "preferredName": "proximal phalanx of left big toe",
+      "clinicalName": "Proximal phalanx of left big toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA43254",
+      "sourceRepresentationId": "BP8653",
+      "sourceElementFileId": "FJ3329",
+      "sourceElementFileIds": [
+        "FJ3329"
+      ],
+      "sourceFile": "./obj/FJ3329.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3b6770f4dd2bfc54fea30468a90eafd63c21aea8381688ce0912f85502f86f25"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3329",
+          "sha256": "3b6770f4dd2bfc54fea30468a90eafd63c21aea8381688ce0912f85502f86f25",
+          "bytes": 33793
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.thumb",
+      "structureId": "FMA:65470",
+      "preferredName": "proximal phalanx of left thumb",
+      "clinicalName": "Proximal phalanx of left thumb",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA65470",
+      "sourceRepresentationId": "BP7897",
+      "sourceElementFileId": "FJ3318",
+      "sourceElementFileIds": [
+        "FJ3318"
+      ],
+      "sourceFile": "./obj/FJ3318.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3b327f7169609c03540967f7f8ceba810afda27a427cb5f16ea6641ef429837a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3318",
+          "sha256": "3b327f7169609c03540967f7f8ceba810afda27a427cb5f16ea6641ef429837a",
+          "bytes": 21619
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.little.finger",
+      "structureId": "FMA:66791",
+      "preferredName": "proximal phalanx of left little finger",
+      "clinicalName": "Proximal phalanx of left little finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA66791",
+      "sourceRepresentationId": "BP8710",
+      "sourceElementFileId": "FJ3314",
+      "sourceElementFileIds": [
+        "FJ3314"
+      ],
+      "sourceFile": "./obj/FJ3314.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8b824d96eed3bc1325665fa99592d58ebd43346b436154fefae6a3c2a98753af"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3314",
+          "sha256": "8b824d96eed3bc1325665fa99592d58ebd43346b436154fefae6a3c2a98753af",
+          "bytes": 17248
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.middle.finger",
+      "structureId": "FMA:71908",
+      "preferredName": "proximal phalanx of left middle finger",
+      "clinicalName": "Proximal phalanx of left middle finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA71908",
+      "sourceRepresentationId": "BP8864",
+      "sourceElementFileId": "FJ3316",
+      "sourceElementFileIds": [
+        "FJ3316"
+      ],
+      "sourceFile": "./obj/FJ3316.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5dccce5f8ff2f9152fb6b758b8cdd0bcf9fd73cc01a78464a965f69e90994bb6"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3316",
+          "sha256": "5dccce5f8ff2f9152fb6b758b8cdd0bcf9fd73cc01a78464a965f69e90994bb6",
+          "bytes": 28623
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.index.finger",
+      "structureId": "FMA:71915",
+      "preferredName": "proximal phalanx of left index finger",
+      "clinicalName": "Proximal phalanx of left index finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA71915",
+      "sourceRepresentationId": "BP8328",
+      "sourceElementFileId": "FJ3313",
+      "sourceElementFileIds": [
+        "FJ3313"
+      ],
+      "sourceFile": "./obj/FJ3313.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "3eb71ace606cc3271523e30a405c061290d9da661b59310a682c9d50d9c0ddf1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3313",
+          "sha256": "3eb71ace606cc3271523e30a405c061290d9da661b59310a682c9d50d9c0ddf1",
+          "bytes": 24151
+        }
+      ]
+    },
+    {
+      "meshId": "bone.proximal.phalanx.of.left.ring.finger",
+      "structureId": "FMA:71916",
+      "preferredName": "proximal phalanx of left ring finger",
+      "clinicalName": "Proximal phalanx of left ring finger",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA71916",
+      "sourceRepresentationId": "BP7936",
+      "sourceElementFileId": "FJ3317",
+      "sourceElementFileIds": [
+        "FJ3317"
+      ],
+      "sourceFile": "./obj/FJ3317.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "099ccb27cdafeb169ffeb8bc73804910f30a6cefccf830d4dbfa6855bfebf46c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3317",
+          "sha256": "099ccb27cdafeb169ffeb8bc73804910f30a6cefccf830d4dbfa6855bfebf46c",
+          "bytes": 22679
+        }
+      ]
+    },
+    {
+      "meshId": "bone.middle.phalanx.of.left.little.toe",
+      "structureId": "FMA:230988",
+      "preferredName": "middle phalanx of left little toe",
+      "clinicalName": "Middle phalanx of left little toe",
+      "layer": "skeletal",
+      "laterality": "left",
+      "parentStructureId": null,
+      "region": "skeletal-upper-left",
+      "sourceConceptId": "FMA230988",
+      "sourceRepresentationId": "BP9035",
+      "sourceElementFileId": "FJ3298",
+      "sourceElementFileIds": [
+        "FJ3298"
+      ],
+      "sourceFile": "./obj/FJ3298.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "140d41e53c49bbbaea54972b738b215d3c3ef6bb9c5284f9f7e0516a25e2f68c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ3298",
+          "sha256": "140d41e53c49bbbaea54972b738b215d3c3ef6bb9c5284f9f7e0516a25e2f68c",
+          "bytes": 14800
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2084 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "BodyParts3D",
+  "sourceVersion": "4.0",
+  "sourceDate": "2013-05-22",
+  "license": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "archiveUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "archiveFilename": "isa_BP3D_4.0_obj_99.zip",
+  "archiveChecksum": {
+    "algorithm": "sha256",
+    "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+  },
+  "region": "muscle-upper-right",
+  "regionRationale": "Full-body curated muscle pack for clinician anatomical presentation.",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-upper-right",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "sourceCoordinateSystem": {
+    "units": "millimeters",
+    "up": "+Z",
+    "handedness": "right",
+    "laterality": "+X is anatomical left"
+  },
+  "structures": [
+    {
+      "meshId": "muscle.right.pectoralis.minor",
+      "structureId": "FMA:13375",
+      "preferredName": "right pectoralis minor",
+      "clinicalName": "Right pectoralis minor",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13375",
+      "sourceRepresentationId": "BP4775",
+      "sourceElementFileId": "FJ1456",
+      "sourceElementFileIds": [
+        "FJ1456"
+      ],
+      "sourceFile": "./obj/FJ1456.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "65831afdc2f80bf5fca581f196de727aa30c3adcc682ac4506a4a5d6cc71db05"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1456",
+          "sha256": "65831afdc2f80bf5fca581f196de727aa30c3adcc682ac4506a4a5d6cc71db05",
+          "bytes": 719480
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.rhomboid.major",
+      "structureId": "FMA:13381",
+      "preferredName": "right rhomboid major",
+      "clinicalName": "Right rhomboid major",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13381",
+      "sourceRepresentationId": "BP4780",
+      "sourceElementFileId": "FJ1536",
+      "sourceElementFileIds": [
+        "FJ1536"
+      ],
+      "sourceFile": "./obj/FJ1536.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "81b84d6d2e7c859004ee2d71f8fef2768ec422fbace3967d54e3f3b2965bdb89"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1536",
+          "sha256": "81b84d6d2e7c859004ee2d71f8fef2768ec422fbace3967d54e3f3b2965bdb89",
+          "bytes": 549548
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.rhomboid.minor",
+      "structureId": "FMA:13383",
+      "preferredName": "right rhomboid minor",
+      "clinicalName": "Right rhomboid minor",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13383",
+      "sourceRepresentationId": "BP4784",
+      "sourceElementFileId": "FJ1537",
+      "sourceElementFileIds": [
+        "FJ1537"
+      ],
+      "sourceFile": "./obj/FJ1537.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "acbd2dcd51879085bb2ec7d12b45c0ba2514ce3a2a1bb680bcf78732a1f688ff"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1537",
+          "sha256": "acbd2dcd51879085bb2ec7d12b45c0ba2514ce3a2a1bb680bcf78732a1f688ff",
+          "bytes": 157909
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.serratus.anterior",
+      "structureId": "FMA:13398",
+      "preferredName": "right serratus anterior",
+      "clinicalName": "Right serratus anterior",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13398",
+      "sourceRepresentationId": "BP4782",
+      "sourceElementFileId": "FJ1459",
+      "sourceElementFileIds": [
+        "FJ1459"
+      ],
+      "sourceFile": "./obj/FJ1459.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "33f4ae8c7a84785e2bc5f4f21432d13de0805e485a29f3e6762bac6f85cb61d5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1459",
+          "sha256": "33f4ae8c7a84785e2bc5f4f21432d13de0805e485a29f3e6762bac6f85cb61d5",
+          "bytes": 3600341
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.serratus.posterior.superior",
+      "structureId": "FMA:13403",
+      "preferredName": "right serratus posterior superior",
+      "clinicalName": "Right serratus posterior superior",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13403",
+      "sourceRepresentationId": "BP4766",
+      "sourceElementFileId": "FJ1542",
+      "sourceElementFileIds": [
+        "FJ1542"
+      ],
+      "sourceFile": "./obj/FJ1542.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5731a87fd7b629112dc376ce82570c8662618a1f6256f7b7d54384c363f6f6fd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1542",
+          "sha256": "5731a87fd7b629112dc376ce82570c8662618a1f6256f7b7d54384c363f6f6fd",
+          "bytes": 685962
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.serratus.posterior.inferior",
+      "structureId": "FMA:13405",
+      "preferredName": "right serratus posterior inferior",
+      "clinicalName": "Right serratus posterior inferior",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13405",
+      "sourceRepresentationId": "BP4768",
+      "sourceElementFileId": "FJ1541",
+      "sourceElementFileIds": [
+        "FJ1541"
+      ],
+      "sourceFile": "./obj/FJ1541.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cc8b7d9461278c3d3a1270277fc656159ee47bd9eed290a0d5aa1c15d5c2c006"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1541",
+          "sha256": "cc8b7d9461278c3d3a1270277fc656159ee47bd9eed290a0d5aa1c15d5c2c006",
+          "bytes": 977758
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.subclavius",
+      "structureId": "FMA:13412",
+      "preferredName": "right subclavius",
+      "clinicalName": "Right subclavius",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13412",
+      "sourceRepresentationId": "BP4773",
+      "sourceElementFileId": "FJ1460",
+      "sourceElementFileIds": [
+        "FJ1460"
+      ],
+      "sourceFile": "./obj/FJ1460.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "39c2b495c92f2603b5df5cf4ae18e25ef9a34bf583c6e8657b667596d238c28e"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1460",
+          "sha256": "39c2b495c92f2603b5df5cf4ae18e25ef9a34bf583c6e8657b667596d238c28e",
+          "bytes": 117571
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.subscapularis",
+      "structureId": "FMA:13414",
+      "preferredName": "right subscapularis",
+      "clinicalName": "Right subscapularis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA13414",
+      "sourceRepresentationId": "BP4795",
+      "sourceElementFileId": "FJ1504",
+      "sourceElementFileIds": [
+        "FJ1504"
+      ],
+      "sourceFile": "./obj/FJ1504.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "fdcbfd01f93e2d24bd73f5cb259a311c9f9e90de08c41573439844eef5f605dd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1504",
+          "sha256": "fdcbfd01f93e2d24bd73f5cb259a311c9f9e90de08c41573439844eef5f605dd",
+          "bytes": 231733
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.hallucis.longus",
+      "structureId": "FMA:22546",
+      "preferredName": "right extensor hallucis longus",
+      "clinicalName": "Right extensor hallucis longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA22546",
+      "sourceRepresentationId": "BP5022",
+      "sourceElementFileId": "FJ1408",
+      "sourceElementFileIds": [
+        "FJ1408"
+      ],
+      "sourceFile": "./obj/FJ1408.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5d04387c23d30f567bd43765a7eb860bb5844bd67a16e8ddf3c571eaaad9facc"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1408",
+          "sha256": "5d04387c23d30f567bd43765a7eb860bb5844bd67a16e8ddf3c571eaaad9facc",
+          "bytes": 133596
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.digitorum.longus",
+      "structureId": "FMA:22548",
+      "preferredName": "right extensor digitorum longus",
+      "clinicalName": "Right extensor digitorum longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA22548",
+      "sourceRepresentationId": "BP5024",
+      "sourceElementFileId": "FJ1406",
+      "sourceElementFileIds": [
+        "FJ1406"
+      ],
+      "sourceFile": "./obj/FJ1406.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cb5acc498691b7718bb7de1bada794e789687f2d91de9717c53e27cbeacceef8"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1406",
+          "sha256": "cb5acc498691b7718bb7de1bada794e789687f2d91de9717c53e27cbeacceef8",
+          "bytes": 390176
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.interosseous.membrane.of.right.forearm",
+      "structureId": "FMA:23707",
+      "preferredName": "interosseous membrane of right forearm",
+      "clinicalName": "Interosseous membrane of right forearm",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA23707",
+      "sourceRepresentationId": "BP4651",
+      "sourceElementFileId": "FJ1476",
+      "sourceElementFileIds": [
+        "FJ1476"
+      ],
+      "sourceFile": "./obj/FJ1476.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e70c96c4534da21f082cc494a7804f42db96195bed75641334348845cb1ddb97"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1476",
+          "sha256": "e70c96c4534da21f082cc494a7804f42db96195bed75641334348845cb1ddb97",
+          "bytes": 147476
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.levator.scapulae",
+      "structureId": "FMA:32540",
+      "preferredName": "right levator scapulae",
+      "clinicalName": "Right levator scapulae",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA32540",
+      "sourceRepresentationId": "BP4786",
+      "sourceElementFileId": "FJ1532",
+      "sourceElementFileIds": [
+        "FJ1532"
+      ],
+      "sourceFile": "./obj/FJ1532.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ee7897cbc5cde540e9cc29b03617d90f1b3caaebee4489f6590ee9c4632dcd42"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1532",
+          "sha256": "ee7897cbc5cde540e9cc29b03617d90f1b3caaebee4489f6590ee9c4632dcd42",
+          "bytes": 355503
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.supraspinatus",
+      "structureId": "FMA:32544",
+      "preferredName": "right supraspinatus",
+      "clinicalName": "Right supraspinatus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA32544",
+      "sourceRepresentationId": "BP4791",
+      "sourceElementFileId": "FJ1506",
+      "sourceElementFileIds": [
+        "FJ1506"
+      ],
+      "sourceFile": "./obj/FJ1506.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "793771eceb64385269ddeeb09245e8c53b67499194f6fa98049b5e17aafa8e0c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1506",
+          "sha256": "793771eceb64385269ddeeb09245e8c53b67499194f6fa98049b5e17aafa8e0c",
+          "bytes": 76172
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.infraspinatus.muscle",
+      "structureId": "FMA:32547",
+      "preferredName": "right infraspinatus muscle",
+      "clinicalName": "Right infraspinatus muscle",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA32547",
+      "sourceRepresentationId": "BP4797",
+      "sourceElementFileId": "FJ1500",
+      "sourceElementFileIds": [
+        "FJ1500"
+      ],
+      "sourceFile": "./obj/FJ1500.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "28f61376a3a88a28d14c44e1c20e9b7a34129772c130afa003daceac801455b1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1500",
+          "sha256": "28f61376a3a88a28d14c44e1c20e9b7a34129772c130afa003daceac801455b1",
+          "bytes": 69844
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.teres.major",
+      "structureId": "FMA:32551",
+      "preferredName": "right teres major",
+      "clinicalName": "Right teres major",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA32551",
+      "sourceRepresentationId": "BP4789",
+      "sourceElementFileId": "FJ1507",
+      "sourceElementFileIds": [
+        "FJ1507"
+      ],
+      "sourceFile": "./obj/FJ1507.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "217aa2d39fdaa682998c8a1a1ffe9c8b37fed881edbbeb8ed5c633fa1541eaac"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1507",
+          "sha256": "217aa2d39fdaa682998c8a1a1ffe9c8b37fed881edbbeb8ed5c633fa1541eaac",
+          "bytes": 93150
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.teres.minor",
+      "structureId": "FMA:32553",
+      "preferredName": "right teres minor",
+      "clinicalName": "Right teres minor",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA32553",
+      "sourceRepresentationId": "BP4793",
+      "sourceElementFileId": "FJ1508",
+      "sourceElementFileIds": [
+        "FJ1508"
+      ],
+      "sourceFile": "./obj/FJ1508.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f56e595b86cea659891664706cd4443acddd8dc69e4e5bb3855445eef302641a"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1508",
+          "sha256": "f56e595b86cea659891664706cd4443acddd8dc69e4e5bb3855445eef302641a",
+          "bytes": 38012
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.ascending.part.of.right.trapezius",
+      "structureId": "FMA:33581",
+      "preferredName": "ascending part of right trapezius",
+      "clinicalName": "Ascending part of right trapezius",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA33581",
+      "sourceRepresentationId": "BP5638",
+      "sourceElementFileId": "FJ1520",
+      "sourceElementFileIds": [
+        "FJ1520"
+      ],
+      "sourceFile": "./obj/FJ1520.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "6bb3d13198991bda4d0aae27561976b9ba53b0d21d817f180098307c7b99deb1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1520",
+          "sha256": "6bb3d13198991bda4d0aae27561976b9ba53b0d21d817f180098307c7b99deb1",
+          "bytes": 812371
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.transverse.part.of.right.trapezius",
+      "structureId": "FMA:33584",
+      "preferredName": "transverse part of right trapezius",
+      "clinicalName": "Transverse part of right trapezius",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA33584",
+      "sourceRepresentationId": "BP5610",
+      "sourceElementFileId": "FJ1554",
+      "sourceElementFileIds": [
+        "FJ1554"
+      ],
+      "sourceFile": "./obj/FJ1554.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f7683d77a5bfe9ac6d07fdc913c46cf41db20298c087e71df73fab18192e90a4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1554",
+          "sha256": "f7683d77a5bfe9ac6d07fdc913c46cf41db20298c087e71df73fab18192e90a4",
+          "bytes": 351869
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.descending.part.of.right.trapezius",
+      "structureId": "FMA:33586",
+      "preferredName": "descending part of right trapezius",
+      "clinicalName": "Descending part of right trapezius",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA33586",
+      "sourceRepresentationId": "BP5636",
+      "sourceElementFileId": "FJ1521",
+      "sourceElementFileIds": [
+        "FJ1521"
+      ],
+      "sourceFile": "./obj/FJ1521.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "19bd9d1cbbb84e10826eb770068f6e271cd79dde960bca62ac71da24120fc354"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1521",
+          "sha256": "19bd9d1cbbb84e10826eb770068f6e271cd79dde960bca62ac71da24120fc354",
+          "bytes": 537515
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.clavicular.part.of.right.deltoid",
+      "structureId": "FMA:34680",
+      "preferredName": "clavicular part of right deltoid",
+      "clinicalName": "Clavicular part of right deltoid",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA34680",
+      "sourceRepresentationId": "BP7573",
+      "sourceElementFileId": "FJ1468",
+      "sourceElementFileIds": [
+        "FJ1468"
+      ],
+      "sourceFile": "./obj/FJ1468.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "09eebb4a8d72c91936b0bfde7f35829a58f56103ac158f559186698458bcc616"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1468",
+          "sha256": "09eebb4a8d72c91936b0bfde7f35829a58f56103ac158f559186698458bcc616",
+          "bytes": 223657
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.acromial.part.of.right.deltoid",
+      "structureId": "FMA:34682",
+      "preferredName": "acromial part of right deltoid",
+      "clinicalName": "Acromial part of right deltoid",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA34682",
+      "sourceRepresentationId": "BP7571",
+      "sourceElementFileId": "FJ1467",
+      "sourceElementFileIds": [
+        "FJ1467"
+      ],
+      "sourceFile": "./obj/FJ1467.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2f69f1a13c836539abca85d9b77f55f96319ad3fdd75c62f498eabe49b266bfe"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1467",
+          "sha256": "2f69f1a13c836539abca85d9b77f55f96319ad3fdd75c62f498eabe49b266bfe",
+          "bytes": 92591
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.spinal.part.of.right.deltoid",
+      "structureId": "FMA:34684",
+      "preferredName": "spinal part of right deltoid",
+      "clinicalName": "Spinal part of right deltoid",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA34684",
+      "sourceRepresentationId": "BP5607",
+      "sourceElementFileId": "FJ1513",
+      "sourceElementFileIds": [
+        "FJ1513"
+      ],
+      "sourceFile": "./obj/FJ1513.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ef8308c92fd0d01d8c0d7ffd9238305eefc2f28710d7bb58f451512abdc08e99"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1513",
+          "sha256": "ef8308c92fd0d01d8c0d7ffd9238305eefc2f28710d7bb58f451512abdc08e99",
+          "bytes": 157136
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.clavicular.part.of.right.pectoralis.major",
+      "structureId": "FMA:34690",
+      "preferredName": "clavicular part of right pectoralis major",
+      "clinicalName": "Clavicular part of right pectoralis major",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA34690",
+      "sourceRepresentationId": "BP5582",
+      "sourceElementFileId": "FJ1447",
+      "sourceElementFileIds": [
+        "FJ1447"
+      ],
+      "sourceFile": "./obj/FJ1447.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e239a63adf99dfc094ece7efcd91ec7cd9ac802e9d7581141b311a7842fbbbe6"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1447",
+          "sha256": "e239a63adf99dfc094ece7efcd91ec7cd9ac802e9d7581141b311a7842fbbbe6",
+          "bytes": 141480
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.interosseous.membrane.of.right.leg",
+      "structureId": "FMA:35192",
+      "preferredName": "interosseous membrane of right leg",
+      "clinicalName": "Interosseous membrane of right leg",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA35192",
+      "sourceRepresentationId": "BP4649",
+      "sourceElementFileId": "FJ1392",
+      "sourceElementFileIds": [
+        "FJ1392"
+      ],
+      "sourceFile": "./obj/FJ1392.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5e096412b0b74f19d32080170b9cd6598d62bf9ba5add6bd2adf41b487f17d8f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1392",
+          "sha256": "5e096412b0b74f19d32080170b9cd6598d62bf9ba5add6bd2adf41b487f17d8f",
+          "bytes": 440866
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.pollicis.brevis",
+      "structureId": "FMA:37388",
+      "preferredName": "right flexor pollicis brevis",
+      "clinicalName": "Right flexor pollicis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37388",
+      "sourceRepresentationId": "BP8958",
+      "sourceElementFileId": "FJ1469M",
+      "sourceElementFileIds": [
+        "FJ1469M"
+      ],
+      "sourceFile": "./obj/FJ1469M.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "dbab9fdb424e8370bed0229f47af76209ab5f61613fc1c910d427a73e6ee8bd7"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1469M",
+          "sha256": "dbab9fdb424e8370bed0229f47af76209ab5f61613fc1c910d427a73e6ee8bd7",
+          "bytes": 63714
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.flexor.digiti.minimi.brevis.of.right.hand",
+      "structureId": "FMA:37398",
+      "preferredName": "flexor digiti minimi brevis of right hand",
+      "clinicalName": "Flexor digiti minimi brevis of right hand",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37398",
+      "sourceRepresentationId": "BP4858",
+      "sourceElementFileId": "FJ1470",
+      "sourceElementFileIds": [
+        "FJ1470"
+      ],
+      "sourceFile": "./obj/FJ1470.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "a0320cbafea76dae73ef8b8e44bd716507e496fd07adacdb9c3f7530e3e10f0f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1470",
+          "sha256": "a0320cbafea76dae73ef8b8e44bd716507e496fd07adacdb9c3f7530e3e10f0f",
+          "bytes": 28038
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.brevis",
+      "structureId": "FMA:37461",
+      "preferredName": "right flexor digitorum brevis",
+      "clinicalName": "Right flexor digitorum brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37461",
+      "sourceRepresentationId": "BP5048",
+      "sourceElementFileId": "FJ1413",
+      "sourceElementFileIds": [
+        "FJ1413"
+      ],
+      "sourceFile": "./obj/FJ1413.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4910cc83a0e1558971c95ce4b73a4845e3ab63a19cd3e92769aaf46f0bd41333"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1413",
+          "sha256": "4910cc83a0e1558971c95ce4b73a4845e3ab63a19cd3e92769aaf46f0bd41333",
+          "bytes": 227620
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.accessorius",
+      "structureId": "FMA:37465",
+      "preferredName": "right flexor accessorius",
+      "clinicalName": "Right flexor accessorius",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37465",
+      "sourceRepresentationId": "BP5052",
+      "sourceElementFileId": "FJ1412",
+      "sourceElementFileIds": [
+        "FJ1412"
+      ],
+      "sourceFile": "./obj/FJ1412.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "861d6da24530c840934d94591e7f769d1b3298adb32ba7bb0ecbb78963cf6657"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1412",
+          "sha256": "861d6da24530c840934d94591e7f769d1b3298adb32ba7bb0ecbb78963cf6657",
+          "bytes": 67952
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.flexor.digiti.minimi.brevis.of.right.foot",
+      "structureId": "FMA:37471",
+      "preferredName": "flexor digiti minimi brevis of right foot",
+      "clinicalName": "Flexor digiti minimi brevis of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37471",
+      "sourceRepresentationId": "BP5050",
+      "sourceElementFileId": "FJ1391",
+      "sourceElementFileIds": [
+        "FJ1391"
+      ],
+      "sourceFile": "./obj/FJ1391.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "82b364ba67142432c00427d87596e82fafa4524929273e20a75aa6062f553d52"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1391",
+          "sha256": "82b364ba67142432c00427d87596e82fafa4524929273e20a75aa6062f553d52",
+          "bytes": 72945
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.fourth.lumbrical.of.right.foot",
+      "structureId": "FMA:37483",
+      "preferredName": "fourth lumbrical of right foot",
+      "clinicalName": "Fourth lumbrical of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37483",
+      "sourceRepresentationId": "BP5042",
+      "sourceElementFileId": "FJ1389",
+      "sourceElementFileIds": [
+        "FJ1389"
+      ],
+      "sourceFile": "./obj/FJ1389.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "86b7a17497e4efde3030ec8e542178caba1c875a7af62d491ef8c89e42528444"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1389",
+          "sha256": "86b7a17497e4efde3030ec8e542178caba1c875a7af62d491ef8c89e42528444",
+          "bytes": 34476
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.third.lumbrical.of.right.foot",
+      "structureId": "FMA:37485",
+      "preferredName": "third lumbrical of right foot",
+      "clinicalName": "Third lumbrical of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37485",
+      "sourceRepresentationId": "BP5038",
+      "sourceElementFileId": "FJ1387",
+      "sourceElementFileIds": [
+        "FJ1387"
+      ],
+      "sourceFile": "./obj/FJ1387.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "11b4051e92be3f915e1ca7be08be43f1d8fc360d391903e6b0a83cda69b0a00f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1387",
+          "sha256": "11b4051e92be3f915e1ca7be08be43f1d8fc360d391903e6b0a83cda69b0a00f",
+          "bytes": 41535
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.coracobrachialis",
+      "structureId": "FMA:37665",
+      "preferredName": "right coracobrachialis",
+      "clinicalName": "Right coracobrachialis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37665",
+      "sourceRepresentationId": "BP4805",
+      "sourceElementFileId": "FJ1488",
+      "sourceElementFileIds": [
+        "FJ1488"
+      ],
+      "sourceFile": "./obj/FJ1488.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "7eb9835056883a0e35954d39ff930c4c8c32d41db000e9f0d656e3c663401e56"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1488",
+          "sha256": "7eb9835056883a0e35954d39ff930c4c8c32d41db000e9f0d656e3c663401e56",
+          "bytes": 39761
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.brachialis",
+      "structureId": "FMA:37668",
+      "preferredName": "right brachialis",
+      "clinicalName": "Right brachialis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37668",
+      "sourceRepresentationId": "BP4807",
+      "sourceElementFileId": "FJ1486",
+      "sourceElementFileIds": [
+        "FJ1486"
+      ],
+      "sourceFile": "./obj/FJ1486.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "be5f40b153fd6ce0c8c274eb4c26be8d1a29b4bbe75dd0e4a0dfe5c4d251fa03"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1486",
+          "sha256": "be5f40b153fd6ce0c8c274eb4c26be8d1a29b4bbe75dd0e4a0dfe5c4d251fa03",
+          "bytes": 127901
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.short.head.of.right.biceps.brachii",
+      "structureId": "FMA:37684",
+      "preferredName": "short head of right biceps brachii",
+      "clinicalName": "Short head of right biceps brachii",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37684",
+      "sourceRepresentationId": "BP5558",
+      "sourceElementFileId": "FJ1512",
+      "sourceElementFileIds": [
+        "FJ1512"
+      ],
+      "sourceFile": "./obj/FJ1512.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2173b7cce29f11036907b80e068e9bd6c16f22359d6e7994af9684454b99b4d5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1512",
+          "sha256": "2173b7cce29f11036907b80e068e9bd6c16f22359d6e7994af9684454b99b4d5",
+          "bytes": 161507
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.long.head.of.right.biceps.brachii",
+      "structureId": "FMA:37686",
+      "preferredName": "long head of right biceps brachii",
+      "clinicalName": "Long head of right biceps brachii",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37686",
+      "sourceRepresentationId": "BP5566",
+      "sourceElementFileId": "FJ1478",
+      "sourceElementFileIds": [
+        "FJ1478"
+      ],
+      "sourceFile": "./obj/FJ1478.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2442d2b5ac30c5da42e72eeff83d143df51c7617001cbc6552096a504f29bc07"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1478",
+          "sha256": "2442d2b5ac30c5da42e72eeff83d143df51c7617001cbc6552096a504f29bc07",
+          "bytes": 105386
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.medial.head.of.right.triceps.brachii",
+      "structureId": "FMA:37695",
+      "preferredName": "medial head of right triceps brachii",
+      "clinicalName": "Medial head of right triceps brachii",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37695",
+      "sourceRepresentationId": "BP5562",
+      "sourceElementFileId": "FJ1480",
+      "sourceElementFileIds": [
+        "FJ1480"
+      ],
+      "sourceFile": "./obj/FJ1480.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1ea653667afa5ff0bf0e01d71ac648819655241c130e8dd1778ed2f9561c34c5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1480",
+          "sha256": "1ea653667afa5ff0bf0e01d71ac648819655241c130e8dd1778ed2f9561c34c5",
+          "bytes": 61608
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.lateral.head.of.right.triceps.brachii",
+      "structureId": "FMA:37697",
+      "preferredName": "lateral head of right triceps brachii",
+      "clinicalName": "Lateral head of right triceps brachii",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37697",
+      "sourceRepresentationId": "BP5550",
+      "sourceElementFileId": "FJ1477",
+      "sourceElementFileIds": [
+        "FJ1477"
+      ],
+      "sourceFile": "./obj/FJ1477.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "1d1c3b42eec0dffe696bd25cffa81784c87c15f16c9605050fdf1cb2f47698dd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1477",
+          "sha256": "1d1c3b42eec0dffe696bd25cffa81784c87c15f16c9605050fdf1cb2f47698dd",
+          "bytes": 182250
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.long.head.of.right.triceps.brachii",
+      "structureId": "FMA:37699",
+      "preferredName": "long head of right triceps brachii",
+      "clinicalName": "Long head of right triceps brachii",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37699",
+      "sourceRepresentationId": "BP5564",
+      "sourceElementFileId": "FJ1479",
+      "sourceElementFileIds": [
+        "FJ1479"
+      ],
+      "sourceFile": "./obj/FJ1479.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "acc48f746bd07a117357a9c49a1a9850c96b85d7c63cf90a662a45717875a315"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1479",
+          "sha256": "acc48f746bd07a117357a9c49a1a9850c96b85d7c63cf90a662a45717875a315",
+          "bytes": 113287
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.anconeus",
+      "structureId": "FMA:37705",
+      "preferredName": "right anconeus",
+      "clinicalName": "Right anconeus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37705",
+      "sourceRepresentationId": "BP4802",
+      "sourceElementFileId": "FJ1485",
+      "sourceElementFileIds": [
+        "FJ1485"
+      ],
+      "sourceFile": "./obj/FJ1485.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "5c2e838a39547c4cdbb799cd5a54258d4ff76ab54b2859aecbfae2ba4588c5d4"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1485",
+          "sha256": "5c2e838a39547c4cdbb799cd5a54258d4ff76ab54b2859aecbfae2ba4588c5d4",
+          "bytes": 104059
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.first.lumbrical.of.right.foot",
+      "structureId": "FMA:37717",
+      "preferredName": "first lumbrical of right foot",
+      "clinicalName": "First lumbrical of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37717",
+      "sourceRepresentationId": "BP5044",
+      "sourceElementFileId": "FJ1383",
+      "sourceElementFileIds": [
+        "FJ1383"
+      ],
+      "sourceFile": "./obj/FJ1383.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d7bce4728ada3797b2ada290797ee98aeaf1d43d0279d83401c9d54ff72add3f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1383",
+          "sha256": "d7bce4728ada3797b2ada290797ee98aeaf1d43d0279d83401c9d54ff72add3f",
+          "bytes": 69503
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.second.lumbrical.of.right.foot",
+      "structureId": "FMA:37719",
+      "preferredName": "second lumbrical of right foot",
+      "clinicalName": "Second lumbrical of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37719",
+      "sourceRepresentationId": "BP5040",
+      "sourceElementFileId": "FJ1385",
+      "sourceElementFileIds": [
+        "FJ1385"
+      ],
+      "sourceFile": "./obj/FJ1385.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "76ad80b70d292c181e8947d623ddee8f373a20813e4d0fc8842c9b29800234a6"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1385",
+          "sha256": "76ad80b70d292c181e8947d623ddee8f373a20813e4d0fc8842c9b29800234a6",
+          "bytes": 23781
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.third.plantar.interosseous.of.right.foot",
+      "structureId": "FMA:37741",
+      "preferredName": "third plantar interosseous of right foot",
+      "clinicalName": "Third plantar interosseous of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37741",
+      "sourceRepresentationId": "BP5031",
+      "sourceElementFileId": "FJ1388",
+      "sourceElementFileIds": [
+        "FJ1388"
+      ],
+      "sourceFile": "./obj/FJ1388.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9b38a442bc6c67ecf339aa16a98f0c1aa3b83ec0f664cd6a443eed3ce381b464"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1388",
+          "sha256": "9b38a442bc6c67ecf339aa16a98f0c1aa3b83ec0f664cd6a443eed3ce381b464",
+          "bytes": 77768
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.second.plantar.interosseous.of.right.foot",
+      "structureId": "FMA:37743",
+      "preferredName": "second plantar interosseous of right foot",
+      "clinicalName": "Second plantar interosseous of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37743",
+      "sourceRepresentationId": "BP5033",
+      "sourceElementFileId": "FJ1386",
+      "sourceElementFileIds": [
+        "FJ1386"
+      ],
+      "sourceFile": "./obj/FJ1386.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "aa653c971e6d50e27f0b0aa90e5a6bdf453038bc4c63c51395425d4e0f4bfa26"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1386",
+          "sha256": "aa653c971e6d50e27f0b0aa90e5a6bdf453038bc4c63c51395425d4e0f4bfa26",
+          "bytes": 50098
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.first.plantar.interosseous.of.right.foot",
+      "structureId": "FMA:37745",
+      "preferredName": "first plantar interosseous of right foot",
+      "clinicalName": "First plantar interosseous of right foot",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA37745",
+      "sourceRepresentationId": "BP5035",
+      "sourceElementFileId": "FJ1384",
+      "sourceElementFileIds": [
+        "FJ1384"
+      ],
+      "sourceFile": "./obj/FJ1384.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "76db533b5ef8f3d4a85d142e0e5f7297c8996d0a75efcc4c5124d7643857e3a5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1384",
+          "sha256": "76db533b5ef8f3d4a85d142e0e5f7297c8996d0a75efcc4c5124d7643857e3a5",
+          "bytes": 53768
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.pronator.quadratus",
+      "structureId": "FMA:38454",
+      "preferredName": "right pronator quadratus",
+      "clinicalName": "Right pronator quadratus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38454",
+      "sourceRepresentationId": "BP4846",
+      "sourceElementFileId": "FJ1503",
+      "sourceElementFileIds": [
+        "FJ1503"
+      ],
+      "sourceFile": "./obj/FJ1503.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "04adea4b7060a08c9d734ea78156525b3d3983fc1da0601ac151198985e78cfd"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1503",
+          "sha256": "04adea4b7060a08c9d734ea78156525b3d3983fc1da0601ac151198985e78cfd",
+          "bytes": 192602
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.carpi.radialis",
+      "structureId": "FMA:38460",
+      "preferredName": "right flexor carpi radialis",
+      "clinicalName": "Right flexor carpi radialis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38460",
+      "sourceRepresentationId": "BP4841",
+      "sourceElementFileId": "FJ1496",
+      "sourceElementFileIds": [
+        "FJ1496"
+      ],
+      "sourceFile": "./obj/FJ1496.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8e83c638e2353bb8ba65547f4b846d89a1f393c4761806faf8e09970c9b6b6bf"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1496",
+          "sha256": "8e83c638e2353bb8ba65547f4b846d89a1f393c4761806faf8e09970c9b6b6bf",
+          "bytes": 82751
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.superficialis",
+      "structureId": "FMA:38470",
+      "preferredName": "right flexor digitorum superficialis",
+      "clinicalName": "Right flexor digitorum superficialis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38470",
+      "sourceRepresentationId": "BP4837",
+      "sourceElementFileId": "FJ1475",
+      "sourceElementFileIds": [
+        "FJ1475",
+        "FJ1499"
+      ],
+      "sourceFile": "./obj/FJ1475.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "9b3877dcb9838ac4e37f2a1fbf0542fca888a32650285bb07278d6ba9fa968e1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1475",
+          "sha256": "9b3877dcb9838ac4e37f2a1fbf0542fca888a32650285bb07278d6ba9fa968e1",
+          "bytes": 664548
+        },
+        {
+          "fileId": "FJ1499",
+          "sha256": "7f148f7db90d9723dcfe6742c55afc2100b712c00992d83356373ca27a2b0dc0",
+          "bytes": 63323
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.profundus",
+      "structureId": "FMA:38479",
+      "preferredName": "right flexor digitorum profundus",
+      "clinicalName": "Right flexor digitorum profundus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38479",
+      "sourceRepresentationId": "BP4848",
+      "sourceElementFileId": "FJ1497",
+      "sourceElementFileIds": [
+        "FJ1497"
+      ],
+      "sourceFile": "./obj/FJ1497.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e62f8adfa454bee523974952500aa32a16f086b249a434b4bbeabc333878ac39"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1497",
+          "sha256": "e62f8adfa454bee523974952500aa32a16f086b249a434b4bbeabc333878ac39",
+          "bytes": 392489
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.pollicis.longus",
+      "structureId": "FMA:38482",
+      "preferredName": "right flexor pollicis longus",
+      "clinicalName": "Right flexor pollicis longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38482",
+      "sourceRepresentationId": "BP4844",
+      "sourceElementFileId": "FJ1498",
+      "sourceElementFileIds": [
+        "FJ1498"
+      ],
+      "sourceFile": "./obj/FJ1498.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "e0fc87382350f38acb2a5197e83dabb450ba6d823222388c8e169e30c0bbfb94"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1498",
+          "sha256": "e0fc87382350f38acb2a5197e83dabb450ba6d823222388c8e169e30c0bbfb94",
+          "bytes": 151641
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.brachioradialis",
+      "structureId": "FMA:38486",
+      "preferredName": "right brachioradialis",
+      "clinicalName": "Right brachioradialis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38486",
+      "sourceRepresentationId": "BP4833",
+      "sourceElementFileId": "FJ1487",
+      "sourceElementFileIds": [
+        "FJ1487"
+      ],
+      "sourceFile": "./obj/FJ1487.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0ff651a5417f240c6a5205bef5218336a61fe3474752cca1b483d02aae0b92ad"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1487",
+          "sha256": "0ff651a5417f240c6a5205bef5218336a61fe3474752cca1b483d02aae0b92ad",
+          "bytes": 359055
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.carpi.radialis.longus",
+      "structureId": "FMA:38495",
+      "preferredName": "right extensor carpi radialis longus",
+      "clinicalName": "Right extensor carpi radialis longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38495",
+      "sourceRepresentationId": "BP4831",
+      "sourceElementFileId": "FJ1490",
+      "sourceElementFileIds": [
+        "FJ1490"
+      ],
+      "sourceFile": "./obj/FJ1490.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "8b6ec821491a2eafaee8c813cfad4532beae94c354595cc3e922d8cdbb36fb32"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1490",
+          "sha256": "8b6ec821491a2eafaee8c813cfad4532beae94c354595cc3e922d8cdbb36fb32",
+          "bytes": 179061
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.carpi.radialis.brevis",
+      "structureId": "FMA:38498",
+      "preferredName": "right extensor carpi radialis brevis",
+      "clinicalName": "Right extensor carpi radialis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38498",
+      "sourceRepresentationId": "BP4823",
+      "sourceElementFileId": "FJ1489",
+      "sourceElementFileIds": [
+        "FJ1489"
+      ],
+      "sourceFile": "./obj/FJ1489.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "31ccd9ec738252ec2eae88cf68068679d0663425c98b8d90dcbca18b3cbd1988"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1489",
+          "sha256": "31ccd9ec738252ec2eae88cf68068679d0663425c98b8d90dcbca18b3cbd1988",
+          "bytes": 158039
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.digitorum",
+      "structureId": "FMA:38501",
+      "preferredName": "right extensor digitorum",
+      "clinicalName": "Right extensor digitorum",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38501",
+      "sourceRepresentationId": "BP4827",
+      "sourceElementFileId": "FJ1492",
+      "sourceElementFileIds": [
+        "FJ1492"
+      ],
+      "sourceFile": "./obj/FJ1492.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "31f528b3ba6a8fb26177c9f1455692be3acfbb173b4c4cbf9dc3d597acb5c5ff"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1492",
+          "sha256": "31f528b3ba6a8fb26177c9f1455692be3acfbb173b4c4cbf9dc3d597acb5c5ff",
+          "bytes": 342296
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.digiti.minimi",
+      "structureId": "FMA:38504",
+      "preferredName": "right extensor digiti minimi",
+      "clinicalName": "Right extensor digiti minimi",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38504",
+      "sourceRepresentationId": "BP4825",
+      "sourceElementFileId": "FJ1491",
+      "sourceElementFileIds": [
+        "FJ1491"
+      ],
+      "sourceFile": "./obj/FJ1491.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "2717a761854ba7fe50d12f5ec4eca0f0728795777ae9a7ec87e019f01e3b8267"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1491",
+          "sha256": "2717a761854ba7fe50d12f5ec4eca0f0728795777ae9a7ec87e019f01e3b8267",
+          "bytes": 102700
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.carpi.ulnaris",
+      "structureId": "FMA:38507",
+      "preferredName": "right extensor carpi ulnaris",
+      "clinicalName": "Right extensor carpi ulnaris",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38507",
+      "sourceRepresentationId": "BP4829",
+      "sourceElementFileId": "FJ1472",
+      "sourceElementFileIds": [
+        "FJ1472",
+        "FJ1517"
+      ],
+      "sourceFile": "./obj/FJ1472.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "f6aadd5b1df9440ec0c4fabf21641f72447d5190bcaf58f357e8b5a76b3f5889"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1472",
+          "sha256": "f6aadd5b1df9440ec0c4fabf21641f72447d5190bcaf58f357e8b5a76b3f5889",
+          "bytes": 248132
+        },
+        {
+          "fileId": "FJ1517",
+          "sha256": "e6a4cec704d3601a33704b40ee1f3f7bce484017dd563d1f4d2da43331b3ffce",
+          "bytes": 102287
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.supinator",
+      "structureId": "FMA:38513",
+      "preferredName": "right supinator",
+      "clinicalName": "Right supinator",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38513",
+      "sourceRepresentationId": "BP4814",
+      "sourceElementFileId": "FJ1505",
+      "sourceElementFileIds": [
+        "FJ1505"
+      ],
+      "sourceFile": "./obj/FJ1505.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "83c5940f2c6516ecf5b0eb69de5dc0a056177b29f7bc046b94cc20c85460ae46"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1505",
+          "sha256": "83c5940f2c6516ecf5b0eb69de5dc0a056177b29f7bc046b94cc20c85460ae46",
+          "bytes": 241649
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.pollicis.brevis",
+      "structureId": "FMA:38519",
+      "preferredName": "right extensor pollicis brevis",
+      "clinicalName": "Right extensor pollicis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38519",
+      "sourceRepresentationId": "BP4818",
+      "sourceElementFileId": "FJ1494",
+      "sourceElementFileIds": [
+        "FJ1494"
+      ],
+      "sourceFile": "./obj/FJ1494.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "61cfb7481e1f7dea291cf59208719b08c27191156e38ffd25e744918836d957b"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1494",
+          "sha256": "61cfb7481e1f7dea291cf59208719b08c27191156e38ffd25e744918836d957b",
+          "bytes": 79961
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.pollicis.longus",
+      "structureId": "FMA:38522",
+      "preferredName": "right extensor pollicis longus",
+      "clinicalName": "Right extensor pollicis longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38522",
+      "sourceRepresentationId": "BP4816",
+      "sourceElementFileId": "FJ1495",
+      "sourceElementFileIds": [
+        "FJ1495"
+      ],
+      "sourceFile": "./obj/FJ1495.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "99a201417061edb3b2adc54fcd2b41eefa81c0e9e31027b43c41c328d1ade4f5"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1495",
+          "sha256": "99a201417061edb3b2adc54fcd2b41eefa81c0e9e31027b43c41c328d1ade4f5",
+          "bytes": 110183
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.indicis",
+      "structureId": "FMA:38525",
+      "preferredName": "right extensor indicis",
+      "clinicalName": "Right extensor indicis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38525",
+      "sourceRepresentationId": "BP4812",
+      "sourceElementFileId": "FJ1493",
+      "sourceElementFileIds": [
+        "FJ1493"
+      ],
+      "sourceFile": "./obj/FJ1493.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b23d7087dbe581fa03e316dfed18f73ba4ccb54b16091d442ac057f9aa9c7b60"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1493",
+          "sha256": "b23d7087dbe581fa03e316dfed18f73ba4ccb54b16091d442ac057f9aa9c7b60",
+          "bytes": 62068
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.humeral.head.of.right.pronator.teres",
+      "structureId": "FMA:38560",
+      "preferredName": "humeral head of right pronator teres",
+      "clinicalName": "Humeral head of right pronator teres",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38560",
+      "sourceRepresentationId": "BP5568",
+      "sourceElementFileId": "FJ1474",
+      "sourceElementFileIds": [
+        "FJ1474"
+      ],
+      "sourceFile": "./obj/FJ1474.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "589e18d8dd9eac471404fae1035b01476ed0021af1cb2822c8c759164a2a45ba"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1474",
+          "sha256": "589e18d8dd9eac471404fae1035b01476ed0021af1cb2822c8c759164a2a45ba",
+          "bytes": 151318
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.ulnar.head.of.right.pronator.teres",
+      "structureId": "FMA:38562",
+      "preferredName": "ulnar head of right pronator teres",
+      "clinicalName": "Ulnar head of right pronator teres",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38562",
+      "sourceRepresentationId": "BP5552",
+      "sourceElementFileId": "FJ1516",
+      "sourceElementFileIds": [
+        "FJ1516"
+      ],
+      "sourceFile": "./obj/FJ1516.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "62058afdb37b3637c21f7ad15fe681acced1e36c986190a692f1733cb0a79760"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1516",
+          "sha256": "62058afdb37b3637c21f7ad15fe681acced1e36c986190a692f1733cb0a79760",
+          "bytes": 77585
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.humeral.head.of.right.flexor.carpi.ulnaris",
+      "structureId": "FMA:38617",
+      "preferredName": "humeral head of right flexor carpi ulnaris",
+      "clinicalName": "Humeral head of right flexor carpi ulnaris",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38617",
+      "sourceRepresentationId": "BP5570",
+      "sourceElementFileId": "FJ1473",
+      "sourceElementFileIds": [
+        "FJ1473"
+      ],
+      "sourceFile": "./obj/FJ1473.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "ccab7efb32e7b3cfc21039a138811f2972df5f2d91d23bbdbe63f13354774795"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1473",
+          "sha256": "ccab7efb32e7b3cfc21039a138811f2972df5f2d91d23bbdbe63f13354774795",
+          "bytes": 196103
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.ulnar.head.of.right.flexor.carpi.ulnaris",
+      "structureId": "FMA:38619",
+      "preferredName": "ulnar head of right flexor carpi ulnaris",
+      "clinicalName": "Ulnar head of right flexor carpi ulnaris",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA38619",
+      "sourceRepresentationId": "BP5554",
+      "sourceElementFileId": "FJ1518",
+      "sourceElementFileIds": [
+        "FJ1518"
+      ],
+      "sourceFile": "./obj/FJ1518.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "22abf242ce9d43dd9c6e02ef297b8e5982227a7ec1c7ead965674b92b476bad2"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1518",
+          "sha256": "22abf242ce9d43dd9c6e02ef297b8e5982227a7ec1c7ead965674b92b476bad2",
+          "bytes": 149622
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.set.of.lumbricals.of.right.hand",
+      "structureId": "FMA:42398",
+      "preferredName": "set of lumbricals of right hand",
+      "clinicalName": "Set of lumbricals of right hand",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA42398",
+      "sourceRepresentationId": "BP6633",
+      "sourceElementFileId": "FJ1510",
+      "sourceElementFileIds": [
+        "FJ1510"
+      ],
+      "sourceFile": "./obj/FJ1510.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "d3ce59c7785168a78c152a202480c2ed05b2c0b2798d70d89e3b9bd42fc2f9de"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1510",
+          "sha256": "d3ce59c7785168a78c152a202480c2ed05b2c0b2798d70d89e3b9bd42fc2f9de",
+          "bytes": 265573
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.abdominal.part.of.right.pectoralis.major",
+      "structureId": "FMA:45874",
+      "preferredName": "abdominal part of right pectoralis major",
+      "clinicalName": "Abdominal part of right pectoralis major",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA45874",
+      "sourceRepresentationId": "BP5615",
+      "sourceElementFileId": "FJ1446",
+      "sourceElementFileIds": [
+        "FJ1446"
+      ],
+      "sourceFile": "./obj/FJ1446.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "7a0d77a63b06d4212998bec86f84853287c3a21696ec7afc92c7767c987a726d"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1446",
+          "sha256": "7a0d77a63b06d4212998bec86f84853287c3a21696ec7afc92c7767c987a726d",
+          "bytes": 105002
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.long.head.of.right.biceps.femoris",
+      "structureId": "FMA:45888",
+      "preferredName": "long head of right biceps femoris",
+      "clinicalName": "Long head of right biceps femoris",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA45888",
+      "sourceRepresentationId": "BP5575",
+      "sourceElementFileId": "FJ1395",
+      "sourceElementFileIds": [
+        "FJ1395"
+      ],
+      "sourceFile": "./obj/FJ1395.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "0c22806bfd2a0f8745023a7d438250411f9d013f3d966c5c75335f5b57f8e142"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1395",
+          "sha256": "0c22806bfd2a0f8745023a7d438250411f9d013f3d966c5c75335f5b57f8e142",
+          "bytes": 341489
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.short.head.of.right.biceps.femoris",
+      "structureId": "FMA:45891",
+      "preferredName": "short head of right biceps femoris",
+      "clinicalName": "Short head of right biceps femoris",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA45891",
+      "sourceRepresentationId": "BP5573",
+      "sourceElementFileId": "FJ1444",
+      "sourceElementFileIds": [
+        "FJ1444"
+      ],
+      "sourceFile": "./obj/FJ1444.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "c071097501796cee5ff2a011b3d84c7bea4cb153241fce0f8b0a73d070bd990f"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1444",
+          "sha256": "c071097501796cee5ff2a011b3d84c7bea4cb153241fce0f8b0a73d070bd990f",
+          "bytes": 124350
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.medial.head.of.right.flexor.hallucis.brevis",
+      "structureId": "FMA:45971",
+      "preferredName": "medial head of right flexor hallucis brevis",
+      "clinicalName": "Medial head of right flexor hallucis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA45971",
+      "sourceRepresentationId": "BP5546",
+      "sourceElementFileId": "FJ1396",
+      "sourceElementFileIds": [
+        "FJ1396"
+      ],
+      "sourceFile": "./obj/FJ1396.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "778a43d6a1540626e4e13f29c75a4ec75d335abd37ee9c7fdee4eea8188116e1"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1396",
+          "sha256": "778a43d6a1540626e4e13f29c75a4ec75d335abd37ee9c7fdee4eea8188116e1",
+          "bytes": 102539
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.lateral.head.of.right.flexor.hallucis.brevis",
+      "structureId": "FMA:45973",
+      "preferredName": "lateral head of right flexor hallucis brevis",
+      "clinicalName": "Lateral head of right flexor hallucis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA45973",
+      "sourceRepresentationId": "BP5548",
+      "sourceElementFileId": "FJ1393",
+      "sourceElementFileIds": [
+        "FJ1393"
+      ],
+      "sourceFile": "./obj/FJ1393.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "4403ddd8a9fffab7fdf1cbb28fd9b90f461913bd9c28cfea23fc512844668985"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1393",
+          "sha256": "4403ddd8a9fffab7fdf1cbb28fd9b90f461913bd9c28cfea23fc512844668985",
+          "bytes": 188933
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.extensor.hallucis.brevis",
+      "structureId": "FMA:51144",
+      "preferredName": "right extensor hallucis brevis",
+      "clinicalName": "Right extensor hallucis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA51144",
+      "sourceRepresentationId": "BP5059",
+      "sourceElementFileId": "FJ1407",
+      "sourceElementFileIds": [
+        "FJ1407"
+      ],
+      "sourceFile": "./obj/FJ1407.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "cbef129a1fd217b80efe9688ec6b4e0dbf7471d81b5f15a20e12ef7f04f42d17"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1407",
+          "sha256": "cbef129a1fd217b80efe9688ec6b4e0dbf7471d81b5f15a20e12ef7f04f42d17",
+          "bytes": 113557
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.hallucis.longus",
+      "structureId": "FMA:65014",
+      "preferredName": "right flexor hallucis longus",
+      "clinicalName": "Right flexor hallucis longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA65014",
+      "sourceRepresentationId": "BP5008",
+      "sourceElementFileId": "FJ1415",
+      "sourceElementFileIds": [
+        "FJ1415"
+      ],
+      "sourceFile": "./obj/FJ1415.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "b00ad979e807617650ab158b609e9c2c1032a9483be5e9c9ec5a4796455c809c"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1415",
+          "sha256": "b00ad979e807617650ab158b609e9c2c1032a9483be5e9c9ec5a4796455c809c",
+          "bytes": 198872
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.right.flexor.digitorum.longus",
+      "structureId": "FMA:65016",
+      "preferredName": "right flexor digitorum longus",
+      "clinicalName": "Right flexor digitorum longus",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA65016",
+      "sourceRepresentationId": "BP5010",
+      "sourceElementFileId": "FJ1414",
+      "sourceElementFileIds": [
+        "FJ1414"
+      ],
+      "sourceFile": "./obj/FJ1414.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "532d7f590f1997884f6307408173068414857a6d7d1a576cdb8828946bf427af"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1414",
+          "sha256": "532d7f590f1997884f6307408173068414857a6d7d1a576cdb8828946bf427af",
+          "bytes": 316264
+        }
+      ]
+    },
+    {
+      "meshId": "muscle.superficial.head.of.right.flexor.pollicis.brevis",
+      "structureId": "FMA:65198",
+      "preferredName": "superficial head of right flexor pollicis brevis",
+      "clinicalName": "Superficial head of right flexor pollicis brevis",
+      "layer": "muscle",
+      "laterality": "right",
+      "parentStructureId": null,
+      "region": "muscle-upper-right",
+      "sourceConceptId": "FMA65198",
+      "sourceRepresentationId": "BP5556",
+      "sourceElementFileId": "FJ1514",
+      "sourceElementFileIds": [
+        "FJ1514"
+      ],
+      "sourceFile": "./obj/FJ1514.obj",
+      "sourceChecksum": {
+        "algorithm": "sha256",
+        "value": "af5d19e0450559eaeacd54e6d332c507acc9b0dc4675311094c6c3b9c9715a71"
+      },
+      "elementChecksums": [
+        {
+          "fileId": "FJ1514",
+          "sha256": "af5d19e0450559eaeacd54e6d332c507acc9b0dc4675311094c6c3b9c9715a71",
+          "bytes": 77954
+        }
+      ]
+    }
+  ]
+}

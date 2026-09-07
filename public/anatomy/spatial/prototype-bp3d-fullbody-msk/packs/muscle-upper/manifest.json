@@ -1,0 +1,1537 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-upper",
+  "displayName": "Muscle Upper",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "muscle": {
+      "layerId": "muscle",
+      "displayName": "Muscle",
+      "file": "./muscle.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "muscle.supraspinatus",
+          "structureId": "FMA:9629",
+          "structureName": "supraspinatus",
+          "clinicalName": "Supraspinatus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8377",
+          "sourceElementFileId": "FJ1506",
+          "sourceElementFileIds": [
+            "FJ1506",
+            "FJ1506M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.pectoralis.minor",
+          "structureId": "FMA:13109",
+          "structureName": "pectoralis minor",
+          "clinicalName": "Pectoralis minor",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9039",
+          "sourceElementFileId": "FJ1456",
+          "sourceElementFileIds": [
+            "FJ1456",
+            "FJ1456M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rhomboid.major",
+          "structureId": "FMA:13379",
+          "structureName": "rhomboid major",
+          "clinicalName": "Rhomboid major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9246",
+          "sourceElementFileId": "FJ1536",
+          "sourceElementFileIds": [
+            "FJ1536",
+            "FJ1536M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.rhomboid.minor",
+          "structureId": "FMA:13380",
+          "structureName": "rhomboid minor",
+          "clinicalName": "Rhomboid minor",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8586",
+          "sourceElementFileId": "FJ1537",
+          "sourceElementFileIds": [
+            "FJ1537",
+            "FJ1537M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.serratus.anterior",
+          "structureId": "FMA:13397",
+          "structureName": "serratus anterior",
+          "clinicalName": "Serratus anterior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8761",
+          "sourceElementFileId": "FJ1459",
+          "sourceElementFileIds": [
+            "FJ1459",
+            "FJ1459M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.serratus.posterior",
+          "structureId": "FMA:13400",
+          "structureName": "serratus posterior",
+          "clinicalName": "Serratus posterior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8300",
+          "sourceElementFileId": "FJ1541",
+          "sourceElementFileIds": [
+            "FJ1541",
+            "FJ1541M",
+            "FJ1542",
+            "FJ1542M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.serratus.posterior.superior",
+          "structureId": "FMA:13401",
+          "structureName": "serratus posterior superior",
+          "clinicalName": "Serratus posterior superior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8299",
+          "sourceElementFileId": "FJ1542",
+          "sourceElementFileIds": [
+            "FJ1542",
+            "FJ1542M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.serratus.posterior.inferior",
+          "structureId": "FMA:13402",
+          "structureName": "serratus posterior inferior",
+          "clinicalName": "Serratus posterior inferior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9049",
+          "sourceElementFileId": "FJ1541",
+          "sourceElementFileIds": [
+            "FJ1541",
+            "FJ1541M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.subclavius",
+          "structureId": "FMA:13410",
+          "structureName": "subclavius",
+          "clinicalName": "Subclavius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8461",
+          "sourceElementFileId": "FJ1460",
+          "sourceElementFileIds": [
+            "FJ1460",
+            "FJ1460M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.subscapularis",
+          "structureId": "FMA:13413",
+          "structureName": "subscapularis",
+          "clinicalName": "Subscapularis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8215",
+          "sourceElementFileId": "FJ1504",
+          "sourceElementFileIds": [
+            "FJ1504",
+            "FJ1504M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.hallucis.longus",
+          "structureId": "FMA:22533",
+          "structureName": "extensor hallucis longus",
+          "clinicalName": "Extensor hallucis longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7859",
+          "sourceElementFileId": "FJ1408",
+          "sourceElementFileIds": [
+            "FJ1408",
+            "FJ1408M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.digitorum.longus",
+          "structureId": "FMA:22534",
+          "structureName": "extensor digitorum longus",
+          "clinicalName": "Extensor digitorum longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8163",
+          "sourceElementFileId": "FJ1406",
+          "sourceElementFileIds": [
+            "FJ1406",
+            "FJ1406M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.hallucis.longus",
+          "structureId": "FMA:22593",
+          "structureName": "flexor hallucis longus",
+          "clinicalName": "Flexor hallucis longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7950",
+          "sourceElementFileId": "FJ1415",
+          "sourceElementFileIds": [
+            "FJ1415",
+            "FJ1415M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.interosseous.membrane.of.forearm",
+          "structureId": "FMA:23706",
+          "structureName": "interosseous membrane of forearm",
+          "clinicalName": "Interosseous membrane of forearm",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8264",
+          "sourceElementFileId": "FJ1476",
+          "sourceElementFileIds": [
+            "FJ1476",
+            "FJ1476M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.levator.scapulae",
+          "structureId": "FMA:32519",
+          "structureName": "levator scapulae",
+          "clinicalName": "Levator scapulae",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8747",
+          "sourceElementFileId": "FJ1532",
+          "sourceElementFileIds": [
+            "FJ1532",
+            "FJ1532M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.zone.of.trapezius",
+          "structureId": "FMA:32529",
+          "structureName": "zone of trapezius",
+          "clinicalName": "Zone of trapezius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8254",
+          "sourceElementFileId": "FJ1554",
+          "sourceElementFileIds": [
+            "FJ1554",
+            "FJ1554M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.infraspinatus",
+          "structureId": "FMA:32546",
+          "structureName": "infraspinatus",
+          "clinicalName": "Infraspinatus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8966",
+          "sourceElementFileId": "FJ1500",
+          "sourceElementFileIds": [
+            "FJ1500",
+            "FJ1500M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.teres.major",
+          "structureId": "FMA:32549",
+          "structureName": "teres major",
+          "clinicalName": "Teres major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8288",
+          "sourceElementFileId": "FJ1507",
+          "sourceElementFileIds": [
+            "FJ1507",
+            "FJ1507M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.teres.minor",
+          "structureId": "FMA:32550",
+          "structureName": "teres minor",
+          "clinicalName": "Teres minor",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9198",
+          "sourceElementFileId": "FJ1508",
+          "sourceElementFileIds": [
+            "FJ1508",
+            "FJ1508M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.ascending.part.of.trapezius",
+          "structureId": "FMA:32555",
+          "structureName": "ascending part of trapezius",
+          "clinicalName": "Ascending part of trapezius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8226",
+          "sourceElementFileId": "FJ1520",
+          "sourceElementFileIds": [
+            "FJ1520",
+            "FJ1520M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.transverse.part.of.trapezius",
+          "structureId": "FMA:32556",
+          "structureName": "transverse part of trapezius",
+          "clinicalName": "Transverse part of trapezius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8253",
+          "sourceElementFileId": "FJ1554",
+          "sourceElementFileIds": [
+            "FJ1554",
+            "FJ1554M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.descending.part.of.trapezius",
+          "structureId": "FMA:32557",
+          "structureName": "descending part of trapezius",
+          "clinicalName": "Descending part of trapezius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8268",
+          "sourceElementFileId": "FJ1521",
+          "sourceElementFileIds": [
+            "FJ1521",
+            "FJ1521M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.zone.of.deltoid",
+          "structureId": "FMA:34676",
+          "structureName": "zone of deltoid",
+          "clinicalName": "Zone of deltoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8153",
+          "sourceElementFileId": "FJ1467",
+          "sourceElementFileIds": [
+            "FJ1467",
+            "FJ1467M",
+            "FJ1468",
+            "FJ1468M",
+            "FJ1513",
+            "FJ1513M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.clavicular.part.of.deltoid",
+          "structureId": "FMA:34677",
+          "structureName": "clavicular part of deltoid",
+          "clinicalName": "Clavicular part of deltoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8260",
+          "sourceElementFileId": "FJ1468",
+          "sourceElementFileIds": [
+            "FJ1468",
+            "FJ1468M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.acromial.part.of.deltoid",
+          "structureId": "FMA:34678",
+          "structureName": "acromial part of deltoid",
+          "clinicalName": "Acromial part of deltoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9076",
+          "sourceElementFileId": "FJ1467",
+          "sourceElementFileIds": [
+            "FJ1467",
+            "FJ1467M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.spinal.part.of.deltoid",
+          "structureId": "FMA:34679",
+          "structureName": "spinal part of deltoid",
+          "clinicalName": "Spinal part of deltoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8152",
+          "sourceElementFileId": "FJ1513",
+          "sourceElementFileIds": [
+            "FJ1513",
+            "FJ1513M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.zone.of.pectoralis.major",
+          "structureId": "FMA:34686",
+          "structureName": "zone of pectoralis major",
+          "clinicalName": "Zone of pectoralis major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7864",
+          "sourceElementFileId": "FJ1446",
+          "sourceElementFileIds": [
+            "FJ1446",
+            "FJ1446M",
+            "FJ1464",
+            "FJ1464M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.clavicular.part.of.pectoralis.major",
+          "structureId": "FMA:34687",
+          "structureName": "clavicular part of pectoralis major",
+          "clinicalName": "Clavicular part of pectoralis major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9096",
+          "sourceElementFileId": "FJ1447",
+          "sourceElementFileIds": [
+            "FJ1447",
+            "FJ1447M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.abdominal.part.of.pectoralis.major",
+          "structureId": "FMA:34699",
+          "structureName": "abdominal part of pectoralis major",
+          "clinicalName": "Abdominal part of pectoralis major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7863",
+          "sourceElementFileId": "FJ1446",
+          "sourceElementFileIds": [
+            "FJ1446",
+            "FJ1446M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.interosseous.membrane.of.leg",
+          "structureId": "FMA:35187",
+          "structureName": "interosseous membrane of leg",
+          "clinicalName": "Interosseous membrane of leg",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8482",
+          "sourceElementFileId": "FJ1392",
+          "sourceElementFileIds": [
+            "FJ1392",
+            "FJ1392M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.pollicis.brevis",
+          "structureId": "FMA:37378",
+          "structureName": "flexor pollicis brevis",
+          "clinicalName": "Flexor pollicis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8959",
+          "sourceElementFileId": "FJ1469",
+          "sourceElementFileIds": [
+            "FJ1469",
+            "FJ1469M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.digiti.minimi.brevis.of.hand",
+          "structureId": "FMA:37383",
+          "structureName": "flexor digiti minimi brevis of hand",
+          "clinicalName": "Flexor digiti minimi brevis of hand",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8517",
+          "sourceElementFileId": "FJ1470",
+          "sourceElementFileIds": [
+            "FJ1470",
+            "FJ1470M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.digitorum.brevis",
+          "structureId": "FMA:37450",
+          "structureName": "flexor digitorum brevis",
+          "clinicalName": "Flexor digitorum brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9216",
+          "sourceElementFileId": "FJ1413",
+          "sourceElementFileIds": [
+            "FJ1413",
+            "FJ1413M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.accessorius",
+          "structureId": "FMA:37452",
+          "structureName": "flexor accessorius",
+          "clinicalName": "Flexor accessorius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8993",
+          "sourceElementFileId": "FJ1412",
+          "sourceElementFileIds": [
+            "FJ1412",
+            "FJ1412M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.lumbrical.of.foot",
+          "structureId": "FMA:37453",
+          "structureName": "lumbrical of foot",
+          "clinicalName": "Lumbrical of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8181",
+          "sourceElementFileId": "FJ1383",
+          "sourceElementFileIds": [
+            "FJ1383",
+            "FJ1383M",
+            "FJ1385",
+            "FJ1385M",
+            "FJ1387",
+            "FJ1387M",
+            "FJ1389",
+            "FJ1389M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.digiti.minimi.brevis.of.foot",
+          "structureId": "FMA:37455",
+          "structureName": "flexor digiti minimi brevis of foot",
+          "clinicalName": "Flexor digiti minimi brevis of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8066",
+          "sourceElementFileId": "FJ1391",
+          "sourceElementFileIds": [
+            "FJ1391",
+            "FJ1391M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.interosseous.of.foot",
+          "structureId": "FMA:37456",
+          "structureName": "interosseous of foot",
+          "clinicalName": "Interosseous of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8919",
+          "sourceElementFileId": "FJ1384",
+          "sourceElementFileIds": [
+            "FJ1384",
+            "FJ1384M",
+            "FJ1386",
+            "FJ1386M",
+            "FJ1388",
+            "FJ1388M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.plantar.interosseous.of.foot",
+          "structureId": "FMA:37458",
+          "structureName": "plantar interosseous of foot",
+          "clinicalName": "Plantar interosseous of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8918",
+          "sourceElementFileId": "FJ1384",
+          "sourceElementFileIds": [
+            "FJ1384",
+            "FJ1384M",
+            "FJ1386",
+            "FJ1386M",
+            "FJ1388",
+            "FJ1388M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.first.lumbrical.of.foot",
+          "structureId": "FMA:37479",
+          "structureName": "first lumbrical of foot",
+          "clinicalName": "First lumbrical of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9162",
+          "sourceElementFileId": "FJ1383",
+          "sourceElementFileIds": [
+            "FJ1383",
+            "FJ1383M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.second.lumbrical.of.foot",
+          "structureId": "FMA:37480",
+          "structureName": "second lumbrical of foot",
+          "clinicalName": "Second lumbrical of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8180",
+          "sourceElementFileId": "FJ1385",
+          "sourceElementFileIds": [
+            "FJ1385",
+            "FJ1385M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.third.lumbrical.of.foot",
+          "structureId": "FMA:37481",
+          "structureName": "third lumbrical of foot",
+          "clinicalName": "Third lumbrical of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8903",
+          "sourceElementFileId": "FJ1387",
+          "sourceElementFileIds": [
+            "FJ1387",
+            "FJ1387M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.fourth.lumbrical.of.foot",
+          "structureId": "FMA:37482",
+          "structureName": "fourth lumbrical of foot",
+          "clinicalName": "Fourth lumbrical of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8944",
+          "sourceElementFileId": "FJ1389",
+          "sourceElementFileIds": [
+            "FJ1389",
+            "FJ1389M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.coracobrachialis",
+          "structureId": "FMA:37664",
+          "structureName": "coracobrachialis",
+          "clinicalName": "Coracobrachialis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9056",
+          "sourceElementFileId": "FJ1488",
+          "sourceElementFileIds": [
+            "FJ1488",
+            "FJ1488M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.brachialis",
+          "structureId": "FMA:37667",
+          "structureName": "brachialis",
+          "clinicalName": "Brachialis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8685",
+          "sourceElementFileId": "FJ1486",
+          "sourceElementFileIds": [
+            "FJ1486",
+            "FJ1486M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.short.head.of.biceps.brachii",
+          "structureId": "FMA:37682",
+          "structureName": "short head of biceps brachii",
+          "clinicalName": "Short head of biceps brachii",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9154",
+          "sourceElementFileId": "FJ1512",
+          "sourceElementFileIds": [
+            "FJ1512",
+            "FJ1512M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.long.head.of.biceps.brachii",
+          "structureId": "FMA:37683",
+          "structureName": "long head of biceps brachii",
+          "clinicalName": "Long head of biceps brachii",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8817",
+          "sourceElementFileId": "FJ1478",
+          "sourceElementFileIds": [
+            "FJ1478",
+            "FJ1478M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.long.head.of.triceps.brachii",
+          "structureId": "FMA:37692",
+          "structureName": "long head of triceps brachii",
+          "clinicalName": "Long head of triceps brachii",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8345",
+          "sourceElementFileId": "FJ1479",
+          "sourceElementFileIds": [
+            "FJ1479",
+            "FJ1479M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.medial.head.of.triceps.brachii",
+          "structureId": "FMA:37693",
+          "structureName": "medial head of triceps brachii",
+          "clinicalName": "Medial head of triceps brachii",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8258",
+          "sourceElementFileId": "FJ1480",
+          "sourceElementFileIds": [
+            "FJ1480",
+            "FJ1480M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.lateral.head.of.triceps.brachii",
+          "structureId": "FMA:37694",
+          "structureName": "lateral head of triceps brachii",
+          "clinicalName": "Lateral head of triceps brachii",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8526",
+          "sourceElementFileId": "FJ1477",
+          "sourceElementFileIds": [
+            "FJ1477",
+            "FJ1477M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.anconeus",
+          "structureId": "FMA:37704",
+          "structureName": "anconeus",
+          "clinicalName": "Anconeus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8963",
+          "sourceElementFileId": "FJ1485",
+          "sourceElementFileIds": [
+            "FJ1485",
+            "FJ1485M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.first.plantar.interosseous.of.foot",
+          "structureId": "FMA:37738",
+          "structureName": "first plantar interosseous of foot",
+          "clinicalName": "First plantar interosseous of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9252",
+          "sourceElementFileId": "FJ1384",
+          "sourceElementFileIds": [
+            "FJ1384",
+            "FJ1384M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.second.plantar.interosseous.of.foot",
+          "structureId": "FMA:37739",
+          "structureName": "second plantar interosseous of foot",
+          "clinicalName": "Second plantar interosseous of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8917",
+          "sourceElementFileId": "FJ1386",
+          "sourceElementFileIds": [
+            "FJ1386",
+            "FJ1386M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.third.plantar.interosseous.of.foot",
+          "structureId": "FMA:37740",
+          "structureName": "third plantar interosseous of foot",
+          "clinicalName": "Third plantar interosseous of foot",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9176",
+          "sourceElementFileId": "FJ1388",
+          "sourceElementFileIds": [
+            "FJ1388",
+            "FJ1388M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.pronator.quadratus",
+          "structureId": "FMA:38453",
+          "structureName": "pronator quadratus",
+          "clinicalName": "Pronator quadratus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7958",
+          "sourceElementFileId": "FJ1503",
+          "sourceElementFileIds": [
+            "FJ1503",
+            "FJ1503M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.carpi.radialis",
+          "structureId": "FMA:38459",
+          "structureName": "flexor carpi radialis",
+          "clinicalName": "Flexor carpi radialis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8941",
+          "sourceElementFileId": "FJ1496",
+          "sourceElementFileIds": [
+            "FJ1496",
+            "FJ1496M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.digitorum.superficialis",
+          "structureId": "FMA:38469",
+          "structureName": "flexor digitorum superficialis",
+          "clinicalName": "Flexor digitorum superficialis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8285",
+          "sourceElementFileId": "FJ1475",
+          "sourceElementFileIds": [
+            "FJ1475",
+            "FJ1475M",
+            "FJ1499",
+            "FJ1499M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.digitorum.profundus",
+          "structureId": "FMA:38478",
+          "structureName": "flexor digitorum profundus",
+          "clinicalName": "Flexor digitorum profundus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7827",
+          "sourceElementFileId": "FJ1497",
+          "sourceElementFileIds": [
+            "FJ1497",
+            "FJ1497M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.pollicis.longus",
+          "structureId": "FMA:38481",
+          "structureName": "flexor pollicis longus",
+          "clinicalName": "Flexor pollicis longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9107",
+          "sourceElementFileId": "FJ1498",
+          "sourceElementFileIds": [
+            "FJ1498",
+            "FJ1498M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.brachioradialis",
+          "structureId": "FMA:38485",
+          "structureName": "brachioradialis",
+          "clinicalName": "Brachioradialis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8245",
+          "sourceElementFileId": "FJ1487",
+          "sourceElementFileIds": [
+            "FJ1487",
+            "FJ1487M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.carpi.radialis.longus",
+          "structureId": "FMA:38494",
+          "structureName": "extensor carpi radialis longus",
+          "clinicalName": "Extensor carpi radialis longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9281",
+          "sourceElementFileId": "FJ1490",
+          "sourceElementFileIds": [
+            "FJ1490",
+            "FJ1490M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.carpi.radialis.brevis",
+          "structureId": "FMA:38497",
+          "structureName": "extensor carpi radialis brevis",
+          "clinicalName": "Extensor carpi radialis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9288",
+          "sourceElementFileId": "FJ1489",
+          "sourceElementFileIds": [
+            "FJ1489",
+            "FJ1489M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.digitorum",
+          "structureId": "FMA:38500",
+          "structureName": "extensor digitorum",
+          "clinicalName": "Extensor digitorum",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8561",
+          "sourceElementFileId": "FJ1492",
+          "sourceElementFileIds": [
+            "FJ1492",
+            "FJ1492M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.digiti.minimi",
+          "structureId": "FMA:38503",
+          "structureName": "extensor digiti minimi",
+          "clinicalName": "Extensor digiti minimi",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8490",
+          "sourceElementFileId": "FJ1491",
+          "sourceElementFileIds": [
+            "FJ1491",
+            "FJ1491M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.carpi.ulnaris",
+          "structureId": "FMA:38506",
+          "structureName": "extensor carpi ulnaris",
+          "clinicalName": "Extensor carpi ulnaris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7971",
+          "sourceElementFileId": "FJ1472",
+          "sourceElementFileIds": [
+            "FJ1472",
+            "FJ1472M",
+            "FJ1517",
+            "FJ1517M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.supinator",
+          "structureId": "FMA:38512",
+          "structureName": "supinator",
+          "clinicalName": "Supinator",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8500",
+          "sourceElementFileId": "FJ1505",
+          "sourceElementFileIds": [
+            "FJ1505",
+            "FJ1505M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.pollicis.brevis",
+          "structureId": "FMA:38518",
+          "structureName": "extensor pollicis brevis",
+          "clinicalName": "Extensor pollicis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9254",
+          "sourceElementFileId": "FJ1494",
+          "sourceElementFileIds": [
+            "FJ1494",
+            "FJ1494M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.pollicis.longus",
+          "structureId": "FMA:38521",
+          "structureName": "extensor pollicis longus",
+          "clinicalName": "Extensor pollicis longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8192",
+          "sourceElementFileId": "FJ1495",
+          "sourceElementFileIds": [
+            "FJ1495",
+            "FJ1495M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.indicis",
+          "structureId": "FMA:38524",
+          "structureName": "extensor indicis",
+          "clinicalName": "Extensor indicis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8780",
+          "sourceElementFileId": "FJ1493",
+          "sourceElementFileIds": [
+            "FJ1493",
+            "FJ1493M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.humeral.head.of.pronator.teres",
+          "structureId": "FMA:38558",
+          "structureName": "humeral head of pronator teres",
+          "clinicalName": "Humeral head of pronator teres",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8016",
+          "sourceElementFileId": "FJ1474",
+          "sourceElementFileIds": [
+            "FJ1474",
+            "FJ1474M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.ulnar.head.of.pronator.teres",
+          "structureId": "FMA:38559",
+          "structureName": "ulnar head of pronator teres",
+          "clinicalName": "Ulnar head of pronator teres",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9044",
+          "sourceElementFileId": "FJ1516",
+          "sourceElementFileIds": [
+            "FJ1516",
+            "FJ1516M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.humeral.head.of.flexor.carpi.ulnaris",
+          "structureId": "FMA:38615",
+          "structureName": "humeral head of flexor carpi ulnaris",
+          "clinicalName": "Humeral head of flexor carpi ulnaris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8145",
+          "sourceElementFileId": "FJ1473",
+          "sourceElementFileIds": [
+            "FJ1473",
+            "FJ1473M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.ulnar.head.of.flexor.carpi.ulnaris",
+          "structureId": "FMA:38616",
+          "structureName": "ulnar head of flexor carpi ulnaris",
+          "clinicalName": "Ulnar head of flexor carpi ulnaris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8541",
+          "sourceElementFileId": "FJ1518",
+          "sourceElementFileIds": [
+            "FJ1518",
+            "FJ1518M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.head.of.biceps.femoris",
+          "structureId": "FMA:45881",
+          "structureName": "head of biceps femoris",
+          "clinicalName": "Head of biceps femoris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8333",
+          "sourceElementFileId": "FJ1395",
+          "sourceElementFileIds": [
+            "FJ1395",
+            "FJ1395M",
+            "FJ1444",
+            "FJ1444M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.long.head.of.biceps.femoris",
+          "structureId": "FMA:45887",
+          "structureName": "long head of biceps femoris",
+          "clinicalName": "Long head of biceps femoris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8332",
+          "sourceElementFileId": "FJ1395",
+          "sourceElementFileIds": [
+            "FJ1395",
+            "FJ1395M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.short.head.of.biceps.femoris",
+          "structureId": "FMA:45890",
+          "structureName": "short head of biceps femoris",
+          "clinicalName": "Short head of biceps femoris",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8617",
+          "sourceElementFileId": "FJ1444",
+          "sourceElementFileIds": [
+            "FJ1444",
+            "FJ1444M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.head.of.flexor.hallucis.brevis",
+          "structureId": "FMA:45963",
+          "structureName": "head of flexor hallucis brevis",
+          "clinicalName": "Head of flexor hallucis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8363",
+          "sourceElementFileId": "FJ1393",
+          "sourceElementFileIds": [
+            "FJ1393",
+            "FJ1393M",
+            "FJ1396",
+            "FJ1396M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.medial.head.of.flexor.hallucis.brevis",
+          "structureId": "FMA:45969",
+          "structureName": "medial head of flexor hallucis brevis",
+          "clinicalName": "Medial head of flexor hallucis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8946",
+          "sourceElementFileId": "FJ1396",
+          "sourceElementFileIds": [
+            "FJ1396",
+            "FJ1396M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.lateral.head.of.flexor.hallucis.brevis",
+          "structureId": "FMA:45970",
+          "structureName": "lateral head of flexor hallucis brevis",
+          "clinicalName": "Lateral head of flexor hallucis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8362",
+          "sourceElementFileId": "FJ1393",
+          "sourceElementFileIds": [
+            "FJ1393",
+            "FJ1393M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.superficial.head.of.flexor.pollicis.brevis",
+          "structureId": "FMA:46104",
+          "structureName": "superficial head of flexor pollicis brevis",
+          "clinicalName": "Superficial head of flexor pollicis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8723",
+          "sourceElementFileId": "FJ1514",
+          "sourceElementFileIds": [
+            "FJ1514",
+            "FJ1514M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.flexor.digitorum.longus",
+          "structureId": "FMA:51071",
+          "structureName": "flexor digitorum longus",
+          "clinicalName": "Flexor digitorum longus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8889",
+          "sourceElementFileId": "FJ1414",
+          "sourceElementFileIds": [
+            "FJ1414",
+            "FJ1414M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.extensor.hallucis.brevis",
+          "structureId": "FMA:51141",
+          "structureName": "extensor hallucis brevis",
+          "clinicalName": "Extensor hallucis brevis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8119",
+          "sourceElementFileId": "FJ1407",
+          "sourceElementFileIds": [
+            "FJ1407",
+            "FJ1407M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.interosseous.membrane",
+          "structureId": "FMA:54839",
+          "structureName": "interosseous membrane",
+          "clinicalName": "Interosseous membrane",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8265",
+          "sourceElementFileId": "FJ1392",
+          "sourceElementFileIds": [
+            "FJ1392",
+            "FJ1392M",
+            "FJ1476",
+            "FJ1476M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.thenar.muscle",
+          "structureId": "FMA:64916",
+          "structureName": "thenar muscle",
+          "clinicalName": "Thenar muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8598",
+          "sourceElementFileId": "FJ1469",
+          "sourceElementFileIds": [
+            "FJ1469",
+            "FJ1469M",
+            "FJ1483",
+            "FJ1483M",
+            "FJ1501",
+            "FJ1501M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.hypothenar.muscle",
+          "structureId": "FMA:64917",
+          "structureName": "hypothenar muscle",
+          "clinicalName": "Hypothenar muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8206",
+          "sourceElementFileId": "FJ1466",
+          "sourceElementFileIds": [
+            "FJ1466",
+            "FJ1466M",
+            "FJ1470",
+            "FJ1470M",
+            "FJ1482",
+            "FJ1482M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.set.of.lumbricals.of.hand",
+          "structureId": "FMA:71318",
+          "structureName": "set of lumbricals of hand",
+          "clinicalName": "Set of lumbricals of hand",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-upper",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8054",
+          "sourceElementFileId": "FJ1510",
+          "sourceElementFileIds": [
+            "FJ1510",
+            "FJ1510M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

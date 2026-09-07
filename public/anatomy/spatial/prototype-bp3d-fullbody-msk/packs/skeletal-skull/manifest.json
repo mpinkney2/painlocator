@@ -1,0 +1,459 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-skull",
+  "displayName": "Skeletal Skull",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.parietal.bone",
+          "structureId": "FMA:9613",
+          "structureName": "parietal bone",
+          "clinicalName": "Parietal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9058",
+          "sourceElementFileId": "FJ3274",
+          "sourceElementFileIds": [
+            "FJ3274",
+            "FJ3380"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.vomer",
+          "structureId": "FMA:9710",
+          "structureName": "vomer",
+          "clinicalName": "Vomer",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8776",
+          "sourceElementFileId": "FJ3395",
+          "sourceElementFileIds": [
+            "FJ3395"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.maxilla",
+          "structureId": "FMA:9711",
+          "structureName": "maxilla",
+          "clinicalName": "Maxilla",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8310",
+          "sourceElementFileId": "FJ3269",
+          "sourceElementFileIds": [
+            "FJ3269",
+            "FJ3375"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.frontal.bone",
+          "structureId": "FMA:52734",
+          "structureName": "frontal bone",
+          "clinicalName": "Frontal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8209",
+          "sourceElementFileId": "FJ3200",
+          "sourceElementFileIds": [
+            "FJ3200"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.occipital.bone",
+          "structureId": "FMA:52735",
+          "structureName": "occipital bone",
+          "clinicalName": "Occipital bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9177",
+          "sourceElementFileId": "FJ3309",
+          "sourceElementFileIds": [
+            "FJ3309"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.sphenoid.bone",
+          "structureId": "FMA:52736",
+          "structureName": "sphenoid bone",
+          "clinicalName": "Sphenoid bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8498",
+          "sourceElementFileId": "FJ3394",
+          "sourceElementFileIds": [
+            "FJ3394"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.temporal.bone",
+          "structureId": "FMA:52737",
+          "structureName": "temporal bone",
+          "clinicalName": "Temporal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7992",
+          "sourceElementFileId": "FJ3281",
+          "sourceElementFileIds": [
+            "FJ3281",
+            "FJ3386"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.temporal.bone",
+          "structureId": "FMA:52738",
+          "structureName": "right temporal bone",
+          "clinicalName": "Right temporal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8875",
+          "sourceElementFileId": "FJ3386",
+          "sourceElementFileIds": [
+            "FJ3386"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.temporal.bone",
+          "structureId": "FMA:52739",
+          "structureName": "left temporal bone",
+          "clinicalName": "Left temporal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7991",
+          "sourceElementFileId": "FJ3281",
+          "sourceElementFileIds": [
+            "FJ3281"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.ethmoid",
+          "structureId": "FMA:52740",
+          "structureName": "ethmoid",
+          "clinicalName": "Ethmoid",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8991",
+          "sourceElementFileId": "FJ3199",
+          "sourceElementFileIds": [
+            "FJ3199"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.lacrimal.bone",
+          "structureId": "FMA:52741",
+          "structureName": "lacrimal bone",
+          "clinicalName": "Lacrimal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8104",
+          "sourceElementFileId": "FJ3265",
+          "sourceElementFileIds": [
+            "FJ3265",
+            "FJ3371"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.nasal.bone",
+          "structureId": "FMA:52745",
+          "structureName": "nasal bone",
+          "clinicalName": "Nasal bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8559",
+          "sourceElementFileId": "FJ3272",
+          "sourceElementFileIds": [
+            "FJ3272",
+            "FJ3378"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.zygomatic.bone",
+          "structureId": "FMA:52747",
+          "structureName": "zygomatic bone",
+          "clinicalName": "Zygomatic bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8496",
+          "sourceElementFileId": "FJ3287",
+          "sourceElementFileIds": [
+            "FJ3287",
+            "FJ3392"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.mandible",
+          "structureId": "FMA:52748",
+          "structureName": "mandible",
+          "clinicalName": "Mandible",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8107",
+          "sourceElementFileId": "FJ3289",
+          "sourceElementFileIds": [
+            "FJ3289"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.hyoid.bone",
+          "structureId": "FMA:52749",
+          "structureName": "hyoid bone",
+          "clinicalName": "Hyoid bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8836",
+          "sourceElementFileId": "FJ2772",
+          "sourceElementFileIds": [
+            "FJ2772",
+            "FJ3201"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.parietal.bone",
+          "structureId": "FMA:52788",
+          "structureName": "right parietal bone",
+          "clinicalName": "Right parietal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9057",
+          "sourceElementFileId": "FJ3380",
+          "sourceElementFileIds": [
+            "FJ3380"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.parietal.bone",
+          "structureId": "FMA:52789",
+          "structureName": "left parietal bone",
+          "clinicalName": "Left parietal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9209",
+          "sourceElementFileId": "FJ3274",
+          "sourceElementFileIds": [
+            "FJ3274"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.zygomatic.bone",
+          "structureId": "FMA:52892",
+          "structureName": "right zygomatic bone",
+          "clinicalName": "Right zygomatic bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8777",
+          "sourceElementFileId": "FJ3392",
+          "sourceElementFileIds": [
+            "FJ3392"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.zygomatic.bone",
+          "structureId": "FMA:52893",
+          "structureName": "left zygomatic bone",
+          "clinicalName": "Left zygomatic bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8495",
+          "sourceElementFileId": "FJ3287",
+          "sourceElementFileIds": [
+            "FJ3287"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.lacrimal.bone",
+          "structureId": "FMA:53645",
+          "structureName": "right lacrimal bone",
+          "clinicalName": "Right lacrimal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8741",
+          "sourceElementFileId": "FJ3371",
+          "sourceElementFileIds": [
+            "FJ3371"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.lacrimal.bone",
+          "structureId": "FMA:53646",
+          "structureName": "left lacrimal bone",
+          "clinicalName": "Left lacrimal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8103",
+          "sourceElementFileId": "FJ3265",
+          "sourceElementFileIds": [
+            "FJ3265"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.nasal.bone",
+          "structureId": "FMA:53647",
+          "structureName": "right nasal bone",
+          "clinicalName": "Right nasal bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9060",
+          "sourceElementFileId": "FJ3378",
+          "sourceElementFileIds": [
+            "FJ3378"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.nasal.bone",
+          "structureId": "FMA:53648",
+          "structureName": "left nasal bone",
+          "clinicalName": "Left nasal bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8558",
+          "sourceElementFileId": "FJ3272",
+          "sourceElementFileIds": [
+            "FJ3272"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.maxilla",
+          "structureId": "FMA:53649",
+          "structureName": "right maxilla",
+          "clinicalName": "Right maxilla",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8309",
+          "sourceElementFileId": "FJ3375",
+          "sourceElementFileIds": [
+            "FJ3375"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.maxilla",
+          "structureId": "FMA:53650",
+          "structureName": "left maxilla",
+          "clinicalName": "Left maxilla",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-skull",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9046",
+          "sourceElementFileId": "FJ3269",
+          "sourceElementFileIds": [
+            "FJ3269"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

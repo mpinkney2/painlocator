@@ -1,0 +1,1380 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-torso",
+  "displayName": "Muscle Torso",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "muscle": {
+      "layerId": "muscle",
+      "displayName": "Muscle",
+      "file": "./muscle.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "muscle.external.intercostal.muscle",
+          "structureId": "FMA:9756",
+          "structureName": "external intercostal muscle",
+          "clinicalName": "External intercostal muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8306",
+          "sourceElementFileId": "FJ1451",
+          "sourceElementFileIds": [
+            "FJ1451",
+            "FJ1451M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.internal.intercostal.muscle",
+          "structureId": "FMA:9757",
+          "structureName": "internal intercostal muscle",
+          "clinicalName": "Internal intercostal muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8018",
+          "sourceElementFileId": "FJ1455",
+          "sourceElementFileIds": [
+            "FJ1455",
+            "FJ1455M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.innermost.intercostal.muscle",
+          "structureId": "FMA:9758",
+          "structureName": "innermost intercostal muscle",
+          "clinicalName": "Innermost intercostal muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9146",
+          "sourceElementFileId": "FJ1454",
+          "sourceElementFileIds": [
+            "FJ1454",
+            "FJ1454M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.transversus.thoracis",
+          "structureId": "FMA:9760",
+          "structureName": "transversus thoracis",
+          "clinicalName": "Transversus thoracis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9031",
+          "sourceElementFileId": "FJ1461",
+          "sourceElementFileIds": [
+            "FJ1461",
+            "FJ1461M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.transversus.thoracis",
+          "structureId": "FMA:9761",
+          "structureName": "right transversus thoracis",
+          "clinicalName": "Right transversus thoracis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4963",
+          "sourceElementFileId": "FJ1461",
+          "sourceElementFileIds": [
+            "FJ1461"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.transversus.thoracis",
+          "structureId": "FMA:9762",
+          "structureName": "left transversus thoracis",
+          "clinicalName": "Left transversus thoracis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9030",
+          "sourceElementFileId": "FJ1461M",
+          "sourceElementFileIds": [
+            "FJ1461M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.diaphragm",
+          "structureId": "FMA:13295",
+          "structureName": "diaphragm",
+          "clinicalName": "Diaphragm",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8798",
+          "sourceElementFileId": "FJ3131",
+          "sourceElementFileIds": [
+            "FJ3131"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.external.oblique",
+          "structureId": "FMA:13335",
+          "structureName": "external oblique",
+          "clinicalName": "External oblique",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8155",
+          "sourceElementFileId": "FJ1452",
+          "sourceElementFileIds": [
+            "FJ1452",
+            "FJ1452M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.external.oblique",
+          "structureId": "FMA:13336",
+          "structureName": "right external oblique",
+          "clinicalName": "Right external oblique",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4967",
+          "sourceElementFileId": "FJ1452",
+          "sourceElementFileIds": [
+            "FJ1452"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.external.oblique",
+          "structureId": "FMA:13337",
+          "structureName": "left external oblique",
+          "clinicalName": "Left external oblique",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8154",
+          "sourceElementFileId": "FJ1452M",
+          "sourceElementFileIds": [
+            "FJ1452M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.intercostal.muscle",
+          "structureId": "FMA:13354",
+          "structureName": "intercostal muscle",
+          "clinicalName": "Intercostal muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8019",
+          "sourceElementFileId": "FJ1451",
+          "sourceElementFileIds": [
+            "FJ1451",
+            "FJ1451M",
+            "FJ1454",
+            "FJ1454M",
+            "FJ1455",
+            "FJ1455M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.splenius.capitis",
+          "structureId": "FMA:22653",
+          "structureName": "splenius capitis",
+          "clinicalName": "Splenius capitis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8023",
+          "sourceElementFileId": "FJ1545",
+          "sourceElementFileIds": [
+            "FJ1545",
+            "FJ1545M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.splenius.cervicis",
+          "structureId": "FMA:22681",
+          "structureName": "splenius cervicis",
+          "clinicalName": "Splenius cervicis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8242",
+          "sourceElementFileId": "FJ1546",
+          "sourceElementFileIds": [
+            "FJ1546",
+            "FJ1546M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.iliocostalis.lumborum",
+          "structureId": "FMA:22702",
+          "structureName": "iliocostalis lumborum",
+          "clinicalName": "Iliocostalis lumborum",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8938",
+          "sourceElementFileId": "FJ1527",
+          "sourceElementFileIds": [
+            "FJ1527",
+            "FJ1527M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.iliocostalis.thoracis",
+          "structureId": "FMA:22703",
+          "structureName": "iliocostalis thoracis",
+          "clinicalName": "Iliocostalis thoracis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8749",
+          "sourceElementFileId": "FJ1528",
+          "sourceElementFileIds": [
+            "FJ1528",
+            "FJ1528M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.iliocostalis.cervicis",
+          "structureId": "FMA:22704",
+          "structureName": "iliocostalis cervicis",
+          "clinicalName": "Iliocostalis cervicis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8049",
+          "sourceElementFileId": "FJ1526",
+          "sourceElementFileIds": [
+            "FJ1526",
+            "FJ1526M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.longissimus.thoracis",
+          "structureId": "FMA:22709",
+          "structureName": "longissimus thoracis",
+          "clinicalName": "Longissimus thoracis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8986",
+          "sourceElementFileId": "FJ1535",
+          "sourceElementFileIds": [
+            "FJ1535",
+            "FJ1535M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.longissimus.cervicis",
+          "structureId": "FMA:22711",
+          "structureName": "longissimus cervicis",
+          "clinicalName": "Longissimus cervicis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9127",
+          "sourceElementFileId": "FJ1534",
+          "sourceElementFileIds": [
+            "FJ1534",
+            "FJ1534M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.longissimus.capitis",
+          "structureId": "FMA:22714",
+          "structureName": "longissimus capitis",
+          "clinicalName": "Longissimus capitis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9082",
+          "sourceElementFileId": "FJ1533",
+          "sourceElementFileIds": [
+            "FJ1533",
+            "FJ1533M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.splenius.cervicis",
+          "structureId": "FMA:22726",
+          "structureName": "right splenius cervicis",
+          "clinicalName": "Right splenius cervicis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4760",
+          "sourceElementFileId": "FJ1546",
+          "sourceElementFileIds": [
+            "FJ1546"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.splenius.cervicis",
+          "structureId": "FMA:22727",
+          "structureName": "left splenius cervicis",
+          "clinicalName": "Left splenius cervicis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8241",
+          "sourceElementFileId": "FJ1546M",
+          "sourceElementFileIds": [
+            "FJ1546M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.splenius.capitis",
+          "structureId": "FMA:22728",
+          "structureName": "right splenius capitis",
+          "clinicalName": "Right splenius capitis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4758",
+          "sourceElementFileId": "FJ1545",
+          "sourceElementFileIds": [
+            "FJ1545"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.splenius.capitis",
+          "structureId": "FMA:22729",
+          "structureName": "left splenius capitis",
+          "clinicalName": "Left splenius capitis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8022",
+          "sourceElementFileId": "FJ1545M",
+          "sourceElementFileIds": [
+            "FJ1545M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.iliocostalis.lumborum",
+          "structureId": "FMA:22740",
+          "structureName": "right iliocostalis lumborum",
+          "clinicalName": "Right iliocostalis lumborum",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4753",
+          "sourceElementFileId": "FJ1527",
+          "sourceElementFileIds": [
+            "FJ1527"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.iliocostalis.lumborum",
+          "structureId": "FMA:22741",
+          "structureName": "left iliocostalis lumborum",
+          "clinicalName": "Left iliocostalis lumborum",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8937",
+          "sourceElementFileId": "FJ1527M",
+          "sourceElementFileIds": [
+            "FJ1527M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.iliocostalis.thoracis",
+          "structureId": "FMA:22742",
+          "structureName": "right iliocostalis thoracis",
+          "clinicalName": "Right iliocostalis thoracis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4751",
+          "sourceElementFileId": "FJ1528",
+          "sourceElementFileIds": [
+            "FJ1528"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.iliocostalis.thoracis",
+          "structureId": "FMA:22743",
+          "structureName": "left iliocostalis thoracis",
+          "clinicalName": "Left iliocostalis thoracis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8748",
+          "sourceElementFileId": "FJ1528M",
+          "sourceElementFileIds": [
+            "FJ1528M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.iliocostalis.cervicis",
+          "structureId": "FMA:22744",
+          "structureName": "right iliocostalis cervicis",
+          "clinicalName": "Right iliocostalis cervicis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4755",
+          "sourceElementFileId": "FJ1526",
+          "sourceElementFileIds": [
+            "FJ1526"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.iliocostalis.cervicis",
+          "structureId": "FMA:22745",
+          "structureName": "left iliocostalis cervicis",
+          "clinicalName": "Left iliocostalis cervicis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8048",
+          "sourceElementFileId": "FJ1526M",
+          "sourceElementFileIds": [
+            "FJ1526M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.longissimus.thoracis",
+          "structureId": "FMA:22751",
+          "structureName": "right longissimus thoracis",
+          "clinicalName": "Right longissimus thoracis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4744",
+          "sourceElementFileId": "FJ1535",
+          "sourceElementFileIds": [
+            "FJ1535"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.longissimus.thoracis",
+          "structureId": "FMA:22753",
+          "structureName": "left longissimus thoracis",
+          "clinicalName": "Left longissimus thoracis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8985",
+          "sourceElementFileId": "FJ1535M",
+          "sourceElementFileIds": [
+            "FJ1535M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.longissimus.capitis",
+          "structureId": "FMA:22754",
+          "structureName": "right longissimus capitis",
+          "clinicalName": "Right longissimus capitis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4748",
+          "sourceElementFileId": "FJ1533",
+          "sourceElementFileIds": [
+            "FJ1533"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.longissimus.capitis",
+          "structureId": "FMA:22756",
+          "structureName": "left longissimus capitis",
+          "clinicalName": "Left longissimus capitis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9081",
+          "sourceElementFileId": "FJ1533M",
+          "sourceElementFileIds": [
+            "FJ1533M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.longissimus.cervicis",
+          "structureId": "FMA:22757",
+          "structureName": "right longissimus cervicis",
+          "clinicalName": "Right longissimus cervicis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4746",
+          "sourceElementFileId": "FJ1534",
+          "sourceElementFileIds": [
+            "FJ1534"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.longissimus.cervicis",
+          "structureId": "FMA:22758",
+          "structureName": "left longissimus cervicis",
+          "clinicalName": "Left longissimus cervicis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9126",
+          "sourceElementFileId": "FJ1534M",
+          "sourceElementFileIds": [
+            "FJ1534M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.spinalis.thoracis",
+          "structureId": "FMA:22765",
+          "structureName": "spinalis thoracis",
+          "clinicalName": "Spinalis thoracis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8980",
+          "sourceElementFileId": "FJ1544",
+          "sourceElementFileIds": [
+            "FJ1544",
+            "FJ1544M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.spinalis.thoracis",
+          "structureId": "FMA:22779",
+          "structureName": "right spinalis thoracis",
+          "clinicalName": "Right spinalis thoracis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4763",
+          "sourceElementFileId": "FJ1544",
+          "sourceElementFileIds": [
+            "FJ1544"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.spinalis.thoracis",
+          "structureId": "FMA:22780",
+          "structureName": "left spinalis thoracis",
+          "clinicalName": "Left spinalis thoracis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8979",
+          "sourceElementFileId": "FJ1544M",
+          "sourceElementFileIds": [
+            "FJ1544M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.semispinalis",
+          "structureId": "FMA:22823",
+          "structureName": "semispinalis",
+          "clinicalName": "Semispinalis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8318",
+          "sourceElementFileId": "FJ1538",
+          "sourceElementFileIds": [
+            "FJ1538",
+            "FJ1538M",
+            "FJ1539",
+            "FJ1539M",
+            "FJ1540",
+            "FJ1540M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.semispinalis.thoracis",
+          "structureId": "FMA:22828",
+          "structureName": "semispinalis thoracis",
+          "clinicalName": "Semispinalis thoracis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8317",
+          "sourceElementFileId": "FJ1540",
+          "sourceElementFileIds": [
+            "FJ1540",
+            "FJ1540M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.semispinalis.cervicis",
+          "structureId": "FMA:22829",
+          "structureName": "semispinalis cervicis",
+          "clinicalName": "Semispinalis cervicis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8931",
+          "sourceElementFileId": "FJ1539",
+          "sourceElementFileIds": [
+            "FJ1539",
+            "FJ1539M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.semispinalis.capitis",
+          "structureId": "FMA:22830",
+          "structureName": "semispinalis capitis",
+          "clinicalName": "Semispinalis capitis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8701",
+          "sourceElementFileId": "FJ1538",
+          "sourceElementFileIds": [
+            "FJ1538",
+            "FJ1538M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.interspinalis.muscle",
+          "structureId": "FMA:22841",
+          "structureName": "interspinalis muscle",
+          "clinicalName": "Interspinalis muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9139",
+          "sourceElementFileId": "FJ1551",
+          "sourceElementFileIds": [
+            "FJ1551",
+            "FJ1551M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.interspinalis.thoracis",
+          "structureId": "FMA:22846",
+          "structureName": "interspinalis thoracis",
+          "clinicalName": "Interspinalis thoracis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9138",
+          "sourceElementFileId": "FJ1551",
+          "sourceElementFileIds": [
+            "FJ1551",
+            "FJ1551M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.semispinalis.thoracis",
+          "structureId": "FMA:22872",
+          "structureName": "right semispinalis thoracis",
+          "clinicalName": "Right semispinalis thoracis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4713",
+          "sourceElementFileId": "FJ1540",
+          "sourceElementFileIds": [
+            "FJ1540"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.semispinalis.thoracis",
+          "structureId": "FMA:22873",
+          "structureName": "left semispinalis thoracis",
+          "clinicalName": "Left semispinalis thoracis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8316",
+          "sourceElementFileId": "FJ1540M",
+          "sourceElementFileIds": [
+            "FJ1540M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.semispinalis.cervicis",
+          "structureId": "FMA:22874",
+          "structureName": "right semispinalis cervicis",
+          "clinicalName": "Right semispinalis cervicis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4715",
+          "sourceElementFileId": "FJ1539",
+          "sourceElementFileIds": [
+            "FJ1539"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.semispinalis.cervicis",
+          "structureId": "FMA:22875",
+          "structureName": "left semispinalis cervicis",
+          "clinicalName": "Left semispinalis cervicis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8930",
+          "sourceElementFileId": "FJ1539M",
+          "sourceElementFileIds": [
+            "FJ1539M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.semispinalis.capitis",
+          "structureId": "FMA:22876",
+          "structureName": "right semispinalis capitis",
+          "clinicalName": "Right semispinalis capitis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4717",
+          "sourceElementFileId": "FJ1538",
+          "sourceElementFileIds": [
+            "FJ1538"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.semispinalis.capitis",
+          "structureId": "FMA:22877",
+          "structureName": "left semispinalis capitis",
+          "clinicalName": "Left semispinalis capitis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8700",
+          "sourceElementFileId": "FJ1538M",
+          "sourceElementFileIds": [
+            "FJ1538M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.interspinalis.thoracis",
+          "structureId": "FMA:22890",
+          "structureName": "right interspinalis thoracis",
+          "clinicalName": "Right interspinalis thoracis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4725",
+          "sourceElementFileId": "FJ1551",
+          "sourceElementFileIds": [
+            "FJ1551"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.interspinalis.thoracis",
+          "structureId": "FMA:22891",
+          "structureName": "left interspinalis thoracis",
+          "clinicalName": "Left interspinalis thoracis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9137",
+          "sourceElementFileId": "FJ1551M",
+          "sourceElementFileIds": [
+            "FJ1551M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.prevertebral.muscle",
+          "structureId": "FMA:32514",
+          "structureName": "prevertebral muscle",
+          "clinicalName": "Prevertebral muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8375",
+          "sourceElementFileId": "FJ1431",
+          "sourceElementFileIds": [
+            "FJ1431",
+            "FJ1431M",
+            "FJ1561",
+            "FJ1566",
+            "FJ1569",
+            "FJ1582",
+            "FJ1588",
+            "FJ1591"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.intermediate.postvertebral.muscle",
+          "structureId": "FMA:32560",
+          "structureName": "intermediate postvertebral muscle",
+          "clinicalName": "Intermediate postvertebral muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8319",
+          "sourceElementFileId": "FJ1538",
+          "sourceElementFileIds": [
+            "FJ1538",
+            "FJ1538M",
+            "FJ1539",
+            "FJ1539M",
+            "FJ1540",
+            "FJ1540M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.sternocostal.part.of.pectoralis.major",
+          "structureId": "FMA:34696",
+          "structureName": "sternocostal part of pectoralis major",
+          "clinicalName": "Sternocostal part of pectoralis major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8324",
+          "sourceElementFileId": "FJ1464",
+          "sourceElementFileIds": [
+            "FJ1464",
+            "FJ1464M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.superior.oblique.part.of.longus.colli",
+          "structureId": "FMA:46280",
+          "structureName": "superior oblique part of longus colli",
+          "clinicalName": "Superior oblique part of longus colli",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5594",
+          "sourceElementFileId": "FJ1600",
+          "sourceElementFileIds": [
+            "FJ1600"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.inferior.oblique.part.of.longus.colli",
+          "structureId": "FMA:46281",
+          "structureName": "inferior oblique part of longus colli",
+          "clinicalName": "Inferior oblique part of longus colli",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7686",
+          "sourceElementFileId": "FJ1557",
+          "sourceElementFileIds": [
+            "FJ1557"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.superior.oblique.part.of.left.longus.colli",
+          "structureId": "FMA:46284",
+          "structureName": "superior oblique part of left longus colli",
+          "clinicalName": "Superior oblique part of left longus colli",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5595",
+          "sourceElementFileId": "FJ1600",
+          "sourceElementFileIds": [
+            "FJ1600"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.inferior.oblique.part.of.left.longus.colli",
+          "structureId": "FMA:46288",
+          "structureName": "inferior oblique part of left longus colli",
+          "clinicalName": "Inferior oblique part of left longus colli",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7685",
+          "sourceElementFileId": "FJ1557",
+          "sourceElementFileIds": [
+            "FJ1557"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.oblique.arytenoid",
+          "structureId": "FMA:46583",
+          "structureName": "oblique arytenoid",
+          "clinicalName": "Oblique arytenoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8894",
+          "sourceElementFileId": "FJ2780",
+          "sourceElementFileIds": [
+            "FJ2780",
+            "FJ2798"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.oblique.arytenoid",
+          "structureId": "FMA:46584",
+          "structureName": "right oblique arytenoid",
+          "clinicalName": "Right oblique arytenoid",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9152",
+          "sourceElementFileId": "FJ2798",
+          "sourceElementFileIds": [
+            "FJ2798"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.oblique.arytenoid",
+          "structureId": "FMA:46585",
+          "structureName": "left oblique arytenoid",
+          "clinicalName": "Left oblique arytenoid",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8893",
+          "sourceElementFileId": "FJ2780",
+          "sourceElementFileIds": [
+            "FJ2780"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.zone.of.oblique.arytenoid",
+          "structureId": "FMA:46601",
+          "structureName": "zone of oblique arytenoid",
+          "clinicalName": "Zone of oblique arytenoid",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8572",
+          "sourceElementFileId": "FJ2774",
+          "sourceElementFileIds": [
+            "FJ2774",
+            "FJ2791"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.superior.oblique",
+          "structureId": "FMA:49039",
+          "structureName": "superior oblique",
+          "clinicalName": "Superior oblique",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4931",
+          "sourceElementFileId": "FJ1322",
+          "sourceElementFileIds": [
+            "FJ1322",
+            "FJ1373"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.inferior.oblique",
+          "structureId": "FMA:49040",
+          "structureName": "inferior oblique",
+          "clinicalName": "Inferior oblique",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4946",
+          "sourceElementFileId": "FJ1294",
+          "sourceElementFileIds": [
+            "FJ1294",
+            "FJ1345"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.inferior.oblique",
+          "structureId": "FMA:49050",
+          "structureName": "right inferior oblique",
+          "clinicalName": "Right inferior oblique",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4947",
+          "sourceElementFileId": "FJ1345",
+          "sourceElementFileIds": [
+            "FJ1345"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.inferior.oblique",
+          "structureId": "FMA:49051",
+          "structureName": "left inferior oblique",
+          "clinicalName": "Left inferior oblique",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4948",
+          "sourceElementFileId": "FJ1294",
+          "sourceElementFileIds": [
+            "FJ1294"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.superior.oblique",
+          "structureId": "FMA:49052",
+          "structureName": "right superior oblique",
+          "clinicalName": "Right superior oblique",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4932",
+          "sourceElementFileId": "FJ1373",
+          "sourceElementFileIds": [
+            "FJ1373"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.superior.oblique",
+          "structureId": "FMA:49053",
+          "structureName": "left superior oblique",
+          "clinicalName": "Left superior oblique",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4933",
+          "sourceElementFileId": "FJ1322",
+          "sourceElementFileIds": [
+            "FJ1322"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.trochlea.of.superior.oblique",
+          "structureId": "FMA:49065",
+          "structureName": "trochlea of superior oblique",
+          "clinicalName": "Trochlea of superior oblique",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5094",
+          "sourceElementFileId": "FJ1329",
+          "sourceElementFileIds": [
+            "FJ1329",
+            "FJ1380"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.trochlea.of.right.superior.oblique",
+          "structureId": "FMA:49067",
+          "structureName": "trochlea of right superior oblique",
+          "clinicalName": "Trochlea of right superior oblique",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5095",
+          "sourceElementFileId": "FJ1380",
+          "sourceElementFileIds": [
+            "FJ1380"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.trochlea.of.left.superior.oblique",
+          "structureId": "FMA:49068",
+          "structureName": "trochlea of left superior oblique",
+          "clinicalName": "Trochlea of left superior oblique",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5096",
+          "sourceElementFileId": "FJ1329",
+          "sourceElementFileIds": [
+            "FJ1329"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.posterior.intercostal.arteries",
+          "structureId": "FMA:63822",
+          "structureName": "posterior intercostal arteries",
+          "clinicalName": "Posterior intercostal arteries",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP6654",
+          "sourceElementFileId": "FJ1961",
+          "sourceElementFileIds": [
+            "FJ1961",
+            "FJ1975"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.iliocostalis",
+          "structureId": "FMA:77177",
+          "structureName": "iliocostalis",
+          "clinicalName": "Iliocostalis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8050",
+          "sourceElementFileId": "FJ1526",
+          "sourceElementFileIds": [
+            "FJ1526",
+            "FJ1526M",
+            "FJ1527",
+            "FJ1527M",
+            "FJ1528",
+            "FJ1528M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.longissimus",
+          "structureId": "FMA:77178",
+          "structureName": "longissimus",
+          "clinicalName": "Longissimus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8987",
+          "sourceElementFileId": "FJ1533",
+          "sourceElementFileIds": [
+            "FJ1533",
+            "FJ1533M",
+            "FJ1534",
+            "FJ1534M",
+            "FJ1535",
+            "FJ1535M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.spinalis",
+          "structureId": "FMA:77179",
+          "structureName": "spinalis",
+          "clinicalName": "Spinalis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8423",
+          "sourceElementFileId": "FJ1543",
+          "sourceElementFileIds": [
+            "FJ1543",
+            "FJ1543M",
+            "FJ1544",
+            "FJ1544M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.splenius",
+          "structureId": "FMA:77180",
+          "structureName": "splenius",
+          "clinicalName": "Splenius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8024",
+          "sourceElementFileId": "FJ1545",
+          "sourceElementFileIds": [
+            "FJ1545",
+            "FJ1545M",
+            "FJ1546",
+            "FJ1546M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.sternocostal.part.of.right.pectoralis.major",
+          "structureId": "FMA:79979",
+          "structureName": "sternocostal part of right pectoralis major",
+          "clinicalName": "Sternocostal part of right pectoralis major",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5613",
+          "sourceElementFileId": "FJ1464",
+          "sourceElementFileIds": [
+            "FJ1464"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.sternocostal.part.of.left.pectoralis.major",
+          "structureId": "FMA:79980",
+          "structureName": "sternocostal part of left pectoralis major",
+          "clinicalName": "Sternocostal part of left pectoralis major",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-torso",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8323",
+          "sourceElementFileId": "FJ1464M",
+          "sourceElementFileIds": [
+            "FJ1464M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

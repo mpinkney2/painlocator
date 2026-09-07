@@ -1,0 +1,776 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "muscle-pelvis",
+  "displayName": "Muscle Pelvis",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "muscle": {
+      "layerId": "muscle",
+      "displayName": "Muscle",
+      "file": "./muscle.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "muscle.psoas.major",
+          "structureId": "FMA:18060",
+          "structureName": "psoas major",
+          "clinicalName": "Psoas major",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8374",
+          "sourceElementFileId": "FJ1431",
+          "sourceElementFileIds": [
+            "FJ1431",
+            "FJ1431M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.piriformis",
+          "structureId": "FMA:19082",
+          "structureName": "piriformis",
+          "clinicalName": "Piriformis",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8132",
+          "sourceElementFileId": "FJ1428",
+          "sourceElementFileIds": [
+            "FJ1428",
+            "FJ1428M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.obturator.muscle",
+          "structureId": "FMA:19083",
+          "structureName": "obturator muscle",
+          "clinicalName": "Obturator muscle",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7988",
+          "sourceElementFileId": "FJ1425",
+          "sourceElementFileIds": [
+            "FJ1425",
+            "FJ1425M",
+            "FJ1426",
+            "FJ1426M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.coccygeus",
+          "structureId": "FMA:19088",
+          "structureName": "coccygeus",
+          "clinicalName": "Coccygeus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8116",
+          "sourceElementFileId": "FJ1449M",
+          "sourceElementFileIds": [
+            "FJ1449M",
+            "FJ2542",
+            "FJ2547"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.zone.of.levator.ani",
+          "structureId": "FMA:19089",
+          "structureName": "zone of levator ani",
+          "clinicalName": "Zone of levator ani",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7793",
+          "sourceElementFileId": "FJ1453M",
+          "sourceElementFileIds": [
+            "FJ1453M",
+            "FJ1457M",
+            "FJ1458M",
+            "FJ2544",
+            "FJ2545",
+            "FJ2546",
+            "FJ2549",
+            "FJ2550",
+            "FJ2551"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.pubococcygeus",
+          "structureId": "FMA:19090",
+          "structureName": "pubococcygeus",
+          "clinicalName": "Pubococcygeus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7792",
+          "sourceElementFileId": "FJ1457M",
+          "sourceElementFileIds": [
+            "FJ1457M",
+            "FJ2545",
+            "FJ2550"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.iliococcygeus",
+          "structureId": "FMA:19092",
+          "structureName": "iliococcygeus",
+          "clinicalName": "Iliococcygeus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8008",
+          "sourceElementFileId": "FJ1453M",
+          "sourceElementFileIds": [
+            "FJ1453M",
+            "FJ2544",
+            "FJ2549"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.obturator.internus",
+          "structureId": "FMA:22298",
+          "structureName": "obturator internus",
+          "clinicalName": "Obturator internus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7987",
+          "sourceElementFileId": "FJ1426",
+          "sourceElementFileIds": [
+            "FJ1426",
+            "FJ1426M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.obturator.externus",
+          "structureId": "FMA:22299",
+          "structureName": "obturator externus",
+          "clinicalName": "Obturator externus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8507",
+          "sourceElementFileId": "FJ1425",
+          "sourceElementFileIds": [
+            "FJ1425",
+            "FJ1425M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.iliacus",
+          "structureId": "FMA:22310",
+          "structureName": "iliacus",
+          "clinicalName": "Iliacus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8313",
+          "sourceElementFileId": "FJ1422",
+          "sourceElementFileIds": [
+            "FJ1422",
+            "FJ1422M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gluteus.maximus",
+          "structureId": "FMA:22314",
+          "structureName": "gluteus maximus",
+          "clinicalName": "Gluteus maximus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8402",
+          "sourceElementFileId": "FJ1418",
+          "sourceElementFileIds": [
+            "FJ1418",
+            "FJ1418M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gluteus.medius",
+          "structureId": "FMA:22315",
+          "structureName": "gluteus medius",
+          "clinicalName": "Gluteus medius",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9214",
+          "sourceElementFileId": "FJ1419",
+          "sourceElementFileIds": [
+            "FJ1419",
+            "FJ1419M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gluteus.minimus",
+          "structureId": "FMA:22317",
+          "structureName": "gluteus minimus",
+          "clinicalName": "Gluteus minimus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8624",
+          "sourceElementFileId": "FJ1420",
+          "sourceElementFileIds": [
+            "FJ1420",
+            "FJ1420M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gemellus.superior",
+          "structureId": "FMA:22318",
+          "structureName": "gemellus superior",
+          "clinicalName": "Gemellus superior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8029",
+          "sourceElementFileId": "FJ1417",
+          "sourceElementFileIds": [
+            "FJ1417",
+            "FJ1417M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gemellus",
+          "structureId": "FMA:22319",
+          "structureName": "gemellus",
+          "clinicalName": "Gemellus",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8030",
+          "sourceElementFileId": "FJ1416",
+          "sourceElementFileIds": [
+            "FJ1416",
+            "FJ1416M",
+            "FJ1417",
+            "FJ1417M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.gemellus.inferior",
+          "structureId": "FMA:22320",
+          "structureName": "gemellus inferior",
+          "clinicalName": "Gemellus inferior",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8455",
+          "sourceElementFileId": "FJ1416",
+          "sourceElementFileIds": [
+            "FJ1416",
+            "FJ1416M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.iliacus",
+          "structureId": "FMA:22322",
+          "structureName": "right iliacus",
+          "clinicalName": "Right iliacus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5085",
+          "sourceElementFileId": "FJ1422",
+          "sourceElementFileIds": [
+            "FJ1422"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.iliacus",
+          "structureId": "FMA:22323",
+          "structureName": "left iliacus",
+          "clinicalName": "Left iliacus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8312",
+          "sourceElementFileId": "FJ1422M",
+          "sourceElementFileIds": [
+            "FJ1422M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.obturator.internus",
+          "structureId": "FMA:22324",
+          "structureName": "right obturator internus",
+          "clinicalName": "Right obturator internus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5079",
+          "sourceElementFileId": "FJ1426",
+          "sourceElementFileIds": [
+            "FJ1426"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.obturator.internus",
+          "structureId": "FMA:22325",
+          "structureName": "left obturator internus",
+          "clinicalName": "Left obturator internus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7986",
+          "sourceElementFileId": "FJ1426M",
+          "sourceElementFileIds": [
+            "FJ1426M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.obturator.externus",
+          "structureId": "FMA:22326",
+          "structureName": "right obturator externus",
+          "clinicalName": "Right obturator externus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5081",
+          "sourceElementFileId": "FJ1425",
+          "sourceElementFileIds": [
+            "FJ1425"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.obturator.externus",
+          "structureId": "FMA:22327",
+          "structureName": "left obturator externus",
+          "clinicalName": "Left obturator externus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8506",
+          "sourceElementFileId": "FJ1425M",
+          "sourceElementFileIds": [
+            "FJ1425M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.gluteus.maximus",
+          "structureId": "FMA:22328",
+          "structureName": "right gluteus maximus",
+          "clinicalName": "Right gluteus maximus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5065",
+          "sourceElementFileId": "FJ1418",
+          "sourceElementFileIds": [
+            "FJ1418"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.gluteus.maximus",
+          "structureId": "FMA:22329",
+          "structureName": "left gluteus maximus",
+          "clinicalName": "Left gluteus maximus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8401",
+          "sourceElementFileId": "FJ1418M",
+          "sourceElementFileIds": [
+            "FJ1418M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.gluteus.medius",
+          "structureId": "FMA:22330",
+          "structureName": "right gluteus medius",
+          "clinicalName": "Right gluteus medius",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5063",
+          "sourceElementFileId": "FJ1419",
+          "sourceElementFileIds": [
+            "FJ1419"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.gluteus.medius",
+          "structureId": "FMA:22331",
+          "structureName": "left gluteus medius",
+          "clinicalName": "Left gluteus medius",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9213",
+          "sourceElementFileId": "FJ1419M",
+          "sourceElementFileIds": [
+            "FJ1419M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.gluteus.minimus",
+          "structureId": "FMA:22332",
+          "structureName": "right gluteus minimus",
+          "clinicalName": "Right gluteus minimus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5083",
+          "sourceElementFileId": "FJ1420",
+          "sourceElementFileIds": [
+            "FJ1420"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.gluteus.minimus",
+          "structureId": "FMA:22333",
+          "structureName": "left gluteus minimus",
+          "clinicalName": "Left gluteus minimus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8623",
+          "sourceElementFileId": "FJ1420M",
+          "sourceElementFileIds": [
+            "FJ1420M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.gemellus.superior",
+          "structureId": "FMA:22334",
+          "structureName": "right gemellus superior",
+          "clinicalName": "Right gemellus superior",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5068",
+          "sourceElementFileId": "FJ1417",
+          "sourceElementFileIds": [
+            "FJ1417"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.gemellus.superior",
+          "structureId": "FMA:22335",
+          "structureName": "left gemellus superior",
+          "clinicalName": "Left gemellus superior",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8028",
+          "sourceElementFileId": "FJ1417M",
+          "sourceElementFileIds": [
+            "FJ1417M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.gemellus.inferior",
+          "structureId": "FMA:22336",
+          "structureName": "right gemellus inferior",
+          "clinicalName": "Right gemellus inferior",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5070",
+          "sourceElementFileId": "FJ1416",
+          "sourceElementFileIds": [
+            "FJ1416"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.gemellus.inferior",
+          "structureId": "FMA:22337",
+          "structureName": "left gemellus inferior",
+          "clinicalName": "Left gemellus inferior",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8454",
+          "sourceElementFileId": "FJ1416M",
+          "sourceElementFileIds": [
+            "FJ1416M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.piriformis",
+          "structureId": "FMA:22340",
+          "structureName": "right piriformis",
+          "clinicalName": "Right piriformis",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP5076",
+          "sourceElementFileId": "FJ1428",
+          "sourceElementFileIds": [
+            "FJ1428"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.piriformis",
+          "structureId": "FMA:22341",
+          "structureName": "left piriformis",
+          "clinicalName": "Left piriformis",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8131",
+          "sourceElementFileId": "FJ1428M",
+          "sourceElementFileIds": [
+            "FJ1428M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.psoas.major",
+          "structureId": "FMA:22342",
+          "structureName": "right psoas major",
+          "clinicalName": "Right psoas major",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP4701",
+          "sourceElementFileId": "FJ1431",
+          "sourceElementFileIds": [
+            "FJ1431"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.psoas.major",
+          "structureId": "FMA:22343",
+          "structureName": "left psoas major",
+          "clinicalName": "Left psoas major",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8373",
+          "sourceElementFileId": "FJ1431M",
+          "sourceElementFileIds": [
+            "FJ1431M"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.pubococcygeus",
+          "structureId": "FMA:45854",
+          "structureName": "right pubococcygeus",
+          "clinicalName": "Right pubococcygeus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9143",
+          "sourceElementFileId": "FJ2550",
+          "sourceElementFileIds": [
+            "FJ2550"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.pubococcygeus",
+          "structureId": "FMA:45855",
+          "structureName": "left pubococcygeus",
+          "clinicalName": "Left pubococcygeus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7791",
+          "sourceElementFileId": "FJ1457M",
+          "sourceElementFileIds": [
+            "FJ1457M",
+            "FJ2545"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.iliococcygeus",
+          "structureId": "FMA:45858",
+          "structureName": "right iliococcygeus",
+          "clinicalName": "Right iliococcygeus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8874",
+          "sourceElementFileId": "FJ2549",
+          "sourceElementFileIds": [
+            "FJ2549"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.iliococcygeus",
+          "structureId": "FMA:45859",
+          "structureName": "left iliococcygeus",
+          "clinicalName": "Left iliococcygeus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8007",
+          "sourceElementFileId": "FJ1453M",
+          "sourceElementFileIds": [
+            "FJ1453M",
+            "FJ2544"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.tendinous.arch.of.levator.ani",
+          "structureId": "FMA:46442",
+          "structureName": "tendinous arch of levator ani",
+          "clinicalName": "Tendinous arch of levator ani",
+          "layer": "muscle",
+          "laterality": "midline",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9016",
+          "sourceElementFileId": "FJ1465",
+          "sourceElementFileIds": [
+            "FJ1465",
+            "FJ1465M",
+            "FJ2552",
+            "FJ2553"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.right.coccygeus",
+          "structureId": "FMA:46443",
+          "structureName": "right coccygeus",
+          "clinicalName": "Right coccygeus",
+          "layer": "muscle",
+          "laterality": "right",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8115",
+          "sourceElementFileId": "FJ2547",
+          "sourceElementFileIds": [
+            "FJ2547"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "muscle.left.coccygeus",
+          "structureId": "FMA:46444",
+          "structureName": "left coccygeus",
+          "clinicalName": "Left coccygeus",
+          "layer": "muscle",
+          "laterality": "left",
+          "region": "muscle-pelvis",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9157",
+          "sourceElementFileId": "FJ1449M",
+          "sourceElementFileIds": [
+            "FJ1449M",
+            "FJ2542"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

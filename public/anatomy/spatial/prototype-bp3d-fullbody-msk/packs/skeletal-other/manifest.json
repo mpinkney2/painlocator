@@ -1,0 +1,661 @@
+{
+  "schemaVersion": "1.0.0",
+  "modelId": "bp3d-fullbody-msk-v1",
+  "packId": "skeletal-other",
+  "displayName": "Skeletal Other",
+  "sex": "male",
+  "status": "development",
+  "sourceAssetVersion": "bodyparts3d-4.0-isa-obj99",
+  "coordinateSystem": "y-up-right-handed",
+  "units": "meters",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "normalization": {
+    "matrixRows": [
+      [
+        -0.001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.001
+      ],
+      [
+        0.0,
+        -0.001,
+        0.0
+      ]
+    ],
+    "description": "(x,y,z)_mm \u2192 (-x, z, -y) * 0.001"
+  },
+  "provenance": {
+    "source": "BodyParts3D",
+    "version": "4.0",
+    "license": "CC-BY-4.0",
+    "attribution": "BodyParts3D, \u00a9 The Database Center for Life Science licensed under CC Attribution 4.0 International",
+    "archiveChecksum": {
+      "algorithm": "sha256",
+      "value": "40665852c49f218326590e204db91064a1ecfc3c6f8cbd7bbbcaac62c7cd409e"
+    }
+  },
+  "layers": {
+    "skeletal": {
+      "layerId": "skeletal",
+      "displayName": "Skeletal",
+      "file": "./skeletal.glb",
+      "lod": 0,
+      "meshes": [
+        {
+          "meshId": "bone.scaphoid",
+          "structureId": "FMA:23709",
+          "structureName": "scaphoid",
+          "clinicalName": "Scaphoid",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8123",
+          "sourceElementFileId": "FJ3278",
+          "sourceElementFileIds": [
+            "FJ3278",
+            "FJ3383"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.lunate",
+          "structureId": "FMA:23712",
+          "structureName": "lunate",
+          "clinicalName": "Lunate",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8494",
+          "sourceElementFileId": "FJ3268",
+          "sourceElementFileIds": [
+            "FJ3268",
+            "FJ3374"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.triquetral",
+          "structureId": "FMA:23715",
+          "structureName": "triquetral",
+          "clinicalName": "Triquetral",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8308",
+          "sourceElementFileId": "FJ3285",
+          "sourceElementFileIds": [
+            "FJ3285",
+            "FJ3390"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.pisiform",
+          "structureId": "FMA:23718",
+          "structureName": "pisiform",
+          "clinicalName": "Pisiform",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8771",
+          "sourceElementFileId": "FJ3276",
+          "sourceElementFileIds": [
+            "FJ3276",
+            "FJ3382"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.trapezium",
+          "structureId": "FMA:23721",
+          "structureName": "trapezium",
+          "clinicalName": "Trapezium",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8567",
+          "sourceElementFileId": "FJ3283",
+          "sourceElementFileIds": [
+            "FJ3283",
+            "FJ3388"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.capitate",
+          "structureId": "FMA:23727",
+          "structureName": "capitate",
+          "clinicalName": "Capitate",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7960",
+          "sourceElementFileId": "FJ3257",
+          "sourceElementFileIds": [
+            "FJ3257",
+            "FJ3361"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.hamate",
+          "structureId": "FMA:23730",
+          "structureName": "hamate",
+          "clinicalName": "Hamate",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8884",
+          "sourceElementFileId": "FJ3261",
+          "sourceElementFileIds": [
+            "FJ3261",
+            "FJ3367"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.scaphoid",
+          "structureId": "FMA:24435",
+          "structureName": "right scaphoid",
+          "clinicalName": "Right scaphoid",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8724",
+          "sourceElementFileId": "FJ3383",
+          "sourceElementFileIds": [
+            "FJ3383"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.scaphoid",
+          "structureId": "FMA:24436",
+          "structureName": "left scaphoid",
+          "clinicalName": "Left scaphoid",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8122",
+          "sourceElementFileId": "FJ3278",
+          "sourceElementFileIds": [
+            "FJ3278"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.lunate",
+          "structureId": "FMA:24437",
+          "structureName": "right lunate",
+          "clinicalName": "Right lunate",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9284",
+          "sourceElementFileId": "FJ3374",
+          "sourceElementFileIds": [
+            "FJ3374"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.lunate",
+          "structureId": "FMA:24438",
+          "structureName": "left lunate",
+          "clinicalName": "Left lunate",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8493",
+          "sourceElementFileId": "FJ3268",
+          "sourceElementFileIds": [
+            "FJ3268"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.triquetral",
+          "structureId": "FMA:24439",
+          "structureName": "right triquetral",
+          "clinicalName": "Right triquetral",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8307",
+          "sourceElementFileId": "FJ3390",
+          "sourceElementFileIds": [
+            "FJ3390"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.triquetral",
+          "structureId": "FMA:24440",
+          "structureName": "left triquetral",
+          "clinicalName": "Left triquetral",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8583",
+          "sourceElementFileId": "FJ3285",
+          "sourceElementFileIds": [
+            "FJ3285"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.pisiform",
+          "structureId": "FMA:24441",
+          "structureName": "right pisiform",
+          "clinicalName": "Right pisiform",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8770",
+          "sourceElementFileId": "FJ3382",
+          "sourceElementFileIds": [
+            "FJ3382"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.pisiform",
+          "structureId": "FMA:24442",
+          "structureName": "left pisiform",
+          "clinicalName": "Left pisiform",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8957",
+          "sourceElementFileId": "FJ3276",
+          "sourceElementFileIds": [
+            "FJ3276"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.trapezium",
+          "structureId": "FMA:24443",
+          "structureName": "right trapezium",
+          "clinicalName": "Right trapezium",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8566",
+          "sourceElementFileId": "FJ3388",
+          "sourceElementFileIds": [
+            "FJ3388"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.trapezium",
+          "structureId": "FMA:24444",
+          "structureName": "left trapezium",
+          "clinicalName": "Left trapezium",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9024",
+          "sourceElementFileId": "FJ3283",
+          "sourceElementFileIds": [
+            "FJ3283"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.capitate",
+          "structureId": "FMA:24446",
+          "structureName": "right capitate",
+          "clinicalName": "Right capitate",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8528",
+          "sourceElementFileId": "FJ3361",
+          "sourceElementFileIds": [
+            "FJ3361"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.capitate",
+          "structureId": "FMA:24447",
+          "structureName": "left capitate",
+          "clinicalName": "Left capitate",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP7959",
+          "sourceElementFileId": "FJ3257",
+          "sourceElementFileIds": [
+            "FJ3257"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.hamate",
+          "structureId": "FMA:24448",
+          "structureName": "right hamate",
+          "clinicalName": "Right hamate",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9266",
+          "sourceElementFileId": "FJ3367",
+          "sourceElementFileIds": [
+            "FJ3367"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.hamate",
+          "structureId": "FMA:24449",
+          "structureName": "left hamate",
+          "clinicalName": "Left hamate",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8883",
+          "sourceElementFileId": "FJ3261",
+          "sourceElementFileIds": [
+            "FJ3261"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.navicular.bone.of.foot",
+          "structureId": "FMA:24499",
+          "structureName": "navicular bone of foot",
+          "clinicalName": "Navicular bone of foot",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8600",
+          "sourceElementFileId": "FJ3307",
+          "sourceElementFileIds": [
+            "FJ3307",
+            "FJ3308"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.navicular.bone.of.right.foot",
+          "structureId": "FMA:24500",
+          "structureName": "navicular bone of right foot",
+          "clinicalName": "Navicular bone of right foot",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9133",
+          "sourceElementFileId": "FJ3308",
+          "sourceElementFileIds": [
+            "FJ3308"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.navicular.bone.of.left.foot",
+          "structureId": "FMA:24501",
+          "structureName": "navicular bone of left foot",
+          "clinicalName": "Navicular bone of left foot",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8599",
+          "sourceElementFileId": "FJ3307",
+          "sourceElementFileIds": [
+            "FJ3307"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.cuneiform.bone",
+          "structureId": "FMA:24517",
+          "structureName": "cuneiform bone",
+          "clinicalName": "Cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8349",
+          "sourceElementFileId": "FJ3264",
+          "sourceElementFileIds": [
+            "FJ3264",
+            "FJ3267",
+            "FJ3271",
+            "FJ3370",
+            "FJ3373",
+            "FJ3377"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.medial.cuneiform.bone",
+          "structureId": "FMA:24518",
+          "structureName": "medial cuneiform bone",
+          "clinicalName": "Medial cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8775",
+          "sourceElementFileId": "FJ3271",
+          "sourceElementFileIds": [
+            "FJ3271",
+            "FJ3377"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.intermediate.cuneiform.bone",
+          "structureId": "FMA:24519",
+          "structureName": "intermediate cuneiform bone",
+          "clinicalName": "Intermediate cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8521",
+          "sourceElementFileId": "FJ3264",
+          "sourceElementFileIds": [
+            "FJ3264",
+            "FJ3370"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.lateral.cuneiform.bone",
+          "structureId": "FMA:24520",
+          "structureName": "lateral cuneiform bone",
+          "clinicalName": "Lateral cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8348",
+          "sourceElementFileId": "FJ3267",
+          "sourceElementFileIds": [
+            "FJ3267",
+            "FJ3373"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.medial.cuneiform.bone",
+          "structureId": "FMA:24521",
+          "structureName": "right medial cuneiform bone",
+          "clinicalName": "Right medial cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8830",
+          "sourceElementFileId": "FJ3377",
+          "sourceElementFileIds": [
+            "FJ3377"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.medial.cuneiform.bone",
+          "structureId": "FMA:24522",
+          "structureName": "left medial cuneiform bone",
+          "clinicalName": "Left medial cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8774",
+          "sourceElementFileId": "FJ3271",
+          "sourceElementFileIds": [
+            "FJ3271"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.intermediate.cuneiform.bone",
+          "structureId": "FMA:24523",
+          "structureName": "right intermediate cuneiform bone",
+          "clinicalName": "Right intermediate cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP9110",
+          "sourceElementFileId": "FJ3370",
+          "sourceElementFileIds": [
+            "FJ3370"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.intermediate.cuneiform.bone",
+          "structureId": "FMA:24524",
+          "structureName": "left intermediate cuneiform bone",
+          "clinicalName": "Left intermediate cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8520",
+          "sourceElementFileId": "FJ3264",
+          "sourceElementFileIds": [
+            "FJ3264"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.lateral.cuneiform.bone",
+          "structureId": "FMA:24525",
+          "structureName": "right lateral cuneiform bone",
+          "clinicalName": "Right lateral cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8730",
+          "sourceElementFileId": "FJ3373",
+          "sourceElementFileIds": [
+            "FJ3373"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.lateral.cuneiform.bone",
+          "structureId": "FMA:24526",
+          "structureName": "left lateral cuneiform bone",
+          "clinicalName": "Left lateral cuneiform bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8347",
+          "sourceElementFileId": "FJ3267",
+          "sourceElementFileIds": [
+            "FJ3267"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.cuboid.bone",
+          "structureId": "FMA:24527",
+          "structureName": "cuboid bone",
+          "clinicalName": "Cuboid bone",
+          "layer": "skeletal",
+          "laterality": "midline",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8539",
+          "sourceElementFileId": "FJ3258",
+          "sourceElementFileIds": [
+            "FJ3258",
+            "FJ3364"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.right.cuboid.bone",
+          "structureId": "FMA:24528",
+          "structureName": "right cuboid bone",
+          "clinicalName": "Right cuboid bone",
+          "layer": "skeletal",
+          "laterality": "right",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8873",
+          "sourceElementFileId": "FJ3364",
+          "sourceElementFileIds": [
+            "FJ3364"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        },
+        {
+          "meshId": "bone.left.cuboid.bone",
+          "structureId": "FMA:24529",
+          "structureName": "left cuboid bone",
+          "clinicalName": "Left cuboid bone",
+          "layer": "skeletal",
+          "laterality": "left",
+          "region": "skeletal-other",
+          "parentStructureId": null,
+          "sourceRepresentationId": "BP8538",
+          "sourceElementFileId": "FJ3258",
+          "sourceElementFileIds": [
+            "FJ3258"
+          ],
+          "provenanceRef": "BodyParts3D-4.0-CC-BY-4.0"
+        }
+      ]
+    }
+  }
+}

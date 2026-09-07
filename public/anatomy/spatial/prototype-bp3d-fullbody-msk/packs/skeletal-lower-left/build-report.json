@@ -1,0 +1,375 @@
+{
+  "packId": "skeletal-lower-left",
+  "layer": "skeletal",
+  "structureCount": 14,
+  "glbBytes": 837300,
+  "glbSha256": "0154bacaf0f26f9d4314cc68cd89698d62e39303eeade3a306d41ed219458936",
+  "meshes": [
+    {
+      "meshId": "bone.left.femur",
+      "structureId": "FMA:24475",
+      "sourceVertices": 1623,
+      "sourceFaces": 3204,
+      "vertices": 1623,
+      "faces": 3204,
+      "elementCount": 1,
+      "centroid": [
+        -0.09352542260816178,
+        0.5892958289309899,
+        0.08505749084295042
+      ],
+      "bounds": [
+        [
+          -0.150237,
+          0.368056,
+          0.0494822
+        ],
+        [
+          -0.0319662,
+          0.8342390000000001,
+          0.112276
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.tibia",
+      "structureId": "FMA:24478",
+      "sourceVertices": 880,
+      "sourceFaces": 1692,
+      "vertices": 880,
+      "faces": 1692,
+      "elementCount": 1,
+      "centroid": [
+        -0.07665770551132518,
+        0.2087202381694772,
+        0.08551272649916669
+      ],
+      "bounds": [
+        [
+          -0.109455,
+          -0.0060953299999999995,
+          0.0519821
+        ],
+        [
+          -0.0350342,
+          0.373862,
+          0.114515
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fibula",
+      "structureId": "FMA:24481",
+      "sourceVertices": 577,
+      "sourceFaces": 1124,
+      "vertices": 577,
+      "faces": 1124,
+      "elementCount": 1,
+      "centroid": [
+        -0.10081746354154165,
+        0.1689794530413813,
+        0.0606365730329194
+      ],
+      "bounds": [
+        [
+          -0.120108,
+          -0.0251906,
+          0.048534
+        ],
+        [
+          -0.08452899999999999,
+          0.359131,
+          0.07811900000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.talus",
+      "structureId": "FMA:24483",
+      "sourceVertices": 776,
+      "sourceFaces": 1356,
+      "vertices": 776,
+      "faces": 1356,
+      "elementCount": 1,
+      "centroid": [
+        -0.07119824837160081,
+        -0.013933293357387657,
+        0.07732707800036985
+      ],
+      "bounds": [
+        [
+          -0.09017839999999999,
+          -0.031305599999999996,
+          0.048814
+        ],
+        [
+          -0.049635399999999996,
+          0.0030981100000000003,
+          0.10567700000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.patella",
+      "structureId": "FMA:24487",
+      "sourceVertices": 180,
+      "sourceFaces": 310,
+      "vertices": 180,
+      "faces": 310,
+      "elementCount": 1,
+      "centroid": [
+        -0.08134709840232338,
+        0.38170727377901764,
+        0.11263576363010966
+      ],
+      "bounds": [
+        [
+          -0.10222400000000001,
+          0.361497,
+          0.100901
+        ],
+        [
+          -0.0605925,
+          0.400763,
+          0.12275100000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.calcaneus",
+      "structureId": "FMA:24498",
+      "sourceVertices": 719,
+      "sourceFaces": 1288,
+      "vertices": 719,
+      "faces": 1288,
+      "elementCount": 1,
+      "centroid": [
+        -0.07114860465152356,
+        -0.04159388587249028,
+        0.0587462261263363
+      ],
+      "bounds": [
+        [
+          -0.100768,
+          -0.0684172,
+          0.0242068
+        ],
+        [
+          -0.04501,
+          -0.0190712,
+          0.09414180000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.first.metatarsal.bone",
+      "structureId": "FMA:24508",
+      "sourceVertices": 614,
+      "sourceFaces": 1172,
+      "vertices": 614,
+      "faces": 1172,
+      "elementCount": 1,
+      "centroid": [
+        -0.0896035024598314,
+        -0.044457266710181326,
+        0.16100276944347325
+      ],
+      "bounds": [
+        [
+          -0.104378,
+          -0.0653757,
+          0.129971
+        ],
+        [
+          -0.074837,
+          -0.0221406,
+          0.19224100000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.second.metatarsal.bone",
+      "structureId": "FMA:24510",
+      "sourceVertices": 487,
+      "sourceFaces": 774,
+      "vertices": 487,
+      "faces": 774,
+      "elementCount": 1,
+      "centroid": [
+        -0.10616544474393225,
+        -0.04050273644493282,
+        0.15347020693586502
+      ],
+      "bounds": [
+        [
+          -0.121348,
+          -0.0661637,
+          0.122489
+        ],
+        [
+          -0.0905894,
+          -0.0183069,
+          0.187371
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.third.metatarsal.bone",
+      "structureId": "FMA:24512",
+      "sourceVertices": 429,
+      "sourceFaces": 742,
+      "vertices": 429,
+      "faces": 742,
+      "elementCount": 1,
+      "centroid": [
+        -0.11664095467054252,
+        -0.043989088276102845,
+        0.14742824343649472
+      ],
+      "bounds": [
+        [
+          -0.13361,
+          -0.0665048,
+          0.11814100000000001
+        ],
+        [
+          -0.0983199,
+          -0.0236681,
+          0.18079499999999998
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fourth.metatarsal.bone",
+      "structureId": "FMA:24514",
+      "sourceVertices": 437,
+      "sourceFaces": 772,
+      "vertices": 437,
+      "faces": 772,
+      "elementCount": 1,
+      "centroid": [
+        -0.12259607289109616,
+        -0.0486147111366438,
+        0.13664287010655518
+      ],
+      "bounds": [
+        [
+          -0.14263800000000001,
+          -0.0673905,
+          0.10696599999999999
+        ],
+        [
+          -0.101773,
+          -0.0320211,
+          0.16942500000000002
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.fifth.metatarsal.bone",
+      "structureId": "FMA:24516",
+      "sourceVertices": 447,
+      "sourceFaces": 864,
+      "vertices": 447,
+      "faces": 864,
+      "elementCount": 1,
+      "centroid": [
+        -0.1277083255790597,
+        -0.055130626525586666,
+        0.12255429473956907
+      ],
+      "bounds": [
+        [
+          -0.152375,
+          -0.069814,
+          0.08929240000000001
+        ],
+        [
+          -0.106437,
+          -0.0397727,
+          0.15508600000000003
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.left.iliotibial.tract",
+      "structureId": "FMA:58777",
+      "sourceVertices": 9425,
+      "sourceFaces": 17172,
+      "vertices": 9425,
+      "faces": 17172,
+      "elementCount": 1,
+      "centroid": [
+        -0.14319846104008652,
+        0.6655930032793909,
+        0.07580197085571927
+      ],
+      "bounds": [
+        [
+          -0.162519,
+          0.314287,
+          0.0326368
+        ],
+        [
+          -0.0918023,
+          0.9451520000000001,
+          0.11337000000000001
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.tarsal.plate.of.left.lower.eyelid",
+      "structureId": "FMA:59090",
+      "sourceVertices": 525,
+      "sourceFaces": 1034,
+      "vertices": 525,
+      "faces": 1034,
+      "elementCount": 1,
+      "centroid": [
+        -0.030518745512878295,
+        1.5107759850588836,
+        0.16246012540668298
+      ],
+      "bounds": [
+        [
+          -0.0420141,
+          1.50701,
+          0.156101
+        ],
+        [
+          -0.0181183,
+          1.5153800000000002,
+          0.165108
+        ]
+      ]
+    },
+    {
+      "meshId": "bone.tarsal.plate.of.left.upper.eyelid",
+      "structureId": "FMA:59092",
+      "sourceVertices": 748,
+      "sourceFaces": 1484,
+      "vertices": 748,
+      "faces": 1484,
+      "elementCount": 1,
+      "centroid": [
+        -0.031133105682731872,
+        1.5235120637059567,
+        0.16372636083787054
+      ],
+      "bounds": [
+        [
+          -0.0429379,
+          1.51668,
+          0.15665
+        ],
+        [
+          -0.017353300000000002,
+          1.52921,
+          0.16623400000000002
+        ]
+      ]
+    }
+  ],
+  "generatedAt": "2026-09-07T19:25:29.126978+00:00",
+  "platform": "Linux-6.12.94+-x86_64-with-glibc2.39"
+}

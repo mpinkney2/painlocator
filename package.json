@@ -11,16 +11,25 @@
     "preview": "vite preview --host 0.0.0.0 --port 5500 --strictPort",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/run-tests.mjs",
+    "test:spatial-browser": "node scripts/spatial-browser-smoke.mjs",
     "bp3d:fetch": "node tools/bp3d-ingest/fetch-source.mjs",
     "bp3d:verify": "python3 tools/bp3d-ingest/verify_source.py",
     "bp3d:ingest": "python3 tools/bp3d-ingest/ingest.py",
     "bp3d:optimize": "node tools/bp3d-ingest/optimize.mjs",
     "bp3d:test": "node tools/bp3d-ingest/test-integrity.mjs",
-    "bp3d:build": "node tools/bp3d-ingest/build.mjs"
+    "bp3d:build": "node tools/bp3d-ingest/build.mjs",
+    "bp3d:curate-fullbody": "python3 tools/bp3d-ingest/curate-fullbody.py",
+    "bp3d:ingest-fullbody": "python3 tools/bp3d-ingest/ingest-fullbody.py",
+    "bp3d:compare-source-tiers": "python3 tools/bp3d-ingest/compare-source-tiers.py",
+    "bp3d:build:production": "node tools/bp3d-ingest/build-production.mjs",
+    "test:fullbody-browser": "node scripts/fullbody-browser-smoke.mjs"
+  },
+  "dependencies": {
+    "three": "0.170.0"
   },
   "devDependencies": {
     "@gltf-transform/cli": "4.1.1",
-    "three": "0.170.0",
+    "playwright": "^1.55.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
   }
