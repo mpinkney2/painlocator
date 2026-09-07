@@ -1994,6 +1994,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2008,22 +2009,135 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
+    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
     assert.ok(renderer.includes('canonical frame skipped'));
     assert.ok(renderer.includes('Tear down prior mount BEFORE loading Three'));
     assert.ok(renderer.includes('SpatialThreeLoader failed to load'));
-    assert.ok(renderer.includes('global.SpatialThreeLoader') || renderer.includes('globalThis.SpatialThreeLoader'));
+    assert.ok(renderer.includes('READY_SPATIAL') || renderer.includes('ready-spatial'));
     // Classic scripts must not contain source-level import() expressions — Vite
     // rewrites those into ESM and classic tags then fail. String-inside-Function is OK.
     const threeLoaderSrc = readFileSync(join(root, 'src/engine/spatial/spatial-three-loader.js'), 'utf8');
     const bootSrc = readFileSync(join(root, 'src/engine/spatial/spatial-boot-utils.js'), 'utf8');
     assert.ok(bootSrc.includes('new Function("u", "return import(u)")'));
-    assert.ok(threeLoaderSrc.includes('new Function("u", "return import(u)")'));
+    assert.ok(threeLoaderSrc.includes('importVendorModule'));
     assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(bootSrc), false);
     assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(threeLoaderSrc), false);
     loadScript('src/engine/spatial/spatial-three-loader.js', sandbox);
     assert.equal(typeof sandbox.SpatialThreeLoader?.loadThreeModule, 'function');
+    assert.equal(typeof sandbox.SpatialThreeLoader?.clearThreeCache, 'function');
+  });
+
+  test('spatial boot: health classifier and state machine helpers', () => {
+    loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
+    const u = sandbox.SpatialBootUtils;
+    assert.equal(u.classifySpatialHealth({ spatialReady: true, exteriorLoaded: true, exteriorModelId: 'adult-male' }), 'HEALTHY');
+    assert.equal(
+      u.classifySpatialHealth({
+        spatialReady: true,
+        exteriorLoaded: true,
+        exteriorModelId: 'adult-male',
+        canonicalDegraded: true,
+        canonicalExpected: true
+      }),
+      'DEGRADED'
+    );
+    assert.equal(u.classifySpatialHealth({ spatialReady: false, state: 'failed-spatial' }), 'FAILED');
+    const engine = { spatialBootState: null, trigger() {} };
+    u.setBootState(engine, u.BOOT_STATES.LOADING_THREE, { stage: 'loading-three' });
+    assert.equal(engine.spatialBootState.state, 'loading-three');
+    u.setBootState(engine, u.BOOT_STATES.READY_SPATIAL, { exteriorModelId: 'adult-male' });
+    assert.equal(engine.spatialBootState.state, 'ready-spatial');
+    u.setBootState(engine, u.BOOT_STATES.CANONICAL_DEGRADED, { canonicalStatus: 'degraded' });
+    assert.equal(engine.spatialBootState.state, 'canonical-degraded');
+    assert.notEqual(engine.spatialBootState.state, 'failed-spatial');
+  });
+
+  test('spatial boot: vendor import helper failure message + getGlobal', async () => {
+    loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
+    const u = sandbox.SpatialBootUtils;
+    sandbox.SpatialThreeLoader = { ok: true };
+    assert.equal(u.getGlobal('SpatialThreeLoader').ok, true);
+    let failed = false;
+    try {
+      await u.importVendorModule('');
+    } catch (err) {
+      failed = /empty path|ESM import/i.test(String(err?.message || err));
+    }
+    assert.equal(failed, true);
+  });
+
+  test('spatial diagnostics hidden by default and enabled by flag', () => {
+    loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
+    sandbox.location = { search: '' };
+    sandbox.PAINLOCATOR_IS_PRODUCTION = true;
+    assert.equal(sandbox.SpatialBootUtils.wantsSpatialDiagnostics(), false);
+    sandbox.location = { search: '?spatialDiagnostics=1' };
+    assert.equal(sandbox.SpatialBootUtils.wantsSpatialDiagnostics(), true);
+    const diagSrc = readFileSync(join(root, 'src/features/anatomy/spatial-diagnostics.js'), 'utf8');
+    assert.ok(diagSrc.includes('SPATIAL STATUS'));
+    assert.ok(diagSrc.includes('Copy Diagnostics JSON'));
+    assert.ok(!/patientName|PainEntry|pain-entry payloads/i.test(diagSrc) || diagSrc.includes('Never shows patient identifiers'));
+    assert.ok(!diagSrc.includes('patientName'));
+    assert.ok(!diagSrc.includes('entryStore'));
+  });
+
+  test('spatial boot: chrome hides tech reason unless diagnostics', () => {
+    const chrome = readFileSync(join(root, 'src/features/anatomy/spatial-primary-chrome.js'), 'utf8');
+    assert.ok(chrome.includes('wantsSpatialDiagnostics'));
+    assert.ok(chrome.includes('clearThreeCache'));
+    assert.ok(chrome.includes('3D body unavailable'));
+  });
+
+  test('spatial boot: runtime assets exist for production', () => {
+    const required = [
+      'public/vendor/three.module.min.js',
+      'public/vendor/GLTFLoader.js',
+      'public/vendor/meshopt_decoder.module.js',
+      'public/anatomy/spatial/manifest.json',
+      'public/anatomy/spatial/adult-male/manifest.json',
+      'public/anatomy/spatial/adult-male/exterior-lod0.glb',
+      'public/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb',
+      'public/anatomy/spatial/prototype-bp3d/muscle.glb',
+      'public/anatomy/spatial/prototype-bp3d/skeletal.glb'
+    ];
+    for (const rel of required) {
+      let ok = false;
+      try { ok = !!statSync(join(root, rel)); } catch (_) { ok = false; }
+      assert.ok(ok, `missing ${rel}`);
+    }
+    const buildSrc = readFileSync(join(root, 'scripts/build.mjs'), 'utf8');
+    assert.ok(buildSrc.includes('meshopt_decoder.module.js'));
+    assert.ok(buildSrc.includes('canonical-body.glb'));
+  });
+
+  test('spatial boot: unified runtime version on interdependent scripts', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const ver = '2026-09-07-bp3d-boot-1';
+    for (const file of [
+      'spatial-boot-utils.js',
+      'spatial-three-loader.js',
+      'spatial-anatomy-renderer.js',
+      'spatial-layer-loader.js',
+      'spatial-manifest-loader.js',
+      'canonical-body-loader.js',
+      'spatial-primary-chrome.js',
+      'spatial-diagnostics.js',
+      'bp3d-shell-engagement.js'
+    ]) {
+      assert.ok(html.includes(`${file}?v=${ver}`), file);
+    }
+  });
+
+  test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {
+    const ctrl = readFileSync(join(root, 'src/engine/spatial/spatial-layer-controller.js'), 'utf8');
+    assert.ok(ctrl.includes('presentationMode === "patient"') || ctrl.includes("presentationMode === 'patient'"));
+    assert.ok(ctrl.includes('isPatientBlocked') || ctrl.includes('patient'));
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    assert.ok(renderer.includes('_initLayerController'));
+    assert.ok(renderer.includes('Surface (styled exterior)') || renderer.includes('Muscle (BP3D)'));
   });
 }
 

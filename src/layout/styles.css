@@ -2308,3 +2308,68 @@ body.reduced-motion-active *::after {
   .brand-tagline { display: none; }
   .region-tool { padding: 6px 8px; font-size: 10px; min-width: 40px; }
 }
+
+/* Spatial diagnostics (dev-only panel) */
+.cae-spatial-diagnostics {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9999;
+  width: min(360px, calc(100vw - 24px));
+  max-height: min(70vh, 560px);
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--text-primary, #1a1f24);
+  background: color-mix(in srgb, var(--surface-elevated, #fff) 94%, transparent);
+  border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.12));
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+.cae-spatial-diag-card { padding: 10px 12px 12px; }
+.cae-spatial-diag-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.cae-spatial-diag-close {
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+}
+.cae-spatial-diag-section { margin: 0 0 10px; }
+.cae-spatial-diag-section h3 {
+  margin: 0 0 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+.cae-spatial-diag-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 6px;
+  padding: 1px 0;
+}
+.cae-spatial-diag-k { opacity: 0.65; }
+.cae-spatial-diag-v { word-break: break-word; }
+.cae-spatial-diag-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.cae-spatial-diag-actions .btn {
+  font-size: 11px;
+  min-height: 28px;
+  padding: 4px 8px;
+}
+body.shell-patient .cae-spatial-diagnostics {
+  /* Keep patient stage uncluttered — panel still available when flagged */
+  opacity: 0.96;
+}

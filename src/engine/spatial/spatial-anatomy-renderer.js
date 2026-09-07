@@ -55,24 +55,37 @@
       const generation = ++this._mountGeneration;
       const onProgress =
         typeof options.onProgress === "function" ? options.onProgress : () => {};
+      const bootUtils = global.SpatialBootUtils || null;
       const withTimeout =
-        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
-          ? SpatialBootUtils.withTimeout
-          : (p) => p;
-      const timeouts =
-        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS) || {};
+        bootUtils && bootUtils.withTimeout ? bootUtils.withTimeout : (p) => p;
+      const timeouts = (bootUtils && bootUtils.TIMEOUTS) || {};
+      const STATES = (bootUtils && bootUtils.BOOT_STATES) || {};
+      const setBoot = (state, extra) => {
+        if (bootUtils && bootUtils.setBootState) {
+          bootUtils.setBootState(this.engine, state, extra);
+        }
+      };
 
       try {
         const threeLoader =
-          (typeof global !== "undefined" && global.SpatialThreeLoader) ||
-          (typeof globalThis !== "undefined" && globalThis.SpatialThreeLoader) ||
+          (bootUtils && bootUtils.getGlobal && bootUtils.getGlobal("SpatialThreeLoader")) ||
+          global.SpatialThreeLoader ||
           null;
         if (!threeLoader || typeof threeLoader.loadThreeModule !== "function") {
+          setBoot(STATES.FAILED_SPATIAL || "failed-spatial", {
+            error: "SpatialThreeLoader failed to load (script boot)",
+            canonicalStatus: "idle"
+          });
           throw new Error("SpatialThreeLoader failed to load (script boot)");
         }
 
         onProgress("Checking WebGL…");
         const probeOk = threeLoader.isWebGLAvailable();
+        setBoot(STATES.LOADING_THREE || "loading-three", {
+          webglAvailable: !!probeOk,
+          error: null,
+          canonicalStatus: "idle"
+        });
         // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.
         // Also: never call loseContext during probe (poisons Electron/Cursor WebGL).
         if (!probeOk) {
@@ -112,8 +125,15 @@
         this.mountEl.appendChild(hint);
 
         onProgress("Starting 3D scene…");
+        setBoot(STATES.STARTING_WEBGL || "starting-webgl", {
+          threeRevision: this.THREE.REVISION || null
+        });
+        const SceneController =
+          (bootUtils && bootUtils.getGlobal && bootUtils.getGlobal("SpatialSceneController")) ||
+          global.SpatialSceneController;
+        if (!SceneController) throw new Error("SpatialSceneController missing");
         try {
-          this.scene = new SpatialSceneController(this.mountEl, this.THREE);
+          this.scene = new SceneController(this.mountEl, this.THREE);
         } catch (sceneErr) {
           const msg = String(sceneErr?.message || sceneErr || "");
           if (/webgl context|error creating webgl/i.test(msg)) {
@@ -123,6 +143,7 @@
         }
 
         onProgress("Loading body model…");
+        setBoot(STATES.LOADING_EXTERIOR || "loading-exterior", {});
         await withTimeout(
           this.scene.loadExteriorBody(),
           timeouts.exteriorMs || 20000,
@@ -134,7 +155,11 @@
         }
 
         // Interactive ASAP — do not block on canonical BP3D frame (can hang Meshopt).
-        this.annotations = new SpatialAnnotationLayer(this.scene, this.THREE);
+        const AnnotationLayer =
+          (bootUtils && bootUtils.getGlobal && bootUtils.getGlobal("SpatialAnnotationLayer")) ||
+          global.SpatialAnnotationLayer;
+        if (!AnnotationLayer) throw new Error("SpatialAnnotationLayer missing");
+        this.annotations = new AnnotationLayer(this.scene, this.THREE);
         this._initLayerController();
         this._bindPointer();
         if (this.store?.onChange) {
@@ -146,23 +171,51 @@
         this.ready = true;
         this.mountEl.style.visibility = "";
 
+        const meshCount = this.scene?.meshById?.size ?? null;
+        const exteriorModelId =
+          this.scene?.exteriorModelId ||
+          this.scene?.modelId ||
+          "adult-male";
+        setBoot(STATES.READY_SPATIAL || "ready-spatial", {
+          exteriorModelId,
+          meshCount,
+          threeRevision: this.THREE.REVISION || null,
+          error: null
+        });
+
         const view = this.engine.viewType || "front";
         this.scene.snapToView(view, { animate: false });
         this._syncFromStore();
 
         // Canonical frame is enhancement — timeout and continue without it.
         onProgress("Aligning body frame…");
+        setBoot(STATES.LOADING_CANONICAL || "loading-canonical", {
+          canonicalStatus: "loading"
+        });
         try {
           await withTimeout(
             this._initCanonicalFrameIfEnabled(),
             timeouts.canonicalMs || 15000,
             "Canonical body frame"
           );
+          if (this.isCanonicalBodyMode()) {
+            setBoot(STATES.READY_CANONICAL || "ready-canonical", {
+              canonicalStatus: "ready"
+            });
+          } else {
+            setBoot(STATES.CANONICAL_DEGRADED || "canonical-degraded", {
+              canonicalStatus: "skipped"
+            });
+          }
         } catch (canonErr) {
           console.warn(
             "[CAE Spatial] canonical frame skipped after timeout/error — Spatial remains usable",
             canonErr
           );
+          setBoot(STATES.CANONICAL_DEGRADED || "canonical-degraded", {
+            canonicalStatus: "degraded",
+            error: null
+          });
         }
         if (this.disposed || generation !== this._mountGeneration) {
           this._teardownMount({ keepAttachments: true });
@@ -170,11 +223,21 @@
         }
 
         onProgress("Ready");
+        if (bootUtils && bootUtils.logDiagnosticsOnce) {
+          bootUtils.logDiagnosticsOnce(this.engine);
+        }
         return true;
       } catch (err) {
         console.warn("[CAE Spatial] mount failed — falling back to plate renderer", err);
+        setBoot(STATES.FAILED_SPATIAL || "failed-spatial", {
+          error: err?.message || "mount-failed",
+          canonicalStatus: "idle"
+        });
         this._teardownMount({ keepAttachments: true });
         this.onFallback(err?.message || "mount-failed", err);
+        if (bootUtils && bootUtils.logDiagnosticsOnce) {
+          bootUtils.logDiagnosticsOnce(this.engine, { force: true });
+        }
         return false;
       }
     }
@@ -190,7 +253,12 @@
 
     setView(viewType, { animate = true } = {}) {
       if (!this.ready || !this.scene) return;
-      const view = SpatialProjection.SPATIAL_VIEWS.includes(viewType) ? viewType : "front";
+      const Projection =
+        (global.SpatialBootUtils && global.SpatialBootUtils.getGlobal
+          ? global.SpatialBootUtils.getGlobal("SpatialProjection")
+          : null) || global.SpatialProjection;
+      const views = Projection?.SPATIAL_VIEWS || ["front", "back", "left", "right"];
+      const view = views.includes(viewType) ? viewType : "front";
       this.scene.snapToView(view, {
         animate: animate && !this.scene.prefersReducedMotion()
       });
@@ -817,9 +885,13 @@
         err?.code === "REGISTRATION_FAILED"
           ? "Anatomy layer registration failed. Showing surface only."
           : "Anatomy layer unavailable. Showing surface only.";
-      if (typeof showToast === "function") showToast(msg, { tone: "warning" });
+      const toast = global.showToast || (typeof showToast === "function" ? showToast : null);
+      if (typeof toast === "function") toast(msg, { tone: "warning" });
       this._syncLayerControlUi("surface", false);
       this._updateAnatomyContextPanel(null);
+      if (this.engine) {
+        this.engine.lastLayerFailure = err?.message || err?.code || "layer-load-failed";
+      }
     }
 
     async setAnatomyDepth(depth) {
@@ -846,10 +918,10 @@
         live.textContent = loading
           ? "Loading anatomy layer…"
           : depth === "surface"
-            ? "Surface"
+            ? "Surface (styled exterior)"
             : depth === "muscle"
-              ? "Muscle layer"
-              : "Skeletal layer";
+              ? "Muscle (BP3D)"
+              : "Skeletal (BP3D)";
       }
     }
 
@@ -895,4 +967,4 @@
   }
 
   global.SpatialAnatomyRenderer = SpatialAnatomyRenderer;
-})(window);
+})(typeof window !== "undefined" ? window : globalThis);

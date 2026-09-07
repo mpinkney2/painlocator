@@ -81,17 +81,20 @@
 
   async function loadMeshoptDecoder() {
     if (meshoptReady) return meshoptReady;
-    const withTimeout =
-      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
-        ? SpatialBootUtils.withTimeout
-        : (p) => p;
-    const meshoptMs =
-      (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.meshoptMs) || 5000;
+    const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
+      || (typeof window !== "undefined" && window.SpatialBootUtils)
+      || null;
+    const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
+    const meshoptMs = (boot && boot.TIMEOUTS && boot.TIMEOUTS.meshoptMs) || 5000;
 
     const importVendor =
-      typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
-        ? SpatialBootUtils.importVendorModule
-        : null;
+      (typeof globalThis !== "undefined" &&
+        globalThis.SpatialBootUtils &&
+        globalThis.SpatialBootUtils.importVendorModule) ||
+      (typeof window !== "undefined" &&
+        window.SpatialBootUtils &&
+        window.SpatialBootUtils.importVendorModule) ||
+      null;
     if (!importVendor) {
       return Promise.reject(new Error("SpatialBootUtils.importVendorModule required"));
     }
@@ -114,17 +117,12 @@
   async function getGltfLoader() {
     if (gltfLoaderPromise) return gltfLoaderPromise;
     gltfLoaderPromise = (async () => {
-      const withTimeout =
-        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.withTimeout
-          ? SpatialBootUtils.withTimeout
-          : (p) => p;
-      const gltfLoaderMs =
-        (typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.TIMEOUTS?.gltfLoaderMs) ||
-        10000;
-      const importVendor =
-        typeof SpatialBootUtils !== "undefined" && SpatialBootUtils.importVendorModule
-          ? SpatialBootUtils.importVendorModule
-          : null;
+      const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
+        || (typeof window !== "undefined" && window.SpatialBootUtils)
+        || null;
+      const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
+      const gltfLoaderMs = (boot && boot.TIMEOUTS && boot.TIMEOUTS.gltfLoaderMs) || 10000;
+      const importVendor = boot && boot.importVendorModule ? boot.importVendorModule : null;
       if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
 
       const mod = await withTimeout(
