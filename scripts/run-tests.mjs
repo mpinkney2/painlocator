@@ -1840,6 +1840,31 @@ console.log('PainLocator tests\n');
   });
 }
 
+// --- Simple pain-map realistic body assets ---
+{
+  const sandbox = createSandbox();
+  loadScript('src/engine/anatomy/asset-paths.js', sandbox);
+
+  test('simple pain-map: getAssetPath uses realistic studio plates', () => {
+    sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
+    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/simple-pain-map/front.png');
+    assert.equal(sandbox.getAssetPath('adult-male', 'back'), '/anatomy/simple-pain-map/back.png');
+    assert.equal(sandbox.getAssetPath('simple-pain-map', 'left'), '/anatomy/simple-pain-map/left.png');
+  });
+
+  test('simple pain-map: clinician path keeps CAE adult-male plates', () => {
+    sandbox.document.body.classList.contains = () => false;
+    sandbox.state = { presentationMode: 'clinician' };
+    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/adult-male/front.png');
+  });
+
+  test('simple pain-map: realistic plate files exist in public/', () => {
+    for (const view of ['front', 'back', 'left', 'right']) {
+      assert.ok(statSync(join(root, `public/anatomy/simple-pain-map/${view}.png`)).isFile());
+    }
+  });
+}
+
 // --- BP3D shell engagement (Patient + Clinician) ---
 {
   const sandbox = {

@@ -1,27 +1,27 @@
 # Simple pain-map visual target
 
-Reference mockup for the simplified PainLocator pain-chart interface:
+Reference mockup:
 
-![Reference mockup](./reference-mockup.png)
+![Reference mockup](./body-reference-front.png)
 
-## Locked color palette (sampled from mockup)
+## Body assets
+
+Realistic studio person plates (not CAE placeholder diagrams):
+
+`public/anatomy/simple-pain-map/{front,back,left,right}.png`
+
+- Warm white cyclorama background (`#FEFBFA`)
+- Soft floor contact shadow blended into the background
+- Cream sweater / light gray trousers / white sneakers
+
+Clinician CAE plates under `public/anatomy/adult-male/` are unchanged.
+
+## Locked color palette
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| Warm white | `#FEFBFA` | Page / header background |
-| Navy | `#182A42` | Text, brand, **Save pain map** |
-| Amber | `#F9B847` | Selected chips, active view, slider fill/thumb, brand dot |
-| Amber marker | `#F4AE37` | Pain pin on body |
-| Muted | `#A8AEB8` | Secondary labels (“Pain 1”, slider ends) |
-| Border | `#D0D4DB` | Unselected chips / view buttons / note field |
-| Track | `#E6E8ED` | Slider empty track |
-| White | `#FFFFFF` | Surfaces, unselected controls |
-
-## Layout decisions
-
-- Body map left, describe form right (stack on mobile)
-- Headline: “Show where it hurts.”
-- View control: Front / Back / Left / Right under the body
-- Form: Pain N + location title, intensity, Aching / Sharp / Burning, optional note, navy **Save pain map**
-- Additional descriptors under “More descriptions”
-- Current Spatial body geometry retained for clinician; simple pain-map uses the 2D person plate (`/anatomy/adult-male/*.png`)
+| Warm white | `#FEFBFA` | Page / stage background |
+| Navy | `#182A42` | Text, brand, Save CTA |
+| Amber | `#F9B847` | Selected chips, active view, slider, markers |
+| Muted | `#A8AEB8` | Secondary labels |
+| Border | `#D0D4DB` | Unselected controls |
