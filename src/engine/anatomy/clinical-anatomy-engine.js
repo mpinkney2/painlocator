@@ -556,9 +556,12 @@ class ClinicalAnatomyRenderer {
       const assetEl = container.querySelector(".cae-anatomy-image, .cae-anatomy-inline");
       if (assetEl) {
         assetEl.style.display = assetEl.tagName === "IMG" ? "block" : "flex";
+        assetEl.classList.add("is-loaded");
+        assetEl.setAttribute("data-loaded", "1");
       }
       if (placeholder) {
         placeholder.style.display = "none";
+        placeholder.setAttribute("hidden", "");
       }
       this.updateDebugLabel();
     };

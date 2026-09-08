@@ -10,7 +10,7 @@
  */
 (function (global) {
   /** Bump together with all Spatial classic-script ?v= query tokens in index.html */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-07-bp3d-boot-1";
+  const SPATIAL_RUNTIME_VERSION = "2026-09-08-force-plate";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",
