@@ -960,6 +960,15 @@ body.shell-patient.simple-pain-map #btnAssessNext:hover {
     display: none;
   }
 
+  body.shell-patient.simple-pain-map .simple-drawer-grab {
+    display: none !important;
+  }
+
+  body.shell-patient.simple-pain-map .simple-drawer-sheet,
+  body.shell-patient.simple-pain-map:not(.simple-drawer-expanded) .simple-drawer-sheet {
+    display: flex !important;
+  }
+
   body.shell-patient.simple-pain-map .simple-assess-panel,
   body.shell-patient.simple-pain-map .simple-assess-panel[hidden] {
     display: flex !important;
@@ -973,7 +982,7 @@ body.shell-patient.simple-pain-map #btnAssessNext:hover {
   }
 
   body.shell-patient.simple-pain-map #btnPatientSave {
-    display: block !important;
+    display: flex !important;
   }
 
   body.shell-patient.simple-pain-map .simple-save-panel {
