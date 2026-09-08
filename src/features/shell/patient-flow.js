@@ -321,7 +321,7 @@
     if (tool === 'eraser') return 'Tap a mark on the body to remove it.';
     if (tool === 'circle') return 'Drag on the body to mark a pain area.';
     if (tool === 'polygon') return 'Tap points to outline a pain shape. Double-tap to finish.';
-    return 'Tap the body to mark a pain point.';
+    return 'Tap the body where it hurts.';
   }
 
   function activatePatientTool(tool) {
@@ -343,6 +343,43 @@
     }
   }
 
+
+  function placePatientDrawerChrome() {
+    var tools = document.getElementById('captureTools');
+    var views = document.getElementById('simpleViewBar');
+    var hint = document.getElementById('avatarHint');
+    var panel = document.getElementById('simplePainPanel');
+    var wrap = document.getElementById('avatarWrap');
+    var stage = document.getElementById('avatarStage');
+    if (!tools || !wrap) return;
+
+    if (isPatientShell() && panel) {
+      var context = panel.querySelector('.simple-pain-context');
+      var anchor = context && context.nextSibling;
+      if (hint) {
+        hint.classList.add('simple-drawer-hint');
+        panel.insertBefore(hint, anchor || panel.querySelector('.simple-pain-panel-body') || null);
+      }
+      if (tools.parentElement !== panel) {
+        panel.insertBefore(tools, panel.querySelector('#simpleViewBar') || panel.querySelector('.simple-assess-nav') || panel.querySelector('.simple-pain-panel-body') || null);
+      }
+      if (views && views.parentElement !== panel) {
+        panel.insertBefore(views, panel.querySelector('.simple-assess-nav') || panel.querySelector('.simple-pain-panel-body') || null);
+      }
+      // Ensure order: context → hint → tools → views
+      if (hint && tools) panel.insertBefore(hint, tools);
+      if (tools && views) panel.insertBefore(tools, views);
+    } else {
+      if (hint) {
+        hint.classList.remove('simple-drawer-hint');
+        if (stage && stage.parentElement === wrap) wrap.insertBefore(hint, stage.nextSibling);
+        else wrap.appendChild(hint);
+      }
+      if (tools.parentElement !== wrap) wrap.appendChild(tools);
+      if (views && views.parentElement !== wrap) wrap.appendChild(views);
+    }
+  }
+
   function setAssessStep(step, opts) {
     if (ASSESS_STEPS.indexOf(step) < 0) step = 'mark';
     assessStep = step;
@@ -357,7 +394,12 @@
     });
 
     document.querySelectorAll('[data-assess-panel]').forEach(function (section) {
-      var match = section.getAttribute('data-assess-panel') === step;
+      var panel = section.getAttribute('data-assess-panel');
+      var match = panel === step || (step === 'mark' && panel === 'mark');
+      if (panel === 'save') match = false; // mock uses Save CTA directly
+      if (step === 'describe' && panel === 'describe') match = true;
+      if (step === 'describe' && panel === 'mark') match = false;
+      if (step === 'mark' && panel === 'describe') match = false;
       section.hidden = !match;
       section.classList.toggle('is-active-panel', match);
     });
@@ -365,17 +407,18 @@
     var back = document.getElementById('btnAssessBack');
     var next = document.getElementById('btnAssessNext');
     var save = document.getElementById('btnPatientSave');
-    if (back) back.hidden = step === 'mark';
+    if (back) back.hidden = true;
     if (next) {
-      next.hidden = step === 'save';
-      next.textContent = step === 'mark' ? 'Describe pain' : 'Review & save';
+      next.hidden = false;
+      next.textContent = step === 'describe' ? 'Back to mark' : 'Describe pain';
     }
-    if (save) save.hidden = step !== 'save';
+    if (save) save.hidden = false;
 
-    if (step === 'mark') {
-      document.body.classList.remove('simple-drawer-expanded');
-    } else if (!(opts && opts.skipExpand)) {
+    // Screenshot layout: keep drawer open with tools; expand further for describe.
+    if (step === 'describe' || step === 'save') {
       document.body.classList.add('simple-drawer-expanded');
+    } else if (!(opts && opts.keepExpanded)) {
+      document.body.classList.remove('simple-drawer-expanded');
     }
 
     updateLocationChrome();
@@ -388,19 +431,12 @@
     if (!describeBuilt) {
       mount.innerHTML =
         '<section class="simple-assess-panel simple-marks-section" data-assess-panel="mark" aria-labelledby="simpleMarksHeading">' +
-          '<h3 id="simpleMarksHeading" class="patient-describe-heading">How do you want to mark?</h3>' +
-          '<div class="simple-tool-picker" role="group" aria-label="Marking tools">' +
-            '<button type="button" class="simple-mark-btn is-active" data-patient-tool="point" id="btnSimpleTapMode">Point</button>' +
-            '<button type="button" class="simple-mark-btn" data-patient-tool="circle" id="btnSimpleAreaMode">Area</button>' +
-            '<button type="button" class="simple-mark-btn" data-patient-tool="polygon" id="btnSimpleOutlineMode">Outline</button>' +
-            '<button type="button" class="simple-mark-btn" data-patient-tool="eraser" id="btnSimpleRemoveMode">Remove</button>' +
-            '<button type="button" class="simple-mark-btn" id="btnSimpleUndoMark">Undo</button>' +
-          '</div>' +
+          '<h3 id="simpleMarksHeading" class="visually-hidden sr-only">Your marks</h3>' +
           '<p class="simple-marks-summary" id="simpleMarksSummary">No marks yet — choose Point or Area, then mark the body.</p>' +
           '<details class="simple-tool-help">' +
             '<summary>Marking tips</summary>' +
             '<ul>' +
-              '<li><strong>Point</strong> — tap once for a specific spot.</li>' +
+              '<li><strong>Tap</strong> — tap once for a specific spot.</li>' +
               '<li><strong>Area</strong> — drag to cover a broader region.</li>' +
               '<li><strong>Outline</strong> — tap corners of an irregular shape.</li>' +
             '</ul>' +
@@ -797,6 +833,7 @@
     buildDescribeUI();
 
     // Prefer Point tool for simple map
+    placePatientDrawerChrome();
     activatePatientTool('point');
     setAssessStep('mark', { skipExpand: true });
 
@@ -810,12 +847,11 @@
     on('btnPatientSave', 'click', function () { void savePatientEntry(); });
 
     on('btnAssessNext', 'click', function () {
-      if (assessStep === 'mark') setAssessStep('describe');
-      else if (assessStep === 'describe') setAssessStep('save');
+      if (assessStep === 'describe') setAssessStep('mark');
+      else setAssessStep('describe');
     });
     on('btnAssessBack', 'click', function () {
-      if (assessStep === 'save') setAssessStep('describe');
-      else if (assessStep === 'describe') setAssessStep('mark');
+      setAssessStep('mark');
     });
 
     var assessNav = document.getElementById('simpleAssessNav');
@@ -921,9 +957,11 @@
     }
 
     document.addEventListener('presentationchange', function () {
+      placePatientDrawerChrome();
       if (isPatientShell()) {
         setSimpleView('map');
         setPatientStep('locate', { force: true });
+        setAssessStep('mark', { skipExpand: true });
       } else {
         refreshPatientFlow();
       }
