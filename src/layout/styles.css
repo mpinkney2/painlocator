@@ -1518,7 +1518,7 @@ body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-clinical-vie
   z-index: 10;
 }
 
-.avatar-stage svg {
+.avatar-stage svg:not(.cae-region-layer):not(.cae-layer-overlay):not(.cae-marker-layer) {
   height: 95%;
   width: auto;
   max-width: 100%;
