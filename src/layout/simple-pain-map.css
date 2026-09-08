@@ -270,6 +270,22 @@ body.shell-patient.simple-pain-map .cae-spatial-staging > .cae-spatial-status {
   display: none !important;
 }
 
+/* Never show the cyan CAE geometric placeholder on the simple pain chart. */
+body.shell-patient.simple-pain-map #caeTestBodySvg,
+body.shell-patient.simple-pain-map .cae-placeholder-body {
+  display: none !important;
+}
+
+/* Plate PNGs must stay visible even if spatial-primary briefly remains on. */
+body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-anatomy-image.is-loaded,
+body.shell-patient.simple-pain-map .cae-anatomy-image.is-loaded {
+  display: block !important;
+}
+
+body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+  display: flex !important;
+}
+
 body.shell-patient.simple-pain-map .avatar-wrap,
 body.shell-patient.simple-pain-map .anatomy-viewer,
 body.shell-patient.simple-pain-map .avatar-stage,

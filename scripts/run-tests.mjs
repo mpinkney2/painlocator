@@ -1979,6 +1979,101 @@ console.log('PainLocator tests\n');
     };
   });
 
+  test('spatial chrome: intentional plate clears spatial-primary (no CAE placeholder trap)', () => {
+    const chromeSandbox = {
+      console,
+      Math,
+      Object,
+      Number,
+      Array,
+      Map,
+      Set,
+      JSON,
+      Error,
+      Promise,
+      URLSearchParams,
+      window: {},
+      document: {},
+      location: { search: '' },
+      entryStore: { activeTool: 'point', setTool() {} }
+    };
+    chromeSandbox.window = chromeSandbox;
+    chromeSandbox.globalThis = chromeSandbox;
+    const classSet = new Set(['shell-patient', 'simple-pain-map', 'spatial-primary']);
+    const hint = { textContent: '', classList: { remove() {}, add() {} } };
+    chromeSandbox.document = {
+      body: {
+        classList: {
+          contains: (name) => classSet.has(name),
+          toggle: (name, on) => {
+            if (on) classSet.add(name);
+            else classSet.delete(name);
+          },
+          add: (...names) => names.forEach((n) => classSet.add(n)),
+          remove: (...names) => names.forEach((n) => classSet.delete(n))
+        }
+      },
+      getElementById: (id) => (id === 'avatarHint' ? hint : null),
+      querySelector: () => null,
+      querySelectorAll: () => []
+    };
+    vm.createContext(chromeSandbox);
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', chromeSandbox);
+    const Chrome = chromeSandbox.SpatialPrimaryChrome;
+    assert.equal(Chrome.wantsPlateSurface(), true);
+    Chrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+    assert.equal(classSet.has('spatial-primary'), false);
+    assert.equal(classSet.has('spatial-ready'), false);
+    assert.match(hint.textContent, /Tap the body/i);
+  });
+
+  test('spatial chrome: clinician default keeps spatial-primary while waiting', () => {
+    const chromeSandbox = {
+      console,
+      Math,
+      Object,
+      Number,
+      Array,
+      Map,
+      Set,
+      JSON,
+      Error,
+      Promise,
+      URLSearchParams,
+      window: {},
+      document: {},
+      location: { search: '' },
+      entryStore: { activeTool: 'point', setTool() {} }
+    };
+    chromeSandbox.window = chromeSandbox;
+    chromeSandbox.globalThis = chromeSandbox;
+    const classSet = new Set(['shell-clinician']);
+    const hint = { textContent: '', classList: { remove() {}, add() {} } };
+    chromeSandbox.document = {
+      body: {
+        classList: {
+          contains: (name) => classSet.has(name),
+          toggle: (name, on) => {
+            if (on) classSet.add(name);
+            else classSet.delete(name);
+          },
+          add: (...names) => names.forEach((n) => classSet.add(n)),
+          remove: (...names) => names.forEach((n) => classSet.delete(n))
+        }
+      },
+      getElementById: (id) => (id === 'avatarHint' ? hint : null),
+      querySelector: () => null,
+      querySelectorAll: () => []
+    };
+    vm.createContext(chromeSandbox);
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', chromeSandbox);
+    chromeSandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, {
+      keepSpatialPrimary: true
+    });
+    assert.equal(classSet.has('spatial-primary'), true);
+    assert.match(hint.textContent, /Waiting for the 3D body/i);
+  });
+
   test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
     sandbox.location.search = '';
     sandbox.document.body = {
@@ -2059,7 +2154,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-08-force-plate');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2074,7 +2169,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-09-08-force-plate'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2180,7 +2275,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-09-08-force-plate';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',

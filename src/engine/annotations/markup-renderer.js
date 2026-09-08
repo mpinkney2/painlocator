@@ -705,7 +705,14 @@ class ClinicalMarkupRenderer {
       this.loadStatus = "loaded";
       this.fallbackActive = false;
       this.layers.image.show();
-      if (placeholder) placeholder.style.display = "none";
+      if (placeholder) {
+        placeholder.style.display = "none";
+        placeholder.setAttribute("hidden", "");
+      }
+      if (img) {
+        img.classList.add("is-loaded");
+        img.setAttribute("data-loaded", "1");
+      }
       requestAnimationFrame(() => {
         this.syncLayout();
         requestAnimationFrame(() => this.syncLayout());
