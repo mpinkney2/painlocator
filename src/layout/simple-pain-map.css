@@ -58,7 +58,7 @@ body.shell-patient.simple-pain-map {
   --chart-point-active: var(--spm-white);
   --chart-point-border: var(--spm-amber);
 
-  --spm-drawer-peek: calc(3.65rem + env(safe-area-inset-bottom, 0px));
+  --spm-drawer-peek: calc(5.85rem + env(safe-area-inset-bottom, 0px));
   --spm-drawer-open: min(78dvh, 640px);
   --spm-ease-drawer: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -396,7 +396,9 @@ body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame {
   will-change: left, top, width, height;
 }
 
-/* Touch / notation layer sits above the plate image */
+/* Touch / notation layer sits above the plate image and MUST fill the frame.
+   Global `.avatar-stage svg { height: 95%; width: auto }` breaks hit-testing
+   and makes marks drift off the anatomy — override it here. */
 body.shell-patient.simple-pain-map .cae-anatomy-image {
   z-index: 1 !important;
   pointer-events: none;
@@ -408,15 +410,38 @@ body.shell-patient.simple-pain-map .cae-reference-overlay {
   pointer-events: none;
 }
 
+body.shell-patient.simple-pain-map .avatar-stage .cae-region-layer,
+body.shell-patient.simple-pain-map .avatar-stage .cae-marker-layer,
+body.shell-patient.simple-pain-map .avatar-stage .cae-layer-overlay,
 body.shell-patient.simple-pain-map .cae-region-layer,
 body.shell-patient.simple-pain-map .cae-marker-layer {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  filter: none !important;
   z-index: 8 !important;
-  pointer-events: auto;
+  pointer-events: auto !important;
   touch-action: none;
+  overflow: visible;
 }
 
 body.shell-patient.simple-pain-map .cae-marker-tooltip {
   z-index: 12 !important;
+}
+
+/* Patient marks: solid amber dots that read clearly on the studio figure */
+body.shell-patient.simple-pain-map .cae-region-layer .pain-region-fill {
+  stroke: #182a42 !important;
+  stroke-width: 0.006 !important;
+  stroke-opacity: 1 !important;
+}
+
+body.shell-patient.simple-pain-map .cae-region-layer .pain-region.selected .pain-region-fill {
+  stroke: #0f766e !important;
+  stroke-width: 0.008 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

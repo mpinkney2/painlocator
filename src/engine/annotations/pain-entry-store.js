@@ -211,8 +211,12 @@ class PainEntryStore {
   ensureActiveEntry(patientModel, defaults = {}) {
     let entry = this.getActiveEntry();
     const model = normalizeModelType(patientModel);
-    if (entry && normalizeModelType(entry.patientModel) !== model && this.isDraftActive()) {
-      entry.patientModel = model;
+    if (entry) {
+      // Always persist a canonical string model id (never a legacy object shape).
+      const current = normalizeModelType(entry.patientModel);
+      if (entry.patientModel !== current || (current !== model && this.isDraftActive())) {
+        entry.patientModel = this.isDraftActive() ? model : current;
+      }
     }
     if (!entry) entry = this.newEntry(patientModel, defaults);
     return entry;
