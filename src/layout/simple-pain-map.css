@@ -1102,11 +1102,6 @@ body.shell-patient.simple-view-map #timelinePanel {
     max-height: none;
   }
 
-  body.shell-patient.simple-pain-map[data-assess-step='mark'] .simple-save-panel,
-  body.shell-patient.simple-pain-map[data-assess-step='mark'] .simple-assess-panel[data-assess-panel='describe'] {
-    /* mark step keeps summary + tips only */
-  }
-
   body.shell-patient.simple-pain-map:not(.simple-drawer-expanded)[data-assess-step='describe'] .simple-marks-section {
     display: none;
   }
