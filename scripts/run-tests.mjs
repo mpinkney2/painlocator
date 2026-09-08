@@ -1875,7 +1875,9 @@ console.log('PainLocator tests\n');
     assert.ok(css.includes('--spm-drawer-peek') && css.includes('translate3d'));
     assert.ok(css.includes('spm-drawer-breathe') && css.includes('#22c55e'));
     assert.ok(css.includes('cae-region-layer') && css.includes('z-index: 8'));
+    assert.ok(css.includes('height: 100% !important'));
     assert.ok(css.includes('background: transparent !important'));
+    assert.ok(css.includes('5.1rem') || css.includes('--spm-drawer-peek'));
     assert.ok(html.includes('simple-annotate-bar'));
     assert.ok(html.includes('id="simplePainPanel"'));
     assert.ok(html.includes('id="simpleDrawerSheet"'));
@@ -1897,6 +1899,25 @@ console.log('PainLocator tests\n');
     assert.ok(flow.includes('setAssessStep'));
     assert.ok(flow.includes('setDrawerExpanded'));
     assert.ok(flow.includes('syncAnatomyLayout'));
+    assert.ok(flow.includes("ensureActiveEntry('adult-male')"));
+    assert.ok(!flow.includes("ensureActiveEntry({ view: 'anterior'"));
+  });
+
+  test('simple pain-map: marker layer fills frame (not avatar-stage svg 95%)', () => {
+    const css = readFileSync(join(root, 'src/layout/simple-pain-map.css'), 'utf8');
+    assert.ok(css.includes('.cae-region-layer'));
+    assert.ok(css.includes('height: 100% !important'));
+    assert.ok(css.includes('z-index: 8'));
+    assert.ok(css.includes('filter: none !important'));
+  });
+
+  test('normalizeModelType coerces legacy object patientModel', () => {
+    const s = createSandbox();
+    assert.equal(s.normalizeModelType({ view: 'anterior', gender: 'male' }), 'adult-male');
+    assert.equal(s.normalizeModelType({ gender: 'female' }), 'adult-female');
+    assert.equal(s.normalizeModelType('male'), 'adult-male');
+    const entry = s.createPainEntry({ patientModel: { gender: 'male' }, regions: [] });
+    assert.equal(entry.patientModel, 'adult-male');
   });
 }
 

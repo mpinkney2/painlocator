@@ -177,7 +177,7 @@
   function pullFromStoreToPatientUI() {
     var store = getStore();
     if (store && typeof store.ensureActiveEntry === 'function') {
-      try { store.ensureActiveEntry({ view: 'anterior', gender: 'male' }); } catch (e) {}
+      try { store.ensureActiveEntry('adult-male'); } catch (e) {}
     }
     var active = (store && store.getActiveEntry) ? store.getActiveEntry() : null;
     var form = safeGetFormValues();
@@ -326,6 +326,8 @@
 
   function activatePatientTool(tool) {
     try {
+      var store = getStore();
+      if (store && typeof store.setTool === 'function') store.setTool(tool);
       if (typeof global.setRegionTool === 'function') global.setRegionTool(tool);
       else if (typeof setRegionTool === 'function') setRegionTool(tool);
     } catch (e) { /* ignore */ }
@@ -707,6 +709,7 @@
       if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('capture');
       else if (typeof setWorkflowMode === 'function') setWorkflowMode('capture');
       buildDescribeUI();
+      activatePatientTool('point');
       if (typeof requestAnimationFrame === 'function') {
         requestAnimationFrame(syncAnatomyLayout);
       } else {

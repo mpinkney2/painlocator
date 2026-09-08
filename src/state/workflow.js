@@ -132,7 +132,11 @@ function applyWorkflowMode(mode) {
     document.getElementById('comparePanel').hidden = true;
   } else if (mode === 'capture') {
     const spatial = state.engine?.isSpatialMode?.();
-    const tool = spatial ? 'point' : 'circle';
+    const simplePatient =
+      typeof document !== 'undefined' &&
+      document.body?.classList?.contains('simple-pain-map');
+    // Simple pain map: Tap (point) is the default — single taps must place marks.
+    const tool = simplePatient || spatial ? 'point' : 'circle';
     entryStore.setTool(tool);
     document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(b => {
       b.classList.toggle('active', b.dataset.tool === tool);

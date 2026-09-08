@@ -38,6 +38,16 @@ window.LOCAL_SCHEMA_VERSION = LOCAL_SCHEMA_VERSION;
 window.isEntryContentEmpty = isEntryContentEmpty;
 
 function normalizeModelType(modelType) {
+  // Coerce legacy / mistaken object shapes like { gender: 'male', view: 'anterior' }.
+  if (modelType && typeof modelType === "object") {
+    const gender = String(modelType.gender || modelType.sex || modelType.model || "").toLowerCase();
+    if (gender.includes("female")) return "adult-female";
+    if (gender.includes("male")) return "adult-male";
+    if (modelType.id || modelType.modelType) {
+      return normalizeModelType(modelType.id || modelType.modelType);
+    }
+    return "adult-male";
+  }
   const map = { male: "adult-male", female: "adult-female", child: "child", teen: "teen", senior: "senior" };
   return map[modelType] || modelType || "adult-male";
 }
@@ -80,7 +90,7 @@ function createPainEntry(partial = {}) {
   return {
     id: entryId,
     title: partial.title || null,
-    patientModel: partial.patientModel || "adult-male",
+    patientModel: normalizeModelType(partial.patientModel),
     createdAt: partial.createdAt || now,
     updatedAt: partial.updatedAt || now,
     intensity: typeof partial.intensity === "number" ? partial.intensity : 5,

@@ -194,11 +194,23 @@ class PainRegionLayer {
 
   createRegionEl(region, selected) {
     const intensity = region._entryIntensity ?? 5;
-    const baseColor = intensityBaseColor(intensity);
-    const opacity = getRegionOpacity(region, intensity);
+    const simplePatient =
+      typeof document !== "undefined" &&
+      document.body?.classList?.contains("simple-pain-map");
+    const baseColor = simplePatient
+      ? (typeof getComputedStyle === "function"
+          ? (getComputedStyle(document.body).getPropertyValue("--spm-amber-marker").trim() || "#f4ae37")
+          : "#f4ae37")
+      : intensityBaseColor(intensity);
+    const opacity = simplePatient ? Math.max(0.88, getRegionOpacity(region, intensity)) : getRegionOpacity(region, intensity);
     const c = getRegionCenter(region);
     const isPolygon = region.shape === "polygon" && region.anchors.length >= 3;
-    const { rx, ry } = getRegionRadii(region, intensity);
+    let { rx, ry } = getRegionRadii(region, intensity);
+    if (simplePatient) {
+      // Larger tap targets so marks stay readable on the studio figure.
+      rx = Math.max(rx, 0.028);
+      ry = Math.max(ry, 0.028);
+    }
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", "pain-region"
       + (selected ? " selected" : "")
@@ -235,11 +247,13 @@ class PainRegionLayer {
       shape.setAttribute("cy", String(c.y));
       shape.setAttribute("rx", String(rx));
       shape.setAttribute("ry", String(ry));
-      shape.setAttribute("fill", `url(#${gradId})`);
+      // Solid amber on the patient map so marks stay above the figure; gradient elsewhere.
+      shape.setAttribute("fill", simplePatient ? baseColor : `url(#${gradId})`);
+      if (simplePatient) shape.setAttribute("fill-opacity", "0.92");
     }
-    shape.setAttribute("stroke", selected ? "#22d3ee" : baseColor);
-    shape.setAttribute("stroke-opacity", selected ? "1" : "0.8");
-    shape.setAttribute("stroke-width", selected ? "0.004" : "0.002");
+    shape.setAttribute("stroke", selected ? "#22d3ee" : (simplePatient ? "#182a42" : baseColor));
+    shape.setAttribute("stroke-opacity", selected ? "1" : "0.95");
+    shape.setAttribute("stroke-width", selected ? "0.006" : (simplePatient ? "0.005" : "0.002"));
     g.appendChild(shape);
 
     if (selected && !isPolygon) {
@@ -532,14 +546,17 @@ class RegionInteractionLayer {
 
       const wasPan = this._dragKind === "pan";
 
-      if (this._mode === "circle-draw" && this._start && this._didDrag) {
+      if (this._mode === "circle-draw" && this._start) {
         const pt = ev.changedTouches ? ev.changedTouches[0] : ev;
         const loc = this.clientToNorm(pt.clientX, pt.clientY);
         if (loc) {
+          const endX = this._didDrag ? loc.x : this._start.x;
+          const endY = this._didDrag ? loc.y : this._start.y;
+          // Tap without drag still places a mark (same as a small Area).
           this.store.createCircleRegion(
             normalizeModelType(this.engine.modelType),
             this.engine.viewType,
-            this._start.x, this._start.y, loc.x, loc.y,
+            this._start.x, this._start.y, endX, endY,
             this.renderer.getActiveAnatomyLayer(),
             this.engine.physicianMode
           );
