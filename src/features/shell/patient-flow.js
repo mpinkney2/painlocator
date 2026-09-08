@@ -53,6 +53,8 @@
   var saving = false;
   var lastFocusEl = null;
   var simpleView = 'map'; // map | history
+  var assessStep = 'mark'; // mark | describe | save
+  var ASSESS_STEPS = Object.freeze(['mark', 'describe', 'save']);
 
   function toast(msg, type) {
     if (typeof global.showToast === 'function') {
@@ -251,6 +253,7 @@
     var titleEl = document.getElementById('simplePainLocationTitle');
     var summaryEl = document.getElementById('simpleMarksSummary');
     var undoMarkBtn = document.getElementById('btnSimpleUndoMark');
+    var saveSummary = document.getElementById('simpleSaveSummary');
     var store = getStore();
     var entry = store && store.getActiveEntry ? store.getActiveEntry() : null;
     var regions = Array.isArray(entry && entry.regions) ? entry.regions : [];
@@ -261,7 +264,11 @@
       idEl.textContent = count > 0 ? ('Pain ' + count) : 'Pain map';
     }
     if (titleEl) {
-      if (!count) {
+      if (assessStep === 'describe') {
+        titleEl.textContent = count ? 'Describe how it feels' : 'Describe your pain';
+      } else if (assessStep === 'save') {
+        titleEl.textContent = 'Review & save';
+      } else if (!count) {
         titleEl.textContent = 'Tap the body to begin';
       } else {
         var last = marks[marks.length - 1];
@@ -272,12 +279,22 @@
     }
     if (summaryEl) {
       if (!count) {
-        summaryEl.textContent = 'No marks yet — tap the body where it hurts.';
+        summaryEl.textContent = 'No marks yet — choose Point or Area, then mark the body.';
       } else if (count === 1) {
-        summaryEl.textContent = '1 mark on the body. Adjust intensity and how it feels below.';
+        summaryEl.textContent = '1 mark on the body. Continue to describe how it feels.';
       } else {
-        summaryEl.textContent = count + ' marks on the body. Tap Remove, then a mark, to delete one.';
+        summaryEl.textContent = count + ' marks on the body. Use Remove to delete one, or continue.';
       }
+    }
+    if (saveSummary) {
+      var intensity = entry && entry.intensity != null ? entry.intensity : '—';
+      var quality = entry && Array.isArray(entry.quality) && entry.quality.length
+        ? entry.quality.join(', ')
+        : 'Not specified';
+      saveSummary.innerHTML =
+        '<p><strong>Marks:</strong> ' + count + '</p>' +
+        '<p><strong>Strength:</strong> ' + escapeHtml(String(intensity)) + ' / 10</p>' +
+        '<p><strong>Feels like:</strong> ' + escapeHtml(quality) + '</p>';
     }
     if (undoMarkBtn) {
       var canUndo = !!(store && typeof store.canUndo === 'function' && store.canUndo());
@@ -295,10 +312,16 @@
         btn.classList.toggle('active', btn.getAttribute('data-tool') === tool);
       });
     }
-    var removeBtn = document.getElementById('btnSimpleRemoveMode');
-    var tapBtn = document.getElementById('btnSimpleTapMode');
-    if (removeBtn) removeBtn.classList.toggle('is-active', tool === 'eraser');
-    if (tapBtn) tapBtn.classList.toggle('is-active', tool === 'point');
+    document.querySelectorAll('[data-patient-tool]').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-patient-tool') === tool);
+    });
+  }
+
+  function toolHint(tool) {
+    if (tool === 'eraser') return 'Tap a mark on the body to remove it.';
+    if (tool === 'circle') return 'Drag on the body to mark a pain area.';
+    if (tool === 'polygon') return 'Tap points to outline a pain shape. Double-tap to finish.';
+    return 'Tap the body to mark a pain point.';
   }
 
   function activatePatientTool(tool) {
@@ -315,14 +338,47 @@
     syncSimpleAnnotateActive();
     var hint = document.getElementById('avatarHint');
     if (hint) {
-      if (tool === 'eraser') {
-        hint.textContent = 'Tap a mark on the body to remove it.';
-        hint.classList.remove('hidden');
-      } else {
-        hint.textContent = 'Tap the body to mark where it hurts.';
-        hint.classList.remove('hidden');
-      }
+      hint.textContent = toolHint(tool);
+      hint.classList.remove('hidden');
     }
+  }
+
+  function setAssessStep(step, opts) {
+    if (ASSESS_STEPS.indexOf(step) < 0) step = 'mark';
+    assessStep = step;
+    var panel = document.getElementById('simplePainPanel');
+    if (panel) panel.setAttribute('data-assess-step', step);
+    document.body.setAttribute('data-assess-step', step);
+
+    document.querySelectorAll('.simple-assess-tab').forEach(function (tab) {
+      var on = tab.getAttribute('data-assess-step') === step;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('[data-assess-panel]').forEach(function (section) {
+      var match = section.getAttribute('data-assess-panel') === step;
+      section.hidden = !match;
+      section.classList.toggle('is-active-panel', match);
+    });
+
+    var back = document.getElementById('btnAssessBack');
+    var next = document.getElementById('btnAssessNext');
+    var save = document.getElementById('btnPatientSave');
+    if (back) back.hidden = step === 'mark';
+    if (next) {
+      next.hidden = step === 'save';
+      next.textContent = step === 'mark' ? 'Describe pain' : 'Review & save';
+    }
+    if (save) save.hidden = step !== 'save';
+
+    if (step === 'mark') {
+      document.body.classList.remove('simple-drawer-expanded');
+    } else if (!(opts && opts.skipExpand)) {
+      document.body.classList.add('simple-drawer-expanded');
+    }
+
+    updateLocationChrome();
   }
 
   function buildDescribeUI() {
@@ -331,16 +387,26 @@
 
     if (!describeBuilt) {
       mount.innerHTML =
-        '<section class="simple-marks-section" aria-labelledby="simpleMarksHeading">' +
-          '<h3 id="simpleMarksHeading" class="patient-describe-heading">Your marks</h3>' +
-          '<p class="simple-marks-summary" id="simpleMarksSummary">No marks yet — tap the body where it hurts.</p>' +
-          '<div class="simple-marks-actions" role="group" aria-label="Mark actions">' +
-            '<button type="button" class="simple-mark-btn is-active" id="btnSimpleTapMode">Tap to mark</button>' +
-            '<button type="button" class="simple-mark-btn" id="btnSimpleRemoveMode">Remove a mark</button>' +
-            '<button type="button" class="simple-mark-btn" id="btnSimpleUndoMark">Undo last</button>' +
+        '<section class="simple-assess-panel simple-marks-section" data-assess-panel="mark" aria-labelledby="simpleMarksHeading">' +
+          '<h3 id="simpleMarksHeading" class="patient-describe-heading">How do you want to mark?</h3>' +
+          '<div class="simple-tool-picker" role="group" aria-label="Marking tools">' +
+            '<button type="button" class="simple-mark-btn is-active" data-patient-tool="point" id="btnSimpleTapMode">Point</button>' +
+            '<button type="button" class="simple-mark-btn" data-patient-tool="circle" id="btnSimpleAreaMode">Area</button>' +
+            '<button type="button" class="simple-mark-btn" data-patient-tool="polygon" id="btnSimpleOutlineMode">Outline</button>' +
+            '<button type="button" class="simple-mark-btn" data-patient-tool="eraser" id="btnSimpleRemoveMode">Remove</button>' +
+            '<button type="button" class="simple-mark-btn" id="btnSimpleUndoMark">Undo</button>' +
           '</div>' +
+          '<p class="simple-marks-summary" id="simpleMarksSummary">No marks yet — choose Point or Area, then mark the body.</p>' +
+          '<details class="simple-tool-help">' +
+            '<summary>Marking tips</summary>' +
+            '<ul>' +
+              '<li><strong>Point</strong> — tap once for a specific spot.</li>' +
+              '<li><strong>Area</strong> — drag to cover a broader region.</li>' +
+              '<li><strong>Outline</strong> — tap corners of an irregular shape.</li>' +
+            '</ul>' +
+          '</details>' +
         '</section>' +
-        '<section class="patient-describe-section simple-intensity" aria-labelledby="patientIntensityHeading">' +
+        '<section class="simple-assess-panel patient-describe-section simple-intensity" data-assess-panel="describe" hidden aria-labelledby="patientIntensityHeading">' +
           '<h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>' +
           '<div class="patient-intensity-row">' +
             '<span class="patient-intensity-value" id="patientIntensityValue" aria-live="polite">5</span>' +
@@ -352,9 +418,7 @@
           '<div class="patient-intensity-ends" aria-hidden="true">' +
             '<span>0 · No pain</span><span>10 · Worst pain imaginable</span>' +
           '</div>' +
-        '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientQualityHeading">' +
-          '<h3 id="patientQualityHeading" class="patient-describe-heading">What does it feel like?</h3>' +
+          '<h3 id="patientQualityHeading" class="patient-describe-heading simple-subhead">What does it feel like?</h3>' +
           '<div class="patient-chip-grid patient-chip-grid-primary" role="group" aria-labelledby="patientQualityHeading">' +
             PRIMARY_QUALITY.map(function (c) { return chipButton({ 'data-patient-quality': c.value }, c.label); }).join('') +
           '</div>' +
@@ -374,16 +438,17 @@
               RELIEF_CHIPS.map(function (c) { return chipButton({ 'data-patient-relief': c.value }, c.label); }).join('') +
             '</div>' +
           '</details>' +
-        '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientNoteHeading">' +
-          '<h3 id="patientNoteHeading" class="patient-describe-heading">Add a note <span class="optional-label">(optional)</span></h3>' +
+          '<h3 id="patientNoteHeading" class="patient-describe-heading simple-subhead">Add a note <span class="optional-label">(optional)</span></h3>' +
           '<label class="visually-hidden sr-only" for="patientNoteInput">Optional note about your pain</label>' +
           '<textarea id="patientNoteInput" class="patient-note-input" rows="2" maxlength="500"' +
             ' placeholder="e.g. Worse in the evening..."></textarea>' +
+        '</section>' +
+        '<section class="simple-assess-panel simple-save-panel" data-assess-panel="save" hidden aria-labelledby="simpleSaveHeading">' +
+          '<h3 id="simpleSaveHeading" class="patient-describe-heading">Ready to save?</h3>' +
+          '<div class="simple-save-summary" id="simpleSaveSummary"></div>' +
+          '<p class="simple-marks-summary">You can go back to adjust marks or description before saving.</p>' +
         '</section>';
 
-      on('btnSimpleTapMode', 'click', function () { activatePatientTool('point'); });
-      on('btnSimpleRemoveMode', 'click', function () { activatePatientTool('eraser'); });
       on('btnSimpleUndoMark', 'click', function () {
         var undoBtn = document.getElementById('btnUndo');
         if (undoBtn && !undoBtn.disabled) undoBtn.click();
@@ -394,6 +459,11 @@
       mount.addEventListener('click', function (event) {
         var target = event.target;
         if (!target || !target.closest) return;
+        var toolBtn = target.closest('[data-patient-tool]');
+        if (toolBtn) {
+          activatePatientTool(toolBtn.getAttribute('data-patient-tool'));
+          return;
+        }
         var chip = target.closest('.patient-chip');
         if (!chip) return;
 
@@ -402,9 +472,9 @@
           chip.hasAttribute('data-patient-trigger') ||
           chip.hasAttribute('data-patient-relief')
         ) {
-          var next = !chip.classList.contains('is-selected');
-          chip.classList.toggle('is-selected', next);
-          chip.setAttribute('aria-pressed', next ? 'true' : 'false');
+          var nextSel = !chip.classList.contains('is-selected');
+          chip.classList.toggle('is-selected', nextSel);
+          chip.setAttribute('aria-pressed', nextSel ? 'true' : 'false');
           pushToFormAndStore();
           return;
         }
@@ -457,7 +527,7 @@
     }
 
     pullFromStoreToPatientUI();
-    updateLocationChrome();
+    setAssessStep(assessStep, { skipExpand: assessStep === 'mark' });
   }
 
   function locationLines(entry) {
@@ -726,9 +796,9 @@
     updateStepChrome();
     buildDescribeUI();
 
-    // Prefer Tap tool for simple map
+    // Prefer Point tool for simple map
     activatePatientTool('point');
-    updateLocationChrome();
+    setAssessStep('mark', { skipExpand: true });
 
     on('btnPatientNextDescribe', 'click', goDescribe);
     on('btnPatientToReview', 'click', goReview);
@@ -738,6 +808,31 @@
     on('btnPatientEditLocation', 'click', goLocate);
     on('btnPatientEditDescribe', 'click', goDescribe);
     on('btnPatientSave', 'click', function () { void savePatientEntry(); });
+
+    on('btnAssessNext', 'click', function () {
+      if (assessStep === 'mark') setAssessStep('describe');
+      else if (assessStep === 'describe') setAssessStep('save');
+    });
+    on('btnAssessBack', 'click', function () {
+      if (assessStep === 'save') setAssessStep('describe');
+      else if (assessStep === 'describe') setAssessStep('mark');
+    });
+
+    var assessNav = document.getElementById('simpleAssessNav');
+    if (assessNav) {
+      assessNav.addEventListener('click', function (e) {
+        var tab = e.target && e.target.closest ? e.target.closest('[data-assess-step]') : null;
+        if (!tab) return;
+        setAssessStep(tab.getAttribute('data-assess-step'));
+      });
+    }
+
+    var drawerGrab = document.getElementById('simpleDrawerGrab');
+    if (drawerGrab) {
+      drawerGrab.addEventListener('click', function () {
+        document.body.classList.toggle('simple-drawer-expanded');
+      });
+    }
 
     on('btnSimplePainMap', 'click', function () { setSimpleView('map'); });
     on('btnSimpleHistory', 'click', function () { setSimpleView('history'); });
@@ -802,8 +897,9 @@
       closeMoreMenu();
     });
 
-    if (store && typeof store.onChange === 'function') {
-      store.onChange(function () {
+    var liveStore = getStore();
+    if (liveStore && typeof liveStore.onChange === 'function') {
+      liveStore.onChange(function () {
         if (!isPatientShell()) return;
         updateStepChrome();
         updateLocationChrome();
@@ -839,6 +935,7 @@
   global.initPatientFlow = initPatientFlow;
   global.savePatientEntry = savePatientEntry;
   global.setSimplePainView = setSimpleView;
+  global.setAssessStep = setAssessStep;
   global.PatientSteps = PatientSteps;
   global.__patientDescribe = {
     QUALITY_CHIPS: QUALITY_CHIPS,

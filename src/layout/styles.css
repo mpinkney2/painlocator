@@ -1304,8 +1304,8 @@ body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
 }
 
 /* While Spatial-primary is booting / unavailable, never show the plate PNG */
-body.spatial-primary:not(.spatial-ready) .cae-anatomy-image,
-body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-clinical-viewport .cae-image-frame {
   display: none !important;
 }
 

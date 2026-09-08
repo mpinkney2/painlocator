@@ -93,10 +93,16 @@
     if (!shouldPreferSpatial()) {
       engine.spatialPrimaryNoPlate = false;
       try {
-        document.body?.classList?.remove("spatial-primary");
+        document.body?.classList?.remove("spatial-primary", "spatial-ready");
       } catch (_) { /* ignore */ }
       try {
         await engine.setDisplayMode("plate");
+        // Ensure plate paint even if a prior spatial-loading stage lingered.
+        if (engine.displayMode !== "plate") {
+          engine.enablePlateMode?.("simple-pain-map");
+        } else {
+          engine.render?.();
+        }
       } catch (err) {
         console.warn("[PainLocator] Plate locate failed", err);
       }
