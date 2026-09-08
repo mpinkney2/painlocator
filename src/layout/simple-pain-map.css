@@ -270,12 +270,17 @@ body.shell-patient.simple-pain-map .cae-spatial-staging > .cae-spatial-status {
   display: none !important;
 }
 
+body.shell-patient.simple-pain-map .avatar-wrap,
+body.shell-patient.simple-pain-map .anatomy-viewer,
 body.shell-patient.simple-pain-map .avatar-stage,
 body.shell-patient.simple-pain-map .avatar-stage .cae-stage,
 body.shell-patient.simple-pain-map .avatar-stage .cae-clinical-viewport,
-body.shell-patient.simple-pain-map .avatar-stage .cae-image-frame,
-body.shell-patient.simple-pain-map .avatar-stage img {
-  background: transparent;
+body.shell-patient.simple-pain-map .avatar-stage .cae-image-frame {
+  background: #fefbfa !important;
+}
+
+body.shell-patient.simple-pain-map {
+  --anatomy-stage-bg: #fefbfa;
 }
 
 body.shell-patient.simple-pain-map .avatar-stage img,
