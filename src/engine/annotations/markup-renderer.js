@@ -750,7 +750,7 @@ class ClinicalMarkupRenderer {
     const cacheToken =
       typeof document !== "undefined" &&
       document.body?.classList?.contains("simple-pain-map")
-        ? "spm-1"
+        ? "spm-2-alpha"
         : String(Date.now());
     img.src = imgPath + "?v=" + cacheToken;
 

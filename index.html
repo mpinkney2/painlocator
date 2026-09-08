@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=5.11-mobile-drawer">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.13-drawer-toggle">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.14-drawer-slide">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -321,7 +321,7 @@
               </div>
             </div>
             <aside class="simple-pain-panel shell-only-patient" id="simplePainPanel" aria-labelledby="simplePainLocationTitle" data-assess-step="mark">
-              <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand or collapse assessment panel" aria-expanded="false" title="Open tools"></button>
+              <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand assessment panel — swipe up" aria-expanded="false" title="Open tools"></button>
               <div class="simple-drawer-sheet" id="simpleDrawerSheet">
               <div class="simple-pain-context">
                 <p class="simple-pain-id" id="simplePainId">Pain map</p>
@@ -388,6 +388,32 @@
               </div>
             </aside>
           </div>
+
+          <section class="timeline-panel" id="timelinePanel" aria-labelledby="timelineTitle">
+            <div class="timeline-panel-head">
+              <h2 class="block-title" id="timelineTitle">Recovery Timeline</h2>
+              <div class="timeline-panel-meta" id="timelineMeta">No entries logged yet.</div>
+            </div>
+            <div class="timeline-filters" id="timelineFilters">
+              <div class="pill-grid timeline-range" id="timelineRangeFilters" role="group" aria-label="Timeline date range">
+                <button type="button" class="pill" data-range="7">7 days</button>
+                <button type="button" class="pill" data-range="30">30 days</button>
+                <button type="button" class="pill" data-range="90">90 days</button>
+                <button type="button" class="pill active" data-range="all">All time</button>
+              </div>
+              <label class="meta-field timeline-region-filter">
+                <span class="sr-only">Filter by body region</span>
+                <select id="timelineRegionFilter" aria-label="Filter by body region">
+                  <option value="all">All regions</option>
+                </select>
+              </label>
+            </div>
+            <div class="chart-box timeline-chart-box">
+              <canvas id="timelineChart" aria-label="Pain intensity over time chart"></canvas>
+              <div class="chart-empty" id="chartEmpty">No entries yet. Log pain entries to build your timeline.</div>
+            </div>
+            <p class="timeline-a11y-summary sr-only" id="timelineA11ySummary" aria-live="polite">Recovery timeline is empty.</p>
+          </section>
           <p class="simple-pain-footer shell-only-patient" aria-hidden="true">PainLocator · Design concept</p>
         </div>
 
@@ -425,32 +451,6 @@
             </div>
           </div>
         </aside>
-
-        <section class="timeline-panel" id="timelinePanel" aria-labelledby="timelineTitle">
-          <div class="timeline-panel-head">
-            <h2 class="block-title" id="timelineTitle">Recovery Timeline</h2>
-            <div class="timeline-panel-meta" id="timelineMeta">No entries logged yet.</div>
-          </div>
-          <div class="timeline-filters" id="timelineFilters">
-            <div class="pill-grid timeline-range" id="timelineRangeFilters" role="group" aria-label="Timeline date range">
-              <button type="button" class="pill" data-range="7">7 days</button>
-              <button type="button" class="pill" data-range="30">30 days</button>
-              <button type="button" class="pill" data-range="90">90 days</button>
-              <button type="button" class="pill active" data-range="all">All time</button>
-            </div>
-            <label class="meta-field timeline-region-filter">
-              <span class="sr-only">Filter by body region</span>
-              <select id="timelineRegionFilter" aria-label="Filter by body region">
-                <option value="all">All regions</option>
-              </select>
-            </label>
-          </div>
-          <div class="chart-box timeline-chart-box">
-            <canvas id="timelineChart" aria-label="Pain intensity over time chart"></canvas>
-            <div class="chart-empty" id="chartEmpty">No entries yet. Log pain entries to build your timeline.</div>
-          </div>
-          <p class="timeline-a11y-summary sr-only" id="timelineA11ySummary" aria-live="polite">Recovery timeline is empty.</p>
-        </section>
         </div>
       </section>
 
@@ -899,7 +899,7 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.12"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.13-drawer-toggle"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.14-drawer-slide"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-08-drawer-toggle"></script>
   <script src="src/app/bootstrap.js?v=2026-09-08-drawer-toggle"></script>
 </body>
