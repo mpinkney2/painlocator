@@ -197,19 +197,16 @@ class PainRegionLayer {
     const simplePatient =
       typeof document !== "undefined" &&
       document.body?.classList?.contains("simple-pain-map");
-    const baseColor = simplePatient
-      ? (typeof getComputedStyle === "function"
-          ? (getComputedStyle(document.body).getPropertyValue("--spm-amber-marker").trim() || "#f4ae37")
-          : "#f4ae37")
-      : intensityBaseColor(intensity);
-    const opacity = simplePatient ? Math.max(0.88, getRegionOpacity(region, intensity)) : getRegionOpacity(region, intensity);
+    // Marker color tracks entry intensity (0–10 scale); prefer stamped color when present.
+    const baseColor = region._entryColor || intensityBaseColor(intensity);
+    const opacity = simplePatient ? Math.max(0.9, getRegionOpacity(region, intensity)) : getRegionOpacity(region, intensity);
     const c = getRegionCenter(region);
     const isPolygon = region.shape === "polygon" && region.anchors.length >= 3;
     let { rx, ry } = getRegionRadii(region, intensity);
     if (simplePatient) {
       // Larger tap targets so marks stay readable on the studio figure.
-      rx = Math.max(rx, 0.028);
-      ry = Math.max(ry, 0.028);
+      rx = Math.max(rx, 0.03);
+      ry = Math.max(ry, 0.03);
     }
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", "pain-region"
@@ -217,6 +214,8 @@ class PainRegionLayer {
       + (region._isActiveEntry ? " active-entry" : "")
       + (region._isDraft ? " draft" : ""));
     g.dataset.id = region.id;
+    g.dataset.intensity = String(intensity);
+    g.dataset.color = baseColor;
     g.style.pointerEvents = "all";
     g.style.cursor = this.store.activeTool === "select" ? "grab" : "crosshair";
 
@@ -239,7 +238,7 @@ class PainRegionLayer {
       shape.setAttribute("class", "pain-region-fill");
       shape.setAttribute("points", polygonPoints(region.anchors));
       shape.setAttribute("fill", baseColor);
-      shape.setAttribute("fill-opacity", String(Math.min(0.9, opacity + 0.12)));
+      shape.setAttribute("fill-opacity", String(Math.min(0.92, opacity + 0.12)));
     } else {
       shape = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
       shape.setAttribute("class", "pain-region-fill");
@@ -247,13 +246,13 @@ class PainRegionLayer {
       shape.setAttribute("cy", String(c.y));
       shape.setAttribute("rx", String(rx));
       shape.setAttribute("ry", String(ry));
-      // Solid amber on the patient map so marks stay above the figure; gradient elsewhere.
+      // Solid intensity color on the patient map (slider-linked); soft gradient elsewhere.
       shape.setAttribute("fill", simplePatient ? baseColor : `url(#${gradId})`);
-      if (simplePatient) shape.setAttribute("fill-opacity", "0.92");
+      if (simplePatient) shape.setAttribute("fill-opacity", "0.95");
     }
-    shape.setAttribute("stroke", selected ? "#22d3ee" : (simplePatient ? "#182a42" : baseColor));
-    shape.setAttribute("stroke-opacity", selected ? "1" : "0.95");
-    shape.setAttribute("stroke-width", selected ? "0.006" : (simplePatient ? "0.005" : "0.002"));
+    shape.setAttribute("stroke", selected ? "#182a42" : (simplePatient ? "#182a42" : baseColor));
+    shape.setAttribute("stroke-opacity", "1");
+    shape.setAttribute("stroke-width", selected ? "0.007" : (simplePatient ? "0.005" : "0.002"));
     g.appendChild(shape);
 
     if (selected && !isPolygon) {
