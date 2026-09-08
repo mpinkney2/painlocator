@@ -1947,10 +1947,19 @@ console.log('PainLocator tests\n');
     assert.equal(ok, false);
     assert.equal(called, 'plate');
     assert.equal(engine.spatialPrimaryNoPlate, false);
+    // Restore body for subsequent clinician Spatial-default tests
+    sandbox.document.body = {
+      classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
+      dataset: {}
+    };
   });
 
   test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
     sandbox.location.search = '';
+    sandbox.document.body = {
+      classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
+      dataset: {}
+    };
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
     let called = null;
     const engine = {
