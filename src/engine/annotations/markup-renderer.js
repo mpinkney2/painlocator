@@ -670,11 +670,16 @@ class ClinicalMarkupRenderer {
 
     container.innerHTML = `
       <div class="cae-clinical-viewport">
-        <svg id="caeTestBodySvg" class="cae-placeholder-body" viewBox="0 0 200 360" xmlns="http://www.w3.org/2000/svg">
+        ${
+          typeof document !== "undefined" &&
+          document.body?.classList?.contains("simple-pain-map")
+            ? `<div class="simple-figure-loading" aria-live="polite">Loading body…</div>`
+            : `<svg id="caeTestBodySvg" class="cae-placeholder-body" viewBox="0 0 200 360" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="100" cy="50" rx="22" ry="28" fill="rgba(34,211,238,0.15)" stroke="#22d3ee" stroke-width="2"/>
           <path d="M68 110 C68 110 74 190 76 210 L100 240 L124 210 C126 190 132 110 132 110 Z" fill="rgba(34,211,238,0.15)" stroke="#22d3ee" stroke-width="2"/>
           <text x="100" y="150" fill="#22d3ee" font-size="12" font-weight="800" text-anchor="middle">CAE placeholder body</text>
-        </svg>
+        </svg>`
+        }
         <div class="cae-image-frame" id="caeImageFrame"></div>
         <div class="cae-marker-tooltip" id="caeMarkerTooltip" hidden></div>
       </div>`;
@@ -713,6 +718,8 @@ class ClinicalMarkupRenderer {
         img.classList.add("is-loaded");
         img.setAttribute("data-loaded", "1");
       }
+      this.viewport?.classList?.add("has-figure");
+      container.querySelector(".simple-figure-loading")?.remove();
       requestAnimationFrame(() => {
         this.syncLayout();
         requestAnimationFrame(() => this.syncLayout());
@@ -728,13 +735,24 @@ class ClinicalMarkupRenderer {
       this.loadStatus = "failed (fallback active)";
       this.fallbackActive = true;
       this.layers.image.hide();
-      if (placeholder) placeholder.style.display = "block";
+      const loading = container.querySelector(".simple-figure-loading");
+      if (loading) {
+        loading.textContent = "Body image unavailable — try Front / Back again.";
+      } else if (placeholder) {
+        placeholder.style.display = "block";
+      }
       this.injectDebugLabel(container, imgPath);
     };
 
     img.onload = () => (img.naturalWidth > 0 ? handleLoad() : handleError());
     img.onerror = handleError;
-    img.src = imgPath + "?v=" + Date.now();
+    // Stable cache token for patient plates; avoid Date.now() thrash on every view change.
+    const cacheToken =
+      typeof document !== "undefined" &&
+      document.body?.classList?.contains("simple-pain-map")
+        ? "spm-1"
+        : String(Date.now());
+    img.src = imgPath + "?v=" + cacheToken;
 
     window.addEventListener("resize", this._onResize);
     if (typeof ResizeObserver !== "undefined" && this.viewport) {

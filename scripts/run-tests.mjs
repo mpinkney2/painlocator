@@ -1871,14 +1871,20 @@ console.log('PainLocator tests\n');
     assert.ok(css.includes('100dvh'));
     assert.ok(css.includes('position: static'));
     assert.ok(css.includes(".capture-tools.simple-annotate-bar"));
-    assert.ok(!/simple-pain-map \.capture-tools,\s*\nbody\.shell-patient\.simple-pain-map #demoModeBadge \{\s*\n\s*display: none !important;/m.test(css));
-    assert.ok(css.includes("data-tool='circle'"));
+    assert.ok(css.includes('simple-assess-nav') || css.includes('.simple-assess-tab'));
+    assert.ok(css.includes('simple-pain-panel') && css.includes('position: fixed'));
     assert.ok(html.includes('simple-annotate-bar'));
+    assert.ok(html.includes('data-assess-step="mark"'));
+    assert.ok(html.includes('id="simpleAssessNav"'));
+    assert.ok(html.includes('data-tool="circle"'));
+    assert.ok(html.includes('>Area</button>') || html.includes('aria-label="Area mark"'));
     assert.ok(html.indexOf('id="avatarStage"') < html.indexOf('id="captureTools"'));
     assert.ok(html.indexOf('id="captureTools"') < html.indexOf('id="simpleViewBar"'));
-    assert.ok(flow.includes('simple-marks-section'));
-    assert.ok(flow.includes('btnSimpleTapMode'));
+    assert.ok(html.includes('/anatomy/simple-pain-map/front.png'));
+    assert.ok(flow.includes('simple-marks-section') || flow.includes('data-assess-panel'));
+    assert.ok(flow.includes('btnSimpleTapMode') || flow.includes('data-patient-tool'));
     assert.ok(flow.includes('activatePatientTool'));
+    assert.ok(flow.includes('setAssessStep'));
   });
 }
 
@@ -2171,7 +2177,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-08-force-plate');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-08-mobile-drawer');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2186,7 +2192,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-08-force-plate'));
+    assert.ok(html.includes('?v=2026-09-08-mobile-drawer'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2292,7 +2298,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-08-force-plate';
+    const ver = '2026-09-08-mobile-drawer';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',

@@ -708,11 +708,18 @@ body.shell-patient.simple-pain-map .simple-pain-footer {
   display: none; /* keep viewport clean */
 }
 
-/* Hide clinician / technical chrome; keep Tap · Remove · Undo · Redo */
-body.shell-patient.simple-pain-map .review-tools,
-body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='select'],
+body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='point'],
 body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='circle'],
 body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='polygon'],
+body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='polygon'].show-clinical,
+body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='eraser'],
+body.shell-patient.simple-pain-map .capture-tools #btnUndo,
+body.shell-patient.simple-pain-map .capture-tools #btnRedo {
+  display: inline-flex !important;
+}
+
+body.shell-patient.simple-pain-map .review-tools,
+body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='select'],
 body.shell-patient.simple-pain-map #btnEnlargeAnatomy,
 body.shell-patient.simple-pain-map .capture-tools .region-tool-divider,
 body.shell-patient.simple-pain-map #displayModeToggle,
@@ -725,6 +732,162 @@ body.shell-patient.simple-pain-map #patientSheetBackdrop,
 body.shell-patient.simple-pain-map .workflow-toggle,
 body.shell-patient.simple-pain-map #demoModeBadge {
   display: none !important;
+}
+
+/* Always show the plate image frame on the simple pain chart (never spatial-primary trap). */
+body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame,
+body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.shell-patient.simple-pain-map .cae-anatomy-image.is-loaded,
+body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-anatomy-image.is-loaded {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body.shell-patient.simple-pain-map .simple-figure-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.shell-patient.simple-pain-map .cae-clinical-viewport.has-figure .simple-figure-loading {
+  display: none;
+}
+
+/* Assessment step tabs */
+body.shell-patient.simple-pain-map .simple-assess-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  margin: 0.15rem 0 0.35rem;
+}
+
+body.shell-patient.simple-pain-map .simple-assess-tab {
+  appearance: none;
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--spm-border);
+  background: var(--spm-white);
+  color: var(--spm-navy);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.shell-patient.simple-pain-map .simple-assess-tab.is-active {
+  background: var(--spm-amber);
+  border-color: var(--spm-amber);
+}
+
+body.shell-patient.simple-pain-map .simple-drawer-grab {
+  display: none;
+}
+
+body.shell-patient.simple-pain-map .simple-tool-picker,
+body.shell-patient.simple-pain-map .simple-marks-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+body.shell-patient.simple-pain-map .simple-tool-help {
+  margin-top: 0.35rem;
+}
+
+body.shell-patient.simple-pain-map .simple-tool-help summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+body.shell-patient.simple-pain-map .simple-tool-help ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+body.shell-patient.simple-pain-map .simple-subhead {
+  margin-top: 1rem;
+}
+
+body.shell-patient.simple-pain-map .simple-save-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+body.shell-patient.simple-pain-map .simple-save-summary p {
+  margin: 0;
+}
+
+body.shell-patient.simple-pain-map .simple-step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+body.shell-patient.simple-pain-map .simple-step-actions .simple-step-btn {
+  flex: 1 1 auto;
+  min-height: 48px;
+  font-weight: 700;
+}
+
+body.shell-patient.simple-pain-map .simple-step-actions .simple-save-btn {
+  flex: 1 1 100%;
+}
+
+/* Desktop: show all panels stacked in the side column */
+@media (min-width: 901px) {
+  body.shell-patient.simple-pain-map .simple-assess-nav {
+    display: none;
+  }
+
+  body.shell-patient.simple-pain-map .simple-assess-panel,
+  body.shell-patient.simple-pain-map .simple-assess-panel[hidden] {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  body.shell-patient.simple-pain-map #btnAssessBack,
+  body.shell-patient.simple-pain-map #btnAssessNext {
+    display: none !important;
+  }
+
+  body.shell-patient.simple-pain-map #btnPatientSave {
+    display: block !important;
+  }
+
+  body.shell-patient.simple-pain-map .simple-save-panel {
+    display: none !important; /* desktop saves from footer without review step */
+  }
 }
 
 body.shell-patient.simple-pain-map .simple-brand-lockup {
@@ -765,11 +928,9 @@ body.shell-patient.simple-view-map #timelinePanel {
 @media (max-width: 900px) {
   body.shell-patient.simple-pain-map,
   body.shell-patient.simple-pain-map .app {
-    height: auto;
-    max-height: none;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
   }
 
   body.shell-patient.simple-pain-map .layout,
@@ -777,15 +938,17 @@ body.shell-patient.simple-view-map #timelinePanel {
   body.shell-patient.simple-pain-map .center-panel,
   body.shell-patient.simple-pain-map .center-workspace,
   body.shell-patient.simple-pain-map .simple-pain-workspace {
-    overflow: visible;
+    overflow: hidden;
     min-height: 0;
-    height: auto;
+    height: 100%;
+    flex: 1 1 auto;
   }
 
   body.shell-patient.simple-pain-map .header {
     grid-template-columns: 1fr;
     justify-items: stretch;
-    padding: 0.65rem 0.85rem;
+    padding: 0.5rem 0.75rem;
+    flex: 0 0 auto;
   }
 
   body.shell-patient.simple-pain-map .brand,
@@ -794,67 +957,151 @@ body.shell-patient.simple-view-map #timelinePanel {
     justify-self: center;
   }
 
+  body.shell-patient.simple-pain-map .simple-pain-nav {
+    width: 100%;
+    justify-content: center;
+    overflow-x: auto;
+  }
+
   body.shell-patient.simple-pain-map .layout {
-    padding: 0.35rem 0.85rem 1rem;
+    padding: 0.25rem 0.65rem 0;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-headline {
+    padding: 0.1rem 0;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-headline h1 {
+    font-size: 1.2rem;
   }
 
   body.shell-patient.simple-pain-map .simple-pain-grid {
     grid-template-columns: 1fr;
-    gap: 0.85rem;
-    overflow: visible;
-    height: auto;
-    align-items: start;
+    gap: 0;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+    align-items: stretch;
+    position: relative;
   }
 
-  body.shell-patient.simple-pain-map .simple-pain-map-col,
+  body.shell-patient.simple-pain-map .simple-pain-map-col {
+    min-height: 0;
+    height: 100%;
+    padding-bottom: 11.5rem; /* room for collapsed drawer */
+    overflow: hidden;
+  }
+
+  body.shell-patient.simple-pain-map.simple-drawer-expanded .simple-pain-map-col {
+    padding-bottom: min(62dvh, 520px);
+  }
+
   body.shell-patient.simple-pain-map .avatar-wrap,
   body.shell-patient.simple-pain-map .anatomy-viewer {
-    height: auto;
-    overflow: visible;
+    height: 100%;
+    overflow: hidden;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: min(42dvh, 420px);
-    max-height: min(48dvh, 480px);
+    min-height: 0;
+    max-height: none;
+    flex: 1 1 auto;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage img,
   body.shell-patient.simple-pain-map .avatar-stage .cae-plate-image,
-  body.shell-patient.simple-pain-map .avatar-stage canvas {
-    max-height: min(46dvh, 460px);
+  body.shell-patient.simple-pain-map .avatar-stage canvas,
+  body.shell-patient.simple-pain-map .avatar-stage .cae-clinical-viewport,
+  body.shell-patient.simple-pain-map .avatar-stage .cae-stage {
+    max-height: 100%;
   }
 
+  /* Bottom assessment drawer */
   body.shell-patient.simple-pain-map .simple-pain-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    max-height: 48dvh;
+    height: auto;
     border-left: 0;
     border-top: 1px solid var(--border);
-    padding: 0.85rem 0 0;
-    height: auto;
-    overflow: visible;
+    border-radius: 18px 18px 0 0;
+    padding: 0.35rem 0.85rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
+    background: var(--spm-warm-white);
+    box-shadow: 0 -8px 28px rgba(24, 42, 66, 0.12);
+    overflow: hidden;
+    transition: max-height 0.22s ease;
+  }
+
+  body.shell-patient.simple-pain-map.simple-drawer-expanded .simple-pain-panel {
+    max-height: min(72dvh, 580px);
+  }
+
+  body.shell-patient.simple-pain-map .simple-drawer-grab {
+    display: block;
+    width: 42px;
+    height: 4px;
+    margin: 0.2rem auto 0.45rem;
+    border-radius: 999px;
+    background: var(--spm-border);
+    cursor: pointer;
   }
 
   body.shell-patient.simple-pain-map .simple-pain-panel-body {
-    overflow: visible;
+    overflow: auto;
+    overscroll-behavior: contain;
+    min-height: 0;
+    flex: 1 1 auto;
+    max-height: none;
   }
 
-  body.shell-patient.simple-pain-map .capture-tools .region-tool {
+  body.shell-patient.simple-pain-map:not(.simple-drawer-expanded)[data-assess-step='describe'] .simple-pain-panel-body,
+  body.shell-patient.simple-pain-map:not(.simple-drawer-expanded)[data-assess-step='save'] .simple-pain-panel-body {
+    display: none; /* collapsed describe/save: expand via tab or grab to edit */
+  }
+
+  body.shell-patient.simple-pain-map .capture-tools {
+    display: none !important; /* tools live in the Mark drawer panel on mobile */
+  }
+
+  body.shell-patient.simple-pain-map .avatar-hint {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  body.shell-patient.simple-pain-map .simple-view-bar {
+    margin-top: 0.15rem;
+  }
+
+  body.shell-patient.simple-pain-map .capture-tools .region-tool,
+  body.shell-patient.simple-pain-map .simple-view-btn,
+  body.shell-patient.simple-pain-map .simple-mark-btn,
+  body.shell-patient.simple-pain-map .simple-assess-tab {
     min-height: 44px;
-    flex: 1 1 auto;
   }
 
   body.shell-patient.simple-pain-map .simple-view-btn {
-    min-height: 44px;
     flex: 1 1 auto;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-context .simple-pain-panel-title {
+    font-size: 1.15rem;
   }
 }
 
 @media (max-width: 900px) and (max-height: 720px) {
   body.shell-patient.simple-pain-map .simple-pain-headline h1 {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
   }
 
-  body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: min(36dvh, 320px);
-    max-height: min(40dvh, 360px);
+  body.shell-patient.simple-pain-map .simple-pain-panel {
+    max-height: 38dvh;
+  }
+
+  body.shell-patient.simple-pain-map.simple-drawer-expanded .simple-pain-panel {
+    max-height: min(72dvh, 520px);
   }
 }
 
