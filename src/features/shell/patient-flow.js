@@ -249,6 +249,8 @@
   function updateLocationChrome() {
     var idEl = document.getElementById('simplePainId');
     var titleEl = document.getElementById('simplePainLocationTitle');
+    var summaryEl = document.getElementById('simpleMarksSummary');
+    var undoMarkBtn = document.getElementById('btnSimpleUndoMark');
     var store = getStore();
     var entry = store && store.getActiveEntry ? store.getActiveEntry() : null;
     var regions = Array.isArray(entry && entry.regions) ? entry.regions : [];
@@ -268,6 +270,59 @@
           ('Mark ' + count);
       }
     }
+    if (summaryEl) {
+      if (!count) {
+        summaryEl.textContent = 'No marks yet — tap the body where it hurts.';
+      } else if (count === 1) {
+        summaryEl.textContent = '1 mark on the body. Adjust intensity and how it feels below.';
+      } else {
+        summaryEl.textContent = count + ' marks on the body. Tap Remove, then a mark, to delete one.';
+      }
+    }
+    if (undoMarkBtn) {
+      var canUndo = !!(store && typeof store.canUndo === 'function' && store.canUndo());
+      undoMarkBtn.disabled = !canUndo;
+    }
+    syncSimpleAnnotateActive();
+  }
+
+  function syncSimpleAnnotateActive() {
+    var store = getStore();
+    var tool = (store && store.activeTool) || 'point';
+    var bar = document.getElementById('captureTools');
+    if (bar) {
+      bar.querySelectorAll('.region-tool[data-tool]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tool') === tool);
+      });
+    }
+    var removeBtn = document.getElementById('btnSimpleRemoveMode');
+    var tapBtn = document.getElementById('btnSimpleTapMode');
+    if (removeBtn) removeBtn.classList.toggle('is-active', tool === 'eraser');
+    if (tapBtn) tapBtn.classList.toggle('is-active', tool === 'point');
+  }
+
+  function activatePatientTool(tool) {
+    try {
+      if (typeof global.setRegionTool === 'function') global.setRegionTool(tool);
+      else if (typeof setRegionTool === 'function') setRegionTool(tool);
+    } catch (e) { /* ignore */ }
+    var bar = document.getElementById('captureTools');
+    if (bar) {
+      bar.querySelectorAll('.region-tool[data-tool]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tool') === tool);
+      });
+    }
+    syncSimpleAnnotateActive();
+    var hint = document.getElementById('avatarHint');
+    if (hint) {
+      if (tool === 'eraser') {
+        hint.textContent = 'Tap a mark on the body to remove it.';
+        hint.classList.remove('hidden');
+      } else {
+        hint.textContent = 'Tap the body to mark where it hurts.';
+        hint.classList.remove('hidden');
+      }
+    }
   }
 
   function buildDescribeUI() {
@@ -276,6 +331,15 @@
 
     if (!describeBuilt) {
       mount.innerHTML =
+        '<section class="simple-marks-section" aria-labelledby="simpleMarksHeading">' +
+          '<h3 id="simpleMarksHeading" class="patient-describe-heading">Your marks</h3>' +
+          '<p class="simple-marks-summary" id="simpleMarksSummary">No marks yet — tap the body where it hurts.</p>' +
+          '<div class="simple-marks-actions" role="group" aria-label="Mark actions">' +
+            '<button type="button" class="simple-mark-btn is-active" id="btnSimpleTapMode">Tap to mark</button>' +
+            '<button type="button" class="simple-mark-btn" id="btnSimpleRemoveMode">Remove a mark</button>' +
+            '<button type="button" class="simple-mark-btn" id="btnSimpleUndoMark">Undo last</button>' +
+          '</div>' +
+        '</section>' +
         '<section class="patient-describe-section simple-intensity" aria-labelledby="patientIntensityHeading">' +
           '<h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>' +
           '<div class="patient-intensity-row">' +
@@ -314,9 +378,18 @@
         '<section class="patient-describe-section" aria-labelledby="patientNoteHeading">' +
           '<h3 id="patientNoteHeading" class="patient-describe-heading">Add a note <span class="optional-label">(optional)</span></h3>' +
           '<label class="visually-hidden sr-only" for="patientNoteInput">Optional note about your pain</label>' +
-          '<textarea id="patientNoteInput" class="patient-note-input" rows="3" maxlength="500"' +
+          '<textarea id="patientNoteInput" class="patient-note-input" rows="2" maxlength="500"' +
             ' placeholder="e.g. Worse in the evening..."></textarea>' +
         '</section>';
+
+      on('btnSimpleTapMode', 'click', function () { activatePatientTool('point'); });
+      on('btnSimpleRemoveMode', 'click', function () { activatePatientTool('eraser'); });
+      on('btnSimpleUndoMark', 'click', function () {
+        var undoBtn = document.getElementById('btnUndo');
+        if (undoBtn && !undoBtn.disabled) undoBtn.click();
+        else if (typeof global.performUndo === 'function') global.performUndo();
+        updateLocationChrome();
+      });
 
       mount.addEventListener('click', function (event) {
         var target = event.target;
@@ -654,16 +727,8 @@
     buildDescribeUI();
 
     // Prefer Tap tool for simple map
-    try {
-      var pointBtn = document.querySelector('.capture-tools .region-tool[data-tool="point"]');
-      var circleBtn = document.querySelector('.capture-tools .region-tool[data-tool="circle"]');
-      if (pointBtn && circleBtn) {
-        circleBtn.classList.remove('active');
-        pointBtn.classList.add('active');
-        if (typeof global.setRegionTool === 'function') global.setRegionTool('point');
-        else if (typeof setRegionTool === 'function') setRegionTool('point');
-      }
-    } catch (e) { /* ignore */ }
+    activatePatientTool('point');
+    updateLocationChrome();
 
     on('btnPatientNextDescribe', 'click', goDescribe);
     on('btnPatientToReview', 'click', goReview);
