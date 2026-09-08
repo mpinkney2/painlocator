@@ -176,26 +176,26 @@ body.theme-dark {
    Applied via body.shell-patient | body.shell-clinician (+ theme-dark)
    ========================================================================== */
 
-/* Patient shell — light (default patient experience) */
+/* Patient shell — light (simple pain map: warm white / navy / amber) */
 body.shell-patient {
-  --background: #f7f5f2;
-  --surface: #fffdf9;
-  --surface-secondary: #f0ebe4;
-  --surface-elevated: #fffdf9;
-  --border: rgba(28, 25, 23, 0.1);
-  --border-strong: rgba(28, 25, 23, 0.18);
+  --background: #faf8f5;
+  --surface: #ffffff;
+  --surface-secondary: #f3efe8;
+  --surface-elevated: #ffffff;
+  --border: rgba(26, 39, 68, 0.12);
+  --border-strong: rgba(26, 39, 68, 0.22);
 
-  --text-primary: #1c1917;
-  --text-secondary: #57534e;
-  --text-muted: #78716c;
+  --text-primary: #1a2744;
+  --text-secondary: #3d4a63;
+  --text-muted: #6b7589;
 
-  --primary: #0f766e;
-  --primary-hover: #0d635c;
+  --primary: #c9842a;
+  --primary-hover: #b07322;
   --primary-contrast: #ffffff;
-  --accent: #0f766e;
-  --accent-dim: #0d635c;
-  --accent-subtle: rgba(15, 118, 110, 0.12);
-  --accent-border: rgba(15, 118, 110, 0.32);
+  --accent: #c9842a;
+  --accent-dim: #9a641c;
+  --accent-subtle: rgba(201, 132, 42, 0.14);
+  --accent-border: rgba(201, 132, 42, 0.4);
 
   --pain-low: #fbbf24;
   --pain-mid: #f97316;
@@ -203,19 +203,22 @@ body.shell-patient {
 
   --header-bg: var(--surface);
   --header-border: var(--border);
-  --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.06);
-  --shadow-md: 0 6px 20px rgba(28, 25, 23, 0.08);
-  --overlay-backdrop: rgba(28, 25, 23, 0.42);
+  --shadow-sm: 0 1px 3px rgba(26, 39, 68, 0.06);
+  --shadow-md: 0 6px 20px rgba(26, 39, 68, 0.08);
+  --overlay-backdrop: rgba(26, 39, 68, 0.42);
 
   --control-bg: var(--surface-secondary);
   --toggle-track: #ebe5dd;
 
   --anatomy-stage-bg: radial-gradient(
     ellipse 90% 80% at 50% 42%,
-    #faf6f0 0%,
-    #ebe4d9 55%,
-    #ddd4c8 100%
+    #fffdf9 0%,
+    #f0ebe3 55%,
+    #e4ddd2 100%
   );
+
+  --brand-pain: #1a2744;
+  --brand-locator: #c9842a;
 
   --radius-sheet: 20px;
   --radius-control: 12px;
