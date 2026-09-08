@@ -197,6 +197,7 @@
       patientIntensity.value = String(intensity);
       patientIntensity.setAttribute('aria-valuenow', String(intensity));
       patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + intensity + ' out of 10');
+      patientIntensity.style.setProperty('--spm-slider-pct', (intensity * 10) + '%');
     }
     if (intensityValue) intensityValue.textContent = String(intensity);
 
@@ -363,10 +364,15 @@
           var value = Number(patientIntensity.value || 5);
           patientIntensity.setAttribute('aria-valuenow', String(value));
           patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + value + ' out of 10');
+          patientIntensity.style.setProperty('--spm-slider-pct', (value * 10) + '%');
           var label = document.getElementById('patientIntensityValue');
           if (label) label.textContent = String(value);
           pushToFormAndStore();
         });
+        patientIntensity.style.setProperty(
+          '--spm-slider-pct',
+          (Number(patientIntensity.value || 5) * 10) + '%'
+        );
       }
 
       var noteInput = document.getElementById('patientNoteInput');
