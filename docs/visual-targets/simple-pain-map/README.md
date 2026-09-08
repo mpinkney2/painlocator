@@ -24,4 +24,4 @@ Reference mockup for the simplified PainLocator pain-chart interface:
 - View control: Front / Back / Left / Right under the body
 - Form: Pain N + location title, intensity, Aching / Sharp / Burning, optional note, navy **Save pain map**
 - Additional descriptors under “More descriptions”
-- Current Spatial body geometry retained (no new vendors)
+- Current Spatial body geometry retained for clinician; simple pain-map uses the 2D person plate (`/anatomy/adult-male/*.png`)

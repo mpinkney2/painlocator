@@ -265,8 +265,27 @@ body.shell-patient.simple-pain-map .avatar-stage {
   min-height: clamp(320px, 58vh, 680px);
 }
 
-body.shell-patient.simple-pain-map .avatar-hint {
-  display: none;
+body.shell-patient.simple-pain-map .cae-spatial-status,
+body.shell-patient.simple-pain-map .cae-spatial-staging > .cae-spatial-status {
+  display: none !important;
+}
+
+body.shell-patient.simple-pain-map .avatar-stage,
+body.shell-patient.simple-pain-map .avatar-stage .cae-stage,
+body.shell-patient.simple-pain-map .avatar-stage .cae-clinical-viewport,
+body.shell-patient.simple-pain-map .avatar-stage .cae-image-frame,
+body.shell-patient.simple-pain-map .avatar-stage img {
+  background: transparent;
+}
+
+body.shell-patient.simple-pain-map .avatar-stage img,
+body.shell-patient.simple-pain-map .avatar-stage .cae-plate-image,
+body.shell-patient.simple-pain-map .avatar-stage canvas {
+  max-height: min(68vh, 720px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  margin-inline: auto;
 }
 
 /* Front / Back / Left / Right under body */

@@ -1918,6 +1918,27 @@ console.log('PainLocator tests\n');
     assert.equal(Eng.shouldPreferSpatial(), true);
   });
 
+  test('bp3d engagement: simple pain-map shell forces 2D person plate', async () => {
+    sandbox.location.search = '';
+    sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    let called = null;
+    const engine = {
+      spatialPrimaryNoPlate: true,
+      async setDisplayMode(mode) {
+        called = mode;
+        this.displayMode = mode;
+        return true;
+      }
+    };
+    const ok = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(ok, false);
+    assert.equal(called, 'plate');
+    assert.equal(engine.spatialPrimaryNoPlate, false);
+    // Restore for later tests
+    sandbox.document.body.classList.contains = () => false;
+  });
+
   test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
     sandbox.location.search = '';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
