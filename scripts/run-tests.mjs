@@ -1920,7 +1920,19 @@ console.log('PainLocator tests\n');
 
   test('bp3d engagement: simple pain-map shell forces 2D person plate', async () => {
     sandbox.location.search = '';
-    sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
+    const classSet = new Set(['simple-pain-map', 'shell-patient']);
+    sandbox.document.body = {
+      classList: {
+        contains: (name) => classSet.has(name),
+        add: (...names) => names.forEach((n) => classSet.add(n)),
+        remove: (...names) => names.forEach((n) => classSet.delete(n)),
+        toggle: (name, on) => {
+          if (on) classSet.add(name);
+          else classSet.delete(name);
+        }
+      },
+      dataset: { presentation: 'patient' }
+    };
     assert.equal(Eng.shouldPreferSpatial(), false);
     let called = null;
     const engine = {
@@ -1935,8 +1947,6 @@ console.log('PainLocator tests\n');
     assert.equal(ok, false);
     assert.equal(called, 'plate');
     assert.equal(engine.spatialPrimaryNoPlate, false);
-    // Restore for later tests
-    sandbox.document.body.classList.contains = () => false;
   });
 
   test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
