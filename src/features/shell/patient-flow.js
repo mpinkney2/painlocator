@@ -344,31 +344,73 @@
   }
 
 
+  function refreshPatientIcons() {
+    try {
+      if (global.lucide && typeof global.lucide.createIcons === 'function') {
+        global.lucide.createIcons();
+      } else if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  function syncAnatomyLayout() {
+    try {
+      var st = getState();
+      var engine = st && st.engine;
+      if (engine && engine.clinicalRenderer && typeof engine.clinicalRenderer.syncLayout === 'function') {
+        engine.clinicalRenderer.syncLayout();
+      } else if (engine && typeof engine.renderPins === 'function') {
+        engine.renderPins();
+      }
+      if (typeof global.refreshUI === 'function') global.refreshUI();
+      else if (typeof refreshUI === 'function') refreshUI();
+    } catch (e) { /* ignore */ }
+  }
+
+  function setDrawerExpanded(expanded) {
+    expanded = !!expanded;
+    document.body.classList.toggle('simple-drawer-expanded', expanded);
+    var grab = document.getElementById('simpleDrawerGrab');
+    if (grab) {
+      grab.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      grab.setAttribute('title', expanded ? 'Collapse tools' : 'Open tools');
+      grab.setAttribute('aria-label', expanded ? 'Collapse assessment panel' : 'Expand assessment panel');
+    }
+    // Let CSS settle, then re-fit markers to the image frame.
+    requestAnimationFrame(function () {
+      syncAnatomyLayout();
+      requestAnimationFrame(syncAnatomyLayout);
+    });
+  }
+
   function placePatientDrawerChrome() {
     var tools = document.getElementById('captureTools');
     var views = document.getElementById('simpleViewBar');
     var hint = document.getElementById('avatarHint');
     var panel = document.getElementById('simplePainPanel');
+    var sheet = document.getElementById('simpleDrawerSheet') || panel;
     var wrap = document.getElementById('avatarWrap');
     var stage = document.getElementById('avatarStage');
     if (!tools || !wrap) return;
 
-    if (isPatientShell() && panel) {
-      var context = panel.querySelector('.simple-pain-context');
-      var anchor = context && context.nextSibling;
+    if (isPatientShell() && sheet) {
+      var context = sheet.querySelector('.simple-pain-context');
       if (hint) {
         hint.classList.add('simple-drawer-hint');
-        panel.insertBefore(hint, anchor || panel.querySelector('.simple-pain-panel-body') || null);
+        if (hint.parentElement !== sheet) {
+          sheet.insertBefore(hint, context ? context.nextSibling : sheet.firstChild);
+        }
       }
-      if (tools.parentElement !== panel) {
-        panel.insertBefore(tools, panel.querySelector('#simpleViewBar') || panel.querySelector('.simple-assess-nav') || panel.querySelector('.simple-pain-panel-body') || null);
+      if (tools.parentElement !== sheet) {
+        sheet.insertBefore(tools, sheet.querySelector('#simpleViewBar') || sheet.querySelector('.simple-pain-panel-body') || null);
       }
-      if (views && views.parentElement !== panel) {
-        panel.insertBefore(views, panel.querySelector('.simple-assess-nav') || panel.querySelector('.simple-pain-panel-body') || null);
+      if (views && views.parentElement !== sheet) {
+        sheet.insertBefore(views, sheet.querySelector('.simple-assess-nav') || sheet.querySelector('.simple-pain-panel-body') || null);
       }
-      // Ensure order: context → hint → tools → views
-      if (hint && tools) panel.insertBefore(hint, tools);
-      if (tools && views) panel.insertBefore(tools, views);
+      if (hint && tools) sheet.insertBefore(hint, tools);
+      if (tools && views) sheet.insertBefore(tools, views);
+      refreshPatientIcons();
     } else {
       if (hint) {
         hint.classList.remove('simple-drawer-hint');
@@ -414,11 +456,12 @@
     }
     if (save) save.hidden = false;
 
-    // Screenshot layout: keep drawer open with tools; expand further for describe.
     if (step === 'describe' || step === 'save') {
-      document.body.classList.add('simple-drawer-expanded');
+      setDrawerExpanded(true);
+    } else if (opts && opts.forceExpand) {
+      setDrawerExpanded(true);
     } else if (!(opts && opts.keepExpanded)) {
-      document.body.classList.remove('simple-drawer-expanded');
+      // leave drawer state as-is unless explicitly collapsing
     }
 
     updateLocationChrome();
@@ -847,8 +890,12 @@
     on('btnPatientSave', 'click', function () { void savePatientEntry(); });
 
     on('btnAssessNext', 'click', function () {
-      if (assessStep === 'describe') setAssessStep('mark');
-      else setAssessStep('describe');
+      if (assessStep === 'describe') {
+        setAssessStep('mark');
+        setDrawerExpanded(true);
+      } else {
+        setAssessStep('describe', { forceExpand: true });
+      }
     });
     on('btnAssessBack', 'click', function () {
       setAssessStep('mark');
@@ -866,9 +913,13 @@
     var drawerGrab = document.getElementById('simpleDrawerGrab');
     if (drawerGrab) {
       drawerGrab.addEventListener('click', function () {
-        document.body.classList.toggle('simple-drawer-expanded');
+        setDrawerExpanded(!document.body.classList.contains('simple-drawer-expanded'));
       });
     }
+
+    // Start collapsed so the figure is full-screen; diamond opens the tool drawer.
+    setDrawerExpanded(false);
+    refreshPatientIcons();
 
     on('btnSimplePainMap', 'click', function () { setSimpleView('map'); });
     on('btnSimpleHistory', 'click', function () { setSimpleView('history'); });
@@ -953,6 +1004,10 @@
         });
         if (typeof global.setBodyView === 'function') global.setBodyView(view);
         else if (typeof setBodyView === 'function') setBodyView(view);
+        requestAnimationFrame(function () {
+          syncAnatomyLayout();
+          refreshPatientIcons();
+        });
       });
     }
 

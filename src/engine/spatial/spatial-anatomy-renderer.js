@@ -702,33 +702,18 @@
     }
 
     _reprojectSpatial(view) {
+      // Keep 3D mesh attachments; do NOT rewrite persisted view/anchors.
+      // Plate filtering and history depend on the view the mark was placed on.
       if (!this.store) return;
-      let changed = false;
       for (const [regionId, attachment] of this._attachments.entries()) {
         const found = this.store.findRegion?.(regionId);
         const region = found?.region;
         if (!region) continue;
-        const world = SpatialProjection.resolveAttachmentWorldPoint(
-          this.THREE,
-          attachment,
-          this.scene.meshByUuid,
-          this.scene.meshByName
-        );
-        if (!world) continue;
-        const anchors = this.scene.projectWorldToAnchors(world);
-        region.view = view;
-        region.anchors = [{ x: anchors.x, y: anchors.y }];
-        region.updatedAt = new Date().toISOString();
-        changed = true;
         this.annotations.upsertSpatial(regionId, attachment, {
           selected: this._selectedIds.has(regionId)
         });
       }
-      if (changed) {
-        this.store.dirty = true;
-        this.store.save?.();
-        this.engine.trigger?.("regionchanged", {});
-      }
+      this._refreshLegacy?.(view);
     }
 
     _syncFromStore() {
