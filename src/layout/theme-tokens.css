@@ -176,49 +176,50 @@ body.theme-dark {
    Applied via body.shell-patient | body.shell-clinician (+ theme-dark)
    ========================================================================== */
 
-/* Patient shell — light (simple pain map: warm white / navy / amber) */
+/* Patient shell — light (strict mockup: warm white / navy / amber) */
 body.shell-patient {
-  --background: #faf8f5;
+  --background: #fefbfa;
   --surface: #ffffff;
-  --surface-secondary: #f3efe8;
+  --surface-secondary: #f5f2ef;
   --surface-elevated: #ffffff;
-  --border: rgba(26, 39, 68, 0.12);
-  --border-strong: rgba(26, 39, 68, 0.22);
+  --border: #d0d4db;
+  --border-strong: #b8bec8;
 
-  --text-primary: #1a2744;
-  --text-secondary: #3d4a63;
-  --text-muted: #6b7589;
+  --text-primary: #182a42;
+  --text-secondary: #3a465c;
+  --text-muted: #a8aeb8;
 
-  --primary: #c9842a;
-  --primary-hover: #b07322;
+  --primary: #182a42;
+  --primary-hover: #121f33;
   --primary-contrast: #ffffff;
-  --accent: #c9842a;
-  --accent-dim: #9a641c;
-  --accent-subtle: rgba(201, 132, 42, 0.14);
-  --accent-border: rgba(201, 132, 42, 0.4);
+  --accent: #f9b847;
+  --accent-dim: #182a42;
+  --accent-subtle: rgba(249, 184, 71, 0.22);
+  --accent-border: #f9b847;
 
-  --pain-low: #fbbf24;
-  --pain-mid: #f97316;
+  --pain-low: #f9b847;
+  --pain-mid: #f4ae37;
   --pain-high: #dc2626;
 
-  --header-bg: var(--surface);
+  --header-bg: #fefbfa;
   --header-border: var(--border);
-  --shadow-sm: 0 1px 3px rgba(26, 39, 68, 0.06);
-  --shadow-md: 0 6px 20px rgba(26, 39, 68, 0.08);
-  --overlay-backdrop: rgba(26, 39, 68, 0.42);
+  --shadow-sm: 0 1px 3px rgba(24, 42, 66, 0.06);
+  --shadow-md: 0 6px 20px rgba(24, 42, 66, 0.08);
+  --overlay-backdrop: rgba(24, 42, 66, 0.42);
 
-  --control-bg: var(--surface-secondary);
-  --toggle-track: #ebe5dd;
+  --control-bg: #ffffff;
+  --toggle-track: #e6e8ed;
+  --slider-track: #f9b847;
 
   --anatomy-stage-bg: radial-gradient(
     ellipse 90% 80% at 50% 42%,
-    #fffdf9 0%,
-    #f0ebe3 55%,
-    #e4ddd2 100%
+    #fefbfa 0%,
+    #f5f2ef 55%,
+    #ebe7e1 100%
   );
 
-  --brand-pain: #1a2744;
-  --brand-locator: #c9842a;
+  --brand-pain: #182a42;
+  --brand-locator: #182a42;
 
   --radius-sheet: 20px;
   --radius-control: 12px;

@@ -1,42 +1,54 @@
 /* ==========================================================================
-   SIMPLE PAIN MAP — match visual-targets/simple-pain-map/reference-mockup.png
-   Warm white / navy text / amber accents. Body left, form right. Stack mobile.
+   SIMPLE PAIN MAP — strict palette from reference-mockup.png
+   Sampled: warm white #FEFBFA · navy #182A42 · amber #F9B847 · muted #A8AEB8
    ========================================================================== */
 
 body.shell-patient.simple-pain-map {
   --font: 'DM Sans', system-ui, sans-serif;
   --display: 'DM Sans', system-ui, sans-serif;
 
-  --background: #f7f4ef;
-  --surface: #ffffff;
-  --surface-secondary: #f1ece5;
-  --surface-elevated: #ffffff;
-  --border: rgba(26, 39, 68, 0.12);
-  --border-strong: rgba(26, 39, 68, 0.22);
+  /* Locked mockup palette — do not drift */
+  --spm-warm-white: #fefbfa;
+  --spm-navy: #182a42;
+  --spm-amber: #f9b847;
+  --spm-amber-marker: #f4ae37;
+  --spm-muted: #a8aeb8;
+  --spm-border: #d0d4db;
+  --spm-track: #e6e8ed;
+  --spm-white: #ffffff;
 
-  --navy: #1a2744;
-  --amber: #d4a017;
-  --amber-deep: #b8860b;
+  --background: var(--spm-warm-white);
+  --surface: var(--spm-white);
+  --surface-secondary: #f5f2ef;
+  --surface-elevated: var(--spm-white);
+  --border: var(--spm-border);
+  --border-strong: #b8bec8;
 
-  --text-primary: #1a2744;
-  --text-secondary: #3d4a63;
-  --text-muted: #8a8790;
+  --navy: var(--spm-navy);
+  --amber: var(--spm-amber);
+  --amber-deep: var(--spm-amber-marker);
 
-  /* Amber for accents; navy for primary CTA (per mockup) */
-  --primary: #1a2744;
-  --primary-hover: #121b30;
-  --primary-contrast: #ffffff;
-  --accent: #d4a017;
-  --accent-dim: #9a7a12;
-  --accent-subtle: rgba(212, 160, 23, 0.18);
-  --accent-border: rgba(212, 160, 23, 0.55);
+  --text-primary: var(--spm-navy);
+  --text-secondary: #3a465c;
+  --text-muted: var(--spm-muted);
 
-  --header-bg: #f7f4ef;
+  /* Navy CTA; amber for selection / slider only */
+  --primary: var(--spm-navy);
+  --primary-hover: #121f33;
+  --primary-contrast: var(--spm-white);
+  --accent: var(--spm-amber);
+  --accent-dim: var(--spm-navy);
+  --accent-subtle: rgba(249, 184, 71, 0.22);
+  --accent-border: var(--spm-amber);
+
+  --header-bg: var(--spm-warm-white);
   --anatomy-stage-bg: transparent;
 
-  --brand-pain: #1a2744;
-  --brand-locator: #1a2744;
-  --slider-track: #d4a017;
+  --brand-pain: var(--spm-navy);
+  --brand-locator: var(--spm-navy);
+  --slider-track: var(--spm-amber);
+  --control-bg: var(--spm-white);
+  --toggle-track: var(--spm-track);
 }
 
 body.shell-patient.simple-pain-map.theme-dark {
@@ -92,12 +104,14 @@ body.shell-patient.simple-pain-map .brand-locator {
 }
 
 body.shell-patient.simple-pain-map .brand-dot-amber {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.2);
+  background: var(--spm-amber);
+  box-shadow: none;
   display: inline-block;
+  flex: 0 0 auto;
+  margin: 0;
 }
 
 body.shell-patient.simple-pain-map .simple-pain-nav {
@@ -132,8 +146,8 @@ body.shell-patient.simple-pain-map .header-actions {
 }
 
 .simple-nav-btn.is-active {
-  color: var(--navy);
-  background: var(--accent-subtle);
+  color: var(--spm-navy, #182a42);
+  background: var(--spm-amber, #f9b847);
 }
 
 .simple-more-wrap {
@@ -270,9 +284,9 @@ body.shell-patient.simple-pain-map .simple-view-btn {
   min-height: 40px;
   padding: 0.45rem 0.95rem;
   border-radius: 10px;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--navy);
+  border: 1px solid var(--spm-border);
+  background: var(--spm-white);
+  color: var(--spm-navy);
   font: inherit;
   font-size: 0.9rem;
   font-weight: 600;
@@ -280,9 +294,9 @@ body.shell-patient.simple-pain-map .simple-view-btn {
 }
 
 body.shell-patient.simple-pain-map .simple-view-btn.is-active {
-  background: var(--amber);
-  border-color: var(--amber);
-  color: var(--navy);
+  background: var(--spm-amber);
+  border-color: var(--spm-amber);
+  color: var(--spm-navy);
 }
 
 /* Right form panel — clean, no heavy card chrome */
@@ -343,15 +357,15 @@ body.shell-patient.simple-pain-map #btnPatientSave {
   font-size: 1.02rem;
   font-weight: 700;
   border-radius: 12px;
-  background: var(--navy);
-  color: #fff;
+  background: var(--spm-navy);
+  color: var(--spm-white);
   border: 0;
   box-shadow: none;
 }
 
 body.shell-patient.simple-pain-map .simple-save-btn:hover,
 body.shell-patient.simple-pain-map #btnPatientSave:hover {
-  background: var(--primary-hover);
+  background: #121f33;
 }
 
 body.shell-patient.simple-pain-map .optional-label {
@@ -389,7 +403,51 @@ body.shell-patient.simple-pain-map .patient-intensity-of {
 body.shell-patient.simple-pain-map .patient-intensity-slider {
   width: 100%;
   height: 1.75rem;
-  accent-color: var(--amber);
+  accent-color: var(--spm-amber);
+}
+
+body.shell-patient.simple-pain-map .patient-intensity-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--spm-amber) 0%,
+    var(--spm-amber) var(--spm-slider-pct, 50%),
+    var(--spm-track) var(--spm-slider-pct, 50%),
+    var(--spm-track) 100%
+  );
+}
+
+body.shell-patient.simple-pain-map .patient-intensity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--spm-amber);
+  border: 0;
+  box-shadow: 0 1px 3px rgba(24, 42, 66, 0.2);
+}
+
+body.shell-patient.simple-pain-map .patient-chip {
+  min-height: 40px;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--spm-border);
+  background: var(--spm-white);
+  color: var(--spm-navy);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+body.shell-patient.simple-pain-map .patient-chip.is-selected {
+  background: var(--spm-amber);
+  border-color: var(--spm-amber);
+  color: var(--spm-navy);
+  box-shadow: none;
 }
 
 body.shell-patient.simple-pain-map .patient-intensity-ends {
@@ -404,26 +462,6 @@ body.shell-patient.simple-pain-map .patient-chip-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-body.shell-patient.simple-pain-map .patient-chip {
-  min-height: 40px;
-  padding: 0.45rem 1rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--navy);
-  font: inherit;
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-body.shell-patient.simple-pain-map .patient-chip.is-selected {
-  background: var(--amber);
-  border-color: var(--amber);
-  color: var(--navy);
-  box-shadow: none;
 }
 
 body.shell-patient.simple-pain-map .simple-more-descriptions {
