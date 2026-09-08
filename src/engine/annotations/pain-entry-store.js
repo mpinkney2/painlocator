@@ -581,6 +581,7 @@ class PainEntryStore {
           _entryNum: entryNum,
           _regionIndex: ri,
           _entryIntensity: entry.intensity,
+          _entryColor: (typeof PAIN_COLORS !== 'undefined' && PAIN_COLORS[entry.intensity]) || null,
           _entryLabel: regionLabel(entryNum, ri),
           _isDraft: isDraft,
           _isActiveEntry: this.getActiveEntry()?.id === entry.id
@@ -620,6 +621,7 @@ class PainEntryStore {
         createdAt: entry.createdAt,
         updatedAt: entry.updatedAt,
         intensity: entry.intensity,
+        color: (typeof PAIN_COLORS !== "undefined" && PAIN_COLORS[entry.intensity]) || null,
         quality: entry.quality,
         triggers: entry.triggers,
         easesAfter: entry.easesAfter,
@@ -636,7 +638,9 @@ class PainEntryStore {
           anchors: r.anchors.map(a => ({ x: +a.x.toFixed(4), y: +a.y.toFixed(4) })),
           radius: r.radius,
           radiusY: r.radiusY,
-          structureLabel: r.structureLabel
+          structureLabel: r.structureLabel,
+          intensity: entry.intensity,
+          color: (typeof PAIN_COLORS !== "undefined" && PAIN_COLORS[entry.intensity]) || null
         }))
       }))
     };

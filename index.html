@@ -18,9 +18,9 @@
   <link rel="preload" as="image" href="/anatomy/simple-pain-map/front.png">
   <link rel="preload" as="image" href="/anatomy/simple-pain-map/back.png">
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
-  <link rel="stylesheet" href="src/layout/styles.css?v=5.11-mobile-drawer">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.16-intensity-map">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.15-marker-layer">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.16-intensity-map">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -304,12 +304,12 @@
         </div>
 
         <div class="simple-pain-workspace" id="simplePainWorkspace">
-          <header class="simple-pain-headline shell-only-patient" id="simplePainHeadline">
-            <h1>Show where it hurts.</h1>
-            <p>Tap the body to mark a location.</p>
-          </header>
           <div class="simple-pain-grid">
             <div class="simple-pain-map-col">
+              <header class="simple-pain-headline shell-only-patient" id="simplePainHeadline">
+                <h1>Show where it hurts.</h1>
+                <p>Tap the body to mark a location.</p>
+              </header>
               <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
                 <div class="region-tools review-tools show-review" id="reviewTools">
                   <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
@@ -319,6 +319,19 @@
                 </div>
                 <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Body map — tap to mark pain"></div>
               </div>
+              <section class="simple-map-intensity shell-only-patient" id="simpleMapIntensity" aria-labelledby="patientIntensityHeading">
+                <h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>
+                <div class="patient-intensity-row">
+                  <span class="patient-intensity-value" id="patientIntensityValue" aria-live="polite">5</span>
+                  <span class="patient-intensity-of">/ 10</span>
+                </div>
+                <label class="visually-hidden sr-only" for="patientIntensitySlider">Pain intensity from 0 to 10</label>
+                <input type="range" id="patientIntensitySlider" class="patient-intensity-slider" min="0" max="10" step="1" value="5"
+                  aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Pain intensity 5 out of 10" />
+                <div class="patient-intensity-ends" aria-hidden="true">
+                  <span>0 · No pain</span><span>10 · Worst pain imaginable</span>
+                </div>
+              </section>
             </div>
             <aside class="simple-pain-panel shell-only-patient" id="simplePainPanel" aria-labelledby="simplePainLocationTitle" data-assess-step="mark">
               <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand assessment panel — swipe up" aria-expanded="false" title="Open tools"></button>
@@ -852,13 +865,13 @@
   <script src="src/engine/anatomy/regions.js?v=5.5"></script>
   <script src="src/engine/annotations/pain-models.js?v=5.5"></script>
   <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.5"></script>
-  <script src="src/engine/annotations/pain-entry-store.js?v=5.5"></script>
+  <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
   <script src="src/engine/anatomy/asset-paths.js?v=5.5"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-08-drawer-toggle"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.13-drawer-toggle"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.16-intensity-map"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-08-drawer-toggle"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-08-drawer-toggle"></script>
@@ -899,7 +912,7 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.15-marker-layer"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.16-intensity-map"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-08-drawer-toggle"></script>
   <script src="src/app/bootstrap.js?v=2026-09-08-drawer-toggle"></script>
 </body>

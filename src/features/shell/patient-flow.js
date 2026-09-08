@@ -202,6 +202,8 @@
       patientIntensity.style.setProperty('--spm-slider-pct', (intensity * 10) + '%');
     }
     if (intensityValue) intensityValue.textContent = String(intensity);
+    // Keep anatomy marks colored to the active intensity.
+    refreshMarkColors();
 
     QUALITY_CHIPS.forEach(function (chip) {
       var btn = document.querySelector('[data-patient-quality="' + chip.value + '"]');
@@ -278,12 +280,13 @@
       }
     }
     if (summaryEl) {
+      var strength = entry && entry.intensity != null ? entry.intensity : 5;
       if (!count) {
         summaryEl.textContent = 'No marks yet — choose Point or Area, then mark the body.';
       } else if (count === 1) {
-        summaryEl.textContent = '1 mark on the body. Continue to describe how it feels.';
+        summaryEl.textContent = '1 mark · strength ' + strength + '/10. Continue to describe how it feels.';
       } else {
-        summaryEl.textContent = count + ' marks on the body. Use Remove to delete one, or continue.';
+        summaryEl.textContent = count + ' marks · strength ' + strength + '/10. Use Remove to delete one, or continue.';
       }
     }
     if (saveSummary) {
@@ -497,19 +500,8 @@
             '</ul>' +
           '</details>' +
         '</section>' +
-        '<section class="simple-assess-panel patient-describe-section simple-intensity" data-assess-panel="describe" hidden aria-labelledby="patientIntensityHeading">' +
-          '<h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>' +
-          '<div class="patient-intensity-row">' +
-            '<span class="patient-intensity-value" id="patientIntensityValue" aria-live="polite">5</span>' +
-            '<span class="patient-intensity-of">/ 10</span>' +
-          '</div>' +
-          '<label class="visually-hidden sr-only" for="patientIntensitySlider">Pain intensity from 0 to 10</label>' +
-          '<input type="range" id="patientIntensitySlider" class="patient-intensity-slider" min="0" max="10" step="1" value="5"' +
-            ' aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Pain intensity 5 out of 10" />' +
-          '<div class="patient-intensity-ends" aria-hidden="true">' +
-            '<span>0 · No pain</span><span>10 · Worst pain imaginable</span>' +
-          '</div>' +
-          '<h3 id="patientQualityHeading" class="patient-describe-heading simple-subhead">What does it feel like?</h3>' +
+        '<section class="simple-assess-panel patient-describe-section" data-assess-panel="describe" hidden aria-labelledby="patientQualityHeading">' +
+          '<h3 id="patientQualityHeading" class="patient-describe-heading">What does it feel like?</h3>' +
           '<div class="patient-chip-grid patient-chip-grid-primary" role="group" aria-labelledby="patientQualityHeading">' +
             PRIMARY_QUALITY.map(function (c) { return chipButton({ 'data-patient-quality': c.value }, c.label); }).join('') +
           '</div>' +
@@ -592,23 +584,6 @@
         }
       });
 
-      var patientIntensity = document.getElementById('patientIntensitySlider');
-      if (patientIntensity) {
-        patientIntensity.addEventListener('input', function () {
-          var value = Number(patientIntensity.value || 5);
-          patientIntensity.setAttribute('aria-valuenow', String(value));
-          patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + value + ' out of 10');
-          patientIntensity.style.setProperty('--spm-slider-pct', (value * 10) + '%');
-          var label = document.getElementById('patientIntensityValue');
-          if (label) label.textContent = String(value);
-          pushToFormAndStore();
-        });
-        patientIntensity.style.setProperty(
-          '--spm-slider-pct',
-          (Number(patientIntensity.value || 5) * 10) + '%'
-        );
-      }
-
       var noteInput = document.getElementById('patientNoteInput');
       if (noteInput) {
         noteInput.addEventListener('input', function () { pushToFormAndStore(); });
@@ -617,8 +592,74 @@
       describeBuilt = true;
     }
 
+    bindMapIntensityUI();
     pullFromStoreToPatientUI();
     setAssessStep(assessStep, { skipExpand: assessStep === 'mark' });
+  }
+
+  function refreshMarkColors() {
+    try {
+      var st = getState();
+      var engine = st && st.engine;
+      if (engine && engine.clinicalRenderer && typeof engine.clinicalRenderer.renderRegions === 'function') {
+        engine.clinicalRenderer.renderRegions();
+      } else if (engine && typeof engine.renderPins === 'function') {
+        engine.renderPins();
+      }
+      if (typeof global.refreshUI === 'function') global.refreshUI();
+      else if (typeof refreshUI === 'function') refreshUI();
+    } catch (e) { /* ignore */ }
+  }
+
+  function applyIntensityValue(value, opts) {
+    var options = opts || {};
+    value = Math.max(0, Math.min(10, Number(value)));
+    if (!isFinite(value)) value = 5;
+    var patientIntensity = document.getElementById('patientIntensitySlider');
+    var label = document.getElementById('patientIntensityValue');
+    if (patientIntensity) {
+      patientIntensity.value = String(value);
+      patientIntensity.setAttribute('aria-valuenow', String(value));
+      patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + value + ' out of 10');
+      patientIntensity.style.setProperty('--spm-slider-pct', (value * 10) + '%');
+    }
+    if (label) label.textContent = String(value);
+    if (!options.skipStore) {
+      try {
+        var store = getStore();
+        if (store && typeof store.updateActiveEntry === 'function') {
+          store.updateActiveEntry({ intensity: value });
+        }
+        var intensitySlider = document.getElementById('intensitySlider');
+        if (intensitySlider) intensitySlider.value = String(value);
+        if (typeof updateIntensityUI === 'function') updateIntensityUI(value, true);
+      } catch (e) { /* ignore */ }
+    }
+    if (!options.skipRender) refreshMarkColors();
+    if (!options.skipChrome) {
+      try { updateLocationChrome(); } catch (e) { /* ignore */ }
+    }
+  }
+
+  var mapIntensityBound = false;
+  function bindMapIntensityUI() {
+    var patientIntensity = document.getElementById('patientIntensitySlider');
+    if (!patientIntensity) return;
+    if (!mapIntensityBound) {
+      mapIntensityBound = true;
+      patientIntensity.addEventListener('input', function () {
+        applyIntensityValue(patientIntensity.value);
+        pushToFormAndStore();
+      });
+      patientIntensity.addEventListener('change', function () {
+        applyIntensityValue(patientIntensity.value);
+        pushToFormAndStore();
+      });
+    }
+    patientIntensity.style.setProperty(
+      '--spm-slider-pct',
+      (Number(patientIntensity.value || 5) * 10) + '%'
+    );
   }
 
   function locationLines(entry) {
@@ -862,6 +903,15 @@
       }
       toast('Pain map saved.', 'success');
       setPatientStep('locate', { force: true });
+      try {
+        var store = getStore();
+        if (store && typeof store.ensureActiveEntry === 'function') {
+          store.ensureActiveEntry('adult-male');
+        }
+        pullFromStoreToPatientUI();
+        refreshMarkColors();
+        updateLocationChrome();
+      } catch (e) { /* ignore */ }
       return saved;
     } finally {
       saving = false;
@@ -904,6 +954,23 @@
     placePatientDrawerChrome();
     activatePatientTool('point');
     setAssessStep('mark', { skipExpand: true });
+    bindMapIntensityUI();
+
+    // Keep summary + mark colors in sync as the patient taps the body.
+    try {
+      var stEngine = getState() && getState().engine;
+      if (stEngine && typeof stEngine.on === 'function') {
+        stEngine.on('regionplaced', function () {
+          updateLocationChrome();
+          refreshMarkColors();
+          syncAnatomyLayout();
+        });
+        stEngine.on('regionchanged', function () {
+          updateLocationChrome();
+          refreshMarkColors();
+        });
+      }
+    } catch (e) { /* ignore */ }
 
     on('btnPatientNextDescribe', 'click', goDescribe);
     on('btnPatientToReview', 'click', goReview);

@@ -249,24 +249,58 @@ body.shell-patient.simple-pain-map .simple-pain-workspace {
   overflow: hidden;
 }
 
+/* Headline sits at the top-left of the map column (above the figure). */
 body.shell-patient.simple-pain-map .simple-pain-headline {
   text-align: left;
-  padding: 0.15rem 0 0;
+  padding: 0.35rem 0.15rem 0.1rem;
+  margin: 0;
   flex: 0 0 auto;
+  z-index: 2;
+  position: relative;
 }
 
 body.shell-patient.simple-pain-map .simple-pain-headline h1 {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(1.75rem, 4.5vw, 2.55rem);
+  font-size: clamp(1.55rem, 4.2vw, 2.35rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--navy);
-  line-height: 1.12;
+  line-height: 1.15;
+  max-width: 14ch;
 }
 
 body.shell-patient.simple-pain-map .simple-pain-headline p {
   display: none; /* mockup uses only the headline over the body */
+}
+
+/* Intensity dock stays in the large map view (not the tools drawer). */
+body.shell-patient.simple-pain-map .simple-map-intensity {
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  padding: 0.55rem 0.35rem 0.75rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--spm-warm-white) 88%, transparent) 28%,
+    var(--spm-warm-white) 100%
+  );
+}
+
+body.shell-patient.simple-pain-map .simple-map-intensity .patient-describe-heading {
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+body.shell-patient.simple-pain-map .simple-map-intensity .patient-intensity-row {
+  margin-bottom: 0.35rem;
+}
+
+body.shell-patient.simple-pain-map .simple-map-intensity .patient-intensity-value {
+  font-size: 2.35rem;
 }
 
 body.shell-patient.simple-pain-map .simple-pain-grid {
@@ -772,9 +806,24 @@ body.shell-patient.simple-pain-map .patient-intensity-slider::-webkit-slider-thu
   height: 22px;
   margin-top: -7px;
   border-radius: 50%;
-  background: var(--spm-amber);
-  border: 0;
-  box-shadow: 0 1px 3px rgba(24, 42, 66, 0.2);
+  background: var(--spm-white);
+  border: 2px solid var(--spm-border);
+  box-shadow: 0 1px 3px rgba(24, 42, 66, 0.18);
+}
+
+body.shell-patient.simple-pain-map .patient-intensity-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--spm-white);
+  border: 2px solid var(--spm-border);
+  box-shadow: 0 1px 3px rgba(24, 42, 66, 0.18);
+}
+
+body.shell-patient.simple-pain-map .patient-intensity-slider::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--spm-track);
 }
 
 body.shell-patient.simple-pain-map .patient-chip {
@@ -1155,6 +1204,7 @@ body.shell-patient.simple-view-history #timelinePanel {
 
 body.shell-patient.simple-view-history .simple-pain-grid,
 body.shell-patient.simple-view-history .simple-pain-headline,
+body.shell-patient.simple-view-history .simple-map-intensity,
 body.shell-patient.simple-view-history .simple-pain-panel,
 body.shell-patient.simple-view-history #avatarWrap {
   display: none !important;
@@ -1275,11 +1325,19 @@ body.shell-patient.simple-view-map #timelinePanel {
   }
 
   body.shell-patient.simple-pain-map .simple-pain-headline {
-    padding: 0.1rem 0;
+    padding: 0.2rem 0.1rem 0;
   }
 
   body.shell-patient.simple-pain-map .simple-pain-headline h1 {
-    font-size: 1.2rem;
+    max-width: 11ch;
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity {
+    padding: 0.4rem 0.15rem 0.55rem;
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity .patient-intensity-value {
+    font-size: 2.1rem;
   }
 
   body.shell-patient.simple-pain-map .simple-pain-grid {
