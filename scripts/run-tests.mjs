@@ -1871,13 +1871,16 @@ console.log('PainLocator tests\n');
     assert.ok(css.includes('100dvh'));
     assert.ok(css.includes('simple-pain-panel') && css.includes('position: fixed'));
     assert.ok(css.includes('simple-drawer-grab'));
+    assert.ok(css.includes('simple-drawer-sheet') || css.includes('simple-drawer-expanded'));
+    assert.ok(css.includes('calc(3rem + env(safe-area-inset-bottom'));
     assert.ok(html.includes('simple-annotate-bar'));
     assert.ok(html.includes('id="simplePainPanel"'));
-    assert.ok(html.includes('aria-label="Tap mark">Tap</button>') || html.includes('>Tap</button>'));
-    assert.ok(html.includes('aria-label="Area mark">Area</button>') || html.includes('>Area</button>'));
-    assert.ok(html.includes('id="btnAssessNext">Describe pain</button>') || html.includes('Describe pain'));
-    assert.ok(html.includes('id="btnPatientSave">Save pain map</button>') || html.includes('Save pain map'));
-    // Tools + views live in the bottom drawer panel
+    assert.ok(html.includes('id="simpleDrawerSheet"'));
+    assert.ok(html.includes('data-tool="point"') && html.includes('>Tap</span>'));
+    assert.ok(html.includes('data-tool="circle"') && html.includes('>Area</span>'));
+    assert.ok(html.includes('Describe pain'));
+    assert.ok(html.includes('Save pain map'));
+    assert.ok(html.includes('data-lucide="map-pin"'));
     const panelIdx = html.indexOf('id="simplePainPanel"');
     const toolsIdx = html.indexOf('id="captureTools"');
     const viewsIdx = html.indexOf('id="simpleViewBar"');
@@ -1885,6 +1888,8 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('/anatomy/simple-pain-map/front.png'));
     assert.ok(flow.includes('activatePatientTool'));
     assert.ok(flow.includes('setAssessStep'));
+    assert.ok(flow.includes('setDrawerExpanded'));
+    assert.ok(flow.includes('syncAnatomyLayout'));
   });
 }
 
@@ -2177,7 +2182,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-08-mobile-drawer');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-08-drawer-toggle');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2192,7 +2197,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-08-mobile-drawer'));
+    assert.ok(html.includes('?v=2026-09-08-drawer-toggle'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2298,7 +2303,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-08-mobile-drawer';
+    const ver = '2026-09-08-drawer-toggle';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',

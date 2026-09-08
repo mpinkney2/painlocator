@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=5.11-mobile-drawer">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.12-mock-drawer">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.13-drawer-toggle">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -321,7 +321,8 @@
               </div>
             </div>
             <aside class="simple-pain-panel shell-only-patient" id="simplePainPanel" aria-labelledby="simplePainLocationTitle" data-assess-step="mark">
-              <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand or collapse assessment panel"></button>
+              <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand or collapse assessment panel" aria-expanded="false" title="Open tools"></button>
+              <div class="simple-drawer-sheet" id="simpleDrawerSheet">
               <div class="simple-pain-context">
                 <p class="simple-pain-id" id="simplePainId">Pain map</p>
                 <h2 class="simple-pain-panel-title" id="simplePainLocationTitle">Tap the body to begin</h2>
@@ -329,20 +330,40 @@
               <p class="avatar-hint simple-drawer-hint" id="avatarHint">Tap the body where it hurts.</p>
               <div class="region-tools capture-tools simple-annotate-bar" id="captureTools" role="toolbar" aria-label="Pain mark tools">
                 <button type="button" class="region-tool" data-tool="select" title="Select / move regions" aria-label="Select tool">Select</button>
-                <button type="button" class="region-tool active" data-tool="point" title="Tap a point where it hurts" aria-label="Tap mark">Tap</button>
-                <button type="button" class="region-tool" data-tool="circle" title="Drag to mark a pain area" aria-label="Area mark">Area</button>
-                <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Outline a pain shape" aria-label="Outline mark">Outline</button>
-                <button type="button" class="region-tool" data-tool="eraser" title="Tap a mark to remove it" aria-label="Remove a mark">Remove</button>
-                <button type="button" class="region-tool" id="btnUndo" title="Undo last change" aria-label="Undo" disabled>Undo</button>
-                <button type="button" class="region-tool" id="btnRedo" title="Redo" aria-label="Redo" disabled>Redo</button>
+                <button type="button" class="region-tool active" data-tool="point" title="Tap a point where it hurts" aria-label="Tap mark">
+                  <i data-lucide="map-pin" aria-hidden="true"></i><span>Tap</span>
+                </button>
+                <button type="button" class="region-tool" data-tool="circle" title="Drag to mark a pain area" aria-label="Area mark">
+                  <i data-lucide="circle-dashed" aria-hidden="true"></i><span>Area</span>
+                </button>
+                <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Outline a pain shape" aria-label="Outline mark">
+                  <i data-lucide="pentagon" aria-hidden="true"></i><span>Outline</span>
+                </button>
+                <button type="button" class="region-tool" data-tool="eraser" title="Tap a mark to remove it" aria-label="Remove a mark">
+                  <i data-lucide="eraser" aria-hidden="true"></i><span>Remove</span>
+                </button>
+                <button type="button" class="region-tool" id="btnUndo" title="Undo last change" aria-label="Undo" disabled>
+                  <i data-lucide="undo-2" aria-hidden="true"></i><span>Undo</span>
+                </button>
+                <button type="button" class="region-tool" id="btnRedo" title="Redo" aria-label="Redo" disabled>
+                  <i data-lucide="redo-2" aria-hidden="true"></i><span>Redo</span>
+                </button>
                 <span class="region-tool-divider" aria-hidden="true"></span>
                 <button type="button" class="region-tool region-tool-zoom" id="btnEnlargeAnatomy" title="Enlarge silhouette for precise marking" aria-label="Enlarge silhouette for accuracy" aria-pressed="false">Enlarge</button>
               </div>
               <div class="simple-view-bar shell-only-patient" id="simpleViewBar" role="group" aria-label="Body view">
-                <button type="button" class="simple-view-btn is-active" data-view="front">Front</button>
-                <button type="button" class="simple-view-btn" data-view="back">Back</button>
-                <button type="button" class="simple-view-btn" data-view="left">Left</button>
-                <button type="button" class="simple-view-btn" data-view="right">Right</button>
+                <button type="button" class="simple-view-btn is-active" data-view="front" title="Front view">
+                  <i data-lucide="user" aria-hidden="true"></i><span>Front</span>
+                </button>
+                <button type="button" class="simple-view-btn" data-view="back" title="Back view">
+                  <i data-lucide="user-round" aria-hidden="true"></i><span>Back</span>
+                </button>
+                <button type="button" class="simple-view-btn" data-view="left" title="Left view">
+                  <i data-lucide="panel-left" aria-hidden="true"></i><span>Left</span>
+                </button>
+                <button type="button" class="simple-view-btn" data-view="right" title="Right view">
+                  <i data-lucide="panel-right" aria-hidden="true"></i><span>Right</span>
+                </button>
               </div>
               <nav class="simple-assess-nav" id="simpleAssessNav" role="tablist" aria-label="Pain assessment steps" hidden>
                 <button type="button" class="simple-assess-tab is-active" role="tab" aria-selected="true" data-assess-step="mark" id="tabAssessMark">Mark</button>
@@ -356,10 +377,15 @@
                 <p id="patientSaveConfirm" class="patient-save-confirm" role="status" hidden>Pain map saved.</p>
                 <div class="simple-step-actions" id="simpleStepActions">
                   <button type="button" class="btn btn-ghost simple-step-btn" id="btnAssessBack" hidden>Back</button>
-                  <button type="button" class="btn btn-secondary simple-step-btn" id="btnAssessNext">Describe pain</button>
-                  <button type="button" class="btn btn-primary btn-block simple-save-btn" id="btnPatientSave">Save pain map</button>
+                  <button type="button" class="btn btn-secondary simple-step-btn" id="btnAssessNext">
+                    <i data-lucide="message-square-text" aria-hidden="true"></i><span>Describe pain</span>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-block simple-save-btn" id="btnPatientSave">
+                    <i data-lucide="save" aria-hidden="true"></i><span>Save pain map</span>
+                  </button>
                 </div>
               </footer>
+              </div>
             </aside>
           </div>
           <p class="simple-pain-footer shell-only-patient" aria-hidden="true">PainLocator · Design concept</p>
@@ -831,22 +857,22 @@
   <script src="src/engine/anatomy/asset-paths.js?v=5.5"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
-  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.11-mobile-drawer"></script>
+  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.13-drawer-toggle"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
-  <script src="src/engine/spatial/spatial-projection.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-three-loader.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-manifest-loader.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/canonical-body-flag.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/exterior-canonical-conformer.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/canonical-body-loader.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/canonical-body-frame.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-layer-loader.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-layer-controller.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-scene-controller.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-annotation-layer.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/engine/spatial/spatial-anatomy-renderer.js?v=2026-09-08-mobile-drawer"></script>
+  <script src="src/engine/spatial/spatial-projection.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-three-loader.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-manifest-loader.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/canonical-body-flag.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/exterior-canonical-conformer.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/canonical-body-loader.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/canonical-body-frame.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-layer-loader.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-layer-controller.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-scene-controller.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-annotation-layer.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/engine/spatial/spatial-anatomy-renderer.js?v=2026-09-08-drawer-toggle"></script>
 
   <!-- PainLocator app -->
   <script src="src/utils/theme-tokens.js?v=5.5"></script>
@@ -862,8 +888,8 @@
   <script src="src/features/capture/entry-crud.js?v=5.5"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
-  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-08-mobile-drawer"></script>
+  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-08-drawer-toggle"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
   <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
@@ -873,8 +899,8 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.12"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.12-mock-drawer"></script>
-  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-08-mobile-drawer"></script>
-  <script src="src/app/bootstrap.js?v=2026-09-08-mobile-drawer"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.13-drawer-toggle"></script>
+  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-08-drawer-toggle"></script>
+  <script src="src/app/bootstrap.js?v=2026-09-08-drawer-toggle"></script>
 </body>
 </html>
