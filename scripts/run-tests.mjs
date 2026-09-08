@@ -681,9 +681,9 @@ console.log('PainLocator tests\n');
   test('presentation: nav labels differ by shell', () => {
     const patient = sandbox.PresentationMode.navLabels('patient');
     const clinician = sandbox.PresentationMode.navLabels('clinician');
-    assert.equal(patient.capture.label, 'Locate');
-    assert.equal(patient.clinical.label, 'Describe');
-    assert.equal(patient.review.label, 'Review');
+    assert.equal(patient.capture.label, 'Pain map');
+    assert.equal(patient.clinical.label, 'Share');
+    assert.equal(patient.review.label, 'History');
     assert.equal(clinician.capture.label, 'Anatomy');
     assert.equal(clinician.review.label, 'History');
     assert.equal(clinician.clinical.label, 'Report');
@@ -743,10 +743,10 @@ console.log('PainLocator tests\n');
     assert.equal(sandbox.state.patientStep, 'locate');
   });
 
-  test('patient flow: cannot advance without a marked location', () => {
+  test('patient flow: describe is always available; review requires a mark', () => {
     const sandbox = makePatientSandbox(null);
     sandbox.setPatientStep('describe');
-    assert.equal(sandbox.state.patientStep, 'locate');
+    assert.equal(sandbox.state.patientStep, 'describe');
     sandbox.setPatientStep('review');
     assert.equal(sandbox.state.patientStep, 'locate');
   });
@@ -763,7 +763,7 @@ console.log('PainLocator tests\n');
     sandbox.state.patientStep = 'review';
     sandbox.document.getElementById = (id) => {
       if (id === 'btnPatientSave') {
-        return { disabled: false, textContent: 'Save Pain Entry' };
+        return { disabled: false, textContent: 'Save pain map' };
       }
       if (id === 'patientSaveConfirm') {
         return { hidden: true, textContent: '' };
