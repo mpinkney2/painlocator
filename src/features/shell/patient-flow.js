@@ -375,12 +375,22 @@
     if (grab) {
       grab.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       grab.setAttribute('title', expanded ? 'Collapse tools' : 'Open tools');
-      grab.setAttribute('aria-label', expanded ? 'Collapse assessment panel' : 'Expand assessment panel');
+      grab.setAttribute(
+        'aria-label',
+        expanded ? 'Collapse assessment panel' : 'Expand assessment panel — swipe up'
+      );
     }
-    // Let CSS settle, then re-fit markers to the image frame.
-    requestAnimationFrame(function () {
+    // Re-fit markers while the drawer/image eases, then once more after settle.
+    syncAnatomyLayout();
+    var schedule = typeof requestAnimationFrame === 'function'
+      ? requestAnimationFrame
+      : function (fn) { fn(); };
+    schedule(function () {
       syncAnatomyLayout();
-      requestAnimationFrame(syncAnatomyLayout);
+      if (typeof setTimeout === 'function') {
+        setTimeout(syncAnatomyLayout, 220);
+        setTimeout(syncAnatomyLayout, 450);
+      }
     });
   }
 
@@ -686,10 +696,22 @@
     if (simpleView === 'history') {
       if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('review');
       else if (typeof setWorkflowMode === 'function') setWorkflowMode('review');
+      try {
+        if (typeof global.updateChartTheme === 'function') global.updateChartTheme();
+        else if (typeof updateChartTheme === 'function') updateChartTheme();
+        if (typeof global.updateChart === 'function') global.updateChart();
+        else if (typeof updateChart === 'function') updateChart();
+      } catch (e) { /* ignore */ }
+      setDrawerExpanded(false);
     } else {
       if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('capture');
       else if (typeof setWorkflowMode === 'function') setWorkflowMode('capture');
       buildDescribeUI();
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(syncAnatomyLayout);
+      } else {
+        syncAnatomyLayout();
+      }
     }
   }
 
@@ -917,9 +939,18 @@
       });
     }
 
-    // Start collapsed so the figure is full-screen; diamond opens the tool drawer.
+    // Start collapsed so the figure is full-screen; green up-arrow opens the tool drawer.
     setDrawerExpanded(false);
     refreshPatientIcons();
+
+    // Keep Recovery Timeline inside the patient workspace (regular scroll view).
+    try {
+      var timeline = document.getElementById('timelinePanel');
+      var workspace = document.getElementById('simplePainWorkspace');
+      if (timeline && workspace && timeline.parentElement !== workspace) {
+        workspace.appendChild(timeline);
+      }
+    } catch (e) { /* ignore */ }
 
     on('btnSimplePainMap', 'click', function () { setSimpleView('map'); });
     on('btnSimpleHistory', 'click', function () { setSimpleView('history'); });

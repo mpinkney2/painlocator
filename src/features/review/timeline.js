@@ -275,4 +275,5 @@ function updateActiveEntrySummary() {
 }
 
 window.updateChartTheme = updateChartTheme;
+window.updateChart = updateChart;
 window.getChartEntries = getChartEntries;
