@@ -1863,6 +1863,23 @@ console.log('PainLocator tests\n');
       assert.ok(statSync(join(root, `public/anatomy/simple-pain-map/${view}.png`)).isFile());
     }
   });
+
+  test('simple pain-map: viewport fit + patient annotation chrome', () => {
+    const css = readFileSync(join(root, 'src/layout/simple-pain-map.css'), 'utf8');
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const flow = readFileSync(join(root, 'src/features/shell/patient-flow.js'), 'utf8');
+    assert.ok(css.includes('100dvh'));
+    assert.ok(css.includes('position: static'));
+    assert.ok(css.includes(".capture-tools.simple-annotate-bar"));
+    assert.ok(!/simple-pain-map \.capture-tools,\s*\nbody\.shell-patient\.simple-pain-map #demoModeBadge \{\s*\n\s*display: none !important;/m.test(css));
+    assert.ok(css.includes("data-tool='circle'"));
+    assert.ok(html.includes('simple-annotate-bar'));
+    assert.ok(html.indexOf('id="avatarStage"') < html.indexOf('id="captureTools"'));
+    assert.ok(html.indexOf('id="captureTools"') < html.indexOf('id="simpleViewBar"'));
+    assert.ok(flow.includes('simple-marks-section'));
+    assert.ok(flow.includes('btnSimpleTapMode'));
+    assert.ok(flow.includes('activatePatientTool'));
+  });
 }
 
 // --- BP3D shell engagement (Patient + Clinician) ---
