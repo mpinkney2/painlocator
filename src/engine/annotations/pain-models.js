@@ -126,6 +126,29 @@ function getRegionRadii(region, intensity = 5) {
   return { rx, ry };
 }
 
+/**
+ * Convert a normalized radius into viewBox rx/ry that paint as a screen circle.
+ * SVG layers use viewBox 0 0 1 1 + preserveAspectRatio=none, so equal rx/ry
+ * become ovals on a portrait plate.
+ * @param {number} width displayed overlay width in px
+ * @param {number} height displayed overlay height in px
+ * @param {number} radius radius in x-normalized (0–1) units
+ */
+function aspectCorrectedCircleRadii(width, height, radius) {
+  const w = Math.max(Number(width) || 0, 1e-6);
+  const h = Math.max(Number(height) || 0, 1e-6);
+  const r = Math.max(Number(radius) || 0, 0.008);
+  return { rx: r, ry: r * (w / h) };
+}
+
+function isCircularPainMark(region) {
+  if (!region || region.shape === "polygon") return false;
+  if (region.shape === "ellipse" && region.radiusY != null) {
+    return Math.abs(Number(region.radiusY) - Number(region.radius || region.radiusY)) < 0.004;
+  }
+  return region.shape === "circle" || region.shape === "point" || region.radiusY == null;
+}
+
 function getRegionOpacity(region, intensity = 5) {
   if (region.opacity != null) return region.opacity;
   // Strong clinical visibility: ~0.62 (mild) → ~0.96 (extreme)

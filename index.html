@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.20-large-figure">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.21-circle-compass">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -311,6 +311,12 @@
                 <p>Tap the body to mark a location.</p>
               </header>
               <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
+                <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
+                  <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
+                  <button type="button" class="simple-compass-btn" data-view="left" title="Left view" aria-pressed="false">Left</button>
+                  <button type="button" class="simple-compass-btn" data-view="right" title="Right view" aria-pressed="false">Right</button>
+                  <button type="button" class="simple-compass-btn" data-view="back" title="Back view" aria-pressed="false">Back</button>
+                </div>
                 <div class="region-tools review-tools show-review" id="reviewTools">
                   <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
                   <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
@@ -863,7 +869,7 @@
   <script src="src/ui/toast.js?v=5.5"></script>
   <!-- Clinical Anatomy Engine -->
   <script src="src/engine/anatomy/regions.js?v=5.5"></script>
-  <script src="src/engine/annotations/pain-models.js?v=5.5"></script>
+  <script src="src/engine/annotations/pain-models.js?v=5.21-circle-compass"></script>
   <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.20-large-figure"></script>
   <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
@@ -871,7 +877,7 @@
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-09-simple-map-harden"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.20-large-figure"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.21-circle-compass"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-09-simple-map-harden"></script>
@@ -912,8 +918,8 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.16-intensity-map"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.21-circle-compass"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
-  <script src="src/app/bootstrap.js?v=2026-09-09-simple-map-harden"></script>
+  <script src="src/app/bootstrap.js?v=5.21-circle-compass"></script>
 </body>
 </html>
