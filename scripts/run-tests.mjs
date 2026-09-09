@@ -1956,6 +1956,8 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('id="simpleViewCompass"'));
     assert.ok(html.includes('simple-compass-btn') && html.includes('data-view="left"'));
     assert.ok(css.includes('.simple-view-compass'));
+    assert.ok(css.includes('.simple-more-wrap') && css.includes('z-index: 150'));
+    assert.ok(css.includes('overflow: visible'));
     const headlineCss = css.slice(css.indexOf('.simple-pain-headline h1'), css.indexOf('.simple-pain-headline p'));
     assert.ok(headlineCss.includes('white-space: nowrap'));
     assert.ok(!headlineCss.includes('max-width: 14ch'));
