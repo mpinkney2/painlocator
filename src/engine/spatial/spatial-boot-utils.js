@@ -264,6 +264,7 @@
       (getGlobal("state") && getGlobal("state").presentationMode) ||
       null;
     const spatialRenderer = engine && engine.spatialRenderer;
+    const liveReady = !!(spatialRenderer && spatialRenderer.ready);
     const layerController = spatialRenderer && spatialRenderer.layerController;
     const depth = layerController && typeof layerController.getDepth === "function"
       ? layerController.getDepth()
@@ -277,6 +278,7 @@
     const canonicalReady = !!(spatialRenderer && spatialRenderer.isCanonicalBodyMode && spatialRenderer.isCanonicalBodyMode());
     const canonicalExpected = !!(flag && flag.isEnabled && flag.isEnabled());
     const spatialReady =
+      liveReady ||
       boot.state === BOOT_STATES.READY_SPATIAL ||
       boot.state === BOOT_STATES.READY_CANONICAL ||
       boot.state === BOOT_STATES.CANONICAL_DEGRADED ||
@@ -295,8 +297,11 @@
       threeRevision: boot.threeRevision || (three && three.REVISION) || null,
       gpuRenderer: boot.gpuRenderer || null,
       softwareWebGL: boot.softwareWebGL === true,
-      exteriorModelId: boot.exteriorModelId || null,
-      exteriorLoaded: spatialReady,
+      exteriorModelId:
+        boot.exteriorModelId ||
+        (spatialRenderer && spatialRenderer.scene && spatialRenderer.scene.modelId) ||
+        null,
+      exteriorLoaded: liveReady || spatialReady,
       meshCount,
       presentationMode: presentation,
       layerDepth: depth,
