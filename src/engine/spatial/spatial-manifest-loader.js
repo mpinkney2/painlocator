@@ -210,11 +210,8 @@
         obj.userData.modelId = packed.modelId;
         // Clinical-neutral override — avoid game-like GLB materials.
         if (obj.material) {
-          const mat = new THREE.MeshStandardMaterial({
-            color: 0xcbb7a8,
-            roughness: 0.76,
-            metalness: 0.02,
-            flatShading: false
+          const mat = new THREE.MeshLambertMaterial({
+            color: 0xcbb7a8
           });
           if (obj.material.dispose) obj.material.dispose();
           obj.material = mat;
