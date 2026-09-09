@@ -2005,7 +2005,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-2');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2020,7 +2020,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-09-output-harden-1'));
+    assert.ok(html.includes('?v=2026-09-09-output-harden-2'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2107,6 +2107,7 @@ console.log('PainLocator tests\n');
       'public/vendor/three.module.min.js',
       'public/vendor/GLTFLoader.js',
       'public/vendor/meshopt_decoder.module.js',
+      'public/utils/BufferGeometryUtils.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
       'public/anatomy/spatial/adult-male/exterior-lod0.glb',
@@ -2126,7 +2127,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-09-output-harden-1';
+    const ver = '2026-09-09-output-harden-2';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2180,6 +2181,19 @@ console.log('PainLocator tests\n');
     const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
     assert.ok(loader.includes('0xcbb7a8'));
     assert.equal(loader.includes('0xb9c2cc'), false);
+  });
+
+  test('spatial output: GLTFLoader relative ESM imports resolve to shipped files', () => {
+    const gltfSrc = readFileSync(join(root, 'public/vendor/GLTFLoader.js'), 'utf8');
+    const rel = [...gltfSrc.matchAll(/from\s+['"](\.\.?\/[^'"]+)['"]/g)].map((m) => m[1]);
+    assert.ok(rel.includes('../utils/BufferGeometryUtils.js'));
+    for (const spec of rel) {
+      const resolved = join(root, 'public/vendor', spec);
+      assert.ok(statSync(resolved).isFile(), `missing GLTFLoader import target: ${spec} → ${resolved}`);
+    }
+    const utilsSrc = readFileSync(join(root, 'public/utils/BufferGeometryUtils.js'), 'utf8');
+    assert.ok(utilsSrc.includes('export function toTrianglesDrawMode'));
+    assert.ok(utilsSrc.includes('from "three"') || utilsSrc.includes("from 'three'"));
   });
 }
 
