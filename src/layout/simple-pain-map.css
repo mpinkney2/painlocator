@@ -326,6 +326,22 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
 
 /* Desktop: overlay chrome so the figure can use the full map column height. */
 @media (min-width: 901px) {
+  /* Override the patient shell's phone-width (720px) card so the map can grow. */
+  body.shell-patient.simple-pain-map .layout {
+    width: min(1280px, 100%);
+    max-width: min(1280px, 100%);
+    margin-inline: auto;
+    padding: 0.35rem 1.25rem 0.5rem;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-workspace {
+    max-width: none;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-grid {
+    grid-template-columns: minmax(420px, 1.8fr) minmax(280px, 340px);
+  }
+
   body.shell-patient.simple-pain-map .simple-pain-headline {
     position: absolute;
     top: 0.35rem;
@@ -349,13 +365,26 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
     right: 0;
     bottom: 0;
     z-index: 6;
-    padding: 1.25rem 0.75rem 0.85rem;
+    padding: 0.85rem 0.85rem 0.7rem;
     background: linear-gradient(
       180deg,
       transparent 0%,
       color-mix(in srgb, var(--spm-warm-white) 72%, transparent) 34%,
       var(--spm-warm-white) 100%
     );
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity .patient-describe-heading {
+    margin-bottom: 0.1rem;
+    font-size: 0.92rem;
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity .patient-intensity-value {
+    font-size: 2rem;
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity .patient-intensity-row {
+    margin-bottom: 0.2rem;
   }
 
   body.shell-patient.simple-pain-map .avatar-wrap,
@@ -1403,6 +1432,27 @@ body.shell-patient.simple-view-map #timelinePanel {
     padding-bottom: var(--spm-drawer-peek);
     overflow: hidden;
     transition: padding-bottom 0.4s var(--spm-ease-drawer);
+    position: relative;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-headline {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    padding: 0.15rem 0.1rem 0;
+    z-index: 2;
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity {
+    flex: 0 0 auto;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    z-index: 3;
+    padding: 0.25rem 0.15rem 0.4rem;
+    background: var(--spm-warm-white);
   }
 
   body.shell-patient.simple-pain-map.simple-drawer-expanded .simple-pain-map-col {
