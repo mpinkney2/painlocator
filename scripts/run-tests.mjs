@@ -673,6 +673,26 @@ console.log('PainLocator tests\n');
       assert.ok(String(entry.structureId).startsWith('PL:'), `structureId must be PL-local: ${entry.structureId}`);
     }
   });
+
+  test('spatial manifest: resolveGlbMeshId restores GLTFLoader-stripped dots', () => {
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    const index = U.indexMeshes(manifest);
+    assert.equal(U.compactMeshId('surface.head'), 'surfacehead');
+    assert.equal(U.resolveGlbMeshId('surface.head', index), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surfacehead', index), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surface.torso', index), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('surfacetorso', index), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('unknownMesh', index), 'unknownMesh');
+    const restored = manifest.layers.surface.meshes.map((m) =>
+      U.resolveGlbMeshId(U.compactMeshId(m.meshId), index)
+    );
+    U.assertManifestGlbIntegrity(
+      manifest.layers.surface.meshes.map((m) => m.meshId),
+      restored
+    );
+  });
 }
 
 // --- Product Experience V1: presentation mode ---
@@ -2243,7 +2263,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-3');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-4');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2258,7 +2278,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-09-output-harden-3'));
+    assert.ok(html.includes('?v=2026-09-09-output-harden-4'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2365,7 +2385,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-09-output-harden-3';
+    const ver = '2026-09-09-output-harden-4';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',

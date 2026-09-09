@@ -66,6 +66,46 @@
   }
 
   /**
+   * Three.js GLTFLoader runs PropertyBinding.sanitizeNodeName on node names,
+   * which strips `.` `/` `:` `[` `]`. Manifest meshIds keep the dotted form
+   * (`surface.head`). Runtime comparison must be sanitization-aware.
+   * @param {string} name
+   * @returns {string}
+   */
+  function compactMeshId(name) {
+    return String(name || "")
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/[./[\]:]/g, "");
+  }
+
+  /**
+   * Map a GLB node name (possibly sanitized) onto a manifest meshId.
+   * @param {string} rawName
+   * @param {Map<string, unknown>|Iterable<string>} knownIds
+   * @returns {string}
+   */
+  function resolveGlbMeshId(rawName, knownIds) {
+    const raw = String(rawName || "");
+    const ids = knownIds && typeof knownIds.keys === "function" ? [...knownIds.keys()] : [...(knownIds || [])];
+    const has = (id) =>
+      knownIds && typeof knownIds.has === "function" ? knownIds.has(id) : ids.includes(id);
+    if (raw && has(raw)) return raw;
+    const compact = compactMeshId(raw);
+    if (!compact) return raw;
+    const matches = ids.filter((id) => compactMeshId(id) === compact);
+    if (matches.length === 1) return matches[0];
+    return raw;
+  }
+
+  function isMeshLike(obj) {
+    if (!obj) return false;
+    if (obj.isMesh || obj.isSkinnedMesh) return true;
+    const type = obj.type;
+    return type === "Mesh" || type === "SkinnedMesh";
+  }
+
+  /**
    * Manifest is authoritative. Every surface meshId must appear exactly once in the
    * GLB naming set, and the GLB must not introduce unknown body meshes.
    * @param {Iterable<string>} manifestMeshIds
@@ -192,8 +232,9 @@
 
       root.updateMatrixWorld(true);
       root.traverse((obj) => {
-        if (!obj.isMesh) return;
-        const meshId = obj.name || obj.userData?.meshId;
+        if (!isMeshLike(obj)) return;
+        const rawName = obj.name || obj.userData?.meshId;
+        const meshId = resolveGlbMeshId(rawName, known);
         if (!meshId) {
           throw new Error("GLB body mesh is missing a stable name/meshId");
         }
@@ -249,6 +290,9 @@
     validateModelManifest,
     indexMeshes,
     assertManifestGlbIntegrity,
+    compactMeshId,
+    resolveGlbMeshId,
+    isMeshLike,
     DEFAULT_CATALOG_URL
   };
 })(typeof window !== "undefined" ? window : globalThis);
