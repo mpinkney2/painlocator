@@ -176,11 +176,14 @@
           this.scene?.exteriorModelId ||
           this.scene?.modelId ||
           "adult-male";
+        const probe = bootUtils && bootUtils.probeWebGL ? bootUtils.probeWebGL() : null;
         setBoot(STATES.READY_SPATIAL || "ready-spatial", {
           exteriorModelId,
           meshCount,
           threeRevision: this.THREE.REVISION || null,
-          error: null
+          error: null,
+          softwareWebGL: !!(this.scene && this.scene._lowPower) || !!(probe && probe.software),
+          gpuRenderer: (probe && probe.renderer) || null
         });
 
         const view = this.engine.viewType || "front";

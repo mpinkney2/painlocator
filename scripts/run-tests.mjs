@@ -2239,10 +2239,11 @@ console.log('PainLocator tests\n');
   test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
     loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
     assert.ok(sandbox.SpatialBootUtils);
-    assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.probeWebGL, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-2');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-3');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2257,7 +2258,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-09-output-harden-2'));
+    assert.ok(html.includes('?v=2026-09-09-output-harden-3'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2364,7 +2365,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-09-output-harden-2';
+    const ver = '2026-09-09-output-harden-3';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2397,6 +2398,9 @@ console.log('PainLocator tests\n');
     assert.ok(sceneSrc.includes('fitToBody'));
     assert.ok(sceneSrc.includes('ACESFilmicToneMapping') || sceneSrc.includes('toneMapping'));
     assert.ok(sceneSrc.includes('HemisphereLight'));
+    assert.ok(sceneSrc.includes('_lowPower') || sceneSrc.includes('probeWebGL'));
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('MeshLambertMaterial'));
   });
 
   test('spatial output: overlay clears when exterior is interactive, before canonical', () => {
