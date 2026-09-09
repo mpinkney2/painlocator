@@ -1315,6 +1315,12 @@ body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-clinical-vie
   height: 100%;
   touch-action: none;
   cursor: grab;
+  background: transparent;
+}
+
+.cae-spatial-viewport .cae-spatial-canvas {
+  position: absolute;
+  inset: 0;
 }
 
 .cae-spatial-canvas:active {
