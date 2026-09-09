@@ -1122,6 +1122,14 @@ body.shell-patient.simple-pain-map .simple-assess-tab.is-active {
   border-color: var(--spm-amber);
 }
 
+body.shell-patient.simple-pain-map .simple-drawer-peek-bar {
+  display: contents;
+}
+
+body.shell-patient.simple-pain-map .simple-peek-icon-btn {
+  display: none;
+}
+
 /* Breathing green up-arrow drawer handle */
 body.shell-patient.simple-pain-map .simple-drawer-grab {
   display: none;
@@ -1512,6 +1520,11 @@ body.shell-patient.simple-view-map #timelinePanel {
     position: relative;
   }
 
+  /* Sit above the resting drawer peek so Front/Back/Left/Right stay usable. */
+  body.shell-patient.simple-pain-map .simple-view-compass {
+    bottom: 3.65rem;
+  }
+
   body.shell-patient.simple-pain-map .simple-pain-headline {
     position: relative;
     top: auto;
@@ -1583,6 +1596,59 @@ body.shell-patient.simple-view-map #timelinePanel {
 
   body.shell-patient.simple-pain-map.simple-drawer-expanded .simple-pain-panel {
     transform: translate3d(0, 0, 0);
+  }
+
+  body.shell-patient.simple-pain-map .simple-drawer-peek-bar {
+    display: grid;
+    grid-template-columns: 2.6rem minmax(0, 1fr) 2.6rem;
+    align-items: center;
+    justify-items: center;
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.05rem 0.15rem 0.05rem;
+    pointer-events: auto;
+    z-index: 4;
+  }
+
+  body.shell-patient.simple-pain-map .simple-peek-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--spm-navy);
+    cursor: pointer;
+    border-radius: 999px;
+  }
+
+  body.shell-patient.simple-pain-map .simple-peek-icon-btn:disabled {
+    opacity: 0.28;
+    cursor: default;
+  }
+
+  body.shell-patient.simple-pain-map .simple-peek-icon-btn:focus-visible {
+    outline: 2px solid var(--spm-navy);
+    outline-offset: 2px;
+  }
+
+  body.shell-patient.simple-pain-map .simple-peek-icon {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  body.shell-patient.simple-pain-map.simple-drawer-expanded .simple-peek-icon-btn {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   body.shell-patient.simple-pain-map .simple-drawer-grab {

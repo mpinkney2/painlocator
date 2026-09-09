@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.21-circle-compass-2">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.22-peek-undo">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -340,7 +340,21 @@
               </section>
             </div>
             <aside class="simple-pain-panel shell-only-patient" id="simplePainPanel" aria-labelledby="simplePainLocationTitle" data-assess-step="mark">
-              <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand assessment panel — swipe up" aria-expanded="false" title="Open tools"></button>
+              <div class="simple-drawer-peek-bar" id="simpleDrawerPeekBar">
+                <button type="button" class="simple-peek-icon-btn" id="btnPeekUndo" title="Undo last change" aria-label="Undo" disabled>
+                  <svg class="simple-peek-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3 7v6h6" />
+                    <path d="M3 13a9 9 0 1 0 2.2-6" />
+                  </svg>
+                </button>
+                <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand assessment panel — swipe up" aria-expanded="false" title="Open tools"></button>
+                <button type="button" class="simple-peek-icon-btn" id="btnPeekRedo" title="Redo" aria-label="Redo" disabled>
+                  <svg class="simple-peek-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21 7v6h-6" />
+                    <path d="M21 13a9 9 0 1 1-2.2-6" />
+                  </svg>
+                </button>
+              </div>
               <div class="simple-drawer-sheet" id="simpleDrawerSheet">
               <div class="simple-pain-context">
                 <p class="simple-pain-id" id="simplePainId">Pain map</p>
@@ -904,7 +918,7 @@
   <script src="src/features/feedback/feedback-service.js?v=5.5"></script>
   <script src="src/features/feedback/feedback-ui.js?v=5.5"></script>
   <script src="src/features/onboarding/welcome.js?v=5.5"></script>
-  <script src="src/features/capture/entry-crud.js?v=5.5"></script>
+  <script src="src/features/capture/entry-crud.js?v=5.22-peek-undo"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
   <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-09-simple-map-harden"></script>
@@ -920,6 +934,6 @@
   <script src="src/state/presentation.js?v=5.7"></script>
   <script src="src/features/shell/patient-flow.js?v=5.21-circle-compass"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
-  <script src="src/app/bootstrap.js?v=5.21-circle-compass"></script>
+  <script src="src/app/bootstrap.js?v=5.22-peek-undo"></script>
 </body>
 </html>
