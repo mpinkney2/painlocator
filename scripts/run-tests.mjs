@@ -399,6 +399,17 @@ console.log('PainLocator tests\n');
     assert.equal(P.nearestSnapView(Math.PI - 0.1), 'back');
   });
 
+  test('spatial projection: cameraDistanceForBounds frames taller bodies farther', () => {
+    const close = P.cameraDistanceForBounds({ x: 0.5, y: 1.0, z: 0.3 }, 32, 0.6, 1);
+    const tall = P.cameraDistanceForBounds({ x: 0.5, y: 1.8, z: 0.3 }, 32, 0.6, 1);
+    const wide = P.cameraDistanceForBounds({ x: 2.0, y: 1.0, z: 0.3 }, 32, 0.6, 1);
+    assert.ok(tall > close);
+    assert.ok(wide > close);
+    assert.ok(P.cameraDistanceForBounds({ x: 0, y: 0, z: 0 }, 32, 1) >= 0.8);
+    const padded = P.cameraDistanceForBounds({ x: 0.5, y: 1.8, z: 0.3 }, 32, 0.6, 1.16);
+    assert.ok(Math.abs(padded - tall * 1.16) < 1e-9);
+  });
+
   test('spatial projection: yawForView matches VIEW_YAW table', () => {
     assert.equal(P.yawForView('front'), 0);
     assert.equal(P.yawForView('back'), Math.PI);
@@ -661,6 +672,26 @@ console.log('PainLocator tests\n');
     for (const entry of model.layers.surface.meshes) {
       assert.ok(String(entry.structureId).startsWith('PL:'), `structureId must be PL-local: ${entry.structureId}`);
     }
+  });
+
+  test('spatial manifest: resolveGlbMeshId restores GLTFLoader-stripped dots', () => {
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    const index = U.indexMeshes(manifest);
+    assert.equal(U.compactMeshId('surface.head'), 'surfacehead');
+    assert.equal(U.resolveGlbMeshId('surface.head', index), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surfacehead', index), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surface.torso', index), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('surfacetorso', index), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('unknownMesh', index), 'unknownMesh');
+    const restored = manifest.layers.surface.meshes.map((m) =>
+      U.resolveGlbMeshId(U.compactMeshId(m.meshId), index)
+    );
+    U.assertManifestGlbIntegrity(
+      manifest.layers.surface.meshes.map((m) => m.meshId),
+      restored
+    );
   });
 }
 
@@ -1991,10 +2022,11 @@ console.log('PainLocator tests\n');
   test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
     loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
     assert.ok(sandbox.SpatialBootUtils);
-    assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.probeWebGL, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-4');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2041,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-09-09-output-harden-4'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2045,6 +2077,19 @@ console.log('PainLocator tests\n');
       'DEGRADED'
     );
     assert.equal(u.classifySpatialHealth({ spatialReady: false, state: 'failed-spatial' }), 'FAILED');
+    assert.equal(
+      u.classifySpatialHealth({ spatialReady: true, exteriorLoaded: true, exteriorModelId: 'adult-male' }),
+      'HEALTHY'
+    );
+    const liveEngine = {
+      displayMode: 'plate',
+      spatialBootState: u.createBootState({ state: 'idle' }),
+      spatialRenderer: { ready: true, scene: { modelId: 'adult-male', meshById: { size: 18 } } }
+    };
+    const liveSnap = u.collectDiagnostics(liveEngine);
+    assert.equal(liveSnap.spatialReady, true);
+    assert.equal(liveSnap.health, 'HEALTHY');
+    assert.equal(liveSnap.exteriorLoaded, true);
     const engine = { spatialBootState: null, trigger() {} };
     u.setBootState(engine, u.BOOT_STATES.LOADING_THREE, { stage: 'loading-three' });
     assert.equal(engine.spatialBootState.state, 'loading-three');
@@ -2096,6 +2141,7 @@ console.log('PainLocator tests\n');
       'public/vendor/three.module.min.js',
       'public/vendor/GLTFLoader.js',
       'public/vendor/meshopt_decoder.module.js',
+      'public/utils/BufferGeometryUtils.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
       'public/anatomy/spatial/adult-male/exterior-lod0.glb',
@@ -2115,7 +2161,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-09-09-output-harden-4';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2138,6 +2184,53 @@ console.log('PainLocator tests\n');
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('_initLayerController'));
     assert.ok(renderer.includes('Surface (styled exterior)') || renderer.includes('Muscle (BP3D)'));
+  });
+
+  test('spatial output: WebGL dispose never force-loses context', () => {
+    const sceneSrc = readFileSync(join(root, 'src/engine/spatial/spatial-scene-controller.js'), 'utf8');
+    assert.equal(/\brenderer\.forceContextLoss\s*\(/.test(sceneSrc), false);
+    assert.equal(/\bloseContext\s*\(/.test(sceneSrc), false);
+    assert.ok(sceneSrc.includes('Never forceContextLoss'));
+    assert.ok(sceneSrc.includes('fitToBody'));
+    assert.ok(sceneSrc.includes('ACESFilmicToneMapping') || sceneSrc.includes('toneMapping'));
+    assert.ok(sceneSrc.includes('HemisphereLight'));
+    assert.ok(sceneSrc.includes('_lowPower') || sceneSrc.includes('probeWebGL'));
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('MeshLambertMaterial'));
+  });
+
+  test('spatial output: overlay clears when exterior is interactive, before canonical', () => {
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    const interactiveIdx = renderer.indexOf('options.onInteractive');
+    const canonCallIdx = renderer.indexOf('this._initCanonicalFrameIfEnabled()');
+    const layerCallIdx = renderer.indexOf('this._initLayerController();');
+    assert.ok(interactiveIdx > 0 && canonCallIdx > interactiveIdx);
+    assert.ok(layerCallIdx > canonCallIdx);
+    assert.ok(engine.includes('_revealSpatialViewport'));
+    assert.ok(engine.includes('onInteractive:'));
+    assert.ok(engine.includes('retrying'));
+    assert.ok(renderer.includes('onInteractive'));
+    assert.ok(renderer.includes('fitToBody'));
+  });
+
+  test('spatial output: clinical exterior material is warm-neutral not game-metal', () => {
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('0xcbb7a8'));
+    assert.equal(loader.includes('0xb9c2cc'), false);
+  });
+
+  test('spatial output: GLTFLoader relative ESM imports resolve to shipped files', () => {
+    const gltfSrc = readFileSync(join(root, 'public/vendor/GLTFLoader.js'), 'utf8');
+    const rel = [...gltfSrc.matchAll(/from\s+['"](\.\.?\/[^'"]+)['"]/g)].map((m) => m[1]);
+    assert.ok(rel.includes('../utils/BufferGeometryUtils.js'));
+    for (const spec of rel) {
+      const resolved = join(root, 'public/vendor', spec);
+      assert.ok(statSync(resolved).isFile(), `missing GLTFLoader import target: ${spec} → ${resolved}`);
+    }
+    const utilsSrc = readFileSync(join(root, 'public/utils/BufferGeometryUtils.js'), 'utf8');
+    assert.ok(utilsSrc.includes('export function toTrianglesDrawMode'));
+    assert.ok(utilsSrc.includes('from "three"') || utilsSrc.includes("from 'three'"));
   });
 }
 
