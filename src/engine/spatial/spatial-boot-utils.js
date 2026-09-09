@@ -10,7 +10,7 @@
  */
 (function (global) {
   /** Bump together with all Spatial classic-script ?v= query tokens in index.html */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-09-output-harden-4";
+  const SPATIAL_RUNTIME_VERSION = "2026-09-09-simple-map-harden";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",
