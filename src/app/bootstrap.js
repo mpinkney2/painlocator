@@ -177,6 +177,14 @@ function init() {
   document.getElementById('btnDeleteEntry').addEventListener('click', deleteActiveEntry);
   document.getElementById('btnUndo')?.addEventListener('click', performUndo);
   document.getElementById('btnRedo')?.addEventListener('click', performRedo);
+  document.getElementById('btnPeekUndo')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    performUndo();
+  });
+  document.getElementById('btnPeekRedo')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    performRedo();
+  });
   document.getElementById('btnDupRegion')?.addEventListener('click', () => {
     const id = entryStore.selectedRegionIds[0];
     if (id) { entryStore.duplicateRegion(id); refreshUI(); }
