@@ -13,6 +13,10 @@ function clamp(v, min, max) {
 
 class AnatomyCoordinateMapper {
   static ENLARGED_ZOOM = 1.85;
+  /** Default silhouette scale for the simple pain map on large viewports. */
+  static SIMPLE_PAIN_MAP_DESKTOP_ZOOM = 1.48;
+  /** Mild scale-up on compact/mobile map so the figure still reads large. */
+  static SIMPLE_PAIN_MAP_MOBILE_ZOOM = 1.18;
 
   constructor(frameEl, imageEl) {
     this.frameEl = frameEl;

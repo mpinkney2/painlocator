@@ -603,9 +603,13 @@ class ClinicalMarkupRenderer {
     this.tooltip = null;
     this._boundView = null;
     this._boundModel = null;
-    this._onResize = () => this.syncLayout();
+    this._onResize = () => {
+      this.applySimplePainMapPresentationScale();
+      this.syncLayout();
+    };
     this._resizeObserver = null;
     this._zoomListeners = [];
+    this._spmScaleMode = null;
   }
 
   onZoomChange(cb) {
@@ -621,6 +625,34 @@ class ClinicalMarkupRenderer {
 
   isEnlarged() {
     return this.mapper.isEnlarged();
+  }
+
+  /**
+   * Patient simple map: keep the studio figure large in the map view.
+   * Desktop uses a stronger default zoom; mobile a milder one.
+   * Skips when the clinician Enlarge control is available and intentionally used
+   * beyond the presentation preset (patient shell hides that control).
+   */
+  applySimplePainMapPresentationScale() {
+    if (typeof document === "undefined") return;
+    if (!document.body?.classList?.contains("simple-pain-map")) {
+      this._spmScaleMode = null;
+      return;
+    }
+    const wide =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(min-width: 901px)").matches;
+    const mode = wide ? "desktop" : "mobile";
+    const target = wide
+      ? AnatomyCoordinateMapper.SIMPLE_PAIN_MAP_DESKTOP_ZOOM
+      : AnatomyCoordinateMapper.SIMPLE_PAIN_MAP_MOBILE_ZOOM;
+    if (this._spmScaleMode === mode && Math.abs(this.mapper.zoom - target) < 0.02) {
+      return;
+    }
+    this._spmScaleMode = mode;
+    this.mapper.setZoom(target, { focusX: 0.5, focusY: 0.46, resetPan: true });
+    this._emitZoomChange();
   }
 
   getFocusFromSelection() {
@@ -676,6 +708,7 @@ class ClinicalMarkupRenderer {
       || this._boundModel !== this.engine.modelType;
     if (viewChanged && this._boundView != null) {
       this.mapper.resetZoom();
+      this._spmScaleMode = null;
       this._emitZoomChange();
     }
     this._boundView = this.engine.viewType;
@@ -737,6 +770,7 @@ class ClinicalMarkupRenderer {
       this.viewport?.classList?.add("has-figure");
       container.querySelector(".simple-figure-loading")?.remove();
       requestAnimationFrame(() => {
+        this.applySimplePainMapPresentationScale();
         this.syncLayout();
         requestAnimationFrame(() => this.syncLayout());
       });
@@ -772,7 +806,10 @@ class ClinicalMarkupRenderer {
 
     window.addEventListener("resize", this._onResize);
     if (typeof ResizeObserver !== "undefined" && this.viewport) {
-      this._resizeObserver = new ResizeObserver(() => this.syncLayout());
+      this._resizeObserver = new ResizeObserver(() => {
+        this.applySimplePainMapPresentationScale();
+        this.syncLayout();
+      });
       this._resizeObserver.observe(this.viewport);
     }
     this.injectDebugLabel(container, imgPath);
