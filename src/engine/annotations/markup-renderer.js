@@ -629,9 +629,8 @@ class ClinicalMarkupRenderer {
 
   /**
    * Patient simple map: keep the studio figure large in the map view.
-   * Desktop uses a stronger default zoom; mobile a milder one.
-   * Skips when the clinician Enlarge control is available and intentionally used
-   * beyond the presentation preset (patient shell hides that control).
+   * On wide screens the shell is expanded; add a mild zoom only when
+   * letterboxing leaves unused space. Avoid aggressive crop of the head/feet.
    */
   applySimplePainMapPresentationScale() {
     if (typeof document === "undefined") return;
@@ -644,14 +643,30 @@ class ClinicalMarkupRenderer {
       window.matchMedia &&
       window.matchMedia("(min-width: 901px)").matches;
     const mode = wide ? "desktop" : "mobile";
-    const target = wide
+    const fit = this.mapper.getFitBounds?.() || null;
+    let target = wide
       ? AnatomyCoordinateMapper.SIMPLE_PAIN_MAP_DESKTOP_ZOOM
       : AnatomyCoordinateMapper.SIMPLE_PAIN_MAP_MOBILE_ZOOM;
-    if (this._spmScaleMode === mode && Math.abs(this.mapper.zoom - target) < 0.02) {
+    if (fit && fit.width > 1 && fit.height > 1) {
+      // Studio plates include padding around the person — zoom past letterbox
+      // so the human (not the empty plate margin) fills the map stage.
+      const widthTarget = (0.98 * fit.containerWidth) / fit.width;
+      const heightBudget = wide ? 1.62 : 1.22;
+      const heightTarget = (heightBudget * fit.containerHeight) / fit.height;
+      if (wide) {
+        target = Math.min(widthTarget, heightTarget);
+        target = Math.max(1.28, Math.min(target, 1.72));
+      } else {
+        target = Math.min(widthTarget, heightTarget);
+        target = Math.max(1.04, Math.min(target, 1.14));
+      }
+    }
+    if (this._spmScaleMode === mode && Math.abs(this.mapper.zoom - target) < 0.025) {
       return;
     }
     this._spmScaleMode = mode;
-    this.mapper.setZoom(target, { focusX: 0.5, focusY: 0.46, resetPan: true });
+    // Bias focus slightly upward so head/torso stay clear of the intensity dock.
+    this.mapper.setZoom(target, { focusX: 0.5, focusY: wide ? 0.4 : 0.42, resetPan: true });
     this._emitZoomChange();
   }
 

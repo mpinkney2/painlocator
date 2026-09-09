@@ -1890,6 +1890,7 @@ console.log('PainLocator tests\n');
     const mapper = readFileSync(join(root, 'src/engine/coordinates/anatomy-coordinate-mapper.js'), 'utf8');
     const renderer = readFileSync(join(root, 'src/engine/annotations/markup-renderer.js'), 'utf8');
     assert.ok(mapper.includes('SIMPLE_PAIN_MAP_DESKTOP_ZOOM'));
+    assert.ok(css.includes('min(1280px, 100%)') || css.includes('1280px'));
     assert.ok(renderer.includes('applySimplePainMapPresentationScale'));
     assert.ok(flow.includes('bindMapIntensityUI'));
     assert.ok(flow.includes('refreshMarkColors'));
