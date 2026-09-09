@@ -164,6 +164,7 @@ body.shell-patient.simple-pain-map .header-actions {
 
 .simple-more-wrap {
   position: relative;
+  z-index: 150;
 }
 
 .simple-more-menu {
@@ -1466,7 +1467,8 @@ body.shell-patient.simple-view-map #timelinePanel {
   body.shell-patient.simple-pain-map .simple-pain-nav {
     width: 100%;
     justify-content: center;
-    overflow-x: auto;
+    /* overflow-x:auto also clips overflow-y, which hid the More menu. */
+    overflow: visible;
   }
 
   body.shell-patient.simple-pain-map .layout {
