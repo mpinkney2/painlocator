@@ -19,6 +19,19 @@ body.wf-capture .capture-tools { display: flex !important; }
 body.wf-clinical .review-tools { display: none !important; }
 body.wf-clinical .capture-tools { display: flex !important; }
 
+/* Clinician Report: demote capture chrome — editing stays behind Edit Entry */
+body.shell-clinician.wf-clinical:not(.review-editing) .capture-tools {
+  display: none !important;
+}
+body.shell-clinician.wf-clinical .review-tools {
+  display: flex !important;
+}
+body.shell-clinician.wf-clinical #regionMetaPanel,
+body.shell-clinician.wf-clinical #regionShapeSelect,
+body.shell-clinician.wf-clinical #regionLayerSelect {
+  display: none !important;
+}
+
 .mobile-only { display: none !important; }
 .label-short { display: none; }
 .label-full { display: inline; }
@@ -1304,8 +1317,11 @@ body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
 }
 
 /* While Spatial-primary is booting / unavailable, never show the plate PNG */
-body.spatial-primary:not(.spatial-ready) .cae-anatomy-image,
-body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+/* Hide plate only while Spatial is actively staging/unavailable — not after explicit 2D fallback. */
+body.spatial-primary:not(.spatial-ready) .cae-stage.cae-spatial-staging .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready) .cae-stage.cae-spatial-staging .cae-clinical-viewport .cae-image-frame,
+body.spatial-primary:not(.spatial-ready):not(.allow-plate-toggle) .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready):not(.allow-plate-toggle) .cae-clinical-viewport .cae-image-frame {
   display: none !important;
 }
 
@@ -2024,7 +2040,9 @@ body.theme-dark .btn-share:hover {
   border: 1px solid var(--border-strong);
   color: var(--text-secondary);
 }
-body.demo-mode-active .demo-badge { display: inline-flex; }
+body.demo-mode-active .demo-badge:not([hidden]) { display: inline-flex; }
+.demo-badge[hidden] { display: none !important; }
+.save-status-new { border-style: dashed; border-color: var(--border-strong, var(--border)); }
 .demo-scenario-select {
   max-width: 140px;
   font-size: 11px;
@@ -2182,7 +2200,7 @@ body.demo-mode-active .demo-badge { display: inline-flex; }
   position: fixed;
   inset: 0;
   z-index: 8500;
-  pointer-events: none;
+  pointer-events: auto; /* block anatomy hits while walkthrough is active */
 }
 .walkthrough-overlay[hidden] { display: none !important; }
 .walkthrough-spotlight {

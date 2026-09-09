@@ -593,6 +593,7 @@
     }
 
     _tap(clientX, clientY) {
+    if (typeof window !== 'undefined' && window.UiChrome?.isUiChromeBlockingMarks?.()) return;
       const tool = this.store?.activeTool || "point";
 
       // Pain markers retain priority over anatomy-structure picking for select/eraser.

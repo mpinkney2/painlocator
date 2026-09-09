@@ -1,34 +1,85 @@
-function filterEntriesForReview(entries) {
-  if (state.workflowMode !== 'review' || state.entryFilter === 'all') return entries;
+function filterEntriesForReview(entries, filterOverride) {
+  const filter = filterOverride != null
+    ? filterOverride
+    : (state.workflowMode === 'review' ? state.entryFilter : 'all');
+  if (filter === 'all') return entries;
   const now = Date.now();
-  if (state.entryFilter === 'week') {
+  if (filter === 'week') {
     const week = 7 * 24 * 60 * 60 * 1000;
     return entries.filter(e => now - new Date(e.createdAt).getTime() <= week);
   }
-  if (state.entryFilter === 'severe') return entries.filter(e => e.intensity >= 7);
+  if (filter === 'severe') return entries.filter(e => e.intensity >= 7);
   return entries;
 }
 
-function updateEntryList() {
-  const list = document.getElementById('entryList');
-  if (!list) return;
-  const model = normalizeModelType(state.modelType);
-  let saved = entryStore.entries.filter(e => normalizeModelType(e.patientModel) === model);
-  saved = filterEntriesForReview(saved);
-  const draft = state.workflowMode === 'capture' && entryStore.draftEntry
-    && normalizeModelType(entryStore.draftEntry.patientModel) === model
-    && entryStore.draftEntry.regions.length ? entryStore.draftEntry : null;
-  const all = draft ? [...saved, draft] : saved;
-
-  if (!all.length) {
-    list.innerHTML = state.workflowMode === 'review'
-      ? '<p class="entry-list-empty">No entries match this view. Switch to Capture to log a pain entry, or clear filters.</p>'
-      : '<p class="entry-list-empty">No pain entries yet. Mark regions on the anatomy or choose <strong>New Entry</strong> to start.</p>';
-    return;
+function formatEntryDate(entry) {
+  try {
+    return new Date(entry.createdAt).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+  } catch {
+    return '';
   }
+}
 
+function formatEntrySymptoms(entry) {
+  const parts = [];
+  if (entry.quality?.length) parts.push(entry.quality.slice(0, 3).join(', '));
+  const note = String(entry.note || '').trim();
+  if (note) parts.push(note.length > 80 ? `${note.slice(0, 77)}…` : note);
+  return parts.join(' · ') || 'No symptoms or note';
+}
+
+function bindClinicianEntryList(list) {
+  list.querySelectorAll('.entry-card-header').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.entry-card');
+      selectEntry(card.dataset.entryId);
+    });
+  });
+  list.querySelectorAll('.entry-marker-chip').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectRegionOnly(btn.dataset.regionId);
+    });
+  });
+}
+
+function openPatientHistoryEntry(entryId, intent) {
+  selectEntry(entryId);
+  if (typeof setPatientStep === 'function') {
+    setPatientStep(intent === 'edit' ? 'describe' : 'review', { force: true });
+  } else if (typeof window.setPatientStep === 'function') {
+    window.setPatientStep(intent === 'edit' ? 'describe' : 'review', { force: true });
+  }
+  refreshUI();
+}
+
+function bindPatientEntryList(list) {
+  list.querySelectorAll('[data-patient-entry-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const card = btn.closest('.entry-card');
+      if (!card) return;
+      openPatientHistoryEntry(card.dataset.entryId, btn.dataset.patientEntryAction);
+    });
+  });
+  list.querySelectorAll('.entry-card-header[data-patient-open]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.entry-card');
+      if (!card) return;
+      openPatientHistoryEntry(card.dataset.entryId, 'open');
+    });
+  });
+}
+
+function renderClinicianEntryCards(all) {
   const activeId = entryStore.getActiveEntry()?.id;
-  list.innerHTML = all.map((entry, i) => {
+  return all.map((entry, i) => {
     const num = entryStore.getEntryNumber(entry) || (i + 1);
     const summary = entryStore.getEntrySummary(entry, num, useClinicalLabels());
     const isDraft = entry === entryStore.draftEntry && !entryStore.isEntrySaved(entry);
@@ -55,19 +106,74 @@ function updateEntryList() {
       <div class="entry-marker-chips">${regionItems || '<span class="entry-no-markers">No regions yet</span>'}</div>
     </div>`;
   }).join('');
+}
 
-  list.querySelectorAll('.entry-card-header').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const card = btn.closest('.entry-card');
-      selectEntry(card.dataset.entryId);
-    });
-  });
-  list.querySelectorAll('.entry-marker-chip').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      selectRegionOnly(btn.dataset.regionId);
-    });
-  });
+function renderPatientEntryCards(entries) {
+  const activeId = entryStore.getActiveEntry()?.id;
+  return entries.map((entry, i) => {
+    const num = entryStore.getEntryNumber(entry) || (i + 1);
+    const summary = entryStore.getEntrySummary(entry, num, false);
+    const isDraft = entry === entryStore.draftEntry && !entryStore.isEntrySaved(entry);
+    const isActive = entry.id === activeId;
+    const dateLabel = formatEntryDate(entry);
+    const symptoms = formatEntrySymptoms(entry);
+    const entryKey = isDraft ? DRAFT_KEY : entry.id;
+
+    return `<article class="entry-card patient-entry-card${isActive ? ' active' : ''}${isDraft ? ' draft' : ''}" data-entry-id="${escapeAttr(entryKey)}">
+      <button type="button" class="entry-card-header" data-patient-open aria-label="Open entry ${num}">
+        <span class="entry-dot" style="background:${PAIN_COLORS[entry.intensity]}" aria-hidden="true"></span>
+        <span class="entry-card-title">
+          <strong>${isDraft ? 'Draft (unsaved)' : `Entry #${num}`}</strong>
+          <span class="entry-card-time">${escapeHtml(dateLabel)}</span>
+          <span class="entry-card-regions">${escapeHtml(summary.regions)}</span>
+          <span class="entry-card-meta">Intensity ${summary.intensity}/10</span>
+          <span class="entry-card-symptoms">${escapeHtml(symptoms)}</span>
+        </span>
+      </button>
+      <div class="patient-entry-actions">
+        <button type="button" class="btn btn-ghost btn-sm" data-patient-entry-action="open">Open</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-patient-entry-action="edit">Edit</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function updateEntryList() {
+  const list = document.getElementById('entryList');
+  const patientList = document.getElementById('patientEntryList');
+  const model = normalizeModelType(state.modelType);
+  let saved = entryStore.entries.filter(e => normalizeModelType(e.patientModel) === model);
+  const clinicianSaved = filterEntriesForReview(saved);
+  const draft = state.workflowMode === 'capture' && entryStore.draftEntry
+    && normalizeModelType(entryStore.draftEntry.patientModel) === model
+    && entryStore.draftEntry.regions.length ? entryStore.draftEntry : null;
+  const clinicianAll = draft ? [...clinicianSaved, draft] : clinicianSaved;
+
+  if (list) {
+    if (!clinicianAll.length) {
+      list.innerHTML = state.workflowMode === 'review'
+        ? '<p class="entry-list-empty">No entries match this view. Switch to Capture to log a pain entry, or clear filters.</p>'
+        : '<p class="entry-list-empty">No pain entries yet. Mark regions on the anatomy or choose <strong>New Entry</strong> to start.</p>';
+    } else {
+      list.innerHTML = renderClinicianEntryCards(clinicianAll);
+      bindClinicianEntryList(list);
+    }
+  }
+
+  if (patientList) {
+    const patientFilter = state.patientEntryFilter || 'all';
+    const patientEntries = filterEntriesForReview(saved, patientFilter)
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    if (!patientEntries.length) {
+      patientList.innerHTML = saved.length
+        ? '<p class="entry-list-empty">No entries match this filter.</p>'
+        : '<p class="entry-list-empty">No saved entries yet. Save this entry to start your history.</p>';
+    } else {
+      patientList.innerHTML = renderPatientEntryCards(patientEntries);
+      bindPatientEntryList(patientList);
+    }
+  }
 }
 
 function initRegionTools() {
@@ -314,6 +420,15 @@ function initReviewTools() {
     });
   });
 
+  document.querySelectorAll('#patientHistoryFilters .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('#patientHistoryFilters .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      state.patientEntryFilter = pill.dataset.filter || 'all';
+      updateEntryList();
+    });
+  });
+
   ['compareEntryA', 'compareEntryB'].forEach(id => {
     document.getElementById(id)?.addEventListener('change', updateComparePanel);
   });
@@ -330,5 +445,8 @@ function refreshUI() {
   setCaptureFormDisabled(state.workflowMode === 'review' && !state.reviewEditMode);
   if (state.engine) state.engine.renderPins();
 }
+
+window.updateEntryList = updateEntryList;
+window.openPatientHistoryEntry = openPatientHistoryEntry;
 
 // ==========================================================================

@@ -115,9 +115,51 @@ function openImportSessionPicker() {
   input.click();
 }
 
-function openExportModal() {
-  document.getElementById('exportModal')?.showModal();
+/**
+ * Open the shared export modal.
+ * @param {{ audience?: 'patient'|'clinician' }} [options]
+ * Patient audience uses visit-friendly copy and does not imply auto-send.
+ */
+function openExportModal(options = {}) {
+  const audience = options.audience === 'patient' ? 'patient' : 'clinician';
+  const modal = document.getElementById('exportModal');
+  if (!modal) return;
+
+  const title = document.getElementById('exportModalTitle');
+  const note = document.getElementById('exportModalNote');
+  const pdfLabel = document.getElementById('exportPdfLabel');
+  const pngLabel = document.getElementById('exportPngLabel');
+  const advanced = document.getElementById('exportAdvancedJson');
+
+  modal.dataset.audience = audience;
+  document.body.classList.toggle('export-modal-patient', audience === 'patient');
+
+  if (audience === 'patient') {
+    if (title) title.textContent = 'Share for your visit';
+    if (note) {
+      note.textContent =
+        'Download a PDF or body-map image to bring or send yourself. Nothing is sent to a clinician automatically — files stay on this device until you share them.';
+    }
+    if (pdfLabel) pdfLabel.textContent = 'Pain report (PDF)';
+    if (pngLabel) pngLabel.textContent = 'Body map image (PNG)';
+  } else {
+    if (title) title.textContent = 'Share with clinician';
+    if (note) {
+      note.textContent =
+        'Give your clinician a clear pain map and timeline. Nothing leaves this device until you save or share a file.';
+    }
+    if (pdfLabel) pdfLabel.textContent = 'Clinical report (PDF)';
+    if (pngLabel) pngLabel.textContent = 'Anatomy snapshot (PNG)';
+  }
+
+  if (advanced) advanced.open = false;
+  modal.showModal();
+  if (window.lucide) lucide.createIcons();
 }
+
+document.getElementById('exportModal')?.addEventListener('close', () => {
+  document.body.classList.remove('export-modal-patient');
+});
 
 window.exportSessionJson = exportSessionJson;
 window.exportSessionJsonString = exportSessionJsonString;

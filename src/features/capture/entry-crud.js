@@ -131,9 +131,31 @@ function updateEntryButtons() {
   if (btnDelete) btnDelete.disabled = !entry;
   if (btnRemove) btnRemove.disabled = !entryStore.selectedRegionIds.length;
   updateUndoRedoButtons();
-  if (entryStore.dirty) setSaveStatus?.('unsaved');
-  else if (isSaved) setSaveStatus?.('saved');
+  syncSaveStatusFromStore();
 }
+
+/** Unify New entry / Unsaved changes / Saved — never use this channel for feedback. */
+function syncSaveStatusFromStore() {
+  const entry = entryStore.getActiveEntry();
+  const isSaved = Boolean(entry && entryStore.isEntrySaved(entry));
+  if (!entry) {
+    // After an explicit save, callers set "Saved" then clear the active entry —
+    // leave that status alone. Only clear stale unsaved when the store is clean.
+    if (!entryStore.dirty && entryStore.draftEntry == null) return;
+    if (entryStore.dirty) setSaveStatus?.('unsaved');
+    return;
+  }
+  if (entryStore.dirty) {
+    if (!isSaved && !entryStore.hasUnsavedDraft?.()) setSaveStatus?.('new');
+    else setSaveStatus?.('unsaved');
+    return;
+  }
+  if (isSaved) setSaveStatus?.('saved');
+  else if (entryStore.hasUnsavedDraft?.()) setSaveStatus?.('unsaved');
+  else setSaveStatus?.('new');
+}
+
+window.syncSaveStatusFromStore = syncSaveStatusFromStore;
 
 function updateUndoRedoButtons() {
   const undo = document.getElementById('btnUndo');
@@ -242,6 +264,7 @@ function startNewEntry() {
   resetFormFields();
   document.getElementById('avatarHint')?.classList.add('hidden');
   hideAnatomyTip?.();
+  setSaveStatus?.('new');
   showToast?.('New entry started.', { type: 'info', duration: 2500 });
   refreshUI();
 }

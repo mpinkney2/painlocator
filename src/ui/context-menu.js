@@ -23,9 +23,14 @@ function initMarkerContextMenu() {
     if (action === 'note') { selectRegionOnly(id); document.getElementById('notesInput').focus(); }
     if (action === 'delete') { entryStore.selectRegion(id); removeSelectedRegions(); }
   });
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('#markerContextMenu')) hideContextMenu();
-  });
+  document.addEventListener('pointerdown', (e) => {
+    const menu = document.getElementById('markerContextMenu');
+    if (!menu || menu.hidden) return;
+    if (e.target.closest('#markerContextMenu')) return;
+    hideContextMenu();
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
 }
 
 function initKeyboardShortcuts() {

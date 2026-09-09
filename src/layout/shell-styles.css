@@ -111,12 +111,91 @@ body.shell-patient .show-clinical {
   display: none !important;
 }
 
-/* Clinician-only header actions */
+/* Clinician-only header actions — patient uses #btnPatientShare → same export modal */
 body.shell-patient #btnExport,
 body.shell-patient #btnImport,
 body.shell-patient #btnInsights,
 body.shell-patient #btnClear {
   display: none !important;
+}
+
+/* Patient-triggered export modal: keep actions tappable (modal lives outside clinical panel) */
+body.shell-patient #exportModal .export-actions,
+body.export-modal-patient #exportModal .export-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+body.shell-patient #exportModal .btn,
+body.export-modal-patient #exportModal .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.export-advanced {
+  margin-top: 4px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+.export-advanced summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  list-style: none;
+}
+.export-advanced summary::-webkit-details-marker { display: none; }
+
+/* Patient history cards on Review */
+.patient-history-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.patient-history-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.patient-history-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.patient-entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: min(40vh, 320px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.patient-entry-card .entry-card-symptoms {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.35;
+}
+.patient-entry-actions {
+  display: flex;
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+.patient-review-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+body.shell-patient #btnPatientShare {
+  display: inline-flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Collapse side panels & timeline — single-column anatomy focus */
@@ -182,8 +261,9 @@ body.shell-patient .anatomy-viewer {
   align-items: stretch;
   width: 100%;
   min-width: 0;
-  /* Clear tool dock + stacked locate CTA (prompt + button + hint) */
-  padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px));
+  /* Reserve room for locate CTA + tool dock without clipping the full body */
+  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+  padding-left: 52px; /* body-type gallery rail */
   box-sizing: border-box;
 }
 
@@ -191,15 +271,22 @@ body.shell-patient .avatar-stage {
   flex: 1 1 auto;
   width: 100%;
   min-width: 0;
-  min-height: clamp(280px, 58vh, 760px);
+  min-height: clamp(300px, 62vh, 780px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 body.shell-patient .avatar-stage .cae-clinical-viewport,
-body.shell-patient .avatar-stage .cae-image-frame {
+body.shell-patient .avatar-stage .cae-image-frame,
+body.shell-patient .avatar-stage .cae-anatomy-image,
+body.shell-patient .avatar-stage canvas {
   margin-inline: auto;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Simplified header */
@@ -260,14 +347,14 @@ body.shell-patient .capture-tools .region-tool[data-tool="polygon"] {
 body.shell-patient .region-tools.capture-tools,
 body.shell-patient .capture-tools {
   top: auto;
-  /* Clear stacked locate CTA (prompt + button + hint + safe area) */
-  bottom: calc(168px + env(safe-area-inset-bottom, 0px));
+  /* Sit above stacked locate CTA without colliding with intensity/sheet chrome */
+  bottom: calc(108px + env(safe-area-inset-bottom, 0px));
   z-index: 95;
   left: 50%;
   transform: translateX(-50%);
   flex-wrap: wrap;
   justify-content: center;
-  max-width: calc(100% - 24px);
+  max-width: min(100% - 64px, 420px); /* clear body-type gallery + avoid horizontal scroll */
   padding: 6px;
   border-radius: 999px;
   gap: 4px;
@@ -276,6 +363,7 @@ body.shell-patient .capture-tools {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   touch-action: manipulation;
+  overflow-x: visible;
 }
 
 body.shell-patient .capture-tools .region-tool {
@@ -316,7 +404,7 @@ body.shell-patient .display-mode-dock .display-mode-btn {
 
 body.shell-patient.spatial-primary .capture-tools {
   /* Shorter dock without Region/Enlarge — sit clearer above locate CTA */
-  bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(100px + env(safe-area-inset-bottom, 0px));
 }
 
 body.shell-patient .avatar-hint {
@@ -331,11 +419,24 @@ body.shell-patient .avatar-hint {
 body.shell-patient .quick-view-bar {
   display: grid !important;
   margin-bottom: 4px;
+  /* Single coherent view-snap control for patient (sidebar Body View demoted) */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--chrome-gap, 8px);
 }
 
 body.shell-patient .quick-view-bar .view-btn {
-  min-height: 44px;
+  min-height: var(--touch-target, 44px);
   font-weight: 700;
+  border-radius: var(--radius-control, 10px);
+}
+
+/* Patient: prefer stage gallery + quickViewBar over duplicate sidebar radios/views */
+body.shell-patient #accView {
+  display: none !important;
+}
+body.shell-patient #modelSelector {
+  /* Keep radios for wiring/a11y sync; gallery is the primary control */
+  display: none;
 }
 
 /* Sticky locate CTA — stacked column so prompt/button/hint never collide on phones */
@@ -1046,8 +1147,8 @@ body.shell-patient #patientDescribeBar {
   pointer-events: none;
 }
 body.shell-patient.patient-step-describe #patientDescribeBar:not([hidden]) {
-  display: block;
-  pointer-events: auto;
+  /* Sheet footer owns Continue — keep floating bar from covering intensity controls. */
+  display: none !important;
 }
 body.shell-patient #patientDescribeBar .btn {
   min-height: 48px;
@@ -1096,7 +1197,7 @@ body.shell-clinician .shell-only-patient {
   border-radius: 12px;
   box-shadow: var(--shadow-md);
   padding: 6px;
-  z-index: 80;
+  z-index: 200;
 }
 .presentation-menu button {
   text-align: left;
@@ -1187,7 +1288,7 @@ body.shell-patient.patient-step-review #patientSheet:not([hidden]) {
   bottom: 0;
   top: auto;
   max-height: min(72vh, 640px);
-  z-index: 70;
+  z-index: 120;
   padding: 8px 16px calc(12px + env(safe-area-inset-bottom, 0px));
   border-radius: 20px 20px 0 0;
   background: var(--surface, #fffdf9);
@@ -1198,7 +1299,8 @@ body.shell-patient #patientSheetBackdrop:not([hidden]) {
   display: block !important;
   position: fixed;
   inset: 0;
-  z-index: 65;
+  z-index: 115;
+  pointer-events: auto;
   background: var(--overlay-backdrop, rgba(28,25,23,.42));
 }
 body.shell-patient .patient-sheet-body {
@@ -1489,4 +1591,197 @@ body.theme-dark .anatomy-depth-btn.is-active,
 body.theme-dark .anatomy-depth-btn[aria-checked="true"] {
   background: #334155;
   border-color: #94a3b8;
+}
+
+
+/* When describe/review sheet is open, hide map capture chrome so it cannot cover intensity or intercept taps. */
+body.shell-patient.patient-step-describe .capture-tools,
+body.shell-patient.patient-step-review .capture-tools,
+body.shell-patient.patient-step-describe #patientLocateCta,
+body.shell-patient.patient-step-review #patientLocateCta {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Presentation menu must stay above anatomy chrome */
+.presentation-menu,
+.presentation-menu.open,
+.presentation-menu:not([hidden]) {
+  z-index: 200 !important;
+}
+.header {
+  position: relative;
+  z-index: 40;
+}
+
+
+/* Single body-view control set: sidebar on clinician desktop; quick bar for patient / narrow */
+body.shell-clinician:not(.shell-patient) #quickViewBar {
+  display: none !important;
+}
+@media (max-width: 900px) {
+  body.shell-clinician #quickViewBar.mobile-only,
+  body.shell-clinician #quickViewBar {
+    display: grid !important;
+  }
+}
+
+/* Never show patient locate prompts in clinician review/report */
+body.shell-clinician #patientLocateCta,
+body.shell-clinician .patient-locate-cta,
+body.shell-clinician .patient-locate-prompt,
+body.shell-clinician #patientDescribeBar,
+body.shell-clinician #patientStepIndicator,
+body.shell-clinician #patientSheet,
+body.shell-clinician #patientSheetBackdrop {
+  display: none !important;
+}
+
+/* Clinician Report: demote advanced anatomy + engineering region fields */
+body.shell-clinician.wf-clinical #accDetail,
+body.shell-clinician.wf-clinical #accPainStyle,
+body.shell-clinician.wf-clinical #accAIOverlays,
+body.shell-clinician.wf-clinical #accVisualization {
+  opacity: 0.92;
+}
+body.shell-clinician.wf-clinical #regionMetaPanel,
+body.shell-clinician.wf-clinical .region-meta,
+body.shell-clinician.wf-clinical #regionShapeSelect,
+body.shell-clinician.wf-clinical #regionLayerSelect {
+  display: none !important;
+}
+body.shell-clinician.wf-clinical.review-editing .capture-tools {
+  display: flex !important;
+}
+body.shell-clinician.wf-clinical.review-editing .review-tools {
+  display: none !important;
+}
+
+/* Body-type silhouette gallery — left edge of anatomy stage */
+.body-type-gallery {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 4px;
+  max-height: min(70%, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--radius-control, 10px);
+  background: color-mix(in srgb, var(--surface-elevated, #fff) 92%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  pointer-events: auto;
+}
+.body-type-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 40px;
+  min-height: var(--touch-target, 44px);
+  padding: 4px 6px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-control, 10px) - 2px);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.1;
+  touch-action: manipulation;
+}
+.body-type-option:hover {
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+.body-type-option.is-selected,
+.body-type-option[aria-pressed="true"] {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.body-type-silhouette {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 22px;
+  height: 36px;
+}
+.body-type-silhouette svg {
+  display: block;
+  width: auto;
+  height: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.6;
+}
+.body-type-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+body.shell-clinician .avatar-wrap,
+body.shell-clinician .anatomy-viewer {
+  padding-left: 56px;
+}
+@media (max-width: 600px) {
+  .body-type-gallery {
+    left: 2px;
+    gap: 2px;
+    padding: 2px;
+    max-height: min(62%, 340px);
+  }
+  .body-type-option {
+    min-width: 34px;
+    min-height: 40px;
+    padding: 3px 4px;
+  }
+  .body-type-silhouette {
+    width: 16px;
+    height: 28px;
+  }
+  .body-type-label {
+    font-size: 8px;
+  }
+  body.shell-patient .avatar-wrap,
+  body.shell-patient .anatomy-viewer,
+  body.shell-clinician .avatar-wrap,
+  body.shell-clinician .anatomy-viewer {
+    padding-left: 42px;
+  }
+}
+
+/* Shared button / focus density across warm patient + teal clinician shells */
+body.shell-patient .btn,
+body.shell-clinician .btn {
+  min-height: var(--btn-min-height, 40px);
+  border-radius: var(--radius-control, 10px);
+}
+body.shell-patient .btn:focus-visible,
+body.shell-clinician .btn:focus-visible,
+body.shell-patient .body-type-option:focus-visible,
+body.shell-clinician .body-type-option:focus-visible,
+body.shell-patient .view-btn:focus-visible,
+body.shell-clinician .view-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+body.shell-patient .patient-sheet-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: var(--surface, #fffdf9);
+}
+body.shell-patient #btnPatientSave {
+  position: relative;
+  z-index: 3;
 }

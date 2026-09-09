@@ -73,31 +73,55 @@ function applyWorkflowMode(mode) {
   document.getElementById('btnReviewWF')?.classList.toggle('active', mode === 'review');
   document.getElementById('btnClinicalWF')?.classList.toggle('active', mode === 'clinical');
 
-  const titles = {
-    capture: 'Capture — Log Pain',
-    review: 'Review — History & Trends',
-    clinical: 'Clinical — Report & Share'
-  };
+  const isPatient = typeof state !== 'undefined' && state.presentationMode === 'patient';
+  const titles = isPatient
+    ? {
+        capture: 'Locate — Mark pain',
+        review: 'Review — History & Trends',
+        clinical: 'Describe — How it feels'
+      }
+    : {
+        capture: 'Review — Patient marks',
+        review: 'Compare — Visits & trends',
+        clinical: 'Report — Share findings'
+      };
   const titleEl = document.getElementById('clinicalDocTitle');
   if (titleEl) titleEl.textContent = titles[mode];
 
   const progress = document.getElementById('workflowProgressHint');
   if (progress) {
-    const hints = {
-      capture: 'Step 1 of 3 — Mark pain, set intensity, then save',
-      review: 'Step 2 of 3 — Review timeline and compare entries',
-      clinical: 'Step 3 of 3 — Generate and share a clinician summary'
-    };
+    const hints = isPatient
+      ? {
+          capture: 'Step 1 of 3 — Mark pain, set intensity, then save',
+          review: 'Step 2 of 3 — Review timeline and compare entries',
+          clinical: 'Step 3 of 3 — Describe how it feels'
+        }
+      : {
+          capture: 'Review — Inspect patient-reported marks on anatomy',
+          review: 'Compare — Select visits and review change over time',
+          clinical: 'Report — Generate and share a clinician summary'
+        };
     progress.textContent = hints[mode];
   }
 
-  const hints = {
-    capture: 'Choose a tool, mark where you feel pain, then describe intensity and symptoms',
-    review: 'Select an entry from the timeline or list to review patterns',
-    clinical: 'Clinical tools for annotation, pattern notes, and clinician sharing'
-  };
+  const hints = isPatient
+    ? {
+        capture: 'Choose a tool, mark where you feel pain, then describe intensity and symptoms',
+        review: 'Select an entry from the timeline or list to review patterns',
+        clinical: 'Describe intensity, quality, and notes for this entry'
+      }
+    : {
+        capture: 'Review marks on the body. Use Edit Entry when you need to change regions.',
+        review: 'Compare visits from the timeline. Editing stays behind Edit Entry.',
+        clinical: 'Build and share the clinical report. Capture tools stay demoted.'
+      };
   const hint = document.getElementById('avatarHint');
-  if (hint) hint.textContent = hints[mode];
+  // Spatial-primary chrome owns live locate hints; avoid clobbering with workflow copy there.
+  const spatialOwnsHint =
+    isPatient &&
+    mode === 'capture' &&
+    document.body.classList.contains('spatial-primary');
+  if (hint && !spatialOwnsHint) hint.textContent = hints[mode];
 
   // Tab accessibility
   ['btnCaptureWF', 'btnReviewWF', 'btnClinicalWF'].forEach((id, i) => {
@@ -147,6 +171,19 @@ function applyWorkflowMode(mode) {
 
   const accNotes = document.getElementById('accNotes');
   if (accNotes) accNotes.classList.toggle('collapsed', mode !== 'capture');
+
+  // Clinician Report: keep advanced anatomy / region engineering demoted.
+  if (!isPatient) {
+    ['accDetail', 'accPainStyle', 'accAIOverlays', 'accVisualization', 'accRegions'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (mode === 'clinical') el.classList.add('collapsed');
+    });
+    const bodySettings = document.getElementById('bodySettings');
+    if (bodySettings && mode === 'clinical' && window.matchMedia('(max-width: 1100px)').matches) {
+      bodySettings.open = false;
+    }
+  }
 
   setCaptureFormDisabled(mode === 'review');
   if (state.engine) state.engine.update({ physicianMode: state.physicianMode });

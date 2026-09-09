@@ -101,9 +101,13 @@ function init() {
       }
       state.engine.update({ modelType: state.modelType });
       state.vizController?.refreshAvailability(state.modelType, state.view);
+      syncBodyTypeGallery(state.modelType);
       refreshUI();
     });
   });
+
+  initBodyTypeGallery();
+  syncBodyTypeGallery(state.modelType);
 
   document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -208,34 +212,35 @@ function init() {
   });
 
   document.getElementById('btnExport').addEventListener('click', () => {
-    openExportModal();
+    openExportModal({ audience: 'clinician' });
     trackEvent?.('report_opened');
   });
   ['btnExportPdf', 'btnExportPdfModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
-      setSaveStatus?.('report', 'Preparing report…');
+      showToast?.('Preparing report…', { type: 'info', duration: 2000 });
       await printClinicalReport();
-      setSaveStatus?.('report', 'Report ready');
+      showToast?.('Report ready — use your browser print dialog to save as PDF.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'pdf' });
       document.getElementById('exportModal')?.close();
+      syncSaveStatusFromStore?.();
     });
   });
   ['btnExportJson', 'btnExportJsonModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => {
       exportSessionJson();
-      setSaveStatus?.('exported');
       showToast?.('Session JSON exported.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'json' });
       document.getElementById('exportModal')?.close();
+      syncSaveStatusFromStore?.();
     });
   });
   ['btnExportPng', 'btnExportPngModal'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
       await captureClinicalSnapshot();
-      setSaveStatus?.('exported');
       showToast?.('Anatomy snapshot saved.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'png' });
       document.getElementById('exportModal')?.close();
+      syncSaveStatusFromStore?.();
     });
   });
   ['btnImport', 'btnImportSidebar'].forEach(id => {
@@ -299,6 +304,46 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+/** Sync left-edge body-type gallery with #modelSelector radios (male/female/teen/child/senior). */
+function syncBodyTypeGallery(model) {
+  const value = model || 'male';
+  document.querySelectorAll('#bodyTypeGallery .body-type-option').forEach((btn) => {
+    const on = btn.dataset.model === value;
+    btn.classList.toggle('is-selected', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+  });
+  const radio = document.querySelector(`#modelSelector input[name="patient_model"][value="${value}"]`);
+  if (radio && !radio.checked) radio.checked = true;
+}
+
+function initBodyTypeGallery() {
+  const gallery = document.getElementById('bodyTypeGallery');
+  if (!gallery || gallery.dataset.bound === '1') return;
+  gallery.dataset.bound = '1';
+  gallery.querySelectorAll('.body-type-option').forEach((btn) => {
+    btn.setAttribute('role', 'radio');
+    btn.addEventListener('click', () => {
+      const model = btn.dataset.model;
+      if (!model) return;
+      const radio = document.querySelector(`#modelSelector input[name="patient_model"][value="${model}"]`);
+      if (radio) {
+        if (!radio.checked) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          syncBodyTypeGallery(model);
+        }
+      } else {
+        state.modelType = model;
+        state.engine?.update({ modelType: model });
+        syncBodyTypeGallery(model);
+        refreshUI();
+      }
+    });
+  });
+}
+
 function setBodyView(view) {
   if (!view) return;
   document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(b => {
@@ -328,3 +373,4 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 window.setBodyView = setBodyView;
+window.syncBodyTypeGallery = syncBodyTypeGallery;
