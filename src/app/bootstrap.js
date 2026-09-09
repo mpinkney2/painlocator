@@ -305,6 +305,11 @@ function setBodyView(view) {
     b.classList.toggle('active', b.dataset.view === view);
     b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false');
   });
+  document.querySelectorAll('#simpleViewBar [data-view], #simpleViewCompass [data-view]').forEach((b) => {
+    const on = b.getAttribute('data-view') === view;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
   state.view = view;
   state.engine?.update({ viewType: state.view });
   state.vizController?.refreshAvailability(state.modelType, state.view);

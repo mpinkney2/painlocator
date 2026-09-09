@@ -1953,6 +1953,31 @@ console.log('PainLocator tests\n');
     assert.ok(flow.includes('syncAnatomyLayout'));
     assert.ok(flow.includes("ensureActiveEntry('adult-male')"));
     assert.ok(!flow.includes("ensureActiveEntry({ view: 'anterior'"));
+    assert.ok(html.includes('id="simpleViewCompass"'));
+    assert.ok(html.includes('simple-compass-btn') && html.includes('data-view="left"'));
+    assert.ok(css.includes('.simple-view-compass'));
+    const headlineCss = css.slice(css.indexOf('.simple-pain-headline h1'), css.indexOf('.simple-pain-headline p'));
+    assert.ok(headlineCss.includes('white-space: nowrap'));
+    assert.ok(!headlineCss.includes('max-width: 14ch'));
+    assert.ok(!css.includes('max-width: 11ch'));
+    const models = readFileSync(join(root, 'src/engine/annotations/pain-models.js'), 'utf8');
+    assert.ok(models.includes('function aspectCorrectedCircleRadii'));
+    assert.ok(renderer.includes('aspectCorrectedCircleRadii'));
+    assert.ok(flow.includes('simpleViewCompass'));
+  });
+
+  test('simple pain-map: tap marks correct for portrait SVG stretch', () => {
+    const s = createSandbox();
+    const portrait = s.aspectCorrectedCircleRadii(200, 400, 0.03);
+    assert.equal(portrait.rx, 0.03);
+    assert.ok(Math.abs(portrait.ry - 0.015) < 1e-9);
+    // Screen radii: rx*W === ry*H
+    assert.ok(Math.abs(portrait.rx * 200 - portrait.ry * 400) < 1e-9);
+    const landscape = s.aspectCorrectedCircleRadii(400, 200, 0.03);
+    assert.ok(Math.abs(landscape.ry - 0.06) < 1e-9);
+    assert.equal(s.isCircularPainMark({ shape: 'circle', radius: 0.02 }), true);
+    assert.equal(s.isCircularPainMark({ shape: 'polygon' }), false);
+    assert.equal(s.isCircularPainMark({ shape: 'ellipse', radius: 0.04, radiusY: 0.02 }), false);
   });
 
   test('simple pain-map: marker layer fills frame (not avatar-stage svg 95%)', () => {

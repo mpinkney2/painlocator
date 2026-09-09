@@ -208,6 +208,13 @@ class PainRegionLayer {
       rx = Math.max(rx, 0.03);
       ry = Math.max(ry, 0.03);
     }
+    if (typeof isCircularPainMark === "function" ? isCircularPainMark(region) : !isPolygon) {
+      const visualR = Math.max(rx, ry);
+      const box = this.el?.getBoundingClientRect?.();
+      if (typeof aspectCorrectedCircleRadii === "function" && box && box.width > 1 && box.height > 1) {
+        ({ rx, ry } = aspectCorrectedCircleRadii(box.width, box.height, visualR));
+      }
+    }
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", "pain-region"
       + (selected ? " selected" : "")

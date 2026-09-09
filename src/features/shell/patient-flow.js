@@ -1094,15 +1094,12 @@
       });
     }
 
-    var simpleViewBar = document.getElementById('simpleViewBar');
-    if (simpleViewBar) {
-      simpleViewBar.addEventListener('click', function (e) {
+    function bindSimpleViewGroup(root) {
+      if (!root) return;
+      root.addEventListener('click', function (e) {
         var btn = e.target && e.target.closest ? e.target.closest('[data-view]') : null;
-        if (!btn) return;
+        if (!btn || !root.contains(btn)) return;
         var view = btn.getAttribute('data-view');
-        simpleViewBar.querySelectorAll('[data-view]').forEach(function (el) {
-          el.classList.toggle('is-active', el === btn);
-        });
         if (typeof global.setBodyView === 'function') global.setBodyView(view);
         else if (typeof setBodyView === 'function') setBodyView(view);
         requestAnimationFrame(function () {
@@ -1111,6 +1108,8 @@
         });
       });
     }
+    bindSimpleViewGroup(document.getElementById('simpleViewBar'));
+    bindSimpleViewGroup(document.getElementById('simpleViewCompass'));
 
     document.addEventListener('presentationchange', function () {
       placePatientDrawerChrome();
