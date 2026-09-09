@@ -1638,8 +1638,8 @@ body.shell-patient.simple-view-map #timelinePanel {
   }
 
   body.shell-patient.simple-pain-map .simple-peek-icon {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     stroke: currentColor;
     stroke-width: 1.2;
     stroke-linecap: round;

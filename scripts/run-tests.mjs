@@ -1956,6 +1956,13 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('id="simpleViewCompass"'));
     assert.ok(html.includes('id="simpleDrawerPeekBar"'));
     assert.ok(html.includes('id="btnPeekUndo"') && html.includes('id="btnPeekRedo"'));
+    // Peek undo/redo must stay open curves (not a closed circular arrow).
+    const peekUndo = html.slice(html.indexOf('id="btnPeekUndo"'), html.indexOf('id="simpleDrawerGrab"'));
+    const peekRedo = html.slice(html.indexOf('id="btnPeekRedo"'), html.indexOf('id="simpleDrawerSheet"'));
+    assert.ok(peekUndo.includes('v10.5h10.5'));
+    assert.ok(peekRedo.includes('v10.5h-10.5'));
+    assert.ok(!peekUndo.includes('a9 9 0 1 0'));
+    assert.ok(!peekRedo.includes('a9 9 0 1 1'));
     assert.ok(css.includes('simple-peek-icon-btn') && css.includes('stroke-width: 1.2'));
     assert.ok(css.includes('bottom: 3.65rem'));
     assert.ok(html.includes('simple-compass-btn') && html.includes('data-view="left"'));
