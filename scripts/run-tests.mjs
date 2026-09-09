@@ -2077,6 +2077,19 @@ console.log('PainLocator tests\n');
       'DEGRADED'
     );
     assert.equal(u.classifySpatialHealth({ spatialReady: false, state: 'failed-spatial' }), 'FAILED');
+    assert.equal(
+      u.classifySpatialHealth({ spatialReady: true, exteriorLoaded: true, exteriorModelId: 'adult-male' }),
+      'HEALTHY'
+    );
+    const liveEngine = {
+      displayMode: 'plate',
+      spatialBootState: u.createBootState({ state: 'idle' }),
+      spatialRenderer: { ready: true, scene: { modelId: 'adult-male', meshById: { size: 18 } } }
+    };
+    const liveSnap = u.collectDiagnostics(liveEngine);
+    assert.equal(liveSnap.spatialReady, true);
+    assert.equal(liveSnap.health, 'HEALTHY');
+    assert.equal(liveSnap.exteriorLoaded, true);
     const engine = { spatialBootState: null, trigger() {} };
     u.setBootState(engine, u.BOOT_STATES.LOADING_THREE, { stage: 'loading-three' });
     assert.equal(engine.spatialBootState.state, 'loading-three');
