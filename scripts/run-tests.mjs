@@ -684,8 +684,9 @@ console.log('PainLocator tests\n');
     assert.equal(patient.capture.label, 'Locate');
     assert.equal(patient.clinical.label, 'Describe');
     assert.equal(patient.review.label, 'Review');
-    assert.equal(clinician.capture.label, 'Anatomy');
-    assert.equal(clinician.review.label, 'History');
+    // Clinician workflow: Review → Compare → Report
+    assert.equal(clinician.capture.label, 'Review');
+    assert.equal(clinician.review.label, 'Compare');
     assert.equal(clinician.clinical.label, 'Report');
   });
 
@@ -1909,16 +1910,21 @@ console.log('PainLocator tests\n');
     assert.equal(Eng.shouldPreferSpatial(), false);
   });
 
-  test('bp3d engagement: prefers spatial unless plate opted in (WebGL probe not a gate)', () => {
+  test('bp3d engagement: defaults to plate; spatial only when requested (WebGL probe not a gate)', () => {
     sandbox.location.search = '';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    // Probe must not flip the product default — Spatial is opt-in via query/UI.
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    sandbox.location.search = '?spatial=1';
     assert.equal(Eng.shouldPreferSpatial(), true);
-    // Embedded previews often fail the WebGL probe — still prefer Spatial and let mount decide.
+    sandbox.location.search = '?displayMode=spatial';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
     assert.equal(Eng.shouldPreferSpatial(), true);
   });
 
-  test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
+  test('bp3d engagement: preferSpatialAcrossShells enables plate by default and spatial when requested', async () => {
     sandbox.location.search = '';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
     let called = null;
@@ -1926,10 +1932,19 @@ console.log('PainLocator tests\n');
       async setDisplayMode(mode) {
         called = mode;
         return true;
+      },
+      enablePlateMode() {
+        called = 'plate';
       }
     };
-    const ok = await Eng.preferSpatialAcrossShells(engine);
-    assert.equal(ok, true);
+    const okDefault = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(okDefault, false);
+    assert.equal(called, 'plate');
+
+    sandbox.location.search = '?spatial=1';
+    called = null;
+    const okSpatial = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(okSpatial, true);
     assert.equal(called, 'spatial');
   });
 
