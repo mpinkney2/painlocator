@@ -399,6 +399,17 @@ console.log('PainLocator tests\n');
     assert.equal(P.nearestSnapView(Math.PI - 0.1), 'back');
   });
 
+  test('spatial projection: cameraDistanceForBounds frames taller bodies farther', () => {
+    const close = P.cameraDistanceForBounds({ x: 0.5, y: 1.0, z: 0.3 }, 32, 0.6, 1);
+    const tall = P.cameraDistanceForBounds({ x: 0.5, y: 1.8, z: 0.3 }, 32, 0.6, 1);
+    const wide = P.cameraDistanceForBounds({ x: 2.0, y: 1.0, z: 0.3 }, 32, 0.6, 1);
+    assert.ok(tall > close);
+    assert.ok(wide > close);
+    assert.ok(P.cameraDistanceForBounds({ x: 0, y: 0, z: 0 }, 32, 1) >= 0.8);
+    const padded = P.cameraDistanceForBounds({ x: 0.5, y: 1.8, z: 0.3 }, 32, 0.6, 1.16);
+    assert.ok(Math.abs(padded - tall * 1.16) < 1e-9);
+  });
+
   test('spatial projection: yawForView matches VIEW_YAW table', () => {
     assert.equal(P.yawForView('front'), 0);
     assert.equal(P.yawForView('back'), Math.PI);
@@ -2231,7 +2242,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-08-drawer-toggle');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-output-harden-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2246,7 +2257,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-08-drawer-toggle'));
+    assert.ok(html.includes('?v=2026-09-09-output-harden-1'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2352,7 +2363,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-08-drawer-toggle';
+    const ver = '2026-09-09-output-harden-1';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2375,6 +2386,37 @@ console.log('PainLocator tests\n');
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('_initLayerController'));
     assert.ok(renderer.includes('Surface (styled exterior)') || renderer.includes('Muscle (BP3D)'));
+  });
+
+  test('spatial output: WebGL dispose never force-loses context', () => {
+    const sceneSrc = readFileSync(join(root, 'src/engine/spatial/spatial-scene-controller.js'), 'utf8');
+    assert.equal(/\brenderer\.forceContextLoss\s*\(/.test(sceneSrc), false);
+    assert.equal(/\bloseContext\s*\(/.test(sceneSrc), false);
+    assert.ok(sceneSrc.includes('Never forceContextLoss'));
+    assert.ok(sceneSrc.includes('fitToBody'));
+    assert.ok(sceneSrc.includes('ACESFilmicToneMapping') || sceneSrc.includes('toneMapping'));
+    assert.ok(sceneSrc.includes('HemisphereLight'));
+  });
+
+  test('spatial output: overlay clears when exterior is interactive, before canonical', () => {
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    const interactiveIdx = renderer.indexOf('options.onInteractive');
+    const canonCallIdx = renderer.indexOf('this._initCanonicalFrameIfEnabled()');
+    const layerCallIdx = renderer.indexOf('this._initLayerController();');
+    assert.ok(interactiveIdx > 0 && canonCallIdx > interactiveIdx);
+    assert.ok(layerCallIdx > canonCallIdx);
+    assert.ok(engine.includes('_revealSpatialViewport'));
+    assert.ok(engine.includes('onInteractive:'));
+    assert.ok(engine.includes('retrying'));
+    assert.ok(renderer.includes('onInteractive'));
+    assert.ok(renderer.includes('fitToBody'));
+  });
+
+  test('spatial output: clinical exterior material is warm-neutral not game-metal', () => {
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('0xcbb7a8'));
+    assert.equal(loader.includes('0xb9c2cc'), false);
   });
 }
 

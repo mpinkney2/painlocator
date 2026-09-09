@@ -211,9 +211,9 @@
         // Clinical-neutral override — avoid game-like GLB materials.
         if (obj.material) {
           const mat = new THREE.MeshStandardMaterial({
-            color: 0xb9c2cc,
-            roughness: 0.82,
-            metalness: 0.04,
+            color: 0xcbb7a8,
+            roughness: 0.76,
+            metalness: 0.02,
             flatShading: false
           });
           if (obj.material.dispose) obj.material.dispose();
