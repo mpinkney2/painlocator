@@ -28,12 +28,18 @@
       this.provenance = null;
       this._ground = null;
       this._lookAtY = 0.95;
+      this._lowPower = false;
+      this._lastFitSize = { w: 0, h: 0 };
+
+      const boot = global.SpatialBootUtils || null;
+      const probe = boot && typeof boot.probeWebGL === "function" ? boot.probeWebGL() : { ok: true, software: false };
+      this._lowPower = !!probe.software;
 
       try {
         this.renderer = new THREE.WebGLRenderer({
-          antialias: true,
+          antialias: !this._lowPower,
           alpha: true,
-          powerPreference: "default",
+          powerPreference: this._lowPower ? "low-power" : "default",
           failIfMajorPerformanceCaveat: false,
           depth: true,
           stencil: false
@@ -51,7 +57,7 @@
       }
       this.renderer.setClearColor(0x000000, 0);
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-      if (THREE.ACESFilmicToneMapping != null) {
+      if (!this._lowPower && THREE.ACESFilmicToneMapping != null) {
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.06;
       }
@@ -258,7 +264,12 @@
       this.canvas.style.height = "100%";
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
-      if (this._exterior) this.fitToBody();
+      const sizeChanged =
+        Math.abs(w - this._lastFitSize.w) > 2 || Math.abs(h - this._lastFitSize.h) > 2;
+      if (this._exterior && sizeChanged) {
+        this._lastFitSize = { w, h };
+        this.fitToBody();
+      }
       this.requestFrame();
     }
 
