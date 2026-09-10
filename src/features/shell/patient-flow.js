@@ -939,13 +939,22 @@
   }
 
   function closeMoreMenu() {
-    var menu = document.getElementById('simpleMoreMenu');
+    var more = document.getElementById('simpleMoreModal');
     var btn = document.getElementById('btnSimpleMore');
-    if (menu) {
-      menu.setAttribute('hidden', '');
-      menu.classList.remove('open');
-    }
+    if (more && more.open && typeof more.close === 'function') more.close();
     if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function openMoreMenu() {
+    var more = document.getElementById('simpleMoreModal');
+    var btn = document.getElementById('btnSimpleMore');
+    if (more && typeof more.showModal === 'function') more.showModal();
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (global.lucide && typeof global.lucide.createIcons === 'function') {
+      global.lucide.createIcons();
+    } else if (typeof window !== 'undefined' && window.lucide && window.lucide.createIcons) {
+      window.lucide.createIcons();
+    }
   }
 
   function initPatientFlow() {
@@ -1040,20 +1049,17 @@
       }
     });
     on('btnSimpleMore', 'click', function (e) {
+      e.preventDefault();
       e.stopPropagation();
-      var menu = document.getElementById('simpleMoreMenu');
-      var btn = document.getElementById('btnSimpleMore');
-      if (!menu) return;
-      var open = menu.hasAttribute('hidden');
-      if (open) {
-        menu.removeAttribute('hidden');
-        menu.classList.add('open');
-      } else {
-        menu.setAttribute('hidden', '');
-        menu.classList.remove('open');
-      }
-      if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      openMoreMenu();
     });
+    var moreModal = document.getElementById('simpleMoreModal');
+    if (moreModal && moreModal.addEventListener) {
+      moreModal.addEventListener('close', function () {
+        var btn = document.getElementById('btnSimpleMore');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+    }
     on('btnSimpleImport', 'click', function () {
       closeMoreMenu();
       var importBtn = document.getElementById('btnImport');
@@ -1085,8 +1091,18 @@
       syncMarkSizePrefsUI();
       syncLikenessPrefsUI();
       var prefs = document.getElementById('simplePrefsModal');
-      if (prefs && typeof prefs.showModal === 'function') prefs.showModal();
+      var openPrefs = function () {
+        if (prefs && typeof prefs.showModal === 'function' && !prefs.open) prefs.showModal();
+      };
+      if (typeof queueMicrotask === 'function') queueMicrotask(openPrefs);
+      else setTimeout(openPrefs, 0);
     });
+    var clinicianMore = document.querySelector('#simpleMoreModal [data-presentation-option]');
+    if (clinicianMore) {
+      clinicianMore.addEventListener('click', function () {
+        closeMoreMenu();
+      });
+    }
     on('btnSimpleHelp', 'click', function () {
       closeMoreMenu();
       var help = document.getElementById('btnHelpMenu');
@@ -1105,6 +1121,8 @@
 
     document.addEventListener('click', function (e) {
       var wrap = document.querySelector('.simple-more-wrap');
+      var more = document.getElementById('simpleMoreModal');
+      if (more && more.open) return;
       if (!wrap || wrap.contains(e.target)) return;
       closeMoreMenu();
     });

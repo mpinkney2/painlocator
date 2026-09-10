@@ -13,10 +13,10 @@ function clamp(v, min, max) {
 
 class AnatomyCoordinateMapper {
   static ENLARGED_ZOOM = 1.85;
-  /** Fallback desktop presentation zoom when fit metrics are unavailable. */
-  static SIMPLE_PAIN_MAP_DESKTOP_ZOOM = 1.45;
-  /** Fallback mobile presentation zoom when fit metrics are unavailable. */
-  static SIMPLE_PAIN_MAP_MOBILE_ZOOM = 1.14;
+  /** Simple map always letterboxes the full plate (no crop). */
+  static SIMPLE_PAIN_MAP_DESKTOP_ZOOM = 1;
+  /** Simple map always letterboxes the full plate (no crop). */
+  static SIMPLE_PAIN_MAP_MOBILE_ZOOM = 1;
 
   constructor(frameEl, imageEl) {
     this.frameEl = frameEl;

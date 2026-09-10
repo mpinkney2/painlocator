@@ -92,6 +92,7 @@ body.shell-patient.simple-pain-map .header {
   padding: 0.85rem 1rem 0.7rem;
   border-bottom: 1px solid var(--border);
   background: var(--header-bg);
+  overflow: visible;
 }
 
 body.shell-patient.simple-pain-map .brand {
@@ -169,52 +170,142 @@ body.shell-patient.simple-pain-map .header-actions {
   z-index: 150;
 }
 
-.simple-more-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  min-width: 180px;
-  padding: 6px;
+body.shell-patient.simple-pain-map .simple-sheet {
+  max-width: 28rem;
+  width: min(92vw, 28rem);
+  max-height: min(88dvh, 42rem);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 18px;
   background: var(--surface-elevated);
   color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  z-index: 140;
-  display: none;
-  flex-direction: column;
-  gap: 2px;
+  box-shadow: 0 18px 48px rgba(24, 42, 66, 0.18);
 }
 
-.simple-more-menu.open {
+body.shell-patient.simple-pain-map .simple-sheet::backdrop {
+  background: color-mix(in srgb, var(--spm-navy) 42%, transparent);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet .modal-head {
+  padding: 1rem 1.15rem 0.85rem;
+  border-bottom: 1px solid var(--spm-border);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet .modal-head h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: var(--spm-navy);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet .modal-body {
+  padding: 1rem 1.15rem 1.2rem;
+  overflow-y: auto;
+  max-height: min(72dvh, 34rem);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet .modal-note {
+  margin: 0 0 0.95rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-actions {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.simple-more-menu[hidden] {
-  display: none !important;
-}
-
-.simple-more-menu [role='menuitem'] {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  text-align: left;
+body.shell-patient.simple-pain-map .simple-sheet-action {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   width: 100%;
-  padding: 0.65rem 0.75rem;
-  border-radius: 8px;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  margin: 0;
+  padding: 0.8rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
   color: var(--text-primary);
+  text-align: left;
   cursor: pointer;
+  font: inherit;
 }
 
-.simple-more-menu [role='menuitem']:hover {
-  background: var(--accent-subtle);
+body.shell-patient.simple-pain-map .simple-sheet-action:hover {
+  background: var(--surface-secondary);
+  border-color: color-mix(in srgb, var(--spm-navy) 22%, var(--spm-border));
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action.is-featured {
+  border-color: var(--spm-amber);
+  background: color-mix(in srgb, var(--spm-amber) 22%, #fff);
+  margin-bottom: 0.75rem;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--text-primary) 8%, var(--surface));
+  color: var(--text-primary);
+  flex: 0 0 auto;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action.is-featured .simple-sheet-action-icon {
+  background: var(--spm-navy);
+  color: var(--spm-white);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action-icon i,
+body.shell-patient.simple-pain-map .simple-sheet-action-icon svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action-copy strong {
+  font-size: 0.98rem;
+  font-weight: 750;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-action-copy em {
+  font-style: normal;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-advanced {
+  margin-top: 1rem;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-advanced summary {
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--text-secondary);
+  padding: 0.25rem 0;
+}
+
+body.shell-patient.simple-pain-map .simple-sheet-advanced .share-text {
+  margin-top: 0.55rem;
 }
 
 .simple-prefs-fieldset {
-  border: 1px solid var(--spm-border);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.85rem 1rem 1rem;
   margin: 0 0 1rem;
@@ -223,7 +314,7 @@ body.shell-patient.simple-pain-map .header-actions {
 .simple-prefs-fieldset legend {
   font-size: 0.92rem;
   font-weight: 700;
-  color: var(--spm-navy);
+  color: var(--text-primary);
   padding: 0 0.35rem;
 }
 
@@ -247,12 +338,12 @@ body.shell-patient.simple-pain-map .header-actions {
   gap: 0.35rem;
   min-height: 2.6rem;
   padding: 0.4rem 0.5rem;
-  border: 1px solid var(--spm-border);
+  border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 0.88rem;
   font-weight: 650;
   cursor: pointer;
-  background: var(--spm-white);
+  background: var(--surface);
 }
 
 .simple-prefs-size-opt:has(input:checked) {
@@ -278,9 +369,9 @@ body.shell-patient.simple-pain-map .header-actions {
   gap: 0.28rem;
   margin: 0;
   padding: 0.4rem 0.2rem 0.45rem;
-  border: 1px solid var(--spm-border);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: var(--spm-white);
+  background: var(--surface);
   cursor: pointer;
   font-size: 0.68rem;
   font-weight: 650;
@@ -454,40 +545,33 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
   }
 
   body.shell-patient.simple-pain-map .simple-pain-headline {
-    position: absolute;
-    top: 0.35rem;
-    left: 4.85rem;
-    right: 2.5rem;
-    z-index: 6;
-    padding: 0;
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    z-index: 2;
+    padding: 0.15rem 0.15rem 0.2rem;
     pointer-events: none;
   }
 
   body.shell-patient.simple-pain-map .simple-pain-headline h1 {
     font-size: clamp(1.85rem, 2.6vw, 2.55rem);
-    text-shadow:
-      0 1px 0 rgba(254, 251, 250, 0.9),
-      0 0 18px rgba(254, 251, 250, 0.75);
   }
 
+  /* Compass sits on the figure stage, above the in-flow intensity dock. */
   body.shell-patient.simple-pain-map .simple-view-compass {
-    bottom: 7.25rem;
+    bottom: 0.65rem;
     left: 0.65rem;
   }
 
   body.shell-patient.simple-pain-map .simple-map-intensity {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 6;
-    padding: 0.85rem 0.85rem 0.7rem;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      color-mix(in srgb, var(--spm-warm-white) 72%, transparent) 34%,
-      var(--spm-warm-white) 100%
-    );
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    z-index: 3;
+    padding: 0.45rem 0.35rem 0.55rem;
+    background: var(--spm-warm-white);
   }
 
   body.shell-patient.simple-pain-map .simple-map-intensity .patient-describe-heading {
@@ -506,12 +590,13 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
   body.shell-patient.simple-pain-map .avatar-wrap,
   body.shell-patient.simple-pain-map .anatomy-viewer {
     flex: 1 1 auto;
-    height: 100%;
+    height: auto;
     min-height: 0;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: min(72dvh, 820px);
+    min-height: 0;
+    max-height: none;
   }
 }
 
@@ -743,12 +828,15 @@ body.shell-patient.simple-pain-map .simple-compass-btn:focus-visible {
 body.shell-patient.simple-pain-map .avatar-stage {
   flex: 1 1 auto;
   min-height: 0;
+  min-width: 0;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 1;
+  padding: 0.2rem 0.35rem;
+  box-sizing: border-box;
 }
 
 body.shell-patient.simple-pain-map .cae-spatial-status,
@@ -787,8 +875,10 @@ body.shell-patient.simple-pain-map .avatar-stage .cae-stage,
 body.shell-patient.simple-pain-map .avatar-stage .cae-clinical-viewport {
   width: 100%;
   height: 100%;
-  min-height: 100%;
+  min-height: 0;
+  min-width: 0;
   position: relative;
+  overflow: hidden;
 }
 
 body.shell-patient.simple-pain-map .avatar-stage img,
@@ -896,8 +986,8 @@ body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame {
   max-height: none;
   /* Snap layout; compass turns must not tween the frame (that was the delayed jump). */
   transition: none;
-  transform-origin: 50% 88%;
-  transform: scale(var(--spm-height, 1)) scaleX(var(--spm-weight, 1));
+  transform-origin: 50% 50%;
+  transform: scaleY(var(--spm-fit-y, 1)) scaleX(var(--spm-fit-x, 1));
 }
 
 /* Touch / notation layer sits above the plate image and MUST fill the frame.

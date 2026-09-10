@@ -19,7 +19,7 @@ const SKIN_PRESETS = {
 };
 
 const WEIGHT_SCALES = { slim: 0.88, average: 1, heavy: 1.12 };
-const HEIGHT_SCALES = { short: 0.92, average: 1, tall: 1.06 };
+const HEIGHT_SCALES = { short: 0.88, average: 0.96, tall: 1 };
 
 const _tintCache = new Map();
 const _tintInflight = new Map();
@@ -63,8 +63,13 @@ function applyLikenessPresentation(root) {
   const pref = getLikenessPref();
   const body = doc.body;
   if (body.style && typeof body.style.setProperty === "function") {
-    body.style.setProperty("--spm-weight", String(WEIGHT_SCALES[pref.weight]));
-    body.style.setProperty("--spm-height", String(HEIGHT_SCALES[pref.height]));
+    const w = WEIGHT_SCALES[pref.weight];
+    const h = HEIGHT_SCALES[pref.height];
+    const contain = Math.min(1, 1 / Math.max(w, 1), 1 / Math.max(h, 1));
+    body.style.setProperty("--spm-weight", String(w));
+    body.style.setProperty("--spm-height", String(h));
+    body.style.setProperty("--spm-fit-x", String(w * contain));
+    body.style.setProperty("--spm-fit-y", String(h * contain));
   }
   if (typeof body.setAttribute === "function") {
     body.setAttribute("data-spm-skin", pref.skin);
