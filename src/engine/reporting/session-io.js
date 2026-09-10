@@ -54,15 +54,15 @@ function importSessionFromObject(session) {
   entryStore._historyIndex = 0;
   entryStore.save();
 
-  const radioValue = model.replace('adult-', '');
+  const canonical = typeof normalizeModelType === 'function' ? normalizeModelType(model) : model;
+  state.modelType = canonical;
+  const radioValue = typeof clinicianRadioValue === 'function'
+    ? clinicianRadioValue(canonical)
+    : canonical.replace('adult-', '').replace(/-male$|-female$/, '') || 'male';
   const modelRadio = document.querySelector(`input[name="patient_model"][value="${radioValue}"]`)
     || document.querySelector(`input[name="patient_model"][value="male"]`);
-  if (modelRadio) {
-    modelRadio.checked = true;
-    state.modelType = modelRadio.value;
-  } else {
-    state.modelType = model;
-  }
+  if (modelRadio) modelRadio.checked = true;
+  if (typeof syncBodyTypeGallery === 'function') syncBodyTypeGallery(canonical);
 
   state.view = view;
   document.querySelectorAll('#viewSelector .view-btn').forEach(btn => {

@@ -40,15 +40,31 @@ window.isEntryContentEmpty = isEntryContentEmpty;
 function normalizeModelType(modelType) {
   // Coerce legacy / mistaken object shapes like { gender: 'male', view: 'anterior' }.
   if (modelType && typeof modelType === "object") {
-    const gender = String(modelType.gender || modelType.sex || modelType.model || "").toLowerCase();
-    if (gender.includes("female")) return "adult-female";
-    if (gender.includes("male")) return "adult-male";
     if (modelType.id || modelType.modelType) {
       return normalizeModelType(modelType.id || modelType.modelType);
     }
+    const nested = modelType.model;
+    if (typeof nested === "string" && nested.includes("-")) {
+      return normalizeModelType(nested);
+    }
+    const gender = String(modelType.gender || modelType.sex || nested || "").toLowerCase();
+    if (gender.includes("female")) return "adult-female";
+    if (gender.includes("male")) return "adult-male";
     return "adult-male";
   }
-  const map = { male: "adult-male", female: "adult-female", child: "child", teen: "teen", senior: "senior" };
+  if (typeof normalizeAnatomyModel === "function") {
+    return normalizeAnatomyModel(modelType);
+  }
+  const map = {
+    male: "adult-male",
+    female: "adult-female",
+    man: "adult-male",
+    woman: "adult-female",
+    child: "child-male",
+    teen: "teen-male",
+    senior: "senior-male",
+    elderly: "senior-male"
+  };
   return map[modelType] || modelType || "adult-male";
 }
 

@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.26-view-turn">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.28-sex-matrix">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -313,38 +313,38 @@
                 <p>Tap the body to mark a location.</p>
               </header>
               <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
-                <div class="body-type-gallery shell-only-patient" id="bodyTypeGallery" role="radiogroup" aria-label="Choose a body profile that fits you">
+                <div class="body-type-gallery shell-only-patient" id="bodyTypeGallery" aria-label="Choose a body profile that fits you">
                   <p class="body-type-gallery-title">Body</p>
-                  <button type="button" class="body-type-option is-selected" data-model="male" aria-pressed="true" title="Man">
-                    <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/adult-male.png" alt="">
-                    </span>
-                    <span class="body-type-label">Man</span>
-                  </button>
-                  <button type="button" class="body-type-option" data-model="female" aria-pressed="false" title="Woman">
-                    <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/adult-female.png" alt="">
-                    </span>
-                    <span class="body-type-label">Woman</span>
-                  </button>
-                  <button type="button" class="body-type-option" data-model="teen" aria-pressed="false" title="Teen">
-                    <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/teen.png" alt="">
-                    </span>
-                    <span class="body-type-label">Teen</span>
-                  </button>
-                  <button type="button" class="body-type-option" data-model="child" aria-pressed="false" title="Child">
-                    <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/child.png" alt="">
-                    </span>
-                    <span class="body-type-label">Child</span>
-                  </button>
-                  <button type="button" class="body-type-option" data-model="senior" aria-pressed="false" title="Elderly">
-                    <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/senior.png" alt="">
-                    </span>
-                    <span class="body-type-label">Elderly</span>
-                  </button>
+                  <div class="body-sex-toggle" role="group" aria-label="Woman or man">
+                    <button type="button" class="body-sex-btn" data-sex="female" aria-pressed="false">Woman</button>
+                    <button type="button" class="body-sex-btn is-active" data-sex="male" aria-pressed="true">Man</button>
+                  </div>
+                  <div class="body-stage-list" role="radiogroup" aria-label="Life stage">
+                    <button type="button" class="body-type-option is-selected" data-stage="adult" aria-pressed="true" title="Adult">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/adult-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Adult</span>
+                    </button>
+                    <button type="button" class="body-type-option" data-stage="teen" aria-pressed="false" title="Teen">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/teen-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Teen</span>
+                    </button>
+                    <button type="button" class="body-type-option" data-stage="child" aria-pressed="false" title="Child">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/child-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Child</span>
+                    </button>
+                    <button type="button" class="body-type-option" data-stage="senior" aria-pressed="false" title="Elderly">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/senior-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Elderly</span>
+                    </button>
+                  </div>
                 </div>
                 <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
                   <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
@@ -950,15 +950,15 @@
   <script src="src/ui/toast.js?v=5.5"></script>
   <!-- Clinical Anatomy Engine -->
   <script src="src/engine/anatomy/regions.js?v=5.5"></script>
-  <script src="src/engine/annotations/pain-models.js?v=5.21-circle-compass"></script>
+  <script src="src/engine/annotations/pain-models.js?v=5.28-sex-matrix"></script>
   <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.20-large-figure"></script>
   <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
-  <script src="src/engine/anatomy/asset-paths.js?v=5.24-metahuman"></script>
+  <script src="src/engine/anatomy/asset-paths.js?v=5.28-sex-matrix"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.26-view-turn"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.27-tee-shorts"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.28-sex-matrix"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-09-simple-map-harden"></script>
@@ -991,9 +991,9 @@
   <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
-  <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.28-sex-matrix"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
-  <script src="src/engine/reporting/session-io.js?v=5.5"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.28-sex-matrix"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
@@ -1001,6 +1001,6 @@
   <script src="src/state/presentation.js?v=5.7"></script>
   <script src="src/features/shell/patient-flow.js?v=5.26-view-turn"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
-  <script src="src/app/bootstrap.js?v=5.23-body-gallery"></script>
+  <script src="src/app/bootstrap.js?v=5.28-sex-matrix"></script>
 </body>
 </html>

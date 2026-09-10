@@ -6,25 +6,42 @@
   "height": 3072,
   "models": {
     "adult-male": {
-      "label": "Man",
+      "label": "Adult man",
       "thumb": "/anatomy/metahuman/thumbs/adult-male.png"
     },
     "adult-female": {
-      "label": "Woman",
+      "label": "Adult woman",
       "thumb": "/anatomy/metahuman/thumbs/adult-female.png"
     },
-    "teen": {
-      "label": "Teen",
-      "thumb": "/anatomy/metahuman/thumbs/teen.png"
+    "teen-male": {
+      "label": "Teen boy",
+      "thumb": "/anatomy/metahuman/thumbs/teen-male.png"
     },
-    "child": {
-      "label": "Child",
-      "thumb": "/anatomy/metahuman/thumbs/child.png"
+    "teen-female": {
+      "label": "Teen girl",
+      "thumb": "/anatomy/metahuman/thumbs/teen-female.png"
     },
-    "senior": {
-      "label": "Elderly",
-      "thumb": "/anatomy/metahuman/thumbs/senior.png"
+    "child-male": {
+      "label": "Boy",
+      "thumb": "/anatomy/metahuman/thumbs/child-male.png"
+    },
+    "child-female": {
+      "label": "Girl",
+      "thumb": "/anatomy/metahuman/thumbs/child-female.png"
+    },
+    "senior-male": {
+      "label": "Elderly man",
+      "thumb": "/anatomy/metahuman/thumbs/senior-male.png"
+    },
+    "senior-female": {
+      "label": "Elderly woman",
+      "thumb": "/anatomy/metahuman/thumbs/senior-female.png"
     }
+  },
+  "aliases": {
+    "teen": "teen-male",
+    "child": "child-male",
+    "senior": "senior-male"
   },
   "views": [
     "front",
@@ -32,5 +49,5 @@
     "left",
     "right"
   ],
-  "notes": "Retina 2048\u00d73072 plates. Gray t-shirt and shorts (woman: tank and shorts)."
+  "notes": "Retina 2048\u00d73072 plates. Gray t-shirt and shorts (women/teen girl: tank or modest tee and shorts)."
 }

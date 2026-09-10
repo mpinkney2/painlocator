@@ -2,32 +2,32 @@
 
 Photorealistic body-type sprites for the Simple Pain Map gallery.
 
-## Profiles
+## Profiles (sex × life stage)
 
-| Profile | Sheet | Frames | Runtime folder |
-| --- | --- | --- | --- |
-| Woman | [`sheets/woman.png`](./sheets/woman.png) | `frames/woman-{front,back,left,right}.png` | `public/anatomy/metahuman/adult-female/` |
-| Man | [`sheets/man.png`](./sheets/man.png) | `frames/man-*.png` | `public/anatomy/metahuman/adult-male/` |
-| Teen | [`sheets/teen.png`](./sheets/teen.png) | `frames/teen-*.png` | `public/anatomy/metahuman/teen/` |
-| Child | [`sheets/child.png`](./sheets/child.png) | `frames/child-*.png` | `public/anatomy/metahuman/child/` |
-| Elderly | [`sheets/elderly.png`](./sheets/elderly.png) | `frames/elderly-*.png` | `public/anatomy/metahuman/senior/` |
+| Profile | Runtime folder | Clothing |
+| --- | --- | --- |
+| Adult man | `public/anatomy/metahuman/adult-male/` | Gray heather tee + shorts |
+| Adult woman | `public/anatomy/metahuman/adult-female/` | Gray ribbed tank + shorts |
+| Teen boy | `public/anatomy/metahuman/teen-male/` | Gray tee + shorts |
+| Teen girl | `public/anatomy/metahuman/teen-female/` | Gray tank + shorts |
+| Boy | `public/anatomy/metahuman/child-male/` | Gray tee + shorts |
+| Girl | `public/anatomy/metahuman/child-female/` | Gray tee + shorts |
+| Elderly man | `public/anatomy/metahuman/senior-male/` | Gray tee + shorts |
+| Elderly woman | `public/anatomy/metahuman/senior-female/` | Gray tee + shorts |
 
-- **Atlas:** [`metahuman-atlas.png`](./metahuman-atlas.png) — 5×4 (profile × view), transparent RGBA
-- **Preview:** [`metahuman-atlas-preview.png`](./metahuman-atlas-preview.png) — checkerboard alpha preview
+Legacy folders `teen/`, `child/`, and `senior/` are copies of the male plates so older URLs keep working.
+
+- **Preview frames:** `frames/{profile}-{view}.png`
+- **HQ stills:** `hq-raw/{profile}-{view}.png`
 - **Viewer:** [`index.html`](./index.html)
 - **Runtime pack:** `python3 scripts/build-metahuman-anatomy-pack.py`
 
-The Simple Pain Map (patient shell) loads these plates instead of the blue clinical atlas.
+The Simple Pain Map (patient shell) loads these plates instead of the blue clinical atlas. Clinician mode keeps the classic 5-folder atlas (`adult-male`, `adult-female`, `teen`, `child`, `senior`).
 
 ## Spec
 
 - Style: Unreal-like MetaHuman photoreal figure
-- Views per sheet (L→R): front · back · left · right
+- Views: front · back · left · right
 - Background: **none** (transparent PNG after green-screen key)
-- Clothing: light gray heather t-shirt and shorts for every profile (woman: matching tank and shorts)
+- Clothing: light gray t-shirt and shorts (women / teen girl: tank or modest tee and shorts)
 - Plates: portrait 2048×3072 RGBA retina stills (4× FSRCNN upscale, then chroma-keyed)
-
-## Layout
-
-Each `sheets/{profile}.png` is 1280×720 RGBA with four equal columns.
-Atlas cells are 256×512, rows = woman → man → teen → child → elderly.

@@ -521,6 +521,53 @@ body.shell-patient.simple-pain-map .body-type-gallery-title {
   color: var(--text-muted);
 }
 
+body.shell-patient.simple-pain-map .body-sex-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  margin: 0 0 4px;
+}
+
+body.shell-patient.simple-pain-map .body-sex-btn {
+  margin: 0;
+  min-height: 32px;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  touch-action: manipulation;
+}
+
+body.shell-patient.simple-pain-map .body-sex-btn:hover {
+  background: var(--accent-subtle);
+}
+
+body.shell-patient.simple-pain-map .body-sex-btn.is-active,
+body.shell-patient.simple-pain-map .body-sex-btn[aria-pressed="true"] {
+  background: var(--accent-subtle);
+  border-color: var(--spm-amber);
+}
+
+body.shell-patient.simple-pain-map .body-sex-btn:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+body.shell-patient.simple-pain-map .body-stage-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+
 body.shell-patient.simple-pain-map .body-type-option {
   display: flex;
   flex-direction: column;
