@@ -278,14 +278,23 @@ body.shell-patient .avatar-stage {
 }
 
 body.shell-patient .avatar-stage .cae-clinical-viewport,
-body.shell-patient .avatar-stage .cae-image-frame,
+body.shell-patient .avatar-stage .cae-image-frame {
+  margin-inline: auto;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Plate images are position:absolute with height:100% from the engine.
+   Do NOT force height:auto here — that collapses the silhouette to 0×0. */
 body.shell-patient .avatar-stage .cae-anatomy-image,
 body.shell-patient .avatar-stage canvas {
   margin-inline: auto;
   max-width: 100%;
   max-height: 100%;
   width: auto;
-  height: auto;
+  height: 100%;
   object-fit: contain;
 }
 
