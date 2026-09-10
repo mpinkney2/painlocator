@@ -1889,6 +1889,18 @@ console.log('PainLocator tests\n');
     assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/adult-male/front.png');
   });
 
+  test('simple pain-map: gallery profiles use matching CAE plates', () => {
+    sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
+    sandbox.state = { presentationMode: 'patient' };
+    assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/adult-female/front.png');
+    assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/adult-female/back.png');
+    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/teen/left.png');
+    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/child/right.png');
+    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/senior/front.png');
+    // Man / default still uses the studio person plates.
+    assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/simple-pain-map/front.png');
+  });
+
   test('simple pain-map: realistic plate files exist in public/', () => {
     for (const view of ['front', 'back', 'left', 'right']) {
       assert.ok(statSync(join(root, `public/anatomy/simple-pain-map/${view}.png`)).isFile());
@@ -1951,8 +1963,16 @@ console.log('PainLocator tests\n');
     assert.ok(flow.includes('setAssessStep'));
     assert.ok(flow.includes('setDrawerExpanded'));
     assert.ok(flow.includes('syncAnatomyLayout'));
-    assert.ok(flow.includes("ensureActiveEntry('adult-male')"));
+    assert.ok(flow.includes('ensureActiveEntry(currentPatientModel())'));
     assert.ok(!flow.includes("ensureActiveEntry({ view: 'anterior'"));
+    assert.ok(html.includes('id="bodyTypeGallery"'));
+    assert.ok(html.includes('id="btnSimpleBodyProfile"'));
+    assert.ok(html.includes('data-model="female"') && html.includes('data-model="senior"'));
+    assert.ok(css.includes('.body-type-gallery') && css.includes('.body-type-option'));
+    assert.ok(flow.includes('btnSimpleBodyProfile') && flow.includes('bodyTypeGallery'));
+    for (const folder of ['adult-female', 'teen', 'child', 'senior']) {
+      assert.ok(statSync(join(root, `public/anatomy/${folder}/front.png`)).isFile());
+    }
     assert.ok(html.includes('id="simpleViewCompass"'));
     assert.ok(html.includes('id="simpleDrawerPeekBar"'));
     assert.ok(html.includes('id="btnPeekUndo"') && html.includes('id="btnPeekRedo"'));

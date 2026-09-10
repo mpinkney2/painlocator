@@ -1,5 +1,17 @@
+function restoreSavedBodyType() {
+  try {
+    const storedBody = localStorage.getItem('painlocator_body_type');
+    if (!storedBody) return;
+    const storedRadio = document.querySelector(`#modelSelector input[name="patient_model"][value="${storedBody}"]`);
+    if (!storedRadio) return;
+    state.modelType = storedBody;
+    storedRadio.checked = true;
+  } catch (_) { /* ignore */ }
+}
+
 function init() {
   restoreSavedTheme();
+  restoreSavedBodyType();
 
   // Demo mode may remap storage key before load
   demoMode?.initControls?.();
@@ -95,15 +107,20 @@ function init() {
   document.querySelectorAll('input[name="patient_model"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       state.modelType = e.target.value;
+      try { localStorage.setItem('painlocator_body_type', state.modelType); } catch (_) { /* ignore */ }
       const active = entryStore.getActiveEntry();
       if (active && entryStore.isDraftActive()) {
         entryStore.updateActiveEntry({ patientModel: normalizeModelType(state.modelType) });
       }
       state.engine.update({ modelType: state.modelType });
       state.vizController?.refreshAvailability(state.modelType, state.view);
+      syncBodyTypeGallery(state.modelType);
       refreshUI();
     });
   });
+
+  initBodyTypeGallery();
+  syncBodyTypeGallery(state.modelType);
 
   document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -341,3 +358,46 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 window.setBodyView = setBodyView;
+
+/** Sync body-profile gallery with #modelSelector radios (male/female/teen/child/senior). */
+function syncBodyTypeGallery(model) {
+  const value = model || 'male';
+  document.querySelectorAll('#bodyTypeGallery .body-type-option').forEach((btn) => {
+    const on = btn.dataset.model === value;
+    btn.classList.toggle('is-selected', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+  });
+  const radio = document.querySelector(`#modelSelector input[name="patient_model"][value="${value}"]`);
+  if (radio && !radio.checked) radio.checked = true;
+}
+
+function initBodyTypeGallery() {
+  const gallery = document.getElementById('bodyTypeGallery');
+  if (!gallery || gallery.dataset.bound === '1') return;
+  gallery.dataset.bound = '1';
+  gallery.querySelectorAll('.body-type-option').forEach((btn) => {
+    btn.setAttribute('role', 'radio');
+    btn.addEventListener('click', () => {
+      const model = btn.dataset.model;
+      if (!model) return;
+      const radio = document.querySelector(`#modelSelector input[name="patient_model"][value="${model}"]`);
+      if (radio) {
+        if (!radio.checked) {
+          radio.checked = true;
+          radio.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          syncBodyTypeGallery(model);
+        }
+      } else {
+        state.modelType = model;
+        try { localStorage.setItem('painlocator_body_type', model); } catch (_) { /* ignore */ }
+        state.engine?.update({ modelType: model });
+        syncBodyTypeGallery(model);
+        refreshUI();
+      }
+    });
+  });
+}
+
+window.syncBodyTypeGallery = syncBodyTypeGallery;
