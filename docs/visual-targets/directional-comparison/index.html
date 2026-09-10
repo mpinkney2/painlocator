@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PainLocator — Directional views comparison</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0e1624;
+      --line: #243044;
+      --text: #e8eef7;
+      --muted: #93a4bd;
+      --accent: #5ec8ff;
+      --warn: #f0b429;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(1200px 600px at 50% -10%, #132033 0%, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    header {
+      padding: 1.5rem 1.25rem 0.75rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 0.35rem;
+      font-size: 1.45rem;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+    .lede {
+      margin: 0;
+      color: var(--muted);
+      max-width: 70ch;
+      font-size: 0.95rem;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem 2.5rem;
+      display: grid;
+      gap: 1rem;
+    }
+    .view {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .view h2 {
+      margin: 0;
+      padding: 0.7rem 1rem;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: baseline;
+    }
+    .view h2 span {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 760px) {
+      .pair { grid-template-columns: 1fr; }
+    }
+    figure {
+      margin: 0;
+      padding: 0.85rem;
+      border-right: 1px solid var(--line);
+      background: #05080e;
+    }
+    .pair figure:last-child { border-right: 0; }
+    @media (max-width: 760px) {
+      figure { border-right: 0; border-bottom: 1px solid var(--line); }
+      .pair figure:last-child { border-bottom: 0; }
+    }
+    figcaption {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    figcaption strong { color: var(--text); font-weight: 600; }
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      background: #000;
+      border-radius: 8px;
+    }
+    .notes {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+    }
+    .notes h2 {
+      margin: 0 0 0.55rem;
+      font-size: 1rem;
+    }
+    .notes ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .notes li { margin: 0.35rem 0; }
+    .notes em { color: var(--warn); font-style: normal; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Directional views comparison</h1>
+    <p class="lede">
+      Quick side-by-side of the current production adult-male plates versus a new
+      candidate set (front / back / left / right) generated to match the same
+      holographic musculo-skeletal atlas look — for visual QA only, not wired into the app.
+    </p>
+    <div class="badge">Eval artifact · adult-male · 1024×1024</div>
+  </header>
+
+  <main>
+    <section class="view">
+      <h2>Front <span>anterior</span></h2>
+      <div class="pair">
+        <figure>
+          <figcaption><strong>Current</strong><span>production</span></figcaption>
+          <img src="./current/front.png" alt="Current adult-male front plate" />
+        </figure>
+        <figure>
+          <figcaption><strong>Candidate</strong><span>new</span></figcaption>
+          <img src="./candidate/front.png" alt="Candidate adult-male front plate" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="view">
+      <h2>Back <span>posterior</span></h2>
+      <div class="pair">
+        <figure>
+          <figcaption><strong>Current</strong><span>production</span></figcaption>
+          <img src="./current/back.png" alt="Current adult-male back plate" />
+        </figure>
+        <figure>
+          <figcaption><strong>Candidate</strong><span>new</span></figcaption>
+          <img src="./candidate/back.png" alt="Candidate adult-male back plate" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="view">
+      <h2>Left <span>viewer sees body’s left · yaw −π/2</span></h2>
+      <div class="pair">
+        <figure>
+          <figcaption><strong>Current</strong><span>production</span></figcaption>
+          <img src="./current/left.png" alt="Current adult-male left plate" />
+        </figure>
+        <figure>
+          <figcaption><strong>Candidate</strong><span>new</span></figcaption>
+          <img src="./candidate/left.png" alt="Candidate adult-male left plate" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="view">
+      <h2>Right <span>viewer sees body’s right · yaw +π/2</span></h2>
+      <div class="pair">
+        <figure>
+          <figcaption><strong>Current</strong><span>production</span></figcaption>
+          <img src="./current/right.png" alt="Current adult-male right plate" />
+        </figure>
+        <figure>
+          <figcaption><strong>Candidate</strong><span>new</span></figcaption>
+          <img src="./candidate/right.png" alt="Candidate adult-male right plate" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="notes">
+      <h2>Quick read</h2>
+      <ul>
+        <li><strong>Style match:</strong> Candidate keeps the cyan/blue translucent muscle + glowing skeleton on black used by current plates.</li>
+        <li><strong>Framing:</strong> Current front/back are upper-body crops; current left is closer to full-body. Candidate aims for a more consistent mid-neck→mid-thigh crop across all four.</li>
+        <li><strong>Laterality:</strong> Current adult-female left/right files are byte-identical to adult-male left/right. Candidate right is a true opposite lateral (face toward image-left).</li>
+        <li><strong>Sex consistency:</strong> Current right plate reads more female in places; candidate set is intentionally adult-male throughout.</li>
+        <li><em>Not production-ready:</em> AI plates are for comparison only — do not replace <code>public/anatomy/</code> without clinical art review and region-map revalidation.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
