@@ -2072,6 +2072,7 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('name="simpleSkin"') && html.includes('name="simpleWeight"') && html.includes('name="simpleHeight"'));
     assert.ok(html.includes('src/engine/anatomy/plate-likeness.js'));
     assert.ok(css.includes('--spm-fit-x') && css.includes('--spm-fit-y'));
+    assert.ok(css.includes('grid-template-rows: auto minmax(0, 1fr) auto'));
     assert.ok(css.includes('.simple-prefs-swatches'));
     assert.ok(flow.includes('bindLikenessPrefs'));
     assert.ok(renderer.includes('bindPlateImageSrc') || renderer.includes('setSimplePlateImage'));
