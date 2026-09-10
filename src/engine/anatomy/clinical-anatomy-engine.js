@@ -339,6 +339,10 @@ class ClinicalAnatomyEngine {
     this.spatialPrimaryNoPlate = false;
     this.stage?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
     this.stage?.classList?.add("cae-plate-active");
+    // Explicit plate mode must exit Spatial-primary chrome so CSS cannot hide the image.
+    const chrome =
+      (typeof window !== "undefined" && window.SpatialPrimaryChrome) || null;
+    chrome?.applySpatialPrimaryChrome?.(false, { forcePlate: true, keepSpatialPrimary: false });
     this.render();
     this.trigger("displaymodechanged", { displayMode: "plate", reason: reason || null });
     return true;

@@ -1318,11 +1318,14 @@ body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
 
 /* While Spatial-primary is booting / unavailable, never show the plate PNG */
 /* Hide plate only while Spatial is actively staging/unavailable — not after explicit 2D fallback. */
-body.spatial-primary:not(.spatial-ready) .cae-stage.cae-spatial-staging .cae-anatomy-image,
-body.spatial-primary:not(.spatial-ready) .cae-stage.cae-spatial-staging .cae-clinical-viewport .cae-image-frame,
-body.spatial-primary:not(.spatial-ready):not(.allow-plate-toggle) .cae-anatomy-image,
-body.spatial-primary:not(.spatial-ready):not(.allow-plate-toggle) .cae-clinical-viewport .cae-image-frame {
+/* Hide plate only during Spatial staging, and never when plate mode is active or plate toggle is allowed. */
+body.spatial-primary:not(.spatial-ready):not(.allow-plate-toggle) .cae-stage.cae-spatial-staging .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready):not(.allow-plate-toggle) .cae-stage.cae-spatial-staging .cae-clinical-viewport .cae-image-frame {
   display: none !important;
+}
+body.spatial-primary .cae-stage.cae-plate-active .cae-anatomy-image,
+body.spatial-primary .cae-stage.cae-plate-active .cae-clinical-viewport .cae-image-frame {
+  display: block !important;
 }
 
 .cae-spatial-canvas {

@@ -236,7 +236,9 @@ function syncDisplayModeButtons(mode) {
   plate?.setAttribute('aria-pressed', (!isSpatial).toString());
   spatial?.setAttribute('aria-pressed', isSpatial.toString());
   if (typeof SpatialPrimaryChrome !== 'undefined') {
-    SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial);
+    SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial, isSpatial
+      ? { keepSpatialPrimary: true }
+      : { forcePlate: true, keepSpatialPrimary: false });
   } else {
     const enlarge = document.getElementById('btnEnlargeAnatomy');
     if (enlarge) {
@@ -279,8 +281,11 @@ function initDisplayModeToggle() {
       syncDisplayModeButtons('spatial');
     } else if (displayMode === 'plate') {
       syncDisplayModeButtons('plate');
-    } else if (typeof SpatialPrimaryChrome !== 'undefined') {
+    } else if (displayMode === 'spatial-unavailable' && typeof SpatialPrimaryChrome !== 'undefined') {
+      // Keep staging chrome only while showing the unavailable card; plate toggle still works.
       SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+    } else if (typeof SpatialPrimaryChrome !== 'undefined') {
+      SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { forcePlate: true, keepSpatialPrimary: false });
     }
     refreshUI?.();
   });
