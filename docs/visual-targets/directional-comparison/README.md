@@ -20,7 +20,7 @@ Produce an independent four-view set in the same holographic musculo-skeletal at
 ## Observations
 
 1. **Style** — Candidates match the cyan/blue translucent muscle + brighter skeletal glow on black.
-2. **Crop consistency** — Current front/back are torso-forward crops; current left reads taller/fuller. Candidates target a shared mid-neck → mid-thigh frame.
+2. **Crop consistency** — Current front/back are torso-forward crops; current left/right are full-length. Candidate left/right are now full-length (head→feet) to match side framing; front/back remain torso-focused.
 3. **Shared side assets** — `adult-female/left.png` and `right.png` are currently byte-identical to the male side plates (known gap). Candidates keep an adult-male-only laterality pair.
 4. **Right laterality** — Candidate right faces image-left (viewer sees body’s right), aligned with `spatial-projection.js` (`right` → yaw `+π/2`).
 5. **Not a drop-in** — Generated art is comparison-only. Replacing production plates needs clinical review, region/hit-map checks, and female/child/teen/senior parity.
