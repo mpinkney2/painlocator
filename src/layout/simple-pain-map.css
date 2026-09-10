@@ -173,7 +173,7 @@ body.shell-patient.simple-pain-map .header-actions {
 body.shell-patient.simple-pain-map .simple-sheet {
   max-width: 28rem;
   width: min(92vw, 28rem);
-  max-height: min(88dvh, 42rem);
+  max-height: min(92dvh, 46rem);
   margin: auto;
   padding: 0;
   border: 1px solid var(--border);
@@ -201,9 +201,9 @@ body.shell-patient.simple-pain-map .simple-sheet .modal-head h3 {
 }
 
 body.shell-patient.simple-pain-map .simple-sheet .modal-body {
-  padding: 1rem 1.15rem 1.2rem;
+  padding: 0.85rem 1.05rem 1rem;
   overflow-y: auto;
-  max-height: min(72dvh, 34rem);
+  max-height: min(80dvh, 40rem);
 }
 
 body.shell-patient.simple-pain-map .simple-sheet .modal-note {
@@ -225,7 +225,7 @@ body.shell-patient.simple-pain-map .simple-sheet-action {
   gap: 0.8rem;
   width: 100%;
   margin: 0;
-  padding: 0.8rem 0.85rem;
+  padding: 0.68rem 0.8rem;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--surface);
@@ -243,7 +243,7 @@ body.shell-patient.simple-pain-map .simple-sheet-action:hover {
 body.shell-patient.simple-pain-map .simple-sheet-action.is-featured {
   border-color: var(--spm-amber);
   background: color-mix(in srgb, var(--spm-amber) 22%, #fff);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.55rem;
 }
 
 body.shell-patient.simple-pain-map .simple-sheet-action-icon {
@@ -604,7 +604,7 @@ body.shell-patient.simple-pain-map .avatar-wrap,
 body.shell-patient.simple-pain-map .anatomy-viewer {
   flex: 1 1 auto;
   min-height: 0;
-  height: 100%;
+  height: auto;
   padding-bottom: 0;
   border-radius: 0;
   background: transparent;
@@ -1997,8 +1997,15 @@ body.shell-patient.simple-view-map #timelinePanel {
 
   body.shell-patient.simple-pain-map .avatar-wrap,
   body.shell-patient.simple-pain-map .anatomy-viewer {
-    height: 100%;
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: hidden;
+  }
+
+  body.shell-patient.simple-pain-map .simple-map-intensity {
+    display: block;
+    flex: 0 0 auto;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
