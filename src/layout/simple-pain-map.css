@@ -458,6 +458,7 @@ body.shell-patient.simple-pain-map .simple-pain-headline {
   flex: 0 0 auto;
   z-index: 2;
   position: relative;
+  grid-row: 1;
 }
 
 body.shell-patient.simple-pain-map .simple-pain-headline h1 {
@@ -481,6 +482,7 @@ body.shell-patient.simple-pain-map .simple-map-intensity {
   flex: 0 0 auto;
   position: relative;
   z-index: 3;
+  grid-row: 3;
   margin: 0;
   padding: 0.55rem 0.35rem 0.75rem;
   background: linear-gradient(
@@ -520,8 +522,8 @@ body.shell-patient.simple-pain-map .simple-pain-grid {
 body.shell-patient.simple-pain-map .simple-pain-map-col {
   min-width: 0;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
   position: relative;
 }
@@ -591,11 +593,11 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
   body.shell-patient.simple-pain-map .anatomy-viewer {
     flex: 1 1 0%;
     height: auto;
-    min-height: 12rem;
+    min-height: 0;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: 12rem;
+    min-height: 0;
     max-height: none;
     flex: 1 1 0%;
   }
@@ -604,8 +606,9 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
 body.shell-patient.simple-pain-map .avatar-wrap,
 body.shell-patient.simple-pain-map .anatomy-viewer {
   flex: 1 1 0%;
-  min-height: 12rem;
+  min-height: 0;
   height: auto;
+  grid-row: 2;
   padding-bottom: 0;
   border-radius: 0;
   background: transparent;
@@ -828,7 +831,7 @@ body.shell-patient.simple-pain-map .simple-compass-btn:focus-visible {
 
 body.shell-patient.simple-pain-map .avatar-stage {
   flex: 1 1 0%;
-  min-height: 12rem;
+  min-height: 0;
   min-width: 0;
   width: 100%;
   display: flex;
@@ -1944,6 +1947,8 @@ body.shell-patient.simple-view-map #timelinePanel {
     overflow: hidden;
     transition: padding-bottom 0.4s var(--spm-ease-drawer);
     position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
   }
 
   /* Sit above the resting drawer peek so Front/Back/Left/Right stay usable. */
@@ -2000,8 +2005,7 @@ body.shell-patient.simple-view-map #timelinePanel {
   body.shell-patient.simple-pain-map .avatar-wrap,
   body.shell-patient.simple-pain-map .anatomy-viewer {
     height: auto;
-    flex: 1 1 0%;
-    min-height: 12rem;
+    min-height: 0;
     overflow: hidden;
   }
 
@@ -2011,7 +2015,7 @@ body.shell-patient.simple-view-map #timelinePanel {
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: 12rem;
+    min-height: 0;
     max-height: none;
     flex: 1 1 0%;
   }
