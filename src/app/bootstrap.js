@@ -229,31 +229,34 @@ function init() {
     openExportModal();
     trackEvent?.('report_opened');
   });
-  ['btnExportPdf', 'btnExportPdfModal'].forEach(id => {
+  ['btnExportPdf', 'btnExportPdfModal', 'btnSharePdf'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
       setSaveStatus?.('report', 'Preparing report…');
       await printClinicalReport();
       setSaveStatus?.('report', 'Report ready');
       trackEvent?.('report_exported', { format: 'pdf' });
       document.getElementById('exportModal')?.close();
+      document.getElementById('shareModal')?.close();
     });
   });
-  ['btnExportJson', 'btnExportJsonModal'].forEach(id => {
+  ['btnExportJson', 'btnExportJsonModal', 'btnShareJson'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => {
       exportSessionJson();
       setSaveStatus?.('exported');
       showToast?.('Session JSON exported.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'json' });
       document.getElementById('exportModal')?.close();
+      document.getElementById('shareModal')?.close();
     });
   });
-  ['btnExportPng', 'btnExportPngModal'].forEach(id => {
+  ['btnExportPng', 'btnExportPngModal', 'btnSharePng'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
       await captureClinicalSnapshot();
       setSaveStatus?.('exported');
       showToast?.('Anatomy snapshot saved.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'png' });
       document.getElementById('exportModal')?.close();
+      document.getElementById('shareModal')?.close();
     });
   });
   ['btnImport', 'btnImportSidebar'].forEach(id => {

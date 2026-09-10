@@ -818,9 +818,8 @@ class ClinicalMarkupRenderer {
   }
 
   /**
-   * Patient simple map: keep the studio figure large in the map view.
-   * On wide screens the shell is expanded; add a mild zoom only when
-   * letterboxing leaves unused space. Avoid aggressive crop of the head/feet.
+   * Patient simple map: letterbox the full plate so head-to-feet stay visible
+   * on mobile and desktop. Do not zoom past fit — that cropped the figure.
    */
   applySimplePainMapPresentationScale() {
     if (typeof document === "undefined") return;
@@ -828,35 +827,11 @@ class ClinicalMarkupRenderer {
       this._spmScaleMode = null;
       return;
     }
-    const wide =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(min-width: 901px)").matches;
-    const mode = wide ? "desktop" : "mobile";
-    const fit = this.mapper.getFitBounds?.() || null;
-    let target = wide
-      ? AnatomyCoordinateMapper.SIMPLE_PAIN_MAP_DESKTOP_ZOOM
-      : AnatomyCoordinateMapper.SIMPLE_PAIN_MAP_MOBILE_ZOOM;
-    if (fit && fit.width > 1 && fit.height > 1) {
-      // Studio plates include padding around the person — zoom past letterbox
-      // so the human (not the empty plate margin) fills the map stage.
-      const widthTarget = (0.98 * fit.containerWidth) / fit.width;
-      const heightBudget = wide ? 1.62 : 1.22;
-      const heightTarget = (heightBudget * fit.containerHeight) / fit.height;
-      if (wide) {
-        target = Math.min(widthTarget, heightTarget);
-        target = Math.max(1.28, Math.min(target, 1.72));
-      } else {
-        target = Math.min(widthTarget, heightTarget);
-        target = Math.max(1.04, Math.min(target, 1.14));
-      }
-    }
-    if (this._spmScaleMode === mode && Math.abs(this.mapper.zoom - target) < 0.025) {
-      return;
-    }
-    this._spmScaleMode = mode;
-    // Bias focus slightly upward so head/torso stay clear of the intensity dock.
-    this.mapper.setZoom(target, { focusX: 0.5, focusY: wide ? 0.4 : 0.42, resetPan: true });
+    if (typeof applyLikenessPresentation === "function") applyLikenessPresentation();
+    if (this.mapper.zoom >= AnatomyCoordinateMapper.ENLARGED_ZOOM - 0.05) return;
+    if (this._spmScaleMode === "fit" && this.mapper.zoom <= 1.001) return;
+    this._spmScaleMode = "fit";
+    this.mapper.setZoom(1, { focusX: 0.5, focusY: 0.5, resetPan: true });
     this._emitZoomChange();
   }
 

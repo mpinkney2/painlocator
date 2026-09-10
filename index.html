@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.29-likeness">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.30-fit-more">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -63,17 +63,7 @@
         <button type="button" class="simple-nav-btn" id="btnSimpleHistory">History</button>
         <button type="button" class="simple-nav-btn" id="btnSimpleShare">Share</button>
         <div class="simple-more-wrap">
-          <button type="button" class="simple-nav-btn" id="btnSimpleMore" aria-haspopup="true" aria-expanded="false">More</button>
-          <div class="simple-more-menu" id="simpleMoreMenu" role="menu" hidden>
-            <button type="button" role="menuitem" id="btnSimpleImport">Import</button>
-            <button type="button" role="menuitem" id="btnSimpleExport">Export</button>
-            <button type="button" role="menuitem" id="btnSimpleBodyProfile">Body profile</button>
-            <button type="button" role="menuitem" id="btnSimplePrefs">Preferences</button>
-            <button type="button" role="menuitem" id="btnSimpleHelp">Help</button>
-            <button type="button" role="menuitem" id="btnSimpleTheme">Theme</button>
-            <button type="button" role="menuitem" id="btnSimpleFeedback">Feedback</button>
-            <button type="button" role="menuitem" data-presentation-option="clinician">Clinician console</button>
-          </div>
+          <button type="button" class="simple-nav-btn" id="btnSimpleMore" aria-haspopup="dialog" aria-controls="simpleMoreModal" aria-expanded="false">More</button>
         </div>
       </nav>
 
@@ -827,18 +817,134 @@
       </div>
     </dialog>
 
-    <!-- Share modal (JSON preview) -->
-    <dialog class="modal" id="shareModal">
+    <!-- Share with clinician -->
+    <dialog class="modal simple-sheet" id="shareModal" aria-labelledby="shareModalTitle">
       <div class="modal-head">
-        <h3>Share Record</h3>
-        <button type="button" class="modal-close" data-close>&times;</button>
+        <h3 id="shareModalTitle">Share</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-note">Data never leaves your device unless you copy or share it. This exports a JSON snapshot of your pain log.</p>
-        <textarea id="sharePayload" class="share-text" readonly rows="6"></textarea>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" id="btnCopyShare">Copy JSON</button>
-          <button type="button" class="btn btn-primary" id="btnDownloadShare">Download File</button>
+        <p class="modal-note">Give your clinician a clear pain map. Nothing leaves this device until you save or send a file.</p>
+        <div class="simple-sheet-actions">
+          <button type="button" class="simple-sheet-action" id="btnSharePdf">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="file-text"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Clinical report</strong>
+              <em>Printable PDF for your visit</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSharePng">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="image"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Anatomy snapshot</strong>
+              <em>PNG of the marked figure</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnShareJson">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="braces"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Session file</strong>
+              <em>JSON you can import later</em>
+            </span>
+          </button>
+        </div>
+        <details class="simple-sheet-advanced">
+          <summary>Advanced JSON</summary>
+          <textarea id="sharePayload" class="share-text" readonly rows="5"></textarea>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btnCopyShare">Copy JSON</button>
+            <button type="button" class="btn btn-primary" id="btnDownloadShare">Download file</button>
+          </div>
+        </details>
+      </div>
+    </dialog>
+
+    <!-- More / Appearance -->
+    <dialog class="modal simple-sheet" id="simpleMoreModal" aria-labelledby="simpleMoreTitle">
+      <div class="modal-head">
+        <h3 id="simpleMoreTitle">More</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="simple-sheet-action is-featured" id="btnSimplePrefs">
+          <span class="simple-sheet-action-icon" aria-hidden="true">
+            <i data-lucide="palette"></i>
+          </span>
+          <span class="simple-sheet-action-copy">
+            <strong>Appearance</strong>
+            <em>Skin tone, build, height, and tap mark size</em>
+          </span>
+        </button>
+        <div class="simple-sheet-actions">
+          <button type="button" class="simple-sheet-action" id="btnSimpleBodyProfile">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="user"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Body profile</strong>
+              <em>Woman or man, and life stage</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleImport">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="upload"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Import</strong>
+              <em>Open a saved session file</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleExport">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="download"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Export</strong>
+              <em>Save a copy of this session</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleTheme">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="moon"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Theme</strong>
+              <em>Switch light or dark</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleHelp">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="circle-help"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Help &amp; safety</strong>
+              <em>How PainLocator uses your data</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleFeedback">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="message-square"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Feedback</strong>
+              <em>Tell us what to improve</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" data-presentation-option="clinician">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="stethoscope"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Clinician console</strong>
+              <em>Clinical atlas and tools</em>
+            </span>
+          </button>
         </div>
       </div>
     </dialog>
@@ -856,9 +962,9 @@
     <input type="file" id="importSessionInput" accept="application/json,.json" hidden>
 
     <!-- Patient preferences -->
-    <dialog class="modal" id="simplePrefsModal" aria-labelledby="simplePrefsTitle">
+    <dialog class="modal simple-sheet" id="simplePrefsModal" aria-labelledby="simplePrefsTitle">
       <div class="modal-head">
-        <h3 id="simplePrefsTitle">Preferences</h3>
+        <h3 id="simplePrefsTitle">Appearance</h3>
         <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
@@ -1028,15 +1134,15 @@
   <!-- Clinical Anatomy Engine -->
   <script src="src/engine/anatomy/regions.js?v=5.5"></script>
   <script src="src/engine/annotations/pain-models.js?v=5.28-sex-matrix"></script>
-  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.20-large-figure"></script>
+  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.30-fit-more"></script>
   <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
   <script src="src/engine/anatomy/asset-paths.js?v=5.28-sex-matrix"></script>
-  <script src="src/engine/anatomy/plate-likeness.js?v=5.29-likeness"></script>
+  <script src="src/engine/anatomy/plate-likeness.js?v=5.30-fit-more"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.26-view-turn"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.29-likeness"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.30-fit-more"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-09-simple-map-harden"></script>
@@ -1070,15 +1176,15 @@
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
   <script src="src/engine/reporting/session-schema.js?v=5.29-likeness"></script>
-  <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
+  <script src="src/engine/reporting/clinical-report.js?v=5.30-fit-more"></script>
   <script src="src/engine/reporting/session-io.js?v=5.29-likeness"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.29-likeness"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.30-fit-more"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
-  <script src="src/app/bootstrap.js?v=5.28-sex-matrix"></script>
+  <script src="src/app/bootstrap.js?v=5.30-fit-more"></script>
 </body>
 </html>

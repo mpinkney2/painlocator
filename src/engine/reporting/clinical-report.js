@@ -298,6 +298,7 @@ function openShareModal() {
   const payload = document.getElementById('sharePayload');
   if (payload) payload.value = buildSharePayload();
   document.getElementById('shareModal')?.showModal();
+  if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
 }
 
 window.captureAnatomyMapDataUrl = captureAnatomyMapDataUrl;
