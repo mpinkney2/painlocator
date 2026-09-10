@@ -113,6 +113,8 @@ class ClinicalAnatomyEngine {
   }
 
   update(config = {}) {
+    const prevView = this.viewType;
+    const prevModel = this.modelType;
     if (config.modelType) this.modelType = config.modelType;
     if (config.viewType) this.viewType = config.viewType;
     if (config.detailLevel) this.detailLevel = config.detailLevel;
@@ -146,6 +148,17 @@ class ClinicalAnatomyEngine {
       this.displayMode === "spatial-unavailable" ||
       (this.spatialPrimaryNoPlate && this.displayMode !== "plate")
     ) {
+      return;
+    }
+
+    const viewOnly = Boolean(config.viewType)
+      && this.viewType !== prevView
+      && this.modelType === prevModel
+      && !config.modelType
+      && !config.rendererMode
+      && !config.displayMode;
+    if (viewOnly && this.clinicalRenderer?.swapSimpleView?.(prevView, this.viewType)) {
+      this.clinicalRenderer.updateDebugLabel?.();
       return;
     }
 

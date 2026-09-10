@@ -1080,6 +1080,12 @@
       if (first && typeof first.focus === 'function') first.focus();
       setTimeout(function () { gallery.classList.remove('is-spotlight'); }, 1600);
     });
+    on('btnSimplePrefs', 'click', function () {
+      closeMoreMenu();
+      syncMarkSizePrefsUI();
+      var prefs = document.getElementById('simplePrefsModal');
+      if (prefs && typeof prefs.showModal === 'function') prefs.showModal();
+    });
     on('btnSimpleHelp', 'click', function () {
       closeMoreMenu();
       var help = document.getElementById('btnHelpMenu');
@@ -1111,6 +1117,49 @@
       });
     }
 
+    function currentMarkSizePref() {
+      try {
+        var raw = localStorage.getItem('painlocator_mark_size');
+        return raw === 'm' || raw === 'l' ? raw : 's';
+      } catch (e) {
+        return 's';
+      }
+    }
+
+    function syncMarkSizePrefsUI() {
+      var size = currentMarkSizePref();
+      document.querySelectorAll('input[name="simpleMarkSize"]').forEach(function (input) {
+        input.checked = input.value === size;
+      });
+    }
+
+    function applyMarkSizePref(size) {
+      if (typeof global.setSimpleMarkSizePref === 'function') {
+        global.setSimpleMarkSizePref(size);
+      } else {
+        try { localStorage.setItem('painlocator_mark_size', size === 'm' || size === 'l' ? size : 's'); } catch (e) { /* ignore */ }
+        document.body.setAttribute('data-mark-size', size === 'm' || size === 'l' ? size : 's');
+      }
+      var st = getState();
+      var engine = st && st.engine;
+      if (engine && engine.clinicalRenderer && typeof engine.clinicalRenderer.renderRegions === 'function') {
+        engine.clinicalRenderer.renderRegions();
+      }
+    }
+
+    function bindMarkSizePrefs() {
+      syncMarkSizePrefsUI();
+      applyMarkSizePref(currentMarkSizePref());
+      var group = document.querySelector('#simplePrefsModal .simple-prefs-size');
+      if (!group || group.dataset.bound === '1') return;
+      group.dataset.bound = '1';
+      group.addEventListener('change', function (e) {
+        var input = e.target && e.target.closest ? e.target.closest('input[name="simpleMarkSize"]') : null;
+        if (!input) return;
+        applyMarkSizePref(input.value);
+      });
+    }
+
     function bindSimpleViewGroup(root) {
       if (!root) return;
       root.addEventListener('click', function (e) {
@@ -1119,14 +1168,12 @@
         var view = btn.getAttribute('data-view');
         if (typeof global.setBodyView === 'function') global.setBodyView(view);
         else if (typeof setBodyView === 'function') setBodyView(view);
-        requestAnimationFrame(function () {
-          syncAnatomyLayout();
-          refreshPatientIcons();
-        });
+        requestAnimationFrame(refreshPatientIcons);
       });
     }
     bindSimpleViewGroup(document.getElementById('simpleViewBar'));
     bindSimpleViewGroup(document.getElementById('simpleViewCompass'));
+    bindMarkSizePrefs();
 
     document.addEventListener('presentationchange', function () {
       placePatientDrawerChrome();

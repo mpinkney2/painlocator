@@ -2010,6 +2010,28 @@ console.log('PainLocator tests\n');
     assert.ok(models.includes('function aspectCorrectedCircleRadii'));
     assert.ok(renderer.includes('aspectCorrectedCircleRadii'));
     assert.ok(flow.includes('simpleViewCompass'));
+    assert.ok(renderer.includes('swapSimpleView'));
+    assert.ok(renderer.includes('painlocator_mark_size'));
+    assert.ok(css.includes('is-turning-cw') && css.includes('is-turning-ccw'));
+    assert.ok(html.includes('id="simplePrefsModal"') && html.includes('id="btnSimplePrefs"'));
+    assert.ok(flow.includes('btnSimplePrefs') && flow.includes('simpleMarkSize'));
+    const engineSrc = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    assert.ok(engineSrc.includes('swapSimpleView'));
+  });
+
+  test('simple pain-map: compass turns use shortest yaw', () => {
+    const s = createSandbox();
+    loadScript('src/engine/annotations/markup-renderer.js', s);
+    assert.equal(s.simpleViewTurnDir('front', 'left'), -1);
+    assert.equal(s.simpleViewTurnDir('front', 'right'), 1);
+    assert.equal(s.simpleViewTurnDir('front', 'back'), 0);
+    assert.equal(s.simpleViewTurnDir('left', 'front'), 1);
+    assert.equal(s.simpleViewTurnDir('right', 'back'), 1);
+    assert.equal(s.getSimpleMarkSizeScale(), 0.5);
+    s.setSimpleMarkSizePref('l');
+    assert.equal(s.getSimpleMarkSizeScale(), 1.5);
+    s.setSimpleMarkSizePref('s');
+    assert.equal(s.getSimpleMarkSizeScale(), 0.5);
   });
 
   test('simple pain-map: tap marks correct for portrait SVG stretch', () => {
