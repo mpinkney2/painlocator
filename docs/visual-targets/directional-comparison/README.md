@@ -4,6 +4,8 @@ Quick visual QA: **current production plates** vs a **new candidate set** for fr
 
 Open locally: [`index.html`](./index.html)
 
+Composite grid: [`comparison-grid.png`](./comparison-grid.png)
+
 | View | Current | Candidate |
 | --- | --- | --- |
 | Front | [`current/front.png`](./current/front.png) | [`candidate/front.png`](./candidate/front.png) |
