@@ -72,6 +72,11 @@
     return typeof entryStore !== 'undefined' ? entryStore : global.entryStore;
   }
 
+  function currentPatientModel() {
+    var st = getState();
+    return (st && st.modelType) || 'male';
+  }
+
   function isPatientShell() {
     var st = getState();
     return ((st && st.presentationMode) || 'patient') === 'patient';
@@ -177,7 +182,7 @@
   function pullFromStoreToPatientUI() {
     var store = getStore();
     if (store && typeof store.ensureActiveEntry === 'function') {
-      try { store.ensureActiveEntry('adult-male'); } catch (e) {}
+      try { store.ensureActiveEntry(currentPatientModel()); } catch (e) {}
     }
     var active = (store && store.getActiveEntry) ? store.getActiveEntry() : null;
     var form = safeGetFormValues();
@@ -906,7 +911,7 @@
       try {
         var store = getStore();
         if (store && typeof store.ensureActiveEntry === 'function') {
-          store.ensureActiveEntry('adult-male');
+          store.ensureActiveEntry(currentPatientModel());
         }
         pullFromStoreToPatientUI();
         refreshMarkColors();
@@ -1062,6 +1067,18 @@
         var exportBtn = document.getElementById('btnExport');
         if (exportBtn) exportBtn.click();
       }
+    });
+    on('btnSimpleBodyProfile', 'click', function () {
+      closeMoreMenu();
+      var gallery = document.getElementById('bodyTypeGallery');
+      if (!gallery) return;
+      gallery.classList.add('is-spotlight');
+      if (typeof gallery.scrollIntoView === 'function') {
+        gallery.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+      var first = gallery.querySelector('.body-type-option');
+      if (first && typeof first.focus === 'function') first.focus();
+      setTimeout(function () { gallery.classList.remove('is-spotlight'); }, 1600);
     });
     on('btnSimpleHelp', 'click', function () {
       closeMoreMenu();

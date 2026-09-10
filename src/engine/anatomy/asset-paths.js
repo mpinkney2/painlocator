@@ -31,12 +31,17 @@ function isSimplePainMapShell() {
 
 function getAssetPath(modelType, viewType) {
   const view = ANATOMY_VIEWS.includes(viewType) ? viewType : 'front';
-  // Simple pain-chart uses realistic studio person plates (not CAE placeholder plates).
-  if (isSimplePainMapShell() || modelType === SIMPLE_PAIN_MAP_MODEL || modelType === "simple") {
-    return `${getAnatomyAssetRoot()}/${SIMPLE_PAIN_MAP_MODEL}/${view}.png`;
-  }
   const model = normalizeAnatomyModel(modelType);
   const folder = ANATOMY_MODELS.includes(model) ? model : 'adult-male';
+  // Simple pain-chart: adult-male keeps the studio person plates; other
+  // gallery profiles use their CAE plates so the chosen body actually changes.
+  if (
+    model === SIMPLE_PAIN_MAP_MODEL ||
+    modelType === "simple" ||
+    ((isSimplePainMapShell()) && (model === "adult-male"))
+  ) {
+    return `${getAnatomyAssetRoot()}/${SIMPLE_PAIN_MAP_MODEL}/${view}.png`;
+  }
   return `${getAnatomyAssetRoot()}/${folder}/${view}.png`;
 }
 

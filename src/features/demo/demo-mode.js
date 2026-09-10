@@ -86,6 +86,8 @@
     }
     if (typeof setBodyView === 'function') setBodyView(scenario.defaultView);
     else state.view = scenario.defaultView;
+    if (typeof syncBodyTypeGallery === 'function') syncBodyTypeGallery(state.modelType);
+    else if (typeof window.syncBodyTypeGallery === 'function') window.syncBodyTypeGallery(state.modelType);
   }
 
   function enter(options = {}) {

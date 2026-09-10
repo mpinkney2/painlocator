@@ -347,7 +347,7 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
   body.shell-patient.simple-pain-map .simple-pain-headline {
     position: absolute;
     top: 0.35rem;
-    left: 0.35rem;
+    left: 4.85rem;
     right: 2.5rem;
     z-index: 6;
     padding: 0;
@@ -433,6 +433,102 @@ body.shell-patient.simple-pain-map .simple-view-compass {
   gap: 0.22rem;
   pointer-events: auto;
   filter: drop-shadow(0 2px 10px rgba(24, 42, 66, 0.16));
+}
+
+/* Simple body-profile gallery — left of the figure, above the compass. */
+body.shell-patient.simple-pain-map .body-type-gallery {
+  position: absolute;
+  left: max(0.35rem, env(safe-area-inset-left, 0px));
+  top: 0.7rem;
+  transform: none;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  padding: 0.35rem 0.3rem 0.4rem;
+  max-height: calc(100% - 10.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(24, 42, 66, 0.1);
+  pointer-events: auto;
+}
+
+body.shell-patient.simple-pain-map .body-type-gallery-title {
+  margin: 0 0 0.1rem;
+  text-align: center;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+body.shell-patient.simple-pain-map .body-type-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 40px;
+  min-height: 44px;
+  padding: 4px 6px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.1;
+  touch-action: manipulation;
+}
+
+body.shell-patient.simple-pain-map .body-type-option:hover {
+  background: var(--accent-subtle);
+}
+
+body.shell-patient.simple-pain-map .body-type-option.is-selected,
+body.shell-patient.simple-pain-map .body-type-option[aria-pressed="true"] {
+  background: var(--accent-subtle);
+  border-color: var(--spm-amber);
+  color: var(--text-primary);
+}
+
+body.shell-patient.simple-pain-map .body-type-silhouette {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 20px;
+  height: 34px;
+}
+
+body.shell-patient.simple-pain-map .body-type-silhouette svg {
+  display: block;
+  width: auto;
+  height: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.6;
+}
+
+body.shell-patient.simple-pain-map .body-type-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+body.shell-patient.simple-pain-map .body-type-gallery.is-spotlight {
+  box-shadow: 0 0 0 3px var(--spm-amber), 0 4px 16px rgba(24, 42, 66, 0.12);
+}
+
+body.shell-patient.simple-pain-map .body-type-option:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
 }
 
 body.shell-patient.simple-pain-map .simple-compass-btn {
@@ -1525,6 +1621,28 @@ body.shell-patient.simple-view-map #timelinePanel {
     bottom: 3.65rem;
   }
 
+  body.shell-patient.simple-pain-map .body-type-gallery {
+    top: 0.35rem;
+    max-height: calc(100% - 8.75rem);
+    padding: 0.25rem 0.2rem 0.3rem;
+    gap: 1px;
+  }
+
+  body.shell-patient.simple-pain-map .body-type-option {
+    min-width: 36px;
+    min-height: 40px;
+    padding: 3px 4px;
+  }
+
+  body.shell-patient.simple-pain-map .body-type-silhouette {
+    width: 16px;
+    height: 28px;
+  }
+
+  body.shell-patient.simple-pain-map .body-type-label {
+    font-size: 0.52rem;
+  }
+
   body.shell-patient.simple-pain-map .simple-pain-headline {
     position: relative;
     top: auto;
@@ -1765,6 +1883,7 @@ body.shell-clinician .simple-pain-panel,
 body.shell-clinician .simple-pain-nav,
 body.shell-clinician .simple-view-bar,
 body.shell-clinician .simple-view-compass,
+body.shell-clinician .body-type-gallery,
 body.shell-clinician .simple-pain-footer {
   display: none !important;
 }
