@@ -6,7 +6,7 @@
  * Plate is only for:
  * - explicit opt-in (?plate=1 / ?displayMode=plate)
  * - "Use 2D diagram"
- * - simple pain-map shell (realistic studio person plates)
+ * - simple pain-map shell (MetaHuman-style 2D likeness plates)
  * - off-stage report/PDF compositing
  *
  * Critical: when plate is intentional, never leave body.spatial-primary on while

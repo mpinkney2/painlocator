@@ -1876,11 +1876,11 @@ console.log('PainLocator tests\n');
   const sandbox = createSandbox();
   loadScript('src/engine/anatomy/asset-paths.js', sandbox);
 
-  test('simple pain-map: getAssetPath uses realistic studio plates', () => {
+  test('simple pain-map: getAssetPath uses MetaHuman plates', () => {
     sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
-    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/simple-pain-map/front.png');
-    assert.equal(sandbox.getAssetPath('adult-male', 'back'), '/anatomy/simple-pain-map/back.png');
-    assert.equal(sandbox.getAssetPath('simple-pain-map', 'left'), '/anatomy/simple-pain-map/left.png');
+    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/metahuman/adult-male/front.png');
+    assert.equal(sandbox.getAssetPath('adult-male', 'back'), '/anatomy/metahuman/adult-male/back.png');
+    assert.equal(sandbox.getAssetPath('simple-pain-map', 'left'), '/anatomy/metahuman/adult-male/left.png');
   });
 
   test('simple pain-map: clinician path keeps CAE adult-male plates', () => {
@@ -1889,21 +1889,23 @@ console.log('PainLocator tests\n');
     assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/adult-male/front.png');
   });
 
-  test('simple pain-map: gallery profiles use matching CAE plates', () => {
+  test('simple pain-map: gallery profiles use matching MetaHuman plates', () => {
     sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
     sandbox.state = { presentationMode: 'patient' };
-    assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/adult-female/front.png');
-    assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/adult-female/back.png');
-    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/teen/left.png');
-    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/child/right.png');
-    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/senior/front.png');
-    // Man / default still uses the studio person plates.
-    assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/simple-pain-map/front.png');
+    assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/metahuman/adult-female/front.png');
+    assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/metahuman/adult-female/back.png');
+    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/metahuman/teen/left.png');
+    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/metahuman/child/right.png');
+    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/metahuman/senior/front.png');
+    assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/metahuman/adult-male/front.png');
   });
 
-  test('simple pain-map: realistic plate files exist in public/', () => {
-    for (const view of ['front', 'back', 'left', 'right']) {
-      assert.ok(statSync(join(root, `public/anatomy/simple-pain-map/${view}.png`)).isFile());
+  test('simple pain-map: MetaHuman plate files exist in public/', () => {
+    for (const folder of ['adult-male', 'adult-female', 'teen', 'child', 'senior']) {
+      for (const view of ['front', 'back', 'left', 'right']) {
+        assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/${view}.png`)).isFile());
+      }
+      assert.ok(statSync(join(root, `public/anatomy/metahuman/thumbs/${folder}.png`)).isFile());
     }
   });
 
@@ -1958,7 +1960,7 @@ console.log('PainLocator tests\n');
     const workspaceIdx = html.indexOf('id="simplePainWorkspace"');
     assert.ok(panelIdx > 0 && toolsIdx > panelIdx && viewsIdx > toolsIdx);
     assert.ok(workspaceIdx > 0 && timelineIdx > workspaceIdx);
-    assert.ok(html.includes('/anatomy/simple-pain-map/front.png'));
+    assert.ok(html.includes('/anatomy/metahuman/adult-male/front.png'));
     assert.ok(flow.includes('activatePatientTool'));
     assert.ok(flow.includes('setAssessStep'));
     assert.ok(flow.includes('setDrawerExpanded'));
@@ -1967,12 +1969,13 @@ console.log('PainLocator tests\n');
     assert.ok(!flow.includes("ensureActiveEntry({ view: 'anterior'"));
     assert.ok(html.includes('id="bodyTypeGallery"'));
     assert.ok(html.includes('id="btnSimpleBodyProfile"'));
-    assert.ok(html.includes('data-model="female"') && html.includes('data-model="senior"'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/adult-female.png'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/senior.png'));
     assert.ok(css.includes('.body-type-gallery') && css.includes('.body-type-option'));
     assert.ok(css.includes('theme-dark') && css.includes('--surface-elevated: #252b3a'));
     assert.ok(flow.includes('btnSimpleBodyProfile') && flow.includes('bodyTypeGallery'));
     for (const folder of ['adult-female', 'teen', 'child', 'senior']) {
-      assert.ok(statSync(join(root, `public/anatomy/${folder}/front.png`)).isFile());
+      assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/front.png`)).isFile());
     }
     assert.ok(html.includes('id="simpleViewCompass"'));
     assert.ok(html.includes('id="simpleDrawerPeekBar"'));
