@@ -21,6 +21,60 @@ function polygonPoints(anchors) {
   return anchors.map(a => `${a.x},${a.y}`).join(" ");
 }
 
+const SIMPLE_MARK_SIZE_KEY = "painlocator_mark_size";
+const SIMPLE_MARK_SIZE_SCALES = { s: 0.5, m: 1, l: 1.5 };
+const SIMPLE_VIEW_YAW = ["front", "right", "back", "left"];
+const SIMPLE_PLATE_CACHE = "spm-mh-prod2";
+
+function getSimpleMarkSizeScale() {
+  try {
+    const raw = typeof localStorage !== "undefined"
+      ? localStorage.getItem(SIMPLE_MARK_SIZE_KEY)
+      : null;
+    const key = raw === "m" || raw === "l" ? raw : "s";
+    return SIMPLE_MARK_SIZE_SCALES[key] || 0.5;
+  } catch (_) {
+    return 0.5;
+  }
+}
+
+function setSimpleMarkSizePref(size) {
+  const key = size === "m" || size === "l" ? size : "s";
+  try {
+    localStorage.setItem(SIMPLE_MARK_SIZE_KEY, key);
+  } catch (_) { /* ignore */ }
+  if (typeof document !== "undefined") {
+    document.body?.setAttribute?.("data-mark-size", key);
+  }
+  return key;
+}
+
+function applySimpleMarkSizeAttr() {
+  if (typeof document === "undefined") return;
+  try {
+    const raw = localStorage.getItem(SIMPLE_MARK_SIZE_KEY);
+    const key = raw === "m" || raw === "l" ? raw : "s";
+    document.body?.setAttribute?.("data-mark-size", key);
+  } catch (_) {
+    document.body?.setAttribute?.("data-mark-size", "s");
+  }
+}
+
+/** Shortest turn on the Front → Right → Back → Left compass. 1 = CW, -1 = CCW, 0 = fade. */
+function simpleViewTurnDir(fromView, toView) {
+  const a = SIMPLE_VIEW_YAW.indexOf(fromView);
+  const b = SIMPLE_VIEW_YAW.indexOf(toView);
+  if (a < 0 || b < 0 || a === b) return 0;
+  const cw = (b - a + SIMPLE_VIEW_YAW.length) % SIMPLE_VIEW_YAW.length;
+  if (cw === 2) return 0;
+  return cw === 1 ? 1 : -1;
+}
+
+function simplePlateSrc(model, view) {
+  const path = typeof getAssetPath === "function" ? getAssetPath(model, view) : "";
+  return path + "?v=" + SIMPLE_PLATE_CACHE;
+}
+
 class AnatomyImageLayer {
   constructor(root) {
     this.root = root;
@@ -204,9 +258,10 @@ class PainRegionLayer {
     const isPolygon = region.shape === "polygon" && region.anchors.length >= 3;
     let { rx, ry } = getRegionRadii(region, intensity);
     if (simplePatient) {
-      // Larger tap targets so marks stay readable on the studio figure.
-      rx = Math.max(rx, 0.03);
-      ry = Math.max(ry, 0.03);
+      const scale = getSimpleMarkSizeScale();
+      const floor = 0.03 * scale;
+      rx = Math.max(rx, floor);
+      ry = Math.max(ry, floor);
     }
     if (typeof isCircularPainMark === "function" ? isCircularPainMark(region) : !isPolygon) {
       const visualR = Math.max(rx, ry);
@@ -617,6 +672,123 @@ class ClinicalMarkupRenderer {
     this._resizeObserver = null;
     this._zoomListeners = [];
     this._spmScaleMode = null;
+    this._viewSwapGen = 0;
+    this._cancelViewSwap = null;
+  }
+
+  _isSimplePainMap() {
+    return typeof document !== "undefined"
+      && document.body?.classList?.contains("simple-pain-map");
+  }
+
+  _simplePlateToken() {
+    return this._isSimplePainMap() ? SIMPLE_PLATE_CACHE : String(Date.now());
+  }
+
+  preloadSimpleViewPlates() {
+    if (!this._isSimplePainMap() || typeof getAssetPath !== "function") return;
+    if (typeof Image === "undefined") return;
+    const model = this.engine.modelType;
+    ["front", "back", "left", "right"].forEach((view) => {
+      const img = new Image();
+      img.src = simplePlateSrc(model, view);
+    });
+  }
+
+  /**
+   * In-place compass turn: keep zoom, crossfade/slide the plate, no remount.
+   * @param {string} fromView
+   * @param {string} toView
+   * @returns {boolean}
+   */
+  swapSimpleView(fromView, toView) {
+    if (!this._isSimplePainMap()) return false;
+    if (!this.layers?.image?.el || !this.frame || !this.viewport) return false;
+    if (!fromView || fromView === toView) return false;
+
+    this._cancelViewSwap?.();
+    const gen = ++this._viewSwapGen;
+    this._boundView = toView;
+    this._boundModel = this.engine.modelType;
+    this.preloadSimpleViewPlates();
+
+    const current = this.layers.image.el;
+    current.classList.add("is-view-swap", "is-loaded");
+    const incoming = document.createElement("img");
+    incoming.className = "cae-anatomy-image is-view-swap is-incoming";
+    incoming.alt = "Clinical Anatomy Plate";
+    incoming.draggable = false;
+    incoming.setAttribute("data-loaded", "1");
+    current.insertAdjacentElement("afterend", incoming);
+
+    const dir = simpleViewTurnDir(fromView, toView);
+    const reduced = typeof window !== "undefined"
+      && window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const frame = this.frame;
+    frame.classList.remove("is-turning-cw", "is-turning-ccw", "is-turning-fade");
+    frame.classList.add("is-turning");
+    if (reduced || dir === 0) frame.classList.add("is-turning-fade");
+    else if (dir > 0) frame.classList.add("is-turning-cw");
+    else frame.classList.add("is-turning-ccw");
+
+    let finished = false;
+    const cleanupFrame = () => {
+      frame.classList.remove("is-turning", "is-turning-cw", "is-turning-ccw", "is-turning-fade");
+    };
+
+    const finish = () => {
+      if (finished || gen !== this._viewSwapGen) return;
+      finished = true;
+      this._cancelViewSwap = null;
+      current.src = incoming.src;
+      current.classList.remove("is-out");
+      current.classList.add("is-loaded", "is-view-swap");
+      incoming.remove();
+      cleanupFrame();
+      this.layers.image.el = current;
+      this.mapper.setElements(this.frame, current);
+      this.renderRegions();
+      this.syncLayout();
+      this.updateDebugLabel();
+    };
+
+    this._cancelViewSwap = () => {
+      if (finished) return;
+      finished = true;
+      incoming.remove();
+      current.classList.remove("is-out");
+      cleanupFrame();
+    };
+
+    let started = false;
+    const startTurn = () => {
+      if (started || gen !== this._viewSwapGen) return;
+      started = true;
+      incoming.classList.add("is-ready");
+      requestAnimationFrame(() => {
+        if (gen !== this._viewSwapGen) return;
+        incoming.classList.add("is-in");
+        current.classList.add("is-out");
+        this.renderRegions();
+      });
+      incoming.addEventListener("transitionend", finish, { once: true });
+      setTimeout(finish, reduced ? 80 : 220);
+    };
+
+    incoming.onload = () => {
+      if (incoming.naturalWidth > 0) startTurn();
+    };
+    incoming.onerror = () => {
+      this._cancelViewSwap?.();
+      return false;
+    };
+    incoming.src = simplePlateSrc(this.engine.modelType, toView);
+    if (incoming.complete && incoming.naturalWidth > 0) {
+      startTurn();
+    }
+    return true;
   }
 
   onZoomChange(cb) {
@@ -728,14 +900,18 @@ class ClinicalMarkupRenderer {
 
     const viewChanged = this._boundView !== this.engine.viewType
       || this._boundModel !== this.engine.modelType;
-    if (viewChanged && this._boundView != null) {
+    if (viewChanged && this._boundView != null && !this._isSimplePainMap()) {
       this.mapper.resetZoom();
       this._spmScaleMode = null;
       this._emitZoomChange();
     }
     this._boundView = this.engine.viewType;
     this._boundModel = this.engine.modelType;
+    applySimpleMarkSizeAttr();
 
+    this._cancelViewSwap?.();
+    this._cancelViewSwap = null;
+    this._viewSwapGen += 1;
     window.removeEventListener("resize", this._onResize);
     this._resizeObserver?.disconnect();
 
@@ -799,6 +975,8 @@ class ClinicalMarkupRenderer {
       this.renderRegions();
       this.applyVisualizationClasses();
       this.injectDebugLabel(container, imgPath);
+      this.preloadSimpleViewPlates();
+      if (img) img.classList.add("is-view-swap");
     };
 
     const handleError = () => {
@@ -818,12 +996,9 @@ class ClinicalMarkupRenderer {
 
     img.onload = () => (img.naturalWidth > 0 ? handleLoad() : handleError());
     img.onerror = handleError;
-    // Stable cache token for patient plates; avoid Date.now() thrash on every view change.
-    const cacheToken =
-      typeof document !== "undefined" &&
-      document.body?.classList?.contains("simple-pain-map")
-        ? "spm-mh-prod2"
-        : String(Date.now());
+    const cacheToken = this._isSimplePainMap()
+      ? SIMPLE_PLATE_CACHE
+      : String(Date.now());
     img.src = imgPath + "?v=" + cacheToken;
 
     window.addEventListener("resize", this._onResize);
@@ -926,3 +1101,7 @@ class ClinicalMarkupRenderer {
 }
 
 window.ClinicalMarkupRenderer = ClinicalMarkupRenderer;
+window.getSimpleMarkSizeScale = getSimpleMarkSizeScale;
+window.setSimpleMarkSizePref = setSimpleMarkSizePref;
+window.simpleViewTurnDir = simpleViewTurnDir;
+window.SIMPLE_MARK_SIZE_KEY = SIMPLE_MARK_SIZE_KEY;

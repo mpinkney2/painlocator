@@ -213,6 +213,57 @@ body.shell-patient.simple-pain-map .header-actions {
   background: var(--accent-subtle);
 }
 
+.simple-prefs-fieldset {
+  border: 1px solid var(--spm-border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.simple-prefs-fieldset legend {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--spm-navy);
+  padding: 0 0.35rem;
+}
+
+.simple-prefs-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--spm-muted);
+}
+
+.simple-prefs-size {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+}
+
+.simple-prefs-size-opt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2.6rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--spm-border);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 650;
+  cursor: pointer;
+  background: var(--spm-white);
+}
+
+.simple-prefs-size-opt:has(input:checked) {
+  border-color: var(--spm-amber);
+  background: color-mix(in srgb, var(--spm-amber) 22%, #fff);
+}
+
+.simple-prefs-size-opt input {
+  accent-color: var(--spm-navy);
+}
+
 /* Workspace — fill remaining viewport below header */
 body.shell-patient.simple-pain-map,
 body.shell-patient.simple-pain-map .app {
@@ -657,20 +708,81 @@ body.shell-patient.simple-pain-map .body-type-silhouette img {
   image-rendering: high-quality;
 }
 
-/* Progressive settle — scale into place instead of jumping */
+/* Progressive settle — first plate only; view turns use .is-view-swap */
 body.shell-patient.simple-pain-map .cae-anatomy-image {
   opacity: 0;
-  transform: scale(0.94);
+  transform: scale(0.98);
   transform-origin: center center;
   transition:
-    opacity 0.45s var(--spm-ease-drawer),
-    transform 0.55s var(--spm-ease-drawer);
+    opacity 0.18s ease-out,
+    transform 0.2s ease-out;
   z-index: 1;
 }
 
 body.shell-patient.simple-pain-map .cae-anatomy-image.is-loaded {
   opacity: 1 !important;
   transform: scale(1);
+}
+
+body.shell-patient.simple-pain-map .cae-anatomy-image.is-view-swap {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Compass turns: slide/fade in place — never remount or zoom-reset. */
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning {
+  transition: none !important;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning .cae-anatomy-image {
+  transition:
+    opacity 0.16s ease-out,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.shell-patient.simple-pain-map .cae-anatomy-image.is-incoming {
+  display: block !important;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning-cw .cae-anatomy-image.is-incoming {
+  transform: translateX(10%);
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning-ccw .cae-anatomy-image.is-incoming {
+  transform: translateX(-10%);
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning-fade .cae-anatomy-image.is-incoming {
+  transform: none;
+}
+
+body.shell-patient.simple-pain-map .cae-anatomy-image.is-incoming.is-in {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning-cw .cae-anatomy-image.is-out {
+  opacity: 0 !important;
+  transform: translateX(-10%) !important;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning-ccw .cae-anatomy-image.is-out {
+  opacity: 0 !important;
+  transform: translateX(10%) !important;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning-fade .cae-anatomy-image.is-out {
+  opacity: 0 !important;
+  transform: none !important;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame.is-turning .cae-region-layer {
+  opacity: 0;
+  transition: opacity 0.1s linear;
 }
 
 /* Frame follows mapper bounds (not full viewport) so marks stick to anatomy */
@@ -680,12 +792,8 @@ body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame {
   bottom: auto !important;
   max-width: none;
   max-height: none;
-  transition:
-    left 0.4s var(--spm-ease-drawer),
-    top 0.4s var(--spm-ease-drawer),
-    width 0.4s var(--spm-ease-drawer),
-    height 0.4s var(--spm-ease-drawer);
-  will-change: left, top, width, height;
+  /* Snap layout; compass turns must not tween the frame (that was the delayed jump). */
+  transition: none;
 }
 
 /* Touch / notation layer sits above the plate image and MUST fill the frame.
@@ -727,10 +835,17 @@ body.shell-patient.simple-pain-map .cae-marker-tooltip {
 /* Patient marks: solid amber dots that read clearly on the studio figure */
 body.shell-patient.simple-pain-map .cae-region-layer .pain-region-fill {
   stroke: #182a42 !important;
-  stroke-width: 2px !important;
+  stroke-width: 1.5px !important;
   stroke-opacity: 1 !important;
   vector-effect: non-scaling-stroke;
+}
 
+body.shell-patient.simple-pain-map[data-mark-size="m"] .cae-region-layer .pain-region-fill {
+  stroke-width: 2px !important;
+}
+
+body.shell-patient.simple-pain-map[data-mark-size="l"] .cae-region-layer .pain-region-fill {
+  stroke-width: 2.5px !important;
 }
 
 body.shell-patient.simple-pain-map .cae-region-layer .pain-region.selected .pain-region-fill {
@@ -741,7 +856,8 @@ body.shell-patient.simple-pain-map .cae-region-layer .pain-region.selected .pain
 
 @media (prefers-reduced-motion: reduce) {
   body.shell-patient.simple-pain-map .cae-anatomy-image,
-  body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame {
+  body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame,
+  body.shell-patient.simple-pain-map .cae-image-frame.is-turning .cae-anatomy-image {
     transition: none !important;
     transform: none !important;
   }

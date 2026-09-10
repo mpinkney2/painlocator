@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.25-mh-prod">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.26-view-turn">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -68,6 +68,7 @@
             <button type="button" role="menuitem" id="btnSimpleImport">Import</button>
             <button type="button" role="menuitem" id="btnSimpleExport">Export</button>
             <button type="button" role="menuitem" id="btnSimpleBodyProfile">Body profile</button>
+            <button type="button" role="menuitem" id="btnSimplePrefs">Preferences</button>
             <button type="button" role="menuitem" id="btnSimpleHelp">Help</button>
             <button type="button" role="menuitem" id="btnSimpleTheme">Theme</button>
             <button type="button" role="menuitem" id="btnSimpleFeedback">Feedback</button>
@@ -854,6 +855,38 @@
     <!-- Hidden import picker -->
     <input type="file" id="importSessionInput" accept="application/json,.json" hidden>
 
+    <!-- Patient preferences -->
+    <dialog class="modal" id="simplePrefsModal" aria-labelledby="simplePrefsTitle">
+      <div class="modal-head">
+        <h3 id="simplePrefsTitle">Preferences</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-note">These settings stay on this device.</p>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Tap mark size</legend>
+          <p class="simple-prefs-hint">Default is small — half the previous size. Choose a larger mark if you want easier targets.</p>
+          <div class="simple-prefs-size" role="radiogroup" aria-label="Tap mark size">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleMarkSize" value="s" checked>
+              <span>Small</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleMarkSize" value="m">
+              <span>Medium</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleMarkSize" value="l">
+              <span>Large</span>
+            </label>
+          </div>
+        </fieldset>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-close>Done</button>
+        </div>
+      </div>
+    </dialog>
+
     <!-- Help / privacy / safety -->
     <dialog class="modal" id="helpModal" aria-labelledby="helpModalTitle">
       <div class="modal-head">
@@ -924,8 +957,8 @@
   <script src="src/engine/anatomy/asset-paths.js?v=5.24-metahuman"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
-  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-09-simple-map-harden"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.25-mh-prod"></script>
+  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.26-view-turn"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.26-view-turn"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-09-simple-map-harden"></script>
@@ -966,7 +999,7 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.23-body-gallery"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.26-view-turn"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/app/bootstrap.js?v=5.23-body-gallery"></script>
 </body>
