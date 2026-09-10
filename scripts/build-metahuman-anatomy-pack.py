@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 HQ_SRC = Path("/opt/cursor/artifacts/assets")
@@ -29,13 +29,56 @@ THUMB_H = 480
 SR_SCALE = 4
 PAD = 0.035
 
+# argv / filename stem → runtime folder
 MAP = {
-    "woman": "adult-female",
     "man": "adult-male",
-    "teen": "teen",
-    "child": "child",
-    "elderly": "senior",
+    "woman": "adult-female",
+    "adult-male": "adult-male",
+    "adult-female": "adult-female",
+    "teen": "teen-male",
+    "teen-male": "teen-male",
+    "teen-female": "teen-female",
+    "child": "child-male",
+    "child-male": "child-male",
+    "child-female": "child-female",
+    "elderly": "senior-male",
+    "senior": "senior-male",
+    "senior-male": "senior-male",
+    "senior-female": "senior-female",
 }
+
+DEFAULT_PROFILES = [
+    "man",
+    "woman",
+    "teen-male",
+    "teen-female",
+    "child-male",
+    "child-female",
+    "senior-male",
+    "senior-female",
+]
+
+# Canonical folder → extra copies so cached / legacy URLs keep working
+FOLDER_ALIASES = {
+    "teen-male": ["teen"],
+    "child-male": ["child"],
+    "senior-male": ["senior"],
+}
+
+SOURCE_STEMS = {
+    "teen-male": ["teen-male", "teen"],
+    "teen": ["teen", "teen-male"],
+    "child-male": ["child-male", "child"],
+    "child": ["child", "child-male"],
+    "senior-male": ["senior-male", "elderly", "senior"],
+    "elderly": ["elderly", "senior", "senior-male"],
+    "senior": ["senior", "elderly", "senior-male"],
+    "adult-male": ["adult-male", "man"],
+    "man": ["man", "adult-male"],
+    "adult-female": ["adult-female", "woman"],
+    "woman": ["woman", "adult-female"],
+}
+
 VIEWS = ["front", "back", "left", "right"]
 
 
@@ -111,11 +154,16 @@ def fit_on_canvas(im: Image.Image, width: int, height: int, pad: float = 0.0) ->
 
 
 def resolve_hq(profile: str, view: str) -> Path:
-    names = [
-        f"mh-tee-{profile}-{view}.png",
-        f"mh-prod-{profile}-{view}.png",
-        f"mh-hq-{profile}-{view}.png",
-    ]
+    stems = SOURCE_STEMS.get(profile, [profile])
+    names = []
+    for stem in stems:
+        names.extend(
+            [
+                f"mh-tee-{stem}-{view}.png",
+                f"mh-prod-{stem}-{view}.png",
+                f"mh-hq-{stem}-{view}.png",
+            ]
+        )
     HQ_REPO.mkdir(parents=True, exist_ok=True)
     repo = HQ_REPO / f"{profile}-{view}.png"
     for name in names:
@@ -123,9 +171,27 @@ def resolve_hq(profile: str, view: str) -> Path:
         if artifact.exists():
             shutil.copy2(artifact, repo)
             return repo
+        nested = HQ_REPO / name
+        if nested.exists():
+            shutil.copy2(nested, repo)
+            return repo
+    for stem in stems:
+        alt = HQ_REPO / f"{stem}-{view}.png"
+        if alt.exists():
+            if alt.resolve() != repo.resolve():
+                shutil.copy2(alt, repo)
+            return repo
     if repo.exists():
         return repo
-    raise SystemExit(f"missing HQ still mh-tee-{profile}-{view}.png")
+    raise SystemExit(f"missing HQ still for {profile} {view} (tried {', '.join(names[:6])})")
+
+
+def copy_folder(src: Path, dest: Path) -> None:
+    dest.mkdir(parents=True, exist_ok=True)
+    for view in VIEWS:
+        plate = src / f"{view}.png"
+        if plate.exists():
+            shutil.copy2(plate, dest / f"{view}.png")
 
 
 def main() -> None:
@@ -134,7 +200,8 @@ def main() -> None:
     thumb_dir.mkdir(parents=True, exist_ok=True)
 
     wanted = [a for a in sys.argv[1:] if a in MAP]
-    profiles = wanted or list(MAP)
+    profiles = wanted or list(DEFAULT_PROFILES)
+    built_folders: set[str] = set()
     for profile in profiles:
         folder = MAP[profile]
         dest = OUT / folder
@@ -159,6 +226,14 @@ def main() -> None:
         front = Image.open(FRAMES / f"{profile}-front.png")
         thumb = fit_on_canvas(front, THUMB_W, THUMB_H, 0.02)
         thumb.save(thumb_dir / f"{folder}.png", "PNG", optimize=True, compress_level=9)
+        built_folders.add(folder)
+
+    for folder in built_folders:
+        for alias in FOLDER_ALIASES.get(folder, []):
+            copy_folder(OUT / folder, OUT / alias)
+            src_thumb = thumb_dir / f"{folder}.png"
+            if src_thumb.exists():
+                shutil.copy2(src_thumb, thumb_dir / f"{alias}.png")
 
     manifest = {
         "id": "metahuman",
@@ -172,15 +247,26 @@ def main() -> None:
                 "thumb": f"/anatomy/metahuman/thumbs/{folder}.png",
             }
             for label, folder in [
-                ("Man", "adult-male"),
-                ("Woman", "adult-female"),
-                ("Teen", "teen"),
-                ("Child", "child"),
-                ("Elderly", "senior"),
+                ("Adult man", "adult-male"),
+                ("Adult woman", "adult-female"),
+                ("Teen boy", "teen-male"),
+                ("Teen girl", "teen-female"),
+                ("Boy", "child-male"),
+                ("Girl", "child-female"),
+                ("Elderly man", "senior-male"),
+                ("Elderly woman", "senior-female"),
             ]
         },
+        "aliases": {
+            "teen": "teen-male",
+            "child": "child-male",
+            "senior": "senior-male",
+        },
         "views": VIEWS,
-        "notes": "Retina 2048×3072 plates. Gray t-shirt and shorts (woman: tank and shorts).",
+        "notes": (
+            "Retina 2048×3072 plates. Gray t-shirt and shorts "
+            "(women/teen girl: tank or modest tee and shorts)."
+        ),
     }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"wrote pack under {OUT}")

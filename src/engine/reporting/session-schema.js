@@ -59,9 +59,15 @@ function formatPatientModelLabel(model) {
   const labels = {
     'adult-male': 'Adult Male',
     'adult-female': 'Adult Female',
-    child: 'Child',
-    teen: 'Teen',
-    senior: 'Senior',
+    'teen-male': 'Teen Male',
+    'teen-female': 'Teen Female',
+    'child-male': 'Child Male',
+    'child-female': 'Child Female',
+    'senior-male': 'Senior Male',
+    'senior-female': 'Senior Female',
+    child: 'Child Male',
+    teen: 'Teen Male',
+    senior: 'Senior Male',
     male: 'Adult Male',
     female: 'Adult Female'
   };

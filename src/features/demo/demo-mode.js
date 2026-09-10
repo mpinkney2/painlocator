@@ -79,11 +79,11 @@
 
   function applyScenarioToUI(scenario) {
     if (!scenario) return;
-    const radio = document.querySelector(`input[name="patient_model"][value="${scenario.model}"]`);
-    if (radio) {
-      radio.checked = true;
-      state.modelType = scenario.model;
-    }
+    const model = typeof normalizeModelType === 'function' ? normalizeModelType(scenario.model) : scenario.model;
+    const radioValue = typeof clinicianRadioValue === 'function' ? clinicianRadioValue(model) : scenario.model;
+    const radio = document.querySelector(`input[name="patient_model"][value="${radioValue}"]`);
+    if (radio) radio.checked = true;
+    state.modelType = model;
     if (typeof setBodyView === 'function') setBodyView(scenario.defaultView);
     else state.view = scenario.defaultView;
     if (typeof syncBodyTypeGallery === 'function') syncBodyTypeGallery(state.modelType);

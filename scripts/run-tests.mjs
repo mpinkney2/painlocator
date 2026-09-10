@@ -1894,14 +1894,40 @@ console.log('PainLocator tests\n');
     sandbox.state = { presentationMode: 'patient' };
     assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/metahuman/adult-female/front.png');
     assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/metahuman/adult-female/back.png');
-    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/metahuman/teen/left.png');
-    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/metahuman/child/right.png');
-    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/metahuman/senior/front.png');
+    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/metahuman/teen-male/left.png');
+    assert.equal(sandbox.getAssetPath('teen-female', 'left'), '/anatomy/metahuman/teen-female/left.png');
+    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/metahuman/child-male/right.png');
+    assert.equal(sandbox.getAssetPath('child-female', 'right'), '/anatomy/metahuman/child-female/right.png');
+    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/metahuman/senior-male/front.png');
+    assert.equal(sandbox.getAssetPath('senior-female', 'front'), '/anatomy/metahuman/senior-female/front.png');
     assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/metahuman/adult-male/front.png');
+    assert.equal(sandbox.composeBodyModel('teen', 'female'), 'teen-female');
+    const teenProfile = sandbox.parseBodyProfile('teen');
+    assert.equal(teenProfile.stage, 'teen');
+    assert.equal(teenProfile.sex, 'male');
+    assert.equal(teenProfile.model, 'teen-male');
+    assert.equal(sandbox.clinicianRadioValue('teen-female'), 'teen');
+    assert.equal(sandbox.classicAnatomyFolder('teen-female'), 'teen');
+  });
+
+  test('simple pain-map: clinician classic plates stay on 5 folders', () => {
+    sandbox.document.body.classList.contains = () => false;
+    sandbox.state = { presentationMode: 'clinician' };
+    assert.equal(sandbox.getAssetPath('teen-female', 'front'), '/anatomy/teen/front.png');
+    assert.equal(sandbox.getAssetPath('child-male', 'back'), '/anatomy/child/back.png');
+    assert.equal(sandbox.getAssetPath('senior-female', 'left'), '/anatomy/senior/left.png');
+    assert.equal(sandbox.getAssetPath('adult-female', 'front'), '/anatomy/adult-female/front.png');
   });
 
   test('simple pain-map: MetaHuman plate files exist in public/', () => {
-    for (const folder of ['adult-male', 'adult-female', 'teen', 'child', 'senior']) {
+    const folders = [
+      'adult-male', 'adult-female',
+      'teen-male', 'teen-female',
+      'child-male', 'child-female',
+      'senior-male', 'senior-female',
+      'teen', 'child', 'senior'
+    ];
+    for (const folder of folders) {
       for (const view of ['front', 'back', 'left', 'right']) {
         assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/${view}.png`)).isFile());
       }
@@ -1909,13 +1935,31 @@ console.log('PainLocator tests\n');
     }
   });
 
+  test('simple pain-map: female models use female clinical overlays', () => {
+    const overlayBox = createSandbox();
+    loadScript('src/engine/overlays/visualization-controller.js', overlayBox);
+    assert.equal(
+      overlayBox.overlayAssetPath('muscle', 'teen-female', 'front'),
+      '/anatomy/overlays/overlay_muscle_female_front.png'
+    );
+    assert.equal(
+      overlayBox.overlayAssetPath('muscle', 'teen', 'front'),
+      '/anatomy/overlays/overlay_muscle_male_front.png'
+    );
+    assert.equal(
+      overlayBox.overlayAssetPath('skeleton', 'child-female', 'back'),
+      '/anatomy/overlays/overlay_skeleton_female_back.png'
+    );
+  });
+
   test('simple pain-map: MetaHuman plates are retina resolution', () => {
     const buf = readFileSync(join(root, 'public/anatomy/metahuman/adult-male/front.png'));
     assert.equal(buf.slice(1, 4).toString(), 'PNG');
     const width = buf.readUInt32BE(16);
     const height = buf.readUInt32BE(20);
-    assert.ok(width >= 2048, `expected width >= 2048, got ${width}`);
-    assert.ok(height >= 3072, `expected height >= 3072, got ${height}`);
+    const femaleBuf = readFileSync(join(root, 'public/anatomy/metahuman/teen-female/front.png'));
+    assert.ok(femaleBuf.readUInt32BE(16) >= 2048);
+    assert.ok(femaleBuf.readUInt32BE(20) >= 3072);
   });
 
   test('simple pain-map: viewport fit + patient annotation chrome', () => {
@@ -1978,12 +2022,15 @@ console.log('PainLocator tests\n');
     assert.ok(!flow.includes("ensureActiveEntry({ view: 'anterior'"));
     assert.ok(html.includes('id="bodyTypeGallery"'));
     assert.ok(html.includes('id="btnSimpleBodyProfile"'));
-    assert.ok(html.includes('/anatomy/metahuman/thumbs/adult-female.png'));
-    assert.ok(html.includes('/anatomy/metahuman/thumbs/senior.png'));
+    assert.ok(html.includes('data-sex="female"') && html.includes('data-sex="male"'));
+    assert.ok(html.includes('data-stage="adult"') && html.includes('data-stage="teen"'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/adult-male.png'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/teen-male.png'));
     assert.ok(css.includes('.body-type-gallery') && css.includes('.body-type-option'));
+    assert.ok(css.includes('.body-sex-toggle') && css.includes('.body-sex-btn'));
     assert.ok(css.includes('theme-dark') && css.includes('--surface-elevated: #252b3a'));
     assert.ok(flow.includes('btnSimpleBodyProfile') && flow.includes('bodyTypeGallery'));
-    for (const folder of ['adult-female', 'teen', 'child', 'senior']) {
+    for (const folder of ['adult-female', 'teen-female', 'child-female', 'senior-female', 'teen-male']) {
       assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/front.png`)).isFile());
     }
     assert.ok(html.includes('id="simpleViewCompass"'));
@@ -2061,6 +2108,10 @@ console.log('PainLocator tests\n');
     assert.equal(s.normalizeModelType({ view: 'anterior', gender: 'male' }), 'adult-male');
     assert.equal(s.normalizeModelType({ gender: 'female' }), 'adult-female');
     assert.equal(s.normalizeModelType('male'), 'adult-male');
+    assert.equal(s.normalizeModelType('teen'), 'teen-male');
+    assert.equal(s.normalizeModelType('teen-female'), 'teen-female');
+    assert.equal(s.normalizeModelType('child'), 'child-male');
+    assert.equal(s.normalizeModelType('senior'), 'senior-male');
     const entry = s.createPainEntry({ patientModel: { gender: 'male' }, regions: [] });
     assert.equal(entry.patientModel, 'adult-male');
   });
