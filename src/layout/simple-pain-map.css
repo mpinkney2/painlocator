@@ -589,21 +589,22 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
 
   body.shell-patient.simple-pain-map .avatar-wrap,
   body.shell-patient.simple-pain-map .anatomy-viewer {
-    flex: 1 1 auto;
+    flex: 1 1 0%;
     height: auto;
-    min-height: 0;
+    min-height: 12rem;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: 0;
+    min-height: 12rem;
     max-height: none;
+    flex: 1 1 0%;
   }
 }
 
 body.shell-patient.simple-pain-map .avatar-wrap,
 body.shell-patient.simple-pain-map .anatomy-viewer {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 1 1 0%;
+  min-height: 12rem;
   height: auto;
   padding-bottom: 0;
   border-radius: 0;
@@ -826,8 +827,8 @@ body.shell-patient.simple-pain-map .simple-compass-btn:focus-visible {
 }
 
 body.shell-patient.simple-pain-map .avatar-stage {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 1 1 0%;
+  min-height: 12rem;
   min-width: 0;
   width: 100%;
   display: flex;
@@ -873,6 +874,7 @@ body.shell-patient.simple-pain-map .avatar-stage .cae-image-frame {
 
 body.shell-patient.simple-pain-map .avatar-stage .cae-stage,
 body.shell-patient.simple-pain-map .avatar-stage .cae-clinical-viewport {
+  flex: 1 1 0%;
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -1998,8 +2000,8 @@ body.shell-patient.simple-view-map #timelinePanel {
   body.shell-patient.simple-pain-map .avatar-wrap,
   body.shell-patient.simple-pain-map .anatomy-viewer {
     height: auto;
-    flex: 1 1 auto;
-    min-height: 0;
+    flex: 1 1 0%;
+    min-height: 12rem;
     overflow: hidden;
   }
 
@@ -2009,9 +2011,9 @@ body.shell-patient.simple-view-map #timelinePanel {
   }
 
   body.shell-patient.simple-pain-map .avatar-stage {
-    min-height: 0;
+    min-height: 12rem;
     max-height: none;
-    flex: 1 1 auto;
+    flex: 1 1 0%;
   }
 
   body.shell-patient.simple-pain-map .avatar-stage img,
