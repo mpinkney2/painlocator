@@ -1909,6 +1909,15 @@ console.log('PainLocator tests\n');
     }
   });
 
+  test('simple pain-map: MetaHuman plates are retina resolution', () => {
+    const buf = readFileSync(join(root, 'public/anatomy/metahuman/adult-male/front.png'));
+    assert.equal(buf.slice(1, 4).toString(), 'PNG');
+    const width = buf.readUInt32BE(16);
+    const height = buf.readUInt32BE(20);
+    assert.ok(width >= 2048, `expected width >= 2048, got ${width}`);
+    assert.ok(height >= 3072, `expected height >= 3072, got ${height}`);
+  });
+
   test('simple pain-map: viewport fit + patient annotation chrome', () => {
     const css = readFileSync(join(root, 'src/layout/simple-pain-map.css'), 'utf8');
     const html = readFileSync(join(root, 'index.html'), 'utf8');
