@@ -684,8 +684,9 @@ console.log('PainLocator tests\n');
     assert.equal(patient.capture.label, 'Locate');
     assert.equal(patient.clinical.label, 'Describe');
     assert.equal(patient.review.label, 'Review');
-    assert.equal(clinician.capture.label, 'Anatomy');
-    assert.equal(clinician.review.label, 'History');
+    // Clinician workflow: Review → Compare → Report
+    assert.equal(clinician.capture.label, 'Review');
+    assert.equal(clinician.review.label, 'Compare');
     assert.equal(clinician.clinical.label, 'Report');
   });
 
@@ -1909,16 +1910,21 @@ console.log('PainLocator tests\n');
     assert.equal(Eng.shouldPreferSpatial(), false);
   });
 
-  test('bp3d engagement: prefers spatial unless plate opted in (WebGL probe not a gate)', () => {
+  test('bp3d engagement: defaults to plate; spatial only when requested (WebGL probe not a gate)', () => {
     sandbox.location.search = '';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    // Probe must not flip the product default — Spatial is opt-in via query/UI.
+    sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    sandbox.location.search = '?spatial=1';
     assert.equal(Eng.shouldPreferSpatial(), true);
-    // Embedded previews often fail the WebGL probe — still prefer Spatial and let mount decide.
+    sandbox.location.search = '?displayMode=spatial';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => false };
     assert.equal(Eng.shouldPreferSpatial(), true);
   });
 
-  test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
+  test('bp3d engagement: preferSpatialAcrossShells enables plate by default and spatial when requested', async () => {
     sandbox.location.search = '';
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
     let called = null;
@@ -1926,10 +1932,19 @@ console.log('PainLocator tests\n');
       async setDisplayMode(mode) {
         called = mode;
         return true;
+      },
+      enablePlateMode() {
+        called = 'plate';
       }
     };
-    const ok = await Eng.preferSpatialAcrossShells(engine);
-    assert.equal(ok, true);
+    const okDefault = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(okDefault, false);
+    assert.equal(called, 'plate');
+
+    sandbox.location.search = '?spatial=1';
+    called = null;
+    const okSpatial = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(okSpatial, true);
     assert.equal(called, 'spatial');
   });
 
@@ -1972,20 +1987,37 @@ console.log('PainLocator tests\n');
     assert.ok(engine.includes('spatialPrimaryNoPlate'));
   });
 
-  test('spatial-primary: chrome module hides plate toggle by default', () => {
+  test('spatial-primary: chrome module exposes 2D/3D toggle; Spatial is opt-in', () => {
     loadScript('src/features/anatomy/spatial-primary-chrome.js', sandbox);
     assert.ok(sandbox.SpatialPrimaryChrome);
+    // URL flags still control allowPlateToggle helper, but product UI always shows the dock.
     sandbox.location.search = '';
     assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), false);
     sandbox.location.search = '?displayToggle=1';
     assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
     sandbox.location.search = '?dev=1';
     assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
-    const docs = readFileSync(join(root, 'docs/BP3D_SHELL_ENGAGEMENT.md'), 'utf8');
-    assert.ok(docs.includes('Spatial is the interactive'));
-    assert.ok(docs.includes('fallback'));
+    // applySpatialPrimaryChrome without Spatial must NOT leave spatial-primary on.
+    const body = {
+      classList: {
+        _set: new Set(),
+        toggle(name, on) { if (on) this._set.add(name); else this._set.delete(name); },
+        contains(name) { return this._set.has(name); }
+      }
+    };
+    sandbox.document = {
+      body,
+      getElementById: () => null,
+      querySelector: () => null,
+      querySelectorAll: () => []
+    };
+    sandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { forcePlate: true });
+    assert.equal(body.classList.contains('spatial-primary'), false);
+    assert.equal(body.classList.contains('allow-plate-toggle'), true);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-primary-chrome.js'));
+    assert.ok(html.includes('id="btnPlateMode"'));
+    assert.ok(html.includes('aria-pressed="true">2D</button>') || html.includes('btnPlateMode') && html.includes('2D'));
   });
 
   test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
@@ -2123,12 +2155,13 @@ console.log('PainLocator tests\n');
       'spatial-layer-loader.js',
       'spatial-manifest-loader.js',
       'canonical-body-loader.js',
-      'spatial-primary-chrome.js',
-      'spatial-diagnostics.js',
-      'bp3d-shell-engagement.js'
+      'spatial-diagnostics.js'
     ]) {
       assert.ok(html.includes(`${file}?v=${ver}`), file);
     }
+    // UX chrome / engagement can cache-bust independently of the Three runtime token.
+    assert.ok(html.includes('spatial-primary-chrome.js?v=2026-09-10-2d-default-1'));
+    assert.ok(html.includes('bp3d-shell-engagement.js?v=2026-09-10-2d-default-1'));
   });
 
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {

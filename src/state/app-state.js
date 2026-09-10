@@ -25,6 +25,8 @@ const state = {
   physicianMode: false,
   reviewEditMode: false,
   entryFilter: 'all',
+  /** Patient History list filter (independent of clinician review filters) */
+  patientEntryFilter: 'all',
   timelineRange: 'all',
   timelineRegion: 'all',
   compareVisible: false,

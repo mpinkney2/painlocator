@@ -148,37 +148,48 @@
         });
       });
       status.querySelector("#btnUsePlateFallback")?.addEventListener("click", () => {
-        global.state?.engine?.setDisplayMode?.("plate");
-        applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+        const engine = global.state?.engine;
+        engine?.setDisplayMode?.("plate");
+        applySpatialPrimaryChrome(false, { forcePlate: true, keepSpatialPrimary: false });
       });
     }
   }
 
   /**
    * @param {boolean} isSpatial
-   * @param {{ keepSpatialPrimary?: boolean }} [opts]
+   * @param {{ keepSpatialPrimary?: boolean, forcePlate?: boolean }} [opts]
    */
   function applySpatialPrimaryChrome(isSpatial, opts = {}) {
     const body = document.body;
     if (!body) return;
 
-    const spatialPrimaryShell = opts.keepSpatialPrimary || !!isSpatial || !wantsPlateOptIn();
+    // 2D is the product default. Spatial-primary chrome only when Spatial is actually active
+    // or an explicit keepSpatialPrimary request (loading/unavailable card).
+    let spatialPrimaryShell;
+    if (opts.forcePlate || opts.keepSpatialPrimary === false) {
+      spatialPrimaryShell = !!isSpatial;
+    } else if (opts.keepSpatialPrimary === true) {
+      spatialPrimaryShell = true;
+    } else {
+      spatialPrimaryShell = !!isSpatial;
+    }
     body.classList.toggle("spatial-primary", spatialPrimaryShell);
-    body.classList.toggle("allow-plate-toggle", allowPlateToggle());
+    // Always allow 2D plate tools + optional 3D toggle.
+    body.classList.toggle("allow-plate-toggle", true);
     body.classList.toggle("spatial-ready", !!isSpatial);
 
     const dock = document.getElementById("displayModeToggle");
     if (dock) {
-      const showToggle = allowPlateToggle();
-      dock.hidden = !showToggle;
-      dock.setAttribute("aria-hidden", showToggle ? "false" : "true");
+      // 2D is default; always expose optional 3D toggle.
+      dock.hidden = false;
+      dock.setAttribute("aria-hidden", "false");
     }
 
+    // 2D plate tools stay available whenever Spatial is not actively ready.
     const enlarge = document.getElementById("btnEnlargeAnatomy");
     if (enlarge) {
-      const hidePlateTools = spatialPrimaryShell && !wantsPlateOptIn();
-      enlarge.hidden = hidePlateTools || !!isSpatial;
-      enlarge.disabled = !!isSpatial || hidePlateTools;
+      enlarge.hidden = !!isSpatial;
+      enlarge.disabled = !!isSpatial;
     }
 
     document
@@ -186,13 +197,16 @@
         '.capture-tools .region-tool[data-tool="circle"], .capture-tools .region-tool[data-tool="polygon"]'
       )
       .forEach((btn) => {
-        const hide = (spatialPrimaryShell && !wantsPlateOptIn()) || !!isSpatial;
+        const hide = !!isSpatial;
         btn.hidden = hide;
         if (hide) btn.classList.remove("active");
       });
 
     const hint = document.getElementById("avatarHint");
     const locatePrompt = document.querySelector("#patientLocateCta .patient-locate-prompt");
+    const isPatientShell =
+      document.body.classList.contains("shell-patient") ||
+      global.state?.presentationMode === "patient";
 
     if (isSpatial) {
       const store =
@@ -205,26 +219,43 @@
       if (store?.setTool) store.setTool(next);
       setActiveToolButton(next);
 
-      const spatialHint =
-        "Drag to rotate · Front / Back / Left / Right snap · Tap the body to mark pain";
+      const spatialHint = isPatientShell
+        ? "Drag to rotate · Front / Back / Left / Right snap · Tap the body to mark pain"
+        : "Drag to rotate · Front / Back / Left / Right snap · Inspect patient marks";
       if (hint) {
         hint.textContent = spatialHint;
         hint.classList.remove("hidden");
       }
-      if (locatePrompt) {
+      if (locatePrompt && isPatientShell) {
         locatePrompt.textContent = "Where does it hurt? Rotate and tap the body to mark pain.";
       }
       document
         .getElementById("avatarStage")
         ?.setAttribute(
           "aria-label",
-          "3D anatomy — drag to rotate, tap to mark pain at snap views"
+          isPatientShell
+            ? "3D anatomy — drag to rotate, tap to mark pain at snap views"
+            : "3D anatomy — drag to rotate, review patient marks at snap views"
         );
-    } else if (spatialPrimaryShell && !wantsPlateOptIn()) {
+    } else if (!isSpatial) {
+      const plateHint = isPatientShell
+        ? "Tap the body to mark where it hurts. Use Front / Back / Left / Right to change view."
+        : "Review patient marks on the 2D body map.";
       if (hint) {
-        hint.textContent = "Waiting for the 3D body — rotate and tap once it loads.";
+        hint.textContent = plateHint;
         hint.classList.remove("hidden");
       }
+      if (locatePrompt && isPatientShell) {
+        locatePrompt.textContent = "Where does it hurt? Tap the body to mark pain.";
+      }
+      document
+        .getElementById("avatarStage")
+        ?.setAttribute(
+          "aria-label",
+          isPatientShell
+            ? "2D anatomy — tap to mark pain, use view snaps to change side"
+            : "2D anatomy — review patient marks"
+        );
     }
 
     document.getElementById("avatarWrap")?.classList.toggle("display-spatial", !!isSpatial);

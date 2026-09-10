@@ -126,7 +126,6 @@
     }
 
     inFlight = true;
-    setSaveStatus?.('saving', 'Sending feedback…');
     try {
       let result;
       try {
@@ -138,7 +137,6 @@
           result = await postToEndpoint(payload);
         } catch (err2) {
           result = localFallback(payload);
-          setSaveStatus?.('offline', 'Endpoint unavailable — feedback file downloaded');
           showToast?.(
             'Feedback endpoint unavailable. A copy was downloaded so you can send it manually.',
             { type: 'warning', duration: 6000 }
@@ -148,11 +146,14 @@
       lastSubmitAt = Date.now();
       lastPayloadHash = hash;
       const referenceId = result.referenceId || payload.clientReferenceHint;
-      setSaveStatus?.('feedback', `Feedback sent · ${referenceId}`);
+      // Feedback uses toast (feedback-ui) — never overwrite entry save status.
       trackEvent?.('feedback_submitted', { type: payload.type });
       return { ok: true, referenceId, delivery: result.delivery || 'http' };
     } finally {
       inFlight = false;
+      if (typeof window.syncSaveStatusFromStore === 'function') {
+        window.syncSaveStatusFromStore();
+      }
     }
   }
 

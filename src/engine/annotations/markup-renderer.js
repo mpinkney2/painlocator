@@ -355,6 +355,9 @@ class RegionInteractionLayer {
   }
 
   onPointerDown(e) {
+    if (typeof window !== 'undefined' && window.UiChrome?.isUiChromeBlockingMarks?.()) {
+      return;
+    }
     const pt = e.touches ? e.touches[0] : e;
     if (!this.mapper?.isInsideImage(pt.clientX, pt.clientY) && this.store.activeTool !== "select") {
       return;

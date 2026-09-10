@@ -78,6 +78,7 @@
     if (!saveStatusEl) return;
     const labels = {
       idle: '',
+      new: 'New entry',
       unsaved: 'Unsaved changes',
       saving: 'Saving…',
       saved: 'Saved',
@@ -85,7 +86,6 @@
       imported: 'Imported successfully',
       exported: 'Export created',
       report: 'Report ready',
-      feedback: 'Feedback sent',
       offline: 'Offline or endpoint unavailable'
     };
     const text = detail || labels[status] || '';

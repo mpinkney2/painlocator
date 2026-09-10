@@ -130,6 +130,11 @@ class PainEntryStore {
     this._notify();
   }
 
+  /**
+   * Persist envelope to localStorage.
+   * Does NOT clear `dirty` — autosave is not an explicit Save/Update.
+   * Callers that complete an explicit save must set dirty = false themselves.
+   */
   save() {
     const key = typeof getEntryStorageKey === "function" ? getEntryStorageKey() : ENTRY_STORAGE_KEY;
     localStorage.setItem(key, JSON.stringify({
@@ -140,7 +145,6 @@ class PainEntryStore {
       selectedRegionIds: this.selectedRegionIds,
       activeTool: this.activeTool
     }));
-    this.dirty = false;
   }
 
   setTool(tool) {
@@ -395,7 +399,10 @@ class PainEntryStore {
 
   commitGeometry() {
     if (this._mutating) this.endMutation({ persist: true });
-    else if (this.dirty) this.save();
+    else if (this.dirty) {
+      this.save();
+      // Keep dirty — geometry change still needs explicit Save/Update in the UI.
+    }
   }
 
   deleteSelectedRegions() {
@@ -416,6 +423,7 @@ class PainEntryStore {
     }
     this.selectedRegionIds = [];
     this._pushHistory();
+    this.dirty = true;
     this.save();
     this._notify();
   }
@@ -493,6 +501,7 @@ class PainEntryStore {
     this.draftEntry = null;
     this.activeEntryId = null;
     this.selectedRegionIds = [];
+    this.dirty = false;
     this.save();
     this._notify();
     this._undoBuffer = { clearSnapshot: snapshot };

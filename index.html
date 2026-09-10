@@ -16,8 +16,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.7">
-  <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-07-bp3d-boot-1">
-  <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.7">
+  <link rel="stylesheet" href="src/layout/styles.css?v=5.15">
+  <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.15">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -47,7 +47,7 @@
       <!-- WORKFLOW STAGES -->
       <div class="mode-toggle-group workflow-toggle">
         <span class="toggle-label-sm desktop-only">Workflow:</span>
-        <div class="toggle-buttons" role="tablist" aria-label="Workflow: Capture, Review, Clinical">
+        <div class="toggle-buttons" role="tablist" aria-label="Workflow">
           <button type="button" role="tab" aria-selected="true" class="btn btn-toggle active" id="btnCaptureWF" onclick="setWorkflowMode('capture')" title="Step 1 — Log pain">Capture</button>
           <button type="button" role="tab" aria-selected="false" class="btn btn-toggle" id="btnReviewWF" onclick="setWorkflowMode('review')" title="Step 2 — Review history">Review</button>
           <button type="button" role="tab" aria-selected="false" class="btn btn-toggle" id="btnClinicalWF" onclick="setWorkflowMode('clinical')" title="Step 3 — Clinical report"><span class="label-full">Clinical Report</span><span class="label-short">Clinical</span></button>
@@ -262,11 +262,11 @@
       <!-- CENTER COLUMN: ANATOMY + TIMELINE -->
       <section class="panel panel-center center-panel">
         <div class="center-workspace">
-        <div class="quick-view-bar mobile-only" id="quickViewBar" aria-label="Body view">
-          <button type="button" class="view-btn active" data-view="front">Front</button>
-          <button type="button" class="view-btn" data-view="back">Back</button>
-          <button type="button" class="view-btn" data-view="left">Left</button>
-          <button type="button" class="view-btn" data-view="right">Right</button>
+        <div class="quick-view-bar mobile-only" id="quickViewBar" role="group" aria-label="Body view snaps">
+          <button type="button" class="view-btn active" data-view="front" aria-pressed="true">Front</button>
+          <button type="button" class="view-btn" data-view="back" aria-pressed="false">Back</button>
+          <button type="button" class="view-btn" data-view="left" aria-pressed="false">Left</button>
+          <button type="button" class="view-btn" data-view="right" aria-pressed="false">Right</button>
         </div>
         <nav id="patientStepIndicator" class="patient-step-indicator shell-only-patient" aria-label="Pain entry steps" hidden>
           <span class="sr-only" id="patientStepStatus">Step 1 of 3: locate</span>
@@ -276,12 +276,45 @@
             <li data-patient-step="review"><span>3</span> Review</li>
           </ol>
         </nav>
-        <!-- Dev/QA only: product locate is Spatial-primary; show with ?displayToggle=1 -->
-        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode" hidden>
-          <button type="button" class="region-tool display-mode-btn" id="btnPlateMode" data-display="plate" title="2D clinical plate (fallback)" aria-pressed="false">2D</button>
-          <button type="button" class="region-tool display-mode-btn active" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="true">Spatial</button>
+        <!-- 2D is the default locate surface; Spatial is optional -->
+        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode">
+          <button type="button" class="region-tool display-mode-btn active" id="btnPlateMode" data-display="plate" title="2D body diagram" aria-pressed="true">2D</button>
+          <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Optional 3D body" aria-pressed="false">3D</button>
         </div>
         <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
+          <!-- Race-neutral body-type gallery (syncs with #modelSelector radios) -->
+          <div class="body-type-gallery" id="bodyTypeGallery" role="radiogroup" aria-label="Body type">
+            <button type="button" class="body-type-option is-selected" data-model="male" aria-pressed="true" title="Man">
+              <span class="body-type-silhouette" aria-hidden="true">
+                <svg viewBox="0 0 32 64" width="18" height="36" focusable="false"><ellipse cx="16" cy="7" rx="5" ry="5.5"/><path d="M10 14c0 0 2-1.5 6-1.5s6 1.5 6 1.5l3 14h-4l-1 28h-8l-1-28h-4z"/></svg>
+              </span>
+              <span class="body-type-label">Man</span>
+            </button>
+            <button type="button" class="body-type-option" data-model="female" aria-pressed="false" title="Woman">
+              <span class="body-type-silhouette" aria-hidden="true">
+                <svg viewBox="0 0 32 64" width="18" height="36" focusable="false"><ellipse cx="16" cy="7" rx="5" ry="5.5"/><path d="M11 14c0 0 2-1.2 5-1.2s5 1.2 5 1.2l2.5 12 4 2-3 4h-3l-1.5 24h-6L12.5 32h-3l-3-4 4-2z"/></svg>
+              </span>
+              <span class="body-type-label">Woman</span>
+            </button>
+            <button type="button" class="body-type-option" data-model="teen" aria-pressed="false" title="Teen">
+              <span class="body-type-silhouette" aria-hidden="true">
+                <svg viewBox="0 0 32 64" width="16" height="32" focusable="false"><ellipse cx="16" cy="8" rx="4.5" ry="5"/><path d="M11 15c0 0 2-1.2 5-1.2s5 1.2 5 1.2l2.5 12h-3.5l-1 24h-6l-1-24H8.5z"/></svg>
+              </span>
+              <span class="body-type-label">Teen</span>
+            </button>
+            <button type="button" class="body-type-option" data-model="child" aria-pressed="false" title="Child">
+              <span class="body-type-silhouette" aria-hidden="true">
+                <svg viewBox="0 0 32 56" width="14" height="26" focusable="false"><ellipse cx="16" cy="8" rx="5" ry="5.5"/><path d="M11 15c0 0 2-1 5-1s5 1 5 1l2 10h-3l-.8 18h-6.4L12 25h-3z"/></svg>
+              </span>
+              <span class="body-type-label">Child</span>
+            </button>
+            <button type="button" class="body-type-option" data-model="senior" aria-pressed="false" title="Elderly">
+              <span class="body-type-silhouette" aria-hidden="true">
+                <svg viewBox="0 0 32 64" width="18" height="34" focusable="false"><ellipse cx="16" cy="7.5" rx="5" ry="5"/><path d="M10.5 14.5c0 0 2-1.2 5.5-1.2s5.5 1.2 5.5 1.2l2.5 13h-3.5l-1.2 26h-7.6l-1.2-26H8zM22 28l6 10"/></svg>
+              </span>
+              <span class="body-type-label">Elderly</span>
+            </button>
+          </div>
           <div class="region-tools review-tools show-review" id="reviewTools">
             <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
             <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
@@ -339,9 +372,23 @@
                 <button type="button" class="btn btn-ghost" id="btnPatientEditDescribe">Edit description</button>
               </div>
               <p id="patientSaveConfirm" class="patient-save-confirm" role="status" hidden>Pain entry saved.</p>
+              <section class="patient-history-section" id="patientHistorySection" aria-labelledby="patientHistoryTitle">
+                <div class="patient-history-head">
+                  <h3 id="patientHistoryTitle" class="patient-review-label">Your pain history</h3>
+                  <div class="pill-grid patient-history-filters" id="patientHistoryFilters" role="group" aria-label="Filter pain history">
+                    <button type="button" class="pill active" data-filter="all">All</button>
+                    <button type="button" class="pill" data-filter="week">Last 7 days</button>
+                    <button type="button" class="pill" data-filter="severe">Severe (7+)</button>
+                  </div>
+                </div>
+                <div class="entry-list patient-entry-list" id="patientEntryList" aria-live="polite">
+                  <p class="entry-list-empty">No saved entries yet. Save this entry to start your history.</p>
+                </div>
+              </section>
             </div>
-            <footer class="patient-sheet-foot">
+            <footer class="patient-sheet-foot patient-review-foot">
               <button type="button" class="btn btn-primary btn-block" id="btnPatientSave">Save Pain Entry</button>
+              <button type="button" class="btn btn-secondary btn-block" id="btnPatientShare">Share for your visit</button>
             </footer>
           </div>
         </aside>
@@ -657,24 +704,27 @@
       </div>
     </dialog>
 
-    <!-- Export modal -->
+    <!-- Export modal (clinician header Share + patient Review Share) -->
     <dialog class="modal" id="exportModal" aria-labelledby="exportModalTitle">
       <div class="modal-head">
         <h3 id="exportModalTitle">Share with clinician</h3>
         <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-note">Give your clinician a clear pain map and timeline. Nothing leaves this device until you save or share a file.</p>
+        <p class="modal-note" id="exportModalNote">Give your clinician a clear pain map and timeline. Nothing leaves this device until you save or share a file.</p>
         <div class="export-actions">
           <button type="button" class="btn btn-primary btn-block" id="btnExportPdfModal">
-            <i data-lucide="file-text"></i> Clinical report (PDF)
+            <i data-lucide="file-text"></i> <span id="exportPdfLabel">Clinical report (PDF)</span>
           </button>
           <button type="button" class="btn btn-secondary btn-block" id="btnExportPngModal">
-            <i data-lucide="image"></i> Anatomy snapshot (PNG)
+            <i data-lucide="image"></i> <span id="exportPngLabel">Anatomy snapshot (PNG)</span>
           </button>
-          <button type="button" class="btn btn-ghost btn-block" id="btnExportJsonModal">
-            <i data-lucide="braces"></i> Session file (JSON)
-          </button>
+          <details class="export-advanced" id="exportAdvancedJson">
+            <summary>Advanced — session file (JSON)</summary>
+            <button type="button" class="btn btn-ghost btn-block" id="btnExportJsonModal">
+              <i data-lucide="braces"></i> Download JSON
+            </button>
+          </details>
         </div>
       </div>
     </dialog>
@@ -727,6 +777,8 @@
           <li>This app is not a diagnostic service and does not replace professional medical evaluation.</li>
           <li>Automated summaries are observations about your recorded entries only.</li>
         </ul>
+        <h4 id="helpMarkingTitle">Marking pain</h4>
+        <p id="helpMarkingCopy">Use <strong id="helpMarkingToolName">Tap</strong> to place a pain mark on the body. Use Area to outline a wider region, and Remove to clear a mark. Rotate the body, then use Front / Back / Left / Right to snap the view.</p>
         <p class="welcome-safety">PainLocator is not for emergencies. Seek immediate medical care for severe or sudden symptoms.</p>
         <h4>Developer / demo</h4>
         <p class="modal-note">Experience mode is for development and demos. Production routing should choose Patient or Clinician from role or session context — patients should not pick a product mode.</p>
@@ -767,12 +819,12 @@
   <script src="src/utils/dom.js?v=5.5"></script>
   <script src="src/utils/analytics.js?v=5.5"></script>
   <script src="src/utils/dev-mode.js?v=5.5"></script>
-  <script src="src/ui/toast.js?v=5.5"></script>
+  <script src="src/ui/toast.js?v=5.15"></script>
   <!-- Clinical Anatomy Engine -->
   <script src="src/engine/anatomy/regions.js?v=5.5"></script>
   <script src="src/engine/annotations/pain-models.js?v=5.5"></script>
   <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.5"></script>
-  <script src="src/engine/annotations/pain-entry-store.js?v=5.5"></script>
+  <script src="src/engine/annotations/pain-entry-store.js?v=5.15"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
   <script src="src/engine/anatomy/asset-paths.js?v=5.5"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
@@ -796,31 +848,32 @@
 
   <!-- PainLocator app -->
   <script src="src/utils/theme-tokens.js?v=5.5"></script>
-  <script src="src/state/app-state.js?v=5.5"></script>
+  <script src="src/state/app-state.js?v=5.15"></script>
   <script src="src/utils/forms.js?v=5.5"></script>
   <script src="src/features/trends/trend-summary.js?v=5.5"></script>
   <script src="src/features/demo/demo-data.js?v=5.5"></script>
-  <script src="src/features/demo/demo-mode.js?v=5.5"></script>
+  <script src="src/features/demo/demo-mode.js?v=5.15"></script>
   <script src="src/features/demo/walkthrough.js?v=5.5"></script>
-  <script src="src/features/feedback/feedback-service.js?v=5.5"></script>
+  <script src="src/features/feedback/feedback-service.js?v=5.15"></script>
   <script src="src/features/feedback/feedback-ui.js?v=5.5"></script>
   <script src="src/features/onboarding/welcome.js?v=5.5"></script>
-  <script src="src/features/capture/entry-crud.js?v=5.5"></script>
+  <script src="src/features/capture/entry-crud.js?v=5.15"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
-  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-10-2d-default-1"></script>
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/features/review/history-ui.js?v=5.13"></script>
+  <script src="src/features/review/history-ui.js?v=5.16"></script>
   <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
-  <script src="src/engine/reporting/session-io.js?v=5.5"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.15"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
-  <script src="src/state/workflow.js?v=5.12"></script>
-  <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.7"></script>
-  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/app/bootstrap.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/state/workflow.js?v=5.14"></script>
+  <script src="src/utils/ui-chrome.js?v=5.14"></script>
+  <script src="src/state/presentation.js?v=5.14"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.15"></script>
+  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-10-2d-default-1"></script>
+  <script src="src/app/bootstrap.js?v=2026-09-10-2d-default-1"></script>
 </body>
 </html>

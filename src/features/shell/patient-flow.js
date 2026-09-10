@@ -508,7 +508,21 @@
     if (reviewPane) reviewPane.hidden = step !== 'review';
     if (confirm && step !== 'review') confirm.hidden = true;
 
-    if (step === 'review') updatePatientSummary();
+    if (step === 'review') {
+      updatePatientSummary();
+      if (typeof updateEntryList === 'function') updateEntryList();
+      else if (typeof global.updateEntryList === 'function') global.updateEntryList();
+    }
+  }
+
+  function openPatientShare() {
+    if (typeof global.openExportModal === 'function') {
+      global.openExportModal({ audience: 'patient' });
+    } else if (typeof openExportModal === 'function') {
+      openExportModal({ audience: 'patient' });
+    }
+    if (typeof global.trackEvent === 'function') global.trackEvent('report_opened', { audience: 'patient' });
+    else trackEvent?.('report_opened', { audience: 'patient' });
   }
 
   function setPatientStep(step, options) {
@@ -538,6 +552,8 @@
     if (next === 'review') {
       pushToFormAndStore();
       updatePatientSummary();
+      if (typeof updateEntryList === 'function') updateEntryList();
+      else if (typeof global.updateEntryList === 'function') global.updateEntryList();
     }
 
     updateStepChrome();
@@ -646,6 +662,7 @@
     on('btnPatientEditLocation', 'click', goLocate);
     on('btnPatientEditDescribe', 'click', goDescribe);
     on('btnPatientSave', 'click', function () { void savePatientEntry(); });
+    on('btnPatientShare', 'click', openPatientShare);
 
     on('patientSheetBackdrop', 'click', function () {
       var step = (getState() && getState().patientStep) || '';
@@ -682,6 +699,12 @@
       ev.preventDefault();
       ev.stopImmediatePropagation();
       if (!activeHasLocations()) {
+        var histStore = getStore();
+        if (histStore && histStore.entries && histStore.entries.length) {
+          // Browse saved history even when the current draft has no marks yet.
+          setPatientStep('review', { force: true });
+          return;
+        }
         toast('Mark at least one pain location to continue.', 'warning');
         return;
       }
@@ -693,13 +716,41 @@
       store.onChange(function () {
         if (!isPatientShell()) return;
         updateStepChrome();
-        if (((getState() && getState().patientStep) || '') === 'review') updatePatientSummary();
+        if (((getState() && getState().patientStep) || '') === 'review') {
+          updatePatientSummary();
+          if (typeof updateEntryList === 'function') updateEntryList();
+        }
       });
     }
 
     document.addEventListener('presentationchange', function () {
-      if (isPatientShell()) setPatientStep((getState() && getState().patientStep) || 'locate', { force: true });
-      else refreshPatientFlow();
+      // Preserve draft / saved active entry across role switches — only refresh chrome.
+      var st = getState();
+      var storeNow = getStore();
+      if (isPatientShell()) {
+        var step = (st && st.patientStep) || 'locate';
+        setPatientStep(step, { force: true });
+      } else {
+        refreshPatientFlow();
+      }
+      if (typeof global.syncSaveStatusFromStore === 'function') global.syncSaveStatusFromStore();
+      else if (typeof syncSaveStatusFromStore === 'function') syncSaveStatusFromStore();
+      if (typeof updateEntryList === 'function') updateEntryList();
+      if (storeNow && storeNow.getActiveEntry) {
+        var active = storeNow.getActiveEntry();
+        if (active) {
+          if (typeof global.populateFormFromEntry === 'function') global.populateFormFromEntry(active);
+          else if (typeof populateFormFromEntry === 'function') populateFormFromEntry(active);
+        }
+      }
+      if (global.demoMode && typeof global.demoMode.updateBadge === 'function') {
+        global.demoMode.updateBadge();
+      } else if (window.demoMode && typeof window.demoMode.isActive === 'function') {
+        var badge = document.getElementById('demoModeBadge');
+        var on = window.demoMode.isActive();
+        document.body.classList.toggle('demo-mode-active', on);
+        if (badge) badge.hidden = !on;
+      }
     });
   }
 
