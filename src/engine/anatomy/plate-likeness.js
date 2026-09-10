@@ -18,8 +18,8 @@ const SKIN_PRESETS = {
   deep: { id: "deep", label: "Deep", target: [64, 40, 30], strength: 0.68 }
 };
 
-const WEIGHT_SCALES = { slim: 0.86, average: 1, heavy: 1.16 };
-const HEIGHT_SCALES = { short: 0.9, average: 1, tall: 1.1 };
+const WEIGHT_SCALES = { slim: 0.88, average: 1, heavy: 1.12 };
+const HEIGHT_SCALES = { short: 0.92, average: 1, tall: 1.06 };
 
 const _tintCache = new Map();
 const _tintInflight = new Map();
