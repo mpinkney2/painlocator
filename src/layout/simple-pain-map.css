@@ -505,14 +505,17 @@ body.shell-patient.simple-pain-map .body-type-silhouette {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 20px;
-  height: 34px;
+  width: 28px;
+  height: 48px;
 }
 
-body.shell-patient.simple-pain-map .body-type-silhouette svg {
+body.shell-patient.simple-pain-map .body-type-silhouette svg,
+body.shell-patient.simple-pain-map .body-type-silhouette img {
   display: block;
   width: auto;
   height: 100%;
+  max-width: 100%;
+  object-fit: contain;
   fill: currentColor;
   stroke: currentColor;
   stroke-width: 0.6;
@@ -1640,8 +1643,8 @@ body.shell-patient.simple-view-map #timelinePanel {
   }
 
   body.shell-patient.simple-pain-map .body-type-silhouette {
-    width: 16px;
-    height: 28px;
+    width: 24px;
+    height: 44px;
   }
 
   body.shell-patient.simple-pain-map .body-type-label {

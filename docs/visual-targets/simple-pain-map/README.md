@@ -6,13 +6,15 @@ Reference mockup:
 
 ## Body assets
 
-Realistic studio person plates (not CAE placeholder diagrams):
+Patient simple-map uses the MetaHuman-style likeness pack:
 
-`public/anatomy/simple-pain-map/{front,back,left,right}.png`
+`public/anatomy/metahuman/{adult-male,adult-female,teen,child,senior}/{front,back,left,right}.png`
 
-- Warm white cyclorama background (`#FEFBFA`)
-- Soft floor contact shadow blended into the background
-- Cream sweater / light gray trousers / white sneakers
+Gallery thumbs: `public/anatomy/metahuman/thumbs/{model}.png`
+
+Source sprite sheets: `docs/visual-targets/metahuman-sprites/`
+
+Rebuild plates with `python3 scripts/build-metahuman-anatomy-pack.py`.
 
 Clinician CAE plates under `public/anatomy/adult-male/` are unchanged.
 
