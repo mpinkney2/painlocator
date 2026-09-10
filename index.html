@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.7">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-07-bp3d-boot-1">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.7">
+  <link rel="stylesheet" href="src/features/likeness/likeness-builder.css?v=1.0">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -99,19 +100,20 @@
         <!-- ACCORDION 1: PATIENT MODEL -->
         <div class="accordion" id="accModel">
           <button type="button" class="accordion-header" onclick="toggleAccordion('accModel')">
-            <span><i data-lucide="user"></i> Patient Model</span>
+            <span><i data-lucide="user"></i> Your body</span>
             <i data-lucide="chevron-down" class="chevron"></i>
           </button>
           <div class="accordion-content">
-            <div class="radio-group" id="modelSelector">
+            <div class="radio-group likeness-legacy-radios" id="modelSelector" aria-hidden="true">
               <label class="radio-option"><input type="radio" name="patient_model" value="male" checked><span>Adult Male</span></label>
               <label class="radio-option"><input type="radio" name="patient_model" value="female"><span>Adult Female</span></label>
               <label class="radio-option"><input type="radio" name="patient_model" value="child"><span>Child</span></label>
               <label class="radio-option"><input type="radio" name="patient_model" value="teen"><span>Teen</span></label>
               <label class="radio-option"><input type="radio" name="patient_model" value="senior"><span>Senior</span></label>
             </div>
+            <div class="likeness-builder" id="likenessBuilder"></div>
             <div class="future-placeholders show-clinical">
-              <span class="placeholder-title">Future Profiles:</span>
+              <span class="placeholder-title">More body shapes (later):</span>
               <span class="placeholder-tag">Athletic</span>
               <span class="placeholder-tag">Bariatric</span>
               <span class="placeholder-tag">Pregnancy</span>
@@ -774,7 +776,7 @@
   <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.5"></script>
   <script src="src/engine/annotations/pain-entry-store.js?v=5.5"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
-  <script src="src/engine/anatomy/asset-paths.js?v=5.5"></script>
+  <script src="src/engine/anatomy/asset-paths.js?v=5.6"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-07-bp3d-boot-1"></script>
@@ -810,6 +812,8 @@
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
   <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-07-bp3d-boot-1"></script>
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/features/likeness/likeness-store.js?v=1.0"></script>
+  <script src="src/features/likeness/likeness-builder.js?v=1.0"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
   <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
