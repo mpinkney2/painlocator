@@ -268,11 +268,11 @@ function initDisplayModeToggle() {
       const ok = await state.engine?.setDisplayMode?.('spatial');
       syncDisplayModeButtons(ok ? 'spatial' : 'plate');
       if (!ok) {
-        showToast?.('3D body unavailable — using 2D plate fallback', 'warning');
+        showToast?.('3D body unavailable — showing 2D diagram.', { type: 'warning' });
       }
     } finally {
       spatial.disabled = false;
-      spatial.textContent = 'Spatial';
+      spatial.textContent = '3D';
     }
   });
 
@@ -281,15 +281,22 @@ function initDisplayModeToggle() {
       syncDisplayModeButtons('spatial');
     } else if (displayMode === 'plate') {
       syncDisplayModeButtons('plate');
-    } else if (displayMode === 'spatial-unavailable' && typeof SpatialPrimaryChrome !== 'undefined') {
-      // Keep staging chrome only while showing the unavailable card; plate toggle still works.
-      SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+    } else if (displayMode === 'spatial-unavailable') {
+      // Failed Spatial request — return to usable 2D immediately.
+      state.engine?.enablePlateMode?.(displayMode);
+      syncDisplayModeButtons('plate');
+      showToast?.('3D body unavailable — showing 2D diagram.', { type: 'warning' });
     } else if (typeof SpatialPrimaryChrome !== 'undefined') {
       SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { forcePlate: true, keepSpatialPrimary: false });
+      syncDisplayModeButtons('plate');
     }
     refreshUI?.();
   });
-  syncDisplayModeButtons(state.engine?.isSpatialMode?.() ? 'spatial' : (state.engine?.displayMode === 'plate' ? 'plate' : 'spatial'));
+  // Product default is 2D plate — never fall through to Spatial on boot.
+  const bootMode = state.engine?.isSpatialMode?.()
+    ? 'spatial'
+    : (state.engine?.displayMode === 'spatial' ? 'spatial' : 'plate');
+  syncDisplayModeButtons(bootMode);
 }
 
 function updateTrendSummary() {

@@ -163,15 +163,18 @@
     const body = document.body;
     if (!body) return;
 
-    // forcePlate / keepSpatialPrimary:false must exit Spatial-primary so CSS does not hide the plate.
+    // 2D is the product default. Spatial-primary chrome only when Spatial is actually active
+    // or an explicit keepSpatialPrimary request (loading/unavailable card).
     let spatialPrimaryShell;
     if (opts.forcePlate || opts.keepSpatialPrimary === false) {
       spatialPrimaryShell = !!isSpatial;
+    } else if (opts.keepSpatialPrimary === true) {
+      spatialPrimaryShell = true;
     } else {
-      spatialPrimaryShell = opts.keepSpatialPrimary || !!isSpatial || !wantsPlateOptIn();
+      spatialPrimaryShell = !!isSpatial;
     }
     body.classList.toggle("spatial-primary", spatialPrimaryShell);
-    // Always allow opting into optional 3D from the 2D default experience.
+    // Always allow 2D plate tools + optional 3D toggle.
     body.classList.toggle("allow-plate-toggle", true);
     body.classList.toggle("spatial-ready", !!isSpatial);
 
@@ -182,11 +185,11 @@
       dock.setAttribute("aria-hidden", "false");
     }
 
+    // 2D plate tools stay available whenever Spatial is not actively ready.
     const enlarge = document.getElementById("btnEnlargeAnatomy");
     if (enlarge) {
-      const hidePlateTools = spatialPrimaryShell && !wantsPlateOptIn();
-      enlarge.hidden = hidePlateTools || !!isSpatial;
-      enlarge.disabled = !!isSpatial || hidePlateTools;
+      enlarge.hidden = !!isSpatial;
+      enlarge.disabled = !!isSpatial;
     }
 
     document
@@ -194,7 +197,7 @@
         '.capture-tools .region-tool[data-tool="circle"], .capture-tools .region-tool[data-tool="polygon"]'
       )
       .forEach((btn) => {
-        const hide = (spatialPrimaryShell && !wantsPlateOptIn()) || !!isSpatial;
+        const hide = !!isSpatial;
         btn.hidden = hide;
         if (hide) btn.classList.remove("active");
       });
@@ -234,11 +237,25 @@
             ? "3D anatomy — drag to rotate, tap to mark pain at snap views"
             : "3D anatomy — drag to rotate, review patient marks at snap views"
         );
-    } else if (spatialPrimaryShell && !wantsPlateOptIn()) {
-      if (hint && isPatientShell) {
-        hint.textContent = "Waiting for the 3D body — rotate and tap once it loads.";
+    } else if (!isSpatial) {
+      const plateHint = isPatientShell
+        ? "Tap the body to mark where it hurts. Use Front / Back / Left / Right to change view."
+        : "Review patient marks on the 2D body map.";
+      if (hint) {
+        hint.textContent = plateHint;
         hint.classList.remove("hidden");
       }
+      if (locatePrompt && isPatientShell) {
+        locatePrompt.textContent = "Where does it hurt? Tap the body to mark pain.";
+      }
+      document
+        .getElementById("avatarStage")
+        ?.setAttribute(
+          "aria-label",
+          isPatientShell
+            ? "2D anatomy — tap to mark pain, use view snaps to change side"
+            : "2D anatomy — review patient marks"
+        );
     }
 
     document.getElementById("avatarWrap")?.classList.toggle("display-spatial", !!isSpatial);

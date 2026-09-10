@@ -276,10 +276,10 @@
             <li data-patient-step="review"><span>3</span> Review</li>
           </ol>
         </nav>
-        <!-- Dev/QA only: product locate is Spatial-primary; show with ?displayToggle=1 -->
-        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode" hidden>
-          <button type="button" class="region-tool display-mode-btn" id="btnPlateMode" data-display="plate" title="2D clinical plate (fallback)" aria-pressed="false">2D</button>
-          <button type="button" class="region-tool display-mode-btn active" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="true">Spatial</button>
+        <!-- 2D is the default locate surface; Spatial is optional -->
+        <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Anatomy display mode">
+          <button type="button" class="region-tool display-mode-btn active" id="btnPlateMode" data-display="plate" title="2D body diagram" aria-pressed="true">2D</button>
+          <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Optional 3D body" aria-pressed="false">3D</button>
         </div>
         <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
           <!-- Race-neutral body-type gallery (syncs with #modelSelector radios) -->
@@ -860,9 +860,9 @@
   <script src="src/features/capture/entry-crud.js?v=5.15"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
-  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-10-2d-default-1"></script>
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/features/review/history-ui.js?v=5.15"></script>
+  <script src="src/features/review/history-ui.js?v=5.16"></script>
   <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
   <script src="src/engine/reporting/session-io.js?v=5.15"></script>
@@ -873,7 +873,7 @@
   <script src="src/utils/ui-chrome.js?v=5.14"></script>
   <script src="src/state/presentation.js?v=5.14"></script>
   <script src="src/features/shell/patient-flow.js?v=5.15"></script>
-  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/app/bootstrap.js?v=5.15"></script>
+  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-10-2d-default-1"></script>
+  <script src="src/app/bootstrap.js?v=2026-09-10-2d-default-1"></script>
 </body>
 </html>

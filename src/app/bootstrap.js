@@ -44,11 +44,20 @@ function init() {
   initAnatomyZoom();
   initDisplayModeToggle();
 
-  // Spatial-primary locate: rotatable 3D across Patient + Clinician (plate = explicit only).
+  // 2D plate is the locate foundation. Engage BP3D helpers (canonical config) without
+  // activating Spatial unless the user / URL explicitly requested it.
   if (typeof Bp3dShellEngagement !== "undefined") {
-    Bp3dShellEngagement.engageBp3dAcrossShells(state.engine).catch((err) => {
-      console.warn("[PainLocator] Spatial-primary engagement failed", err);
-      state.engine?.showSpatialUnavailable?.(err?.message || "engagement-failed");
+    Bp3dShellEngagement.engageBp3dAcrossShells(state.engine).then((result) => {
+      if (!result?.spatialOn) {
+        // Guarantee plate chrome + 2D tools after boot.
+        state.engine?.enablePlateMode?.();
+        if (typeof syncDisplayModeButtons === 'function') syncDisplayModeButtons('plate');
+        else if (typeof window.syncDisplayModeButtons === 'function') window.syncDisplayModeButtons('plate');
+      }
+    }).catch((err) => {
+      console.warn("[PainLocator] Anatomy engagement failed — staying on 2D plate", err);
+      state.engine?.enablePlateMode?.(err?.message || "engagement-failed");
+      if (typeof syncDisplayModeButtons === 'function') syncDisplayModeButtons('plate');
     });
   }
 
