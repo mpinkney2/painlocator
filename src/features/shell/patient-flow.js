@@ -1083,6 +1083,7 @@
     on('btnSimplePrefs', 'click', function () {
       closeMoreMenu();
       syncMarkSizePrefsUI();
+      syncLikenessPrefsUI();
       var prefs = document.getElementById('simplePrefsModal');
       if (prefs && typeof prefs.showModal === 'function') prefs.showModal();
     });
@@ -1160,6 +1161,59 @@
       });
     }
 
+    function currentLikenessPref() {
+      if (typeof global.getLikenessPref === 'function') return global.getLikenessPref();
+      if (typeof getLikenessPref === 'function') return getLikenessPref();
+      return { skin: 'natural', weight: 'average', height: 'average' };
+    }
+
+    function syncLikenessPrefsUI() {
+      var pref = currentLikenessPref();
+      document.querySelectorAll('input[name="simpleSkin"]').forEach(function (input) {
+        input.checked = input.value === pref.skin;
+      });
+      document.querySelectorAll('input[name="simpleWeight"]').forEach(function (input) {
+        input.checked = input.value === pref.weight;
+      });
+      document.querySelectorAll('input[name="simpleHeight"]').forEach(function (input) {
+        input.checked = input.value === pref.height;
+      });
+    }
+
+    function applyLikenessField(field, value) {
+      var patch = {};
+      patch[field] = value;
+      if (typeof global.setLikenessPref === 'function') global.setLikenessPref(patch);
+      else if (typeof setLikenessPref === 'function') setLikenessPref(patch);
+      if (field === 'skin' && typeof global.refreshPlateLikeness === 'function') {
+        global.refreshPlateLikeness();
+      } else if (typeof global.applyLikenessPresentation === 'function') {
+        global.applyLikenessPresentation();
+      }
+    }
+
+    function bindLikenessPrefs() {
+      syncLikenessPrefsUI();
+      if (typeof global.applyLikenessPresentation === 'function') global.applyLikenessPresentation();
+      var modal = document.getElementById('simplePrefsModal');
+      if (!modal || modal.dataset.likenessBound === '1') return;
+      modal.dataset.likenessBound = '1';
+      modal.addEventListener('change', function (e) {
+        var skin = e.target && e.target.closest ? e.target.closest('input[name="simpleSkin"]') : null;
+        if (skin) {
+          applyLikenessField('skin', skin.value);
+          return;
+        }
+        var weight = e.target && e.target.closest ? e.target.closest('input[name="simpleWeight"]') : null;
+        if (weight) {
+          applyLikenessField('weight', weight.value);
+          return;
+        }
+        var height = e.target && e.target.closest ? e.target.closest('input[name="simpleHeight"]') : null;
+        if (height) applyLikenessField('height', height.value);
+      });
+    }
+
     function bindSimpleViewGroup(root) {
       if (!root) return;
       root.addEventListener('click', function (e) {
@@ -1174,6 +1228,7 @@
     bindSimpleViewGroup(document.getElementById('simpleViewBar'));
     bindSimpleViewGroup(document.getElementById('simpleViewCompass'));
     bindMarkSizePrefs();
+    bindLikenessPrefs();
 
     document.addEventListener('presentationchange', function () {
       placePatientDrawerChrome();

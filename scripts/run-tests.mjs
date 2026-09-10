@@ -2062,6 +2062,12 @@ console.log('PainLocator tests\n');
     assert.ok(css.includes('is-turning-cw') && css.includes('is-turning-ccw'));
     assert.ok(html.includes('id="simplePrefsModal"') && html.includes('id="btnSimplePrefs"'));
     assert.ok(flow.includes('btnSimplePrefs') && flow.includes('simpleMarkSize'));
+    assert.ok(html.includes('name="simpleSkin"') && html.includes('name="simpleWeight"') && html.includes('name="simpleHeight"'));
+    assert.ok(html.includes('src/engine/anatomy/plate-likeness.js'));
+    assert.ok(css.includes('--spm-height') && css.includes('--spm-weight'));
+    assert.ok(css.includes('.simple-prefs-swatches'));
+    assert.ok(flow.includes('bindLikenessPrefs'));
+    assert.ok(renderer.includes('bindPlateImageSrc') || renderer.includes('setSimplePlateImage'));
     const engineSrc = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
     assert.ok(engineSrc.includes('swapSimpleView'));
   });
@@ -2079,6 +2085,34 @@ console.log('PainLocator tests\n');
     assert.equal(s.getSimpleMarkSizeScale(), 1.5);
     s.setSimpleMarkSizePref('s');
     assert.equal(s.getSimpleMarkSizeScale(), 0.5);
+  });
+
+  test('simple pain-map: likeness shader preserves clothing and scales build/height', () => {
+    const s = createSandbox();
+    loadScript('src/engine/anatomy/plate-likeness.js', s);
+    const pref = s.normalizeLikeness({ skin: 'deep', weight: 'heavy', height: 'short', extra: 1 });
+    assert.equal(pref.skin, 'deep');
+    assert.equal(pref.weight, 'heavy');
+    assert.equal(pref.height, 'short');
+    assert.equal(s.normalizeLikeness({ skin: 'neon' }).skin, 'natural');
+    assert.equal(s.WEIGHT_SCALES.slim < 1, true);
+    assert.equal(s.WEIGHT_SCALES.heavy > 1, true);
+    assert.equal(s.HEIGHT_SCALES.short < 1, true);
+    assert.equal(s.HEIGHT_SCALES.tall > 1, true);
+    const data = new Uint8ClampedArray([
+      160, 160, 160, 255,
+      210, 158, 128, 255
+    ]);
+    s.recolorPlatePixels(data, 2, 1, s.SKIN_PRESETS.deep);
+    assert.equal(data[0], 160);
+    assert.equal(data[1], 160);
+    assert.equal(data[2], 160);
+    assert.ok(data[4] < 210, 'skin red should darken toward deep');
+    s.setLikenessPref({ skin: 'tan', weight: 'slim', height: 'tall' });
+    const stored = s.getLikenessPref();
+    assert.equal(stored.skin, 'tan');
+    assert.equal(stored.weight, 'slim');
+    assert.equal(stored.height, 'tall');
   });
 
   test('simple pain-map: tap marks correct for portrait SVG stretch', () => {
