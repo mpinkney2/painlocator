@@ -25,7 +25,7 @@ The Simple Pain Map (patient shell) loads these plates instead of the blue clini
 - Views per sheet (L→R): front · back · left · right
 - Background: **none** (transparent PNG after green-screen key)
 - Clothing: neutral athletic / clinical-mannequin base layer
-- Plates: portrait 768×1152 RGBA to match the patient map stage
+- Plates: portrait 1024×1536 RGBA production stills (chroma-keyed from HQ 9:16 portraits)
 
 ## Layout
 
