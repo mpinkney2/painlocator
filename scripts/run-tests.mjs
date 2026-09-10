@@ -1969,6 +1969,7 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('id="btnSimpleBodyProfile"'));
     assert.ok(html.includes('data-model="female"') && html.includes('data-model="senior"'));
     assert.ok(css.includes('.body-type-gallery') && css.includes('.body-type-option'));
+    assert.ok(css.includes('theme-dark') && css.includes('--surface-elevated: #252b3a'));
     assert.ok(flow.includes('btnSimpleBodyProfile') && flow.includes('bodyTypeGallery'));
     for (const folder of ['adult-female', 'teen', 'child', 'senior']) {
       assert.ok(statSync(join(root, `public/anatomy/${folder}/front.png`)).isFile());
