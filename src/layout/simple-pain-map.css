@@ -650,6 +650,13 @@ body.shell-patient.simple-pain-map .avatar-stage .cae-stage {
   margin-inline: auto;
 }
 
+/* Prefer high-quality resampling; never nearest-neighbor on the studio figure. */
+body.shell-patient.simple-pain-map .cae-anatomy-image,
+body.shell-patient.simple-pain-map .body-type-silhouette img {
+  image-rendering: auto;
+  image-rendering: high-quality;
+}
+
 /* Progressive settle — scale into place instead of jumping */
 body.shell-patient.simple-pain-map .cae-anatomy-image {
   opacity: 0;

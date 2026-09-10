@@ -2,6 +2,8 @@
   "id": "metahuman",
   "label": "Lifelike body (MetaHuman-style)",
   "schemaVersion": 1,
+  "width": 2048,
+  "height": 3072,
   "models": {
     "adult-male": {
       "label": "Man",
@@ -30,5 +32,5 @@
     "left",
     "right"
   ],
-  "notes": "Production-resolution portrait plates keyed from HQ MetaHuman stills."
+  "notes": "Retina 2048\u00d73072 plates keyed from 4\u00d7-upscaled MetaHuman stills."
 }

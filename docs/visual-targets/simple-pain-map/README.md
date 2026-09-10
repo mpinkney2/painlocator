@@ -14,7 +14,7 @@ Gallery thumbs: `public/anatomy/metahuman/thumbs/{model}.png`
 
 Source sprite sheets: `docs/visual-targets/metahuman-sprites/`
 
-Rebuild plates with `python3 scripts/build-metahuman-anatomy-pack.py`.
+Rebuild plates with `python3 scripts/build-metahuman-anatomy-pack.py` (OpenCV FSRCNN 4× → 2048×3072).
 
 Clinician CAE plates under `public/anatomy/adult-male/` are unchanged.
 
