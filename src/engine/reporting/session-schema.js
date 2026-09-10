@@ -21,9 +21,10 @@
  * @property {"light"|"dark"} theme
  *
  * @typedef {Object} SessionPatient
- * @property {string} model   - adult-male | adult-female | child | teen | senior
+ * @property {string} model   - adult-male | adult-female | teen-male | teen-female | child-male | child-female | senior-male | senior-female
  * @property {string} view    - front | back | left | right
  * @property {string} [label] - Optional display label
+ * @property {{ skin?: string, weight?: string, height?: string }} [likeness] - Appearance prefs (skin shader, build, height)
  *
  * @typedef {Object} SessionWorkflow
  * @property {"capture"|"review"|"clinical"} mode
@@ -142,7 +143,8 @@ function buildSessionExport(state, store) {
     patient: {
       model,
       view: state.view,
-      label: formatPatientModelLabel(model)
+      label: formatPatientModelLabel(model),
+      likeness: typeof getLikenessPref === 'function' ? getLikenessPref() : undefined
     },
     workflow: {
       mode: state.workflowMode || 'capture',

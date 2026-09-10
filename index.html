@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.28-sex-matrix">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.29-likeness">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -881,6 +881,83 @@
             </label>
           </div>
         </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Skin tone</legend>
+          <p class="simple-prefs-hint">Appearance only — a shader shifts skin. Gray shirt and shorts stay gray.</p>
+          <div class="simple-prefs-swatches" role="radiogroup" aria-label="Skin tone">
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="natural" checked>
+              <span class="simple-swatch simple-swatch-natural" aria-hidden="true"></span>
+              <span>As shown</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="fair">
+              <span class="simple-swatch simple-swatch-fair" aria-hidden="true"></span>
+              <span>Fair</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="light">
+              <span class="simple-swatch simple-swatch-light" aria-hidden="true"></span>
+              <span>Light</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="olive">
+              <span class="simple-swatch simple-swatch-olive" aria-hidden="true"></span>
+              <span>Olive</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="tan">
+              <span class="simple-swatch simple-swatch-tan" aria-hidden="true"></span>
+              <span>Tan</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="brown">
+              <span class="simple-swatch simple-swatch-brown" aria-hidden="true"></span>
+              <span>Brown</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="deep">
+              <span class="simple-swatch simple-swatch-deep" aria-hidden="true"></span>
+              <span>Deep</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Build</legend>
+          <p class="simple-prefs-hint">Width of the figure. Marks stay on the body.</p>
+          <div class="simple-prefs-size" role="radiogroup" aria-label="Build">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleWeight" value="slim">
+              <span>Slim</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleWeight" value="average" checked>
+              <span>Average</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleWeight" value="heavy">
+              <span>Heavy</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Height</legend>
+          <p class="simple-prefs-hint">How tall the figure appears. Feet stay planted.</p>
+          <div class="simple-prefs-size" role="radiogroup" aria-label="Height">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleHeight" value="short">
+              <span>Shorter</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleHeight" value="average" checked>
+              <span>Average</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleHeight" value="tall">
+              <span>Taller</span>
+            </label>
+          </div>
+        </fieldset>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" data-close>Done</button>
         </div>
@@ -955,10 +1032,11 @@
   <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
   <script src="src/engine/anatomy/asset-paths.js?v=5.28-sex-matrix"></script>
+  <script src="src/engine/anatomy/plate-likeness.js?v=5.29-likeness"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.26-view-turn"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.28-sex-matrix"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.29-likeness"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-09-simple-map-harden"></script>
@@ -991,15 +1069,15 @@
   <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
-  <script src="src/engine/reporting/session-schema.js?v=5.28-sex-matrix"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.29-likeness"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
-  <script src="src/engine/reporting/session-io.js?v=5.28-sex-matrix"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.29-likeness"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.26-view-turn"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.29-likeness"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/app/bootstrap.js?v=5.28-sex-matrix"></script>
 </body>

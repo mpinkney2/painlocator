@@ -64,6 +64,11 @@ function importSessionFromObject(session) {
   if (modelRadio) modelRadio.checked = true;
   if (typeof syncBodyTypeGallery === 'function') syncBodyTypeGallery(canonical);
 
+  if (session.patient?.likeness && typeof setLikenessPref === 'function') {
+    setLikenessPref(session.patient.likeness);
+    if (typeof refreshPlateLikeness === 'function') refreshPlateLikeness();
+  }
+
   state.view = view;
   document.querySelectorAll('#viewSelector .view-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.view === view);

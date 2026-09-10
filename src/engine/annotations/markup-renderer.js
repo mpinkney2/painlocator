@@ -75,6 +75,12 @@ function simplePlateSrc(model, view) {
   return path + "?v=" + SIMPLE_PLATE_CACHE;
 }
 
+function setSimplePlateImage(img, path) {
+  if (!img || !path) return;
+  if (typeof bindPlateImageSrc === "function") bindPlateImageSrc(img, path);
+  else img.src = path;
+}
+
 class AnatomyImageLayer {
   constructor(root) {
     this.root = root;
@@ -689,9 +695,14 @@ class ClinicalMarkupRenderer {
     if (!this._isSimplePainMap() || typeof getAssetPath !== "function") return;
     if (typeof Image === "undefined") return;
     const model = this.engine.modelType;
+    const skin = typeof getLikenessPref === "function" ? getLikenessPref().skin : "natural";
     ["front", "back", "left", "right"].forEach((view) => {
+      const path = simplePlateSrc(model, view);
       const img = new Image();
-      img.src = simplePlateSrc(model, view);
+      img.src = path;
+      if (skin !== "natural" && typeof tintPlateSrc === "function") {
+        tintPlateSrc(path, skin);
+      }
     });
   }
 
@@ -784,7 +795,7 @@ class ClinicalMarkupRenderer {
       this._cancelViewSwap?.();
       return false;
     };
-    incoming.src = simplePlateSrc(this.engine.modelType, toView);
+    setSimplePlateImage(incoming, simplePlateSrc(this.engine.modelType, toView));
     if (incoming.complete && incoming.naturalWidth > 0) {
       startTurn();
     }
@@ -908,6 +919,7 @@ class ClinicalMarkupRenderer {
     this._boundView = this.engine.viewType;
     this._boundModel = this.engine.modelType;
     applySimpleMarkSizeAttr();
+    if (typeof applyLikenessPresentation === "function") applyLikenessPresentation();
 
     this._cancelViewSwap?.();
     this._cancelViewSwap = null;
@@ -999,7 +1011,9 @@ class ClinicalMarkupRenderer {
     const cacheToken = this._isSimplePainMap()
       ? SIMPLE_PLATE_CACHE
       : String(Date.now());
-    img.src = imgPath + "?v=" + cacheToken;
+    const plateSrc = imgPath + "?v=" + cacheToken;
+    if (this._isSimplePainMap()) setSimplePlateImage(img, plateSrc);
+    else img.src = plateSrc;
 
     window.addEventListener("resize", this._onResize);
     if (typeof ResizeObserver !== "undefined" && this.viewport) {
@@ -1105,3 +1119,4 @@ window.getSimpleMarkSizeScale = getSimpleMarkSizeScale;
 window.setSimpleMarkSizePref = setSimpleMarkSizePref;
 window.simpleViewTurnDir = simpleViewTurnDir;
 window.SIMPLE_MARK_SIZE_KEY = SIMPLE_MARK_SIZE_KEY;
+window.setSimplePlateImage = setSimplePlateImage;

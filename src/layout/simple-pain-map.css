@@ -264,6 +264,61 @@ body.shell-patient.simple-pain-map .header-actions {
   accent-color: var(--spm-navy);
 }
 
+.simple-prefs-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.simple-prefs-swatch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28rem;
+  margin: 0;
+  padding: 0.4rem 0.2rem 0.45rem;
+  border: 1px solid var(--spm-border);
+  border-radius: 12px;
+  background: var(--spm-white);
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 650;
+  color: var(--spm-navy);
+  text-align: center;
+}
+
+.simple-prefs-swatch:has(input:checked) {
+  border-color: var(--spm-amber);
+  background: color-mix(in srgb, var(--spm-amber) 22%, #fff);
+}
+
+.simple-prefs-swatch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.simple-swatch {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  border: 1px solid var(--spm-border);
+  background: var(--swatch, var(--spm-muted));
+}
+
+.simple-swatch-natural {
+  background:
+    linear-gradient(135deg, #f3d7c4 50%, var(--spm-white) 50%);
+}
+
+.simple-swatch-fair { --swatch: #eed0bc; }
+.simple-swatch-light { --swatch: #deb294; }
+.simple-swatch-olive { --swatch: #b89268; }
+.simple-swatch-tan { --swatch: #a6704c; }
+.simple-swatch-brown { --swatch: #744830; }
+.simple-swatch-deep { --swatch: #40281e; }
+
 /* Workspace — fill remaining viewport below header */
 body.shell-patient.simple-pain-map,
 body.shell-patient.simple-pain-map .app {
@@ -841,6 +896,8 @@ body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame {
   max-height: none;
   /* Snap layout; compass turns must not tween the frame (that was the delayed jump). */
   transition: none;
+  transform-origin: 50% 88%;
+  transform: scale(var(--spm-height, 1)) scaleX(var(--spm-weight, 1));
 }
 
 /* Touch / notation layer sits above the plate image and MUST fill the frame.
@@ -906,6 +963,9 @@ body.shell-patient.simple-pain-map .cae-region-layer .pain-region.selected .pain
   body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame,
   body.shell-patient.simple-pain-map .cae-image-frame.is-turning .cae-anatomy-image {
     transition: none !important;
+  }
+  body.shell-patient.simple-pain-map .cae-anatomy-image,
+  body.shell-patient.simple-pain-map .cae-image-frame.is-turning .cae-anatomy-image {
     transform: none !important;
   }
 }
