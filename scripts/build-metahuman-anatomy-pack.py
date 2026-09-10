@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -111,6 +112,7 @@ def fit_on_canvas(im: Image.Image, width: int, height: int, pad: float = 0.0) ->
 
 def resolve_hq(profile: str, view: str) -> Path:
     names = [
+        f"mh-tee-{profile}-{view}.png",
         f"mh-prod-{profile}-{view}.png",
         f"mh-hq-{profile}-{view}.png",
     ]
@@ -123,7 +125,7 @@ def resolve_hq(profile: str, view: str) -> Path:
             return repo
     if repo.exists():
         return repo
-    raise SystemExit(f"missing HQ still mh-prod-{profile}-{view}.png")
+    raise SystemExit(f"missing HQ still mh-tee-{profile}-{view}.png")
 
 
 def main() -> None:
@@ -131,7 +133,10 @@ def main() -> None:
     thumb_dir = OUT / "thumbs"
     thumb_dir.mkdir(parents=True, exist_ok=True)
 
-    for profile, folder in MAP.items():
+    wanted = [a for a in sys.argv[1:] if a in MAP]
+    profiles = wanted or list(MAP)
+    for profile in profiles:
+        folder = MAP[profile]
         dest = OUT / folder
         dest.mkdir(parents=True, exist_ok=True)
         for view in VIEWS:
@@ -175,7 +180,7 @@ def main() -> None:
             ]
         },
         "views": VIEWS,
-        "notes": "Retina 2048×3072 plates keyed from 4×-upscaled MetaHuman stills.",
+        "notes": "Retina 2048×3072 plates. Gray t-shirt and shorts (woman: tank and shorts).",
     }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"wrote pack under {OUT}")

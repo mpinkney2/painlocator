@@ -24,7 +24,7 @@ The Simple Pain Map (patient shell) loads these plates instead of the blue clini
 - Style: Unreal-like MetaHuman photoreal figure
 - Views per sheet (L→R): front · back · left · right
 - Background: **none** (transparent PNG after green-screen key)
-- Clothing: neutral athletic / clinical-mannequin base layer
+- Clothing: light gray heather t-shirt and shorts for every profile (woman: matching tank and shorts)
 - Plates: portrait 2048×3072 RGBA retina stills (4× FSRCNN upscale, then chroma-keyed)
 
 ## Layout
