@@ -7,11 +7,11 @@
  * CSS-scale the still.
  */
 
+(function (global) {
 const BAKE_W = 768;
 const BAKE_H = 1152;
-const _bakeCache = new Map();
-const _inflight = new Map();
-const _blobUrls = new Set();
+const bakeCache = new Map();
+const bakeInflight = new Map();
 
 function _viewYaw(view) {
   if (view === "back") return Math.PI;
@@ -32,8 +32,8 @@ function _loadThree() {
 
 function bakeMetahumanPlate(dna, view, THREE) {
   const key = typeof bodyDnaKey === "function" ? bodyDnaKey(dna, view) : String(view);
-  if (_bakeCache.has(key)) return Promise.resolve(_bakeCache.get(key));
-  if (_inflight.has(key)) return _inflight.get(key);
+  if (bakeCache.has(key)) return Promise.resolve(bakeCache.get(key));
+  if (bakeInflight.has(key)) return bakeInflight.get(key);
 
   const work = Promise.resolve(THREE || _loadThree()).then((mod) => {
     const body = buildParametricBody(mod, dna);
@@ -87,13 +87,13 @@ function bakeMetahumanPlate(dna, view, THREE) {
         mats.forEach((m) => m.dispose && m.dispose());
       }
     });
-    _bakeCache.set(key, url);
+    bakeCache.set(key, url);
     return url;
   }).finally(() => {
-    _inflight.delete(key);
+    bakeInflight.delete(key);
   });
 
-  _inflight.set(key, work);
+  bakeInflight.set(key, work);
   return work;
 }
 
@@ -130,7 +130,9 @@ function applyMetahumanEnginePlate(img, fallbackPath, modelType, view) {
     img.src = url;
     img.dataset.mhBaked = "1";
     return url;
-  }).catch(() => {
+  }).catch((err) => {
+    console.warn("[cae-metahuman] bake failed", err);
+    if (img.dataset) img.dataset.mhError = String(err && err.message ? err.message : err);
     if (fallbackPath && img.dataset.mhGen === String(gen)) img.src = fallbackPath;
     return fallbackPath;
   });
@@ -144,7 +146,8 @@ function refreshMetahumanFigure() {
   });
 }
 
-window.bakeMetahumanPlate = bakeMetahumanPlate;
-window.applyMetahumanEnginePlate = applyMetahumanEnginePlate;
-window.refreshMetahumanFigure = refreshMetahumanFigure;
-window.currentEngineDna = currentEngineDna;
+global.bakeMetahumanPlate = bakeMetahumanPlate;
+global.applyMetahumanEnginePlate = applyMetahumanEnginePlate;
+global.refreshMetahumanFigure = refreshMetahumanFigure;
+global.currentEngineDna = currentEngineDna;
+})(typeof window !== "undefined" ? window : globalThis);

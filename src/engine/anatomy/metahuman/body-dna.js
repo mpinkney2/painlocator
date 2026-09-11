@@ -7,6 +7,7 @@
  * to build a new mesh.
  */
 
+(function (global) {
 const BODY_ANCESTRY = {
   neutral: { id: "neutral", label: "As shown" },
   european: { id: "european", label: "European" },
@@ -184,14 +185,15 @@ function resolveBodyProportions(dna) {
   };
 }
 
-window.BODY_ANCESTRY = BODY_ANCESTRY;
-window.SKIN_RGB = SKIN_RGB;
-window.STAGE_STATURE = STAGE_STATURE;
-window.HEIGHT_BONE = HEIGHT_BONE;
-window.BUILD_SOFT = BUILD_SOFT;
-window.ANCESTRY_MORPH = ANCESTRY_MORPH;
-window.normalizeBodyDna = normalizeBodyDna;
-window.resolveBodyDna = resolveBodyDna;
-window.isIdentityDna = isIdentityDna;
-window.bodyDnaKey = bodyDnaKey;
-window.resolveBodyProportions = resolveBodyProportions;
+global.BODY_ANCESTRY = BODY_ANCESTRY;
+global.SKIN_RGB = SKIN_RGB;
+global.STAGE_STATURE = STAGE_STATURE;
+global.HEIGHT_BONE = HEIGHT_BONE;
+global.BUILD_SOFT = BUILD_SOFT;
+global.ANCESTRY_MORPH = ANCESTRY_MORPH;
+global.normalizeBodyDna = normalizeBodyDna;
+global.resolveBodyDna = resolveBodyDna;
+global.isIdentityDna = isIdentityDna;
+global.bodyDnaKey = bodyDnaKey;
+global.resolveBodyProportions = resolveBodyProportions;
+})(typeof window !== "undefined" ? window : globalThis);

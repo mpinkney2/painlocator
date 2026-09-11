@@ -6,6 +6,7 @@
  * module (passed in) — CAE does not import Three at the top level.
  */
 
+(function (global) {
 function _rgb(THREE, rgb, extras) {
   const mat = new THREE.MeshStandardMaterial({
     color: new THREE.Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255),
@@ -102,4 +103,5 @@ function buildParametricBody(THREE, dna) {
   return root;
 }
 
-window.buildParametricBody = buildParametricBody;
+global.buildParametricBody = buildParametricBody;
+})(typeof window !== "undefined" ? window : globalThis);
