@@ -184,7 +184,9 @@
       const target = this._exterior?.root || this.bodyRoot;
       if (!target || !THREE?.Box3) return null;
       target.updateMatrixWorld(true);
-      const box = new THREE.Box3().setFromObject(target);
+      const box = (typeof metahumanBodyBox === "function")
+        ? metahumanBodyBox(THREE, target)
+        : new THREE.Box3().setFromObject(target);
       if (box.isEmpty()) return null;
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());

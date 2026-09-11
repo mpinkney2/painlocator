@@ -372,6 +372,11 @@
       const enabled = CanonicalBodyFlag.resolveCanonicalBodyMode();
       if (!enabled) return;
 
+      if (this.scene?._exterior?.skipCanonicalConformer) {
+        this.scene.fitToBody?.();
+        return;
+      }
+
       this.canonicalAlignmentValidation =
         CanonicalBodyFlag.resolveCanonicalAlignmentValidation() &&
         this._presentationMode() !== "patient";
@@ -398,6 +403,13 @@
         }
         const exteriorRoot = this.scene._exterior?.root;
         if (!exteriorRoot) throw new Error("Exterior root missing for conformer");
+        if (this.scene._exterior?.skipCanonicalConformer) {
+          frame.dispose();
+          this.canonicalFrame = null;
+          this.canonicalBodyMode = false;
+          this.scene.fitToBody?.();
+          return;
+        }
         const bak = {
           position: exteriorRoot.position.clone(),
           quaternion: exteriorRoot.quaternion.clone(),

@@ -7,5 +7,5 @@
       "manifest": "./adult-male/manifest.json"
     }
   ],
-  "notes": "PainLocator Spatial Anatomy catalog. Slice 1 ships exterior surface only."
+  "notes": "Clinician Spatial surface is the Blender standing figure at /anatomy/metahuman/body.glb."
 }

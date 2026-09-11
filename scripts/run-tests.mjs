@@ -575,7 +575,8 @@ console.log('PainLocator tests\n');
     );
     const ok = U.validateModelManifest(manifest);
     assert.equal(ok.modelId, 'adult-male');
-    assert.equal(ok.layers.surface.file, './exterior-lod0.glb');
+    assert.equal(ok.layers.surface.file, '/anatomy/metahuman/body.glb');
+    assert.equal(ok.layers.surface.bindMode, 'single-mesh');
   });
 
   test('spatial manifest: indexMeshes maps stable meshId entries', () => {
@@ -583,10 +584,9 @@ console.log('PainLocator tests\n');
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
     const index = U.indexMeshes(manifest);
-    assert.ok(index.has('surface.torso'));
-    assert.ok(index.has('surface.upperArmL'));
-    assert.equal(index.get('surface.torso').structureId, 'PL:surface.torso');
-    assert.equal(index.get('surface.head').layer, 'surface');
+    assert.ok(index.has('surface.body'));
+    assert.equal(index.get('surface.body').structureId, 'PL:surface.body');
+    assert.equal(index.get('surface.body').layer, 'surface');
     assert.equal(index.size, manifest.layers.surface.meshes.length);
   });
 
@@ -661,37 +661,44 @@ console.log('PainLocator tests\n');
     const modelPath = join(root, 'public/anatomy/spatial/adult-male/manifest.json');
     const model = JSON.parse(readFileSync(modelPath, 'utf8'));
     U.validateModelManifest(model);
-    const glb = join(root, 'public/anatomy/spatial/adult-male/exterior-lod0.glb');
+    const file = model.layers.surface.file;
+    const glb = file.startsWith('/')
+      ? join(root, 'public', file.replace(/^\//, ''))
+      : join(root, 'public/anatomy/spatial/adult-male', file);
     const size = statSync(glb).size;
     assert.ok(size > 50_000, `GLB too small: ${size}`);
     assert.ok(size < 5_000_000, `GLB exceeds 5MB target: ${size}`);
 
     const manifestIds = model.layers.surface.meshes.map((m) => m.meshId);
     const glbIds = listGlbBodyMeshNames(glb);
-    U.assertManifestGlbIntegrity(manifestIds, glbIds);
+    if (model.layers.surface.bindMode === 'single-mesh') {
+      assert.equal(manifestIds.length, 1);
+      assert.equal(glbIds.length, 1);
+      assert.equal(manifestIds[0], 'surface.body');
+    } else {
+      U.assertManifestGlbIntegrity(manifestIds, glbIds);
+    }
     for (const entry of model.layers.surface.meshes) {
       assert.ok(String(entry.structureId).startsWith('PL:'), `structureId must be PL-local: ${entry.structureId}`);
     }
   });
 
   test('spatial manifest: resolveGlbMeshId restores GLTFLoader-stripped dots', () => {
+    const fake = new Map([
+      ['surface.head', {}],
+      ['surface.torso', {}]
+    ]);
+    assert.equal(U.compactMeshId('surface.head'), 'surfacehead');
+    assert.equal(U.resolveGlbMeshId('surface.head', fake), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surfacehead', fake), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surface.torso', fake), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('surfacetorso', fake), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('unknownMesh', fake), 'unknownMesh');
     const manifest = JSON.parse(
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
     const index = U.indexMeshes(manifest);
-    assert.equal(U.compactMeshId('surface.head'), 'surfacehead');
-    assert.equal(U.resolveGlbMeshId('surface.head', index), 'surface.head');
-    assert.equal(U.resolveGlbMeshId('surfacehead', index), 'surface.head');
-    assert.equal(U.resolveGlbMeshId('surface.torso', index), 'surface.torso');
-    assert.equal(U.resolveGlbMeshId('surfacetorso', index), 'surface.torso');
-    assert.equal(U.resolveGlbMeshId('unknownMesh', index), 'unknownMesh');
-    const restored = manifest.layers.surface.meshes.map((m) =>
-      U.resolveGlbMeshId(U.compactMeshId(m.meshId), index)
-    );
-    U.assertManifestGlbIntegrity(
-      manifest.layers.surface.meshes.map((m) => m.meshId),
-      restored
-    );
+    assert.ok(index.has('surface.body'));
   });
 }
 
@@ -1552,9 +1559,11 @@ console.log('PainLocator tests\n');
     const man = JSON.parse(
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
-    assert.equal(man.coordinateFrame.frameId, 'painlocator-bp3d-canonical-v1');
+    assert.equal(man.coordinateFrame.frameId, 'painlocator-blender-stand-v1');
     assert.equal(man.canonicalBridge.enabledByDefault, false);
     assert.equal(man.canonicalBridge.featureFlag, 'canonicalBodyMode');
+    assert.equal(man.canonicalBridge.skipExteriorConformer, true);
+    assert.equal(man.layers.surface.bindMode, 'single-mesh');
   });
 
   test('canonical: PainRegion schema still lacks canonicalBodyXYZ persistence fields', () => {
@@ -2522,7 +2531,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-09-simple-map-harden');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-11-blender-surface');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2537,7 +2546,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-09-simple-map-harden'));
+    assert.ok(html.includes('?v=2026-09-11-blender-surface'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2640,7 +2649,7 @@ console.log('PainLocator tests\n');
       'public/utils/BufferGeometryUtils.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
-      'public/anatomy/spatial/adult-male/exterior-lod0.glb',
+      'public/anatomy/metahuman/body.glb',
       'public/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb',
       'public/anatomy/spatial/prototype-bp3d/muscle.glb',
       'public/anatomy/spatial/prototype-bp3d/skeletal.glb'
@@ -2657,7 +2666,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-09-simple-map-harden';
+    const ver = '2026-09-11-blender-surface';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2708,6 +2717,7 @@ console.log('PainLocator tests\n');
     assert.ok(engine.includes('retrying'));
     assert.ok(renderer.includes('onInteractive'));
     assert.ok(renderer.includes('fitToBody'));
+    assert.ok(renderer.includes('skipCanonicalConformer'));
   });
 
   test('spatial output: clinical exterior material is warm-neutral not game-metal', () => {
