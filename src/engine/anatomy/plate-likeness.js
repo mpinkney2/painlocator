@@ -1,10 +1,9 @@
 /**
  * Clinical Anatomy Engine — likeness prefs (storage + identity stills).
  *
- * Identity DNA (natural / average / neutral) keeps the captured MetaHuman
- * still. Any other Appearance value is rebuilt by the MetaHuman engine
- * (`src/engine/anatomy/metahuman/`) as new geometry — not a CSS scale or
- * pixel tint of the still.
+ * Identity DNA (natural / average / neutral) keeps the captured still unless
+ * a Blender GLB is installed. When a mesh is present, the MetaHuman engine
+ * bakes that figure. Without a mesh, Appearance keeps the photographed body.
  */
 
 const LIKENESS_STORAGE_KEY = "painlocator_likeness";

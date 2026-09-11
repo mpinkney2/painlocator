@@ -121,6 +121,25 @@ function getAnatomyThumbPath(modelType) {
   return getAssetPath(modelType, "front", "classic");
 }
 
+/**
+ * Blender / glTF drop-in paths for a profile. First existing file wins.
+ * Export from Blender as glTF Binary (.glb), +Y up, applied transforms.
+ */
+function getMetahumanGlbCandidates(modelType) {
+  const folder = metahumanAnatomyFolder(modelType);
+  const root = getAnatomyAssetRoot("metahuman");
+  return [
+    `${root}/${folder}/body.glb`,
+    `${root}/${folder}/figure.glb`,
+    `${root}/${folder}/body.gltf`,
+    `${root}/body.glb`
+  ];
+}
+
+function getMetahumanGlbPath(modelType) {
+  return getMetahumanGlbCandidates(modelType)[0];
+}
+
 window.ANATOMY_MODELS = ANATOMY_MODELS;
 window.ANATOMY_STAGES = ANATOMY_STAGES;
 window.ANATOMY_SEXES = ANATOMY_SEXES;
@@ -135,4 +154,7 @@ window.composeBodyModel = composeBodyModel;
 window.parseBodyProfile = parseBodyProfile;
 window.clinicianRadioValue = clinicianRadioValue;
 window.classicAnatomyFolder = classicAnatomyFolder;
+window.metahumanAnatomyFolder = metahumanAnatomyFolder;
+window.getMetahumanGlbCandidates = getMetahumanGlbCandidates;
+window.getMetahumanGlbPath = getMetahumanGlbPath;
 window.isSimplePainMapShell = isSimplePainMapShell;
