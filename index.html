@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-09-simple-map-harden">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.30-fit-more">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.31-mh-engine">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -878,7 +878,7 @@
           </span>
           <span class="simple-sheet-action-copy">
             <strong>Appearance</strong>
-            <em>Skin tone, build, height, and tap mark size</em>
+            <em>Rebuild the figure — ancestry, build, height, skin, mark size</em>
           </span>
         </button>
         <div class="simple-sheet-actions">
@@ -968,7 +968,7 @@
         <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-note">These settings stay on this device.</p>
+        <p class="modal-note">The MetaHuman engine rebuilds the body from bone lengths and soft tissue. It does not stretch or recolor the photo.</p>
         <fieldset class="simple-prefs-fieldset">
           <legend>Tap mark size</legend>
           <p class="simple-prefs-hint">Default is small — half the previous size. Choose a larger mark if you want easier targets.</p>
@@ -988,8 +988,38 @@
           </div>
         </fieldset>
         <fieldset class="simple-prefs-fieldset">
+          <legend>Ancestry</legend>
+          <p class="simple-prefs-hint">Changes craniofacial shape and limb-to-torso ratios, then rebuilds the mesh.</p>
+          <div class="simple-prefs-size simple-prefs-ancestry" role="radiogroup" aria-label="Ancestry">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="neutral" checked>
+              <span>As shown</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="european">
+              <span>European</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="east-asian">
+              <span>East Asian</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="south-asian">
+              <span>South Asian</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="african">
+              <span>African</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="latino">
+              <span>Latino</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
           <legend>Skin tone</legend>
-          <p class="simple-prefs-hint">Appearance only — a shader shifts skin. Gray shirt and shorts stay gray.</p>
+          <p class="simple-prefs-hint">Melanin on the rebuilt skin. Shirt and shorts stay gray fabric.</p>
           <div class="simple-prefs-swatches" role="radiogroup" aria-label="Skin tone">
             <label class="simple-prefs-swatch">
               <input type="radio" name="simpleSkin" value="natural" checked>
@@ -1030,7 +1060,7 @@
         </fieldset>
         <fieldset class="simple-prefs-fieldset">
           <legend>Build</legend>
-          <p class="simple-prefs-hint">Width of the figure. Marks stay on the body.</p>
+          <p class="simple-prefs-hint">Soft tissue on chest, waist, hips, and limbs — not a stretch of the photo.</p>
           <div class="simple-prefs-size" role="radiogroup" aria-label="Build">
             <label class="simple-prefs-size-opt">
               <input type="radio" name="simpleWeight" value="slim">
@@ -1048,7 +1078,7 @@
         </fieldset>
         <fieldset class="simple-prefs-fieldset">
           <legend>Height</legend>
-          <p class="simple-prefs-hint">How tall the figure appears. Feet stay planted.</p>
+          <p class="simple-prefs-hint">Leg and torso bone lengths. The engine plants the feet and rebuilds stature.</p>
           <div class="simple-prefs-size" role="radiogroup" aria-label="Height">
             <label class="simple-prefs-size-opt">
               <input type="radio" name="simpleHeight" value="short">
@@ -1138,15 +1168,18 @@
   <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
   <script src="src/engine/anatomy/asset-paths.js?v=5.28-sex-matrix"></script>
-  <script src="src/engine/anatomy/plate-likeness.js?v=5.30-fit-more"></script>
+  <script src="src/engine/anatomy/plate-likeness.js?v=5.31-mh-engine"></script>
+  <script src="src/engine/anatomy/metahuman/body-dna.js?v=5.31-mh-engine"></script>
+  <script src="src/engine/anatomy/metahuman/parametric-body.js?v=5.31-mh-engine"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
   <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.26-view-turn"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.30-fit-more"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.31-mh-engine"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/spatial-three-loader.js?v=2026-09-09-simple-map-harden"></script>
+  <script src="src/engine/anatomy/metahuman/metahuman-engine.js?v=5.31-mh-engine"></script>
   <script src="src/engine/spatial/spatial-manifest-loader.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/canonical-body-flag.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/engine/spatial/exterior-canonical-conformer.js?v=2026-09-09-simple-map-harden"></script>
@@ -1175,7 +1208,7 @@
   <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
-  <script src="src/engine/reporting/session-schema.js?v=5.29-likeness"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.31-mh-engine"></script>
   <script src="src/engine/reporting/clinical-report.js?v=5.30-fit-more"></script>
   <script src="src/engine/reporting/session-io.js?v=5.29-likeness"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
@@ -1183,7 +1216,7 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.30-fit-more"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.31-mh-engine"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-09-simple-map-harden"></script>
   <script src="src/app/bootstrap.js?v=5.30-fit-more"></script>
 </body>

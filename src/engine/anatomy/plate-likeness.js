@@ -1,9 +1,10 @@
 /**
- * Clinical Anatomy Engine — plate likeness (skin shader + build/height).
+ * Clinical Anatomy Engine — likeness prefs (storage + identity stills).
  *
- * Sex × life-stage plates stay the coordinate frame. Likeness is a presentation
- * layer: a skin-tone shader that preserves gray clothing, plus CSS scale for
- * weight (scaleX) and height (uniform scale). Not a combinatorial asset factory.
+ * Identity DNA (natural / average / neutral) keeps the captured MetaHuman
+ * still. Any other Appearance value is rebuilt by the MetaHuman engine
+ * (`src/engine/anatomy/metahuman/`) as new geometry — not a CSS scale or
+ * pixel tint of the still.
  */
 
 const LIKENESS_STORAGE_KEY = "painlocator_likeness";
@@ -34,7 +35,14 @@ function normalizeLikeness(partial) {
   const height = Object.prototype.hasOwnProperty.call(HEIGHT_SCALES, src.height)
     ? src.height
     : "average";
-  return { skin, weight, height };
+  const ancestry = src.ancestry && window.BODY_ANCESTRY && window.BODY_ANCESTRY[src.ancestry]
+    ? src.ancestry
+    : (src.ancestry === "european" || src.ancestry === "east-asian"
+      || src.ancestry === "south-asian" || src.ancestry === "african"
+      || src.ancestry === "latino" || src.ancestry === "neutral")
+      ? src.ancestry
+      : "neutral";
+  return { skin, weight, height, ancestry };
 }
 
 function getLikenessPref() {
@@ -54,6 +62,7 @@ function setLikenessPref(partial) {
     localStorage.setItem(LIKENESS_STORAGE_KEY, JSON.stringify(next));
   } catch (_) { /* ignore */ }
   applyLikenessPresentation();
+  if (typeof refreshMetahumanFigure === "function") refreshMetahumanFigure();
   return next;
 }
 
@@ -63,18 +72,16 @@ function applyLikenessPresentation(root) {
   const pref = getLikenessPref();
   const body = doc.body;
   if (body.style && typeof body.style.setProperty === "function") {
-    const w = WEIGHT_SCALES[pref.weight];
-    const h = HEIGHT_SCALES[pref.height];
-    const contain = Math.min(1, 1 / Math.max(w, 1), 1 / Math.max(h, 1));
-    body.style.setProperty("--spm-weight", String(w));
-    body.style.setProperty("--spm-height", String(h));
-    body.style.setProperty("--spm-fit-x", String(w * contain));
-    body.style.setProperty("--spm-fit-y", String(h * contain));
+    body.style.setProperty("--spm-weight", "1");
+    body.style.setProperty("--spm-height", "1");
+    body.style.setProperty("--spm-fit-x", "1");
+    body.style.setProperty("--spm-fit-y", "1");
   }
   if (typeof body.setAttribute === "function") {
     body.setAttribute("data-spm-skin", pref.skin);
     body.setAttribute("data-spm-weight", pref.weight);
     body.setAttribute("data-spm-height", pref.height);
+    body.setAttribute("data-spm-ancestry", pref.ancestry || "neutral");
   }
   return pref;
 }
@@ -205,6 +212,10 @@ function bindPlateImageSrc(img, path) {
 
 function refreshPlateLikeness() {
   applyLikenessPresentation();
+  if (typeof refreshMetahumanFigure === "function") {
+    refreshMetahumanFigure();
+    return;
+  }
   if (typeof document === "undefined") return;
   document.querySelectorAll(".cae-anatomy-image[data-plate-src]").forEach((img) => {
     bindPlateImageSrc(img, img.dataset.plateSrc);
