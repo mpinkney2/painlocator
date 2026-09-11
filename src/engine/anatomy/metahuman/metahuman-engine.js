@@ -73,7 +73,9 @@ function bakeMetahumanPlate(dna, view, THREE) {
       scene.add(rim);
 
       body.updateMatrixWorld(true);
-      const box = new mod.Box3().setFromObject(body);
+      const box = typeof metahumanBodyBox === "function"
+        ? metahumanBodyBox(mod, body)
+        : new mod.Box3().setFromObject(body);
       const size = box.getSize(new mod.Vector3());
       const center = box.getCenter(new mod.Vector3());
       const canvas = document.createElement("canvas");

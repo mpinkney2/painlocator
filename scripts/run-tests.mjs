@@ -1933,6 +1933,7 @@ console.log('PainLocator tests\n');
       }
       assert.ok(statSync(join(root, `public/anatomy/metahuman/thumbs/${folder}.png`)).isFile());
     }
+    assert.ok(statSync(join(root, 'public/anatomy/metahuman/body.glb')).isFile());
   });
 
   test('simple pain-map: female models use female clinical overlays', () => {
@@ -2073,7 +2074,7 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('name="simpleAncestry"') && html.includes('src/engine/anatomy/metahuman/body-dna.js'));
     assert.ok(html.includes('src/engine/anatomy/metahuman/glb-body.js'));
     assert.ok(html.includes('src/engine/anatomy/metahuman/metahuman-engine.js'));
-    assert.ok(html.includes('When a 3D body from Blender is installed'));
+    assert.ok(html.includes('your Blender standing figure'));
     assert.ok(html.includes('src/engine/anatomy/plate-likeness.js'));
     assert.ok(css.includes('--spm-fit-x') && css.includes('--spm-fit-y'));
     assert.ok(css.includes('grid-template-rows: auto minmax(0, 1fr) auto'));
@@ -2174,6 +2175,17 @@ console.log('PainLocator tests\n');
     assert.ok(Math.abs(heavy.y - avg.y) < 1e-9, 'build must not change stature scale');
     const face = s.metahumanPartScale('Head', { model: 'adult-male', ancestry: 'east-asian' });
     assert.ok(face && face.x > 1);
+    const identityMorph = s.metahumanMorphWeights({ model: 'adult-male' });
+    assert.equal(identityMorph.Stature, 0);
+    assert.equal(identityMorph.Waist, 0);
+    const tallMorph = s.metahumanMorphWeights({ model: 'adult-male', height: 'tall' });
+    const heavyMorph = s.metahumanMorphWeights({ model: 'adult-male', weight: 'heavy' });
+    assert.ok(tallMorph.Stature > identityMorph.Stature);
+    assert.ok(heavyMorph.Waist > identityMorph.Waist);
+    assert.ok(heavyMorph.Hips > identityMorph.Hips);
+    const headBone = s.metahumanRigBoneScale('head', { model: 'adult-male', ancestry: 'east-asian' });
+    assert.ok(headBone && headBone.x > 1);
+    assert.ok(statSync(join(root, 'public/anatomy/metahuman/body.glb')).isFile());
     const engine = readFileSync(join(root, 'src/engine/anatomy/metahuman/metahuman-engine.js'), 'utf8');
     assert.ok(engine.includes('cloneMetahumanGlbBody'));
     assert.ok(engine.includes('CAE_ALLOW_PARAMETRIC_METAHUMAN'));
