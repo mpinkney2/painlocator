@@ -105,6 +105,37 @@
     return type === "Mesh" || type === "SkinnedMesh";
   }
 
+  function collectBodyMeshes(root) {
+    const meshes = [];
+    if (!root || typeof root.traverse !== "function") return meshes;
+    root.traverse((obj) => {
+      if (isMeshLike(obj)) meshes.push(obj);
+    });
+    return meshes;
+  }
+
+  function applySurfaceMeshMeta(THREE, obj, meshId, meta, modelId, keepSourceMaterials) {
+    obj.name = meshId;
+    obj.userData.meshId = meshId;
+    obj.userData.structureId = meta?.structureId || null;
+    obj.userData.structureName = meta?.structureName || meshId;
+    obj.userData.clinicalName = meta?.clinicalName || meta?.structureName || meshId;
+    obj.userData.layer = meta?.layer || meta?.layerId || "surface";
+    obj.userData.spatialBody = true;
+    obj.userData.modelId = modelId;
+    if (obj.isSkinnedMesh || obj.type === "SkinnedMesh") {
+      obj.frustumCulled = false;
+    }
+    if (keepSourceMaterials) return;
+    if (obj.material) {
+      const mat = new THREE.MeshLambertMaterial({
+        color: 0xcbb7a8
+      });
+      if (obj.material.dispose) obj.material.dispose();
+      obj.material = mat;
+    }
+  }
+
   /**
    * Manifest is authoritative. Every surface meshId must appear exactly once in the
    * GLB naming set, and the GLB must not introduce unknown body meshes.
@@ -198,7 +229,19 @@
       );
       const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;
       if (!Loader) throw new Error("GLTFLoader export missing");
-      this._gltfLoader = new Loader();
+      const loader = new Loader();
+      try {
+        const meshMod = await importVendor("/vendor/meshopt_decoder.module.js");
+        const decoder =
+          meshMod.MeshoptDecoder || meshMod.default?.MeshoptDecoder || meshMod.default;
+        if (decoder && typeof loader.setMeshoptDecoder === "function") {
+          await Promise.resolve(decoder.ready || Promise.resolve());
+          loader.setMeshoptDecoder(decoder);
+        }
+      } catch (_) {
+        /* optional for uncompressed GLBs */
+      }
+      this._gltfLoader = loader;
       return this._gltfLoader;
     }
 
@@ -224,43 +267,42 @@
       const root = gltf.scene || gltf.scenes?.[0];
       if (!root) throw new Error("GLB has no scene");
 
+      const surface = packed.manifest.layers.surface;
+      const bindMode = surface.bindMode === "single-mesh" ? "single-mesh" : "named";
+      const keepSourceMaterials = surface.keepSourceMaterials === true || bindMode === "single-mesh";
+      const known = packed.meshIndex;
+      const meshes = collectBodyMeshes(root);
       /** @type {Map<string, import('three').Mesh>} */
       const meshById = new Map();
-      const known = packed.meshIndex;
       /** @type {string[]} */
       const glbMeshIds = [];
 
       root.updateMatrixWorld(true);
-      root.traverse((obj) => {
-        if (!isMeshLike(obj)) return;
-        const rawName = obj.name || obj.userData?.meshId;
-        const meshId = resolveGlbMeshId(rawName, known);
-        if (!meshId) {
-          throw new Error("GLB body mesh is missing a stable name/meshId");
-        }
-        glbMeshIds.push(meshId);
-        const meta = known.get(meshId);
-        // Binding still applied after integrity check; unknown IDs fail below.
-        obj.name = meshId;
-        obj.userData.meshId = meshId;
-        obj.userData.structureId = meta?.structureId || null;
-        obj.userData.structureName = meta?.structureName || meshId;
-        obj.userData.clinicalName = meta?.clinicalName || meta?.structureName || meshId;
-        obj.userData.layer = meta?.layer || meta?.layerId || "surface";
-        obj.userData.spatialBody = true;
-        obj.userData.modelId = packed.modelId;
-        // Clinical-neutral override — avoid game-like GLB materials.
-        if (obj.material) {
-          const mat = new THREE.MeshLambertMaterial({
-            color: 0xcbb7a8
-          });
-          if (obj.material.dispose) obj.material.dispose();
-          obj.material = mat;
-        }
-        meshById.set(meshId, obj);
-      });
 
-      assertManifestGlbIntegrity(known.keys(), glbMeshIds);
+      if (bindMode === "single-mesh") {
+        const ids = [...known.keys()];
+        if (ids.length !== 1 || meshes.length !== 1) {
+          throw new Error(
+            `single-mesh bind expects 1 manifest meshId and 1 GLB mesh (got ${ids.length}/${meshes.length})`
+          );
+        }
+        const meshId = ids[0];
+        applySurfaceMeshMeta(THREE, meshes[0], meshId, known.get(meshId), packed.modelId, keepSourceMaterials);
+        meshById.set(meshId, meshes[0]);
+        glbMeshIds.push(meshId);
+      } else {
+        for (const obj of meshes) {
+          const rawName = obj.name || obj.userData?.meshId;
+          const meshId = resolveGlbMeshId(rawName, known);
+          if (!meshId) {
+            throw new Error("GLB body mesh is missing a stable name/meshId");
+          }
+          glbMeshIds.push(meshId);
+          applySurfaceMeshMeta(THREE, obj, meshId, known.get(meshId), packed.modelId, keepSourceMaterials);
+          meshById.set(meshId, obj);
+        }
+        assertManifestGlbIntegrity(known.keys(), glbMeshIds);
+      }
 
       return {
         modelId: packed.modelId,
@@ -269,6 +311,8 @@
         meshIndex: packed.meshIndex,
         provenance: packed.provenance,
         surfaceUrl: packed.surfaceUrl,
+        bindMode,
+        skipCanonicalConformer: bindMode === "single-mesh",
         dispose() {
           root.traverse((obj) => {
             if (obj.geometry) obj.geometry.dispose?.();
@@ -293,6 +337,7 @@
     compactMeshId,
     resolveGlbMeshId,
     isMeshLike,
+    collectBodyMeshes,
     DEFAULT_CATALOG_URL
   };
 })(typeof window !== "undefined" ? window : globalThis);
