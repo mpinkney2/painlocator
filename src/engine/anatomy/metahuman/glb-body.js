@@ -112,19 +112,35 @@ function metahumanRigBoneScale(name, dna) {
   return null;
 }
 
+function isMetahumanGlbResponse(res) {
+  if (!res || !res.ok) return false;
+  const headers = res.headers;
+  const type = String(headers && headers.get ? headers.get("content-type") : "").toLowerCase();
+  if (type.includes("text/html") || type.includes("text/javascript")
+    || type.includes("application/javascript") || type.includes("text/css")) {
+    return false;
+  }
+  if (type.includes("gltf") || type.includes("octet-stream") || type.includes("application/json")) {
+    return true;
+  }
+  const len = Number(headers && headers.get ? headers.get("content-length") : 0);
+  return Number.isFinite(len) && len > 2048;
+}
+
 function _probeUrl(url) {
   if (!url) return Promise.resolve(null);
   if (probeHits.has(url)) return Promise.resolve(probeHits.get(url) ? url : null);
   if (typeof fetch !== "function") return Promise.resolve(null);
   return fetch(url, { method: "HEAD", cache: "force-cache" }).then((res) => {
-    if (res.ok) {
+    if (isMetahumanGlbResponse(res)) {
       probeHits.set(url, true);
       return url;
     }
     if (res.status === 405 || res.status === 501) {
       return fetch(url, { method: "GET", cache: "force-cache" }).then((getRes) => {
-        probeHits.set(url, !!getRes.ok);
-        return getRes.ok ? url : null;
+        const ok = isMetahumanGlbResponse(getRes);
+        probeHits.set(url, ok);
+        return ok ? url : null;
       });
     }
     probeHits.set(url, false);
@@ -408,6 +424,7 @@ global.metahumanGlbScale = metahumanGlbScale;
 global.metahumanPartScale = metahumanPartScale;
 global.metahumanMorphWeights = metahumanMorphWeights;
 global.metahumanRigBoneScale = metahumanRigBoneScale;
+global.isMetahumanGlbResponse = isMetahumanGlbResponse;
 global.findMetahumanGlb = findMetahumanGlb;
 global.cloneMetahumanGlbBody = cloneMetahumanGlbBody;
 global.applyDnaToGlbRoot = applyDnaToGlbRoot;
