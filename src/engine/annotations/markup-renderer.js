@@ -21,6 +21,74 @@ function polygonPoints(anchors) {
   return anchors.map(a => `${a.x},${a.y}`).join(" ");
 }
 
+const SIMPLE_MARK_SIZE_KEY = "painlocator_mark_size";
+const SIMPLE_MARK_SIZE_SCALES = { s: 0.5, m: 1, l: 1.5 };
+const SIMPLE_VIEW_YAW = ["front", "right", "back", "left"];
+const SIMPLE_PLATE_CACHE = "spm-mh-glb3";
+
+function getSimpleMarkSizeScale() {
+  try {
+    const raw = typeof localStorage !== "undefined"
+      ? localStorage.getItem(SIMPLE_MARK_SIZE_KEY)
+      : null;
+    const key = raw === "m" || raw === "l" ? raw : "s";
+    return SIMPLE_MARK_SIZE_SCALES[key] || 0.5;
+  } catch (_) {
+    return 0.5;
+  }
+}
+
+function setSimpleMarkSizePref(size) {
+  const key = size === "m" || size === "l" ? size : "s";
+  try {
+    localStorage.setItem(SIMPLE_MARK_SIZE_KEY, key);
+  } catch (_) { /* ignore */ }
+  if (typeof document !== "undefined") {
+    document.body?.setAttribute?.("data-mark-size", key);
+  }
+  return key;
+}
+
+function applySimpleMarkSizeAttr() {
+  if (typeof document === "undefined") return;
+  try {
+    const raw = localStorage.getItem(SIMPLE_MARK_SIZE_KEY);
+    const key = raw === "m" || raw === "l" ? raw : "s";
+    document.body?.setAttribute?.("data-mark-size", key);
+  } catch (_) {
+    document.body?.setAttribute?.("data-mark-size", "s");
+  }
+}
+
+/** Shortest turn on the Front → Right → Back → Left compass. 1 = CW, -1 = CCW, 0 = fade. */
+function simpleViewTurnDir(fromView, toView) {
+  const a = SIMPLE_VIEW_YAW.indexOf(fromView);
+  const b = SIMPLE_VIEW_YAW.indexOf(toView);
+  if (a < 0 || b < 0 || a === b) return 0;
+  const cw = (b - a + SIMPLE_VIEW_YAW.length) % SIMPLE_VIEW_YAW.length;
+  if (cw === 2) return 0;
+  return cw === 1 ? 1 : -1;
+}
+
+function simplePlateSrc(model, view) {
+  const path = typeof getAssetPath === "function" ? getAssetPath(model, view) : "";
+  return path + "?v=" + SIMPLE_PLATE_CACHE;
+}
+
+function setSimplePlateImage(img, path) {
+  if (!img || !path) return;
+  const viewMatch = String(path).match(/\/(front|back|left|right)\.png/i);
+  const modelMatch = String(path).match(/metahuman\/([^/?#]+)\//i);
+  const view = viewMatch ? viewMatch[1] : "front";
+  const model = modelMatch ? modelMatch[1] : (typeof state !== "undefined" ? state.modelType : "adult-male");
+  if (typeof applyMetahumanEnginePlate === "function") {
+    applyMetahumanEnginePlate(img, path, model, view);
+    return;
+  }
+  if (typeof bindPlateImageSrc === "function") bindPlateImageSrc(img, path);
+  else img.src = path;
+}
+
 class AnatomyImageLayer {
   constructor(root) {
     this.root = root;
@@ -194,17 +262,36 @@ class PainRegionLayer {
 
   createRegionEl(region, selected) {
     const intensity = region._entryIntensity ?? 5;
-    const baseColor = intensityBaseColor(intensity);
-    const opacity = getRegionOpacity(region, intensity);
+    const simplePatient =
+      typeof document !== "undefined" &&
+      document.body?.classList?.contains("simple-pain-map");
+    // Marker color tracks entry intensity (0–10 scale); prefer stamped color when present.
+    const baseColor = region._entryColor || intensityBaseColor(intensity);
+    const opacity = simplePatient ? Math.max(0.9, getRegionOpacity(region, intensity)) : getRegionOpacity(region, intensity);
     const c = getRegionCenter(region);
     const isPolygon = region.shape === "polygon" && region.anchors.length >= 3;
-    const { rx, ry } = getRegionRadii(region, intensity);
+    let { rx, ry } = getRegionRadii(region, intensity);
+    if (simplePatient) {
+      const scale = getSimpleMarkSizeScale();
+      const floor = 0.03 * scale;
+      rx = Math.max(rx, floor);
+      ry = Math.max(ry, floor);
+    }
+    if (typeof isCircularPainMark === "function" ? isCircularPainMark(region) : !isPolygon) {
+      const visualR = Math.max(rx, ry);
+      const box = this.el?.getBoundingClientRect?.();
+      if (typeof aspectCorrectedCircleRadii === "function" && box && box.width > 1 && box.height > 1) {
+        ({ rx, ry } = aspectCorrectedCircleRadii(box.width, box.height, visualR));
+      }
+    }
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttribute("class", "pain-region"
       + (selected ? " selected" : "")
       + (region._isActiveEntry ? " active-entry" : "")
       + (region._isDraft ? " draft" : ""));
     g.dataset.id = region.id;
+    g.dataset.intensity = String(intensity);
+    g.dataset.color = baseColor;
     g.style.pointerEvents = "all";
     g.style.cursor = this.store.activeTool === "select" ? "grab" : "crosshair";
 
@@ -227,7 +314,7 @@ class PainRegionLayer {
       shape.setAttribute("class", "pain-region-fill");
       shape.setAttribute("points", polygonPoints(region.anchors));
       shape.setAttribute("fill", baseColor);
-      shape.setAttribute("fill-opacity", String(Math.min(0.9, opacity + 0.12)));
+      shape.setAttribute("fill-opacity", String(Math.min(0.92, opacity + 0.12)));
     } else {
       shape = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
       shape.setAttribute("class", "pain-region-fill");
@@ -235,11 +322,13 @@ class PainRegionLayer {
       shape.setAttribute("cy", String(c.y));
       shape.setAttribute("rx", String(rx));
       shape.setAttribute("ry", String(ry));
-      shape.setAttribute("fill", `url(#${gradId})`);
+      // Solid intensity color on the patient map (slider-linked); soft gradient elsewhere.
+      shape.setAttribute("fill", simplePatient ? baseColor : `url(#${gradId})`);
+      if (simplePatient) shape.setAttribute("fill-opacity", "0.95");
     }
-    shape.setAttribute("stroke", selected ? "#22d3ee" : baseColor);
-    shape.setAttribute("stroke-opacity", selected ? "1" : "0.8");
-    shape.setAttribute("stroke-width", selected ? "0.004" : "0.002");
+    shape.setAttribute("stroke", selected ? "#182a42" : (simplePatient ? "#182a42" : baseColor));
+    shape.setAttribute("stroke-opacity", "1");
+    shape.setAttribute("stroke-width", selected ? "0.007" : (simplePatient ? "0.005" : "0.002"));
     g.appendChild(shape);
 
     if (selected && !isPolygon) {
@@ -532,14 +621,17 @@ class RegionInteractionLayer {
 
       const wasPan = this._dragKind === "pan";
 
-      if (this._mode === "circle-draw" && this._start && this._didDrag) {
+      if (this._mode === "circle-draw" && this._start) {
         const pt = ev.changedTouches ? ev.changedTouches[0] : ev;
         const loc = this.clientToNorm(pt.clientX, pt.clientY);
         if (loc) {
+          const endX = this._didDrag ? loc.x : this._start.x;
+          const endY = this._didDrag ? loc.y : this._start.y;
+          // Tap without drag still places a mark (same as a small Area).
           this.store.createCircleRegion(
             normalizeModelType(this.engine.modelType),
             this.engine.viewType,
-            this._start.x, this._start.y, loc.x, loc.y,
+            this._start.x, this._start.y, endX, endY,
             this.renderer.getActiveAnatomyLayer(),
             this.engine.physicianMode
           );
@@ -587,9 +679,135 @@ class ClinicalMarkupRenderer {
     this.tooltip = null;
     this._boundView = null;
     this._boundModel = null;
-    this._onResize = () => this.syncLayout();
+    this._onResize = () => {
+      this.applySimplePainMapPresentationScale();
+      this.syncLayout();
+    };
     this._resizeObserver = null;
     this._zoomListeners = [];
+    this._spmScaleMode = null;
+    this._viewSwapGen = 0;
+    this._cancelViewSwap = null;
+  }
+
+  _isSimplePainMap() {
+    return typeof document !== "undefined"
+      && document.body?.classList?.contains("simple-pain-map");
+  }
+
+  _simplePlateToken() {
+    return this._isSimplePainMap() ? SIMPLE_PLATE_CACHE : String(Date.now());
+  }
+
+  preloadSimpleViewPlates() {
+    if (!this._isSimplePainMap() || typeof getAssetPath !== "function") return;
+    if (typeof Image === "undefined") return;
+    const model = this.engine.modelType;
+    const skin = typeof getLikenessPref === "function" ? getLikenessPref().skin : "natural";
+    ["front", "back", "left", "right"].forEach((view) => {
+      const path = simplePlateSrc(model, view);
+      const img = new Image();
+      img.src = path;
+      if (skin !== "natural" && typeof tintPlateSrc === "function") {
+        tintPlateSrc(path, skin);
+      }
+    });
+  }
+
+  /**
+   * In-place compass turn: keep zoom, crossfade/slide the plate, no remount.
+   * @param {string} fromView
+   * @param {string} toView
+   * @returns {boolean}
+   */
+  swapSimpleView(fromView, toView) {
+    if (!this._isSimplePainMap()) return false;
+    if (!this.layers?.image?.el || !this.frame || !this.viewport) return false;
+    if (!fromView || fromView === toView) return false;
+
+    this._cancelViewSwap?.();
+    const gen = ++this._viewSwapGen;
+    this._boundView = toView;
+    this._boundModel = this.engine.modelType;
+    this.preloadSimpleViewPlates();
+
+    const current = this.layers.image.el;
+    current.classList.add("is-view-swap", "is-loaded");
+    const incoming = document.createElement("img");
+    incoming.className = "cae-anatomy-image is-view-swap is-incoming";
+    incoming.alt = "Clinical Anatomy Plate";
+    incoming.draggable = false;
+    incoming.setAttribute("data-loaded", "1");
+    current.insertAdjacentElement("afterend", incoming);
+
+    const dir = simpleViewTurnDir(fromView, toView);
+    const reduced = typeof window !== "undefined"
+      && window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const frame = this.frame;
+    frame.classList.remove("is-turning-cw", "is-turning-ccw", "is-turning-fade");
+    frame.classList.add("is-turning");
+    if (reduced || dir === 0) frame.classList.add("is-turning-fade");
+    else if (dir > 0) frame.classList.add("is-turning-cw");
+    else frame.classList.add("is-turning-ccw");
+
+    let finished = false;
+    const cleanupFrame = () => {
+      frame.classList.remove("is-turning", "is-turning-cw", "is-turning-ccw", "is-turning-fade");
+    };
+
+    const finish = () => {
+      if (finished || gen !== this._viewSwapGen) return;
+      finished = true;
+      this._cancelViewSwap = null;
+      current.src = incoming.src;
+      current.classList.remove("is-out");
+      current.classList.add("is-loaded", "is-view-swap");
+      incoming.remove();
+      cleanupFrame();
+      this.layers.image.el = current;
+      this.mapper.setElements(this.frame, current);
+      this.renderRegions();
+      this.syncLayout();
+      this.updateDebugLabel();
+    };
+
+    this._cancelViewSwap = () => {
+      if (finished) return;
+      finished = true;
+      incoming.remove();
+      current.classList.remove("is-out");
+      cleanupFrame();
+    };
+
+    let started = false;
+    const startTurn = () => {
+      if (started || gen !== this._viewSwapGen) return;
+      started = true;
+      incoming.classList.add("is-ready");
+      requestAnimationFrame(() => {
+        if (gen !== this._viewSwapGen) return;
+        incoming.classList.add("is-in");
+        current.classList.add("is-out");
+        this.renderRegions();
+      });
+      incoming.addEventListener("transitionend", finish, { once: true });
+      setTimeout(finish, reduced ? 80 : 220);
+    };
+
+    incoming.onload = () => {
+      if (incoming.naturalWidth > 0) startTurn();
+    };
+    incoming.onerror = () => {
+      this._cancelViewSwap?.();
+      return false;
+    };
+    setSimplePlateImage(incoming, simplePlateSrc(this.engine.modelType, toView));
+    if (incoming.complete && incoming.naturalWidth > 0) {
+      startTurn();
+    }
+    return true;
   }
 
   onZoomChange(cb) {
@@ -605,6 +823,24 @@ class ClinicalMarkupRenderer {
 
   isEnlarged() {
     return this.mapper.isEnlarged();
+  }
+
+  /**
+   * Patient simple map: letterbox the full plate so head-to-feet stay visible
+   * on mobile and desktop. Do not zoom past fit — that cropped the figure.
+   */
+  applySimplePainMapPresentationScale() {
+    if (typeof document === "undefined") return;
+    if (!document.body?.classList?.contains("simple-pain-map")) {
+      this._spmScaleMode = null;
+      return;
+    }
+    if (typeof applyLikenessPresentation === "function") applyLikenessPresentation();
+    if (this.mapper.zoom >= AnatomyCoordinateMapper.ENLARGED_ZOOM - 0.05) return;
+    if (this._spmScaleMode === "fit" && this.mapper.zoom <= 1.001) return;
+    this._spmScaleMode = "fit";
+    this.mapper.setZoom(1, { focusX: 0.5, focusY: 0.5, resetPan: true });
+    this._emitZoomChange();
   }
 
   getFocusFromSelection() {
@@ -658,23 +894,34 @@ class ClinicalMarkupRenderer {
 
     const viewChanged = this._boundView !== this.engine.viewType
       || this._boundModel !== this.engine.modelType;
-    if (viewChanged && this._boundView != null) {
+    if (viewChanged && this._boundView != null && !this._isSimplePainMap()) {
       this.mapper.resetZoom();
+      this._spmScaleMode = null;
       this._emitZoomChange();
     }
     this._boundView = this.engine.viewType;
     this._boundModel = this.engine.modelType;
+    applySimpleMarkSizeAttr();
+    if (typeof applyLikenessPresentation === "function") applyLikenessPresentation();
 
+    this._cancelViewSwap?.();
+    this._cancelViewSwap = null;
+    this._viewSwapGen += 1;
     window.removeEventListener("resize", this._onResize);
     this._resizeObserver?.disconnect();
 
     container.innerHTML = `
       <div class="cae-clinical-viewport">
-        <svg id="caeTestBodySvg" class="cae-placeholder-body" viewBox="0 0 200 360" xmlns="http://www.w3.org/2000/svg">
+        ${
+          typeof document !== "undefined" &&
+          document.body?.classList?.contains("simple-pain-map")
+            ? `<div class="simple-figure-loading" aria-live="polite">Loading body…</div>`
+            : `<svg id="caeTestBodySvg" class="cae-placeholder-body" viewBox="0 0 200 360" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="100" cy="50" rx="22" ry="28" fill="rgba(34,211,238,0.15)" stroke="#22d3ee" stroke-width="2"/>
           <path d="M68 110 C68 110 74 190 76 210 L100 240 L124 210 C126 190 132 110 132 110 Z" fill="rgba(34,211,238,0.15)" stroke="#22d3ee" stroke-width="2"/>
           <text x="100" y="150" fill="#22d3ee" font-size="12" font-weight="800" text-anchor="middle">CAE placeholder body</text>
-        </svg>
+        </svg>`
+        }
         <div class="cae-image-frame" id="caeImageFrame"></div>
         <div class="cae-marker-tooltip" id="caeMarkerTooltip" hidden></div>
       </div>`;
@@ -705,14 +952,26 @@ class ClinicalMarkupRenderer {
       this.loadStatus = "loaded";
       this.fallbackActive = false;
       this.layers.image.show();
-      if (placeholder) placeholder.style.display = "none";
+      if (placeholder) {
+        placeholder.style.display = "none";
+        placeholder.setAttribute("hidden", "");
+      }
+      if (img) {
+        img.classList.add("is-loaded");
+        img.setAttribute("data-loaded", "1");
+      }
+      this.viewport?.classList?.add("has-figure");
+      container.querySelector(".simple-figure-loading")?.remove();
       requestAnimationFrame(() => {
+        this.applySimplePainMapPresentationScale();
         this.syncLayout();
         requestAnimationFrame(() => this.syncLayout());
       });
       this.renderRegions();
       this.applyVisualizationClasses();
       this.injectDebugLabel(container, imgPath);
+      this.preloadSimpleViewPlates();
+      if (img) img.classList.add("is-view-swap");
     };
 
     const handleError = () => {
@@ -721,17 +980,30 @@ class ClinicalMarkupRenderer {
       this.loadStatus = "failed (fallback active)";
       this.fallbackActive = true;
       this.layers.image.hide();
-      if (placeholder) placeholder.style.display = "block";
+      const loading = container.querySelector(".simple-figure-loading");
+      if (loading) {
+        loading.textContent = "Body image unavailable — try Front / Back again.";
+      } else if (placeholder) {
+        placeholder.style.display = "block";
+      }
       this.injectDebugLabel(container, imgPath);
     };
 
     img.onload = () => (img.naturalWidth > 0 ? handleLoad() : handleError());
     img.onerror = handleError;
-    img.src = imgPath + "?v=" + Date.now();
+    const cacheToken = this._isSimplePainMap()
+      ? SIMPLE_PLATE_CACHE
+      : String(Date.now());
+    const plateSrc = imgPath + "?v=" + cacheToken;
+    if (this._isSimplePainMap()) setSimplePlateImage(img, plateSrc);
+    else img.src = plateSrc;
 
     window.addEventListener("resize", this._onResize);
     if (typeof ResizeObserver !== "undefined" && this.viewport) {
-      this._resizeObserver = new ResizeObserver(() => this.syncLayout());
+      this._resizeObserver = new ResizeObserver(() => {
+        this.applySimplePainMapPresentationScale();
+        this.syncLayout();
+      });
       this._resizeObserver.observe(this.viewport);
     }
     this.injectDebugLabel(container, imgPath);
@@ -826,3 +1098,8 @@ class ClinicalMarkupRenderer {
 }
 
 window.ClinicalMarkupRenderer = ClinicalMarkupRenderer;
+window.getSimpleMarkSizeScale = getSimpleMarkSizeScale;
+window.setSimpleMarkSizePref = setSimpleMarkSizePref;
+window.simpleViewTurnDir = simpleViewTurnDir;
+window.SIMPLE_MARK_SIZE_KEY = SIMPLE_MARK_SIZE_KEY;
+window.setSimplePlateImage = setSimplePlateImage;

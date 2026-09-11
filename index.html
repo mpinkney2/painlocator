@@ -4,20 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Clinical Anatomy Engine (CAE) - Advanced pain tracking visualization suite and clinical evaluation portal.">
-  <title>PainLocator - Clinical Anatomy Engine</title>
+  <title>PainLocator — Show where it hurts</title>
   
   <!-- Premium Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
   
   <!-- CDNs for Medical Icons & Charts -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.7">
-  <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-07-bp3d-boot-1">
-  <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.7">
+  <link rel="preload" as="image" href="/anatomy/metahuman/adult-male/front.png">
+  <link rel="preload" as="image" href="/anatomy/metahuman/adult-female/front.png">
+  <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
+  <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-11-blender-surface">
+  <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.31-mh-engine2">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -27,25 +30,25 @@
   }
   </script>
 </head>
-<body class="wf-capture shell-patient">
+<body class="wf-capture shell-patient simple-pain-map">
   <a class="skip-link" href="#avatarStage">Skip to anatomy</a>
   <div class="app" id="app">
 
     <!-- HEADER / CONTROL HUD -->
     <header class="header">
       <div class="brand" role="banner" aria-label="PainLocator">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <div class="brand-lockup">
+        <div class="brand-lockup simple-brand-lockup">
           <p class="brand-title">
             <span class="brand-pain">Pain</span><span class="brand-locator">Locator</span>
           </p>
-          <p class="brand-tagline desktop-only shell-only-clinician">Powered by Clinical Anatomy Engine</p>
+          <span class="brand-dot brand-dot-amber" aria-hidden="true"></span>
         </div>
+        <p class="brand-tagline desktop-only shell-only-clinician">Powered by Clinical Anatomy Engine</p>
         <span class="demo-badge" id="demoModeBadge" hidden>Demo Mode · Fictional data</span>
       </div>
       
-      <!-- WORKFLOW STAGES -->
-      <div class="mode-toggle-group workflow-toggle">
+      <!-- WORKFLOW STAGES (clinician) -->
+      <div class="mode-toggle-group workflow-toggle shell-only-clinician">
         <span class="toggle-label-sm desktop-only">Workflow:</span>
         <div class="toggle-buttons" role="tablist" aria-label="Workflow: Capture, Review, Clinical">
           <button type="button" role="tab" aria-selected="true" class="btn btn-toggle active" id="btnCaptureWF" onclick="setWorkflowMode('capture')" title="Step 1 — Log pain">Capture</button>
@@ -53,6 +56,16 @@
           <button type="button" role="tab" aria-selected="false" class="btn btn-toggle" id="btnClinicalWF" onclick="setWorkflowMode('clinical')" title="Step 3 — Clinical report"><span class="label-full">Clinical Report</span><span class="label-short">Clinical</span></button>
         </div>
       </div>
+
+      <!-- SIMPLE PAIN MAP NAV -->
+      <nav class="simple-pain-nav shell-only-patient" aria-label="PainLocator">
+        <button type="button" class="simple-nav-btn is-active" id="btnSimplePainMap" aria-current="page">Pain map</button>
+        <button type="button" class="simple-nav-btn" id="btnSimpleHistory">History</button>
+        <button type="button" class="simple-nav-btn" id="btnSimpleShare">Share</button>
+        <div class="simple-more-wrap">
+          <button type="button" class="simple-nav-btn" id="btnSimpleMore" aria-haspopup="dialog" aria-controls="simpleMoreModal" aria-expanded="false">More</button>
+        </div>
+      </nav>
 
       <div class="header-actions">
         <select id="demoScenarioSelect" class="demo-scenario-select" hidden aria-label="Demo scenario">
@@ -62,9 +75,9 @@
         </select>
         <button type="button" class="btn btn-ghost btn-sm" id="btnResetDemo" hidden>Reset Demo</button>
         <button type="button" class="btn btn-ghost btn-sm" id="btnExitDemo" hidden>Exit Demo</button>
-        <button type="button" class="btn btn-ghost btn-sm" id="btnHeaderDemo" aria-label="Try demo">Demo</button>
-        <button type="button" class="btn btn-ghost btn-sm" id="btnFeedback" aria-label="Send feedback">Feedback</button>
-        <button type="button" class="btn btn-ghost btn-icon" id="btnHelpMenu" aria-label="Help and safety"><i data-lucide="circle-help"></i></button>
+        <button type="button" class="btn btn-ghost btn-sm shell-only-clinician" id="btnHeaderDemo" aria-label="Try demo">Demo</button>
+        <button type="button" class="btn btn-ghost btn-sm shell-only-clinician" id="btnFeedback" aria-label="Send feedback">Feedback</button>
+        <button type="button" class="btn btn-ghost btn-icon shell-only-clinician" id="btnHelpMenu" aria-label="Help and safety"><i data-lucide="circle-help"></i></button>
         <div class="presentation-menu-wrap shell-dev-switch" hidden>
           <button type="button" class="btn btn-ghost btn-sm" id="btnPresentationMenu" aria-haspopup="true" aria-expanded="false" title="Developer: switch product experience">
             <span id="presentationSwitcherLabel">Patient</span>
@@ -74,7 +87,7 @@
             <button type="button" role="menuitem" data-presentation-option="clinician">Clinician console</button>
           </div>
         </div>
-        <button type="button" class="btn btn-ghost btn-icon" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle theme"><i data-lucide="moon"></i><span class="btn-label desktop-only"> Dark Mode</span></button>
+        <button type="button" class="btn btn-ghost btn-icon shell-only-clinician" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle theme"><i data-lucide="moon"></i><span class="btn-label desktop-only"> Dark Mode</span></button>
         <button type="button" class="shell-only-clinician btn btn-ghost desktop-only" id="btnClear" title="Clear all entries">Clear Data</button>
         <button type="button" class="shell-only-clinician btn btn-ghost show-clinical" id="btnInsights" aria-label="Open assistive pattern notes">Patterns</button>
         <button type="button" class="shell-only-clinician btn btn-primary show-review-or-clinical" id="btnExport" aria-label="Share clinical report">Share</button>
@@ -269,8 +282,8 @@
           <button type="button" class="view-btn" data-view="right">Right</button>
         </div>
         <nav id="patientStepIndicator" class="patient-step-indicator shell-only-patient" aria-label="Pain entry steps" hidden>
-          <span class="sr-only" id="patientStepStatus">Step 1 of 3: locate</span>
-          <ol class="patient-step-list">
+          <span class="sr-only" id="patientStepStatus">Pain map</span>
+          <ol class="patient-step-list" hidden>
             <li data-patient-step="locate" class="is-current" aria-current="step"><span>1</span> Locate</li>
             <li data-patient-step="describe"><span>2</span> Describe</li>
             <li data-patient-step="review"><span>3</span> Review</li>
@@ -281,48 +294,203 @@
           <button type="button" class="region-tool display-mode-btn" id="btnPlateMode" data-display="plate" title="2D clinical plate (fallback)" aria-pressed="false">2D</button>
           <button type="button" class="region-tool display-mode-btn active" id="btnSpatialMode" data-display="spatial" title="Spatial body (3D)" aria-pressed="true">Spatial</button>
         </div>
-        <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
-          <div class="region-tools review-tools show-review" id="reviewTools">
-            <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
-            <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
-            <button type="button" class="region-tool" data-review-tool="compare" title="Compare two entries">Compare</button>
-            <button type="button" class="btn btn-ghost btn-sm region-tool-edit" id="btnEditEntry" title="Enable region editing">Edit Entry</button>
+
+        <div class="simple-pain-workspace" id="simplePainWorkspace">
+          <div class="simple-pain-grid">
+            <div class="simple-pain-map-col">
+              <header class="simple-pain-headline shell-only-patient" id="simplePainHeadline">
+                <h1>Show where it hurts.</h1>
+                <p>Tap the body to mark a location.</p>
+              </header>
+              <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
+                <div class="body-type-gallery shell-only-patient" id="bodyTypeGallery" aria-label="Choose a body profile that fits you">
+                  <p class="body-type-gallery-title">Body</p>
+                  <div class="body-sex-toggle" role="group" aria-label="Woman or man">
+                    <button type="button" class="body-sex-btn" data-sex="female" aria-pressed="false">Woman</button>
+                    <button type="button" class="body-sex-btn is-active" data-sex="male" aria-pressed="true">Man</button>
+                  </div>
+                  <div class="body-stage-list" role="radiogroup" aria-label="Life stage">
+                    <button type="button" class="body-type-option is-selected" data-stage="adult" aria-pressed="true" title="Adult">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/adult-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Adult</span>
+                    </button>
+                    <button type="button" class="body-type-option" data-stage="teen" aria-pressed="false" title="Teen">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/teen-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Teen</span>
+                    </button>
+                    <button type="button" class="body-type-option" data-stage="child" aria-pressed="false" title="Child">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/child-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Child</span>
+                    </button>
+                    <button type="button" class="body-type-option" data-stage="senior" aria-pressed="false" title="Elderly">
+                      <span class="body-type-silhouette" aria-hidden="true">
+                        <img src="/anatomy/metahuman/thumbs/senior-male.png" alt="">
+                      </span>
+                      <span class="body-type-label">Elderly</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
+                  <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
+                  <button type="button" class="simple-compass-btn" data-view="left" title="Left view" aria-pressed="false">Left</button>
+                  <button type="button" class="simple-compass-btn" data-view="right" title="Right view" aria-pressed="false">Right</button>
+                  <button type="button" class="simple-compass-btn" data-view="back" title="Back view" aria-pressed="false">Back</button>
+                </div>
+                <div class="region-tools review-tools show-review" id="reviewTools">
+                  <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
+                  <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
+                  <button type="button" class="region-tool" data-review-tool="compare" title="Compare two entries">Compare</button>
+                  <button type="button" class="btn btn-ghost btn-sm region-tool-edit" id="btnEditEntry" title="Enable region editing">Edit Entry</button>
+                </div>
+                <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Body map — tap to mark pain"></div>
+              </div>
+              <section class="simple-map-intensity shell-only-patient" id="simpleMapIntensity" aria-labelledby="patientIntensityHeading">
+                <h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>
+                <div class="patient-intensity-row">
+                  <span class="patient-intensity-value" id="patientIntensityValue" aria-live="polite">5</span>
+                  <span class="patient-intensity-of">/ 10</span>
+                </div>
+                <label class="visually-hidden sr-only" for="patientIntensitySlider">Pain intensity from 0 to 10</label>
+                <input type="range" id="patientIntensitySlider" class="patient-intensity-slider" min="0" max="10" step="1" value="5"
+                  aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Pain intensity 5 out of 10" />
+                <div class="patient-intensity-ends" aria-hidden="true">
+                  <span>0 · No pain</span><span>10 · Worst pain imaginable</span>
+                </div>
+              </section>
+            </div>
+            <aside class="simple-pain-panel shell-only-patient" id="simplePainPanel" aria-labelledby="simplePainLocationTitle" data-assess-step="mark">
+              <div class="simple-drawer-peek-bar" id="simpleDrawerPeekBar">
+                <button type="button" class="simple-peek-icon-btn" id="btnPeekUndo" title="Undo last change" aria-label="Undo" disabled>
+                  <svg class="simple-peek-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M2.5 4.5v10.5h10.5" />
+                    <path d="M21 18a9.25 9.25 0 0 0-9.25-9.25 9.25 9.25 0 0 0-7.35 3.45L2.5 14.2" />
+                  </svg>
+                </button>
+                <button type="button" class="simple-drawer-grab shell-only-patient" id="simpleDrawerGrab" aria-label="Expand assessment panel — swipe up" aria-expanded="false" title="Open tools"></button>
+                <button type="button" class="simple-peek-icon-btn" id="btnPeekRedo" title="Redo" aria-label="Redo" disabled>
+                  <svg class="simple-peek-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21.5 4.5v10.5h-10.5" />
+                    <path d="M3 18a9.25 9.25 0 0 1 9.25-9.25 9.25 9.25 0 0 1 7.35 3.45L21.5 14.2" />
+                  </svg>
+                </button>
+              </div>
+              <div class="simple-drawer-sheet" id="simpleDrawerSheet">
+              <div class="simple-pain-context">
+                <p class="simple-pain-id" id="simplePainId">Pain map</p>
+                <h2 class="simple-pain-panel-title" id="simplePainLocationTitle">Tap the body to begin</h2>
+              </div>
+              <p class="avatar-hint simple-drawer-hint" id="avatarHint">Tap the body where it hurts.</p>
+              <div class="region-tools capture-tools simple-annotate-bar" id="captureTools" role="toolbar" aria-label="Pain mark tools">
+                <button type="button" class="region-tool" data-tool="select" title="Select / move regions" aria-label="Select tool">Select</button>
+                <button type="button" class="region-tool active" data-tool="point" title="Tap a point where it hurts" aria-label="Tap mark">
+                  <i data-lucide="map-pin" aria-hidden="true"></i><span>Tap</span>
+                </button>
+                <button type="button" class="region-tool" data-tool="circle" title="Drag to mark a pain area" aria-label="Area mark">
+                  <i data-lucide="circle-dashed" aria-hidden="true"></i><span>Area</span>
+                </button>
+                <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Outline a pain shape" aria-label="Outline mark">
+                  <i data-lucide="pentagon" aria-hidden="true"></i><span>Outline</span>
+                </button>
+                <button type="button" class="region-tool" data-tool="eraser" title="Tap a mark to remove it" aria-label="Remove a mark">
+                  <i data-lucide="eraser" aria-hidden="true"></i><span>Remove</span>
+                </button>
+                <button type="button" class="region-tool" id="btnUndo" title="Undo last change" aria-label="Undo" disabled>
+                  <i data-lucide="undo-2" aria-hidden="true"></i><span>Undo</span>
+                </button>
+                <button type="button" class="region-tool" id="btnRedo" title="Redo" aria-label="Redo" disabled>
+                  <i data-lucide="redo-2" aria-hidden="true"></i><span>Redo</span>
+                </button>
+                <span class="region-tool-divider" aria-hidden="true"></span>
+                <button type="button" class="region-tool region-tool-zoom" id="btnEnlargeAnatomy" title="Enlarge silhouette for precise marking" aria-label="Enlarge silhouette for accuracy" aria-pressed="false">Enlarge</button>
+              </div>
+              <div class="simple-view-bar shell-only-patient" id="simpleViewBar" role="group" aria-label="Body view">
+                <button type="button" class="simple-view-btn is-active" data-view="front" title="Front view">
+                  <i data-lucide="user" aria-hidden="true"></i><span>Front</span>
+                </button>
+                <button type="button" class="simple-view-btn" data-view="back" title="Back view">
+                  <i data-lucide="user-round" aria-hidden="true"></i><span>Back</span>
+                </button>
+                <button type="button" class="simple-view-btn" data-view="left" title="Left view">
+                  <i data-lucide="panel-left" aria-hidden="true"></i><span>Left</span>
+                </button>
+                <button type="button" class="simple-view-btn" data-view="right" title="Right view">
+                  <i data-lucide="panel-right" aria-hidden="true"></i><span>Right</span>
+                </button>
+              </div>
+              <nav class="simple-assess-nav" id="simpleAssessNav" role="tablist" aria-label="Pain assessment steps" hidden>
+                <button type="button" class="simple-assess-tab is-active" role="tab" aria-selected="true" data-assess-step="mark" id="tabAssessMark">Mark</button>
+                <button type="button" class="simple-assess-tab" role="tab" aria-selected="false" data-assess-step="describe" id="tabAssessDescribe">Describe</button>
+                <button type="button" class="simple-assess-tab" role="tab" aria-selected="false" data-assess-step="save" id="tabAssessSave">Save</button>
+              </nav>
+              <div class="simple-pain-panel-body" id="patientDescribeMount">
+                <!-- Filled by patient-flow.js -->
+              </div>
+              <footer class="simple-pain-panel-foot">
+                <p id="patientSaveConfirm" class="patient-save-confirm" role="status" hidden>Pain map saved.</p>
+                <div class="simple-step-actions" id="simpleStepActions">
+                  <button type="button" class="btn btn-ghost simple-step-btn" id="btnAssessBack" hidden>Back</button>
+                  <button type="button" class="btn btn-secondary simple-step-btn" id="btnAssessNext">
+                    <i data-lucide="message-square-text" aria-hidden="true"></i><span>Describe pain</span>
+                  </button>
+                  <button type="button" class="btn btn-primary btn-block simple-save-btn" id="btnPatientSave">
+                    <i data-lucide="save" aria-hidden="true"></i><span>Save pain map</span>
+                  </button>
+                </div>
+              </footer>
+              </div>
+            </aside>
           </div>
-          <div class="region-tools capture-tools" id="captureTools">
-            <button type="button" class="region-tool" data-tool="select" title="Select / move regions" aria-label="Select tool">Select</button>
-            <button type="button" class="region-tool" data-tool="point" title="Mark a pain point" aria-label="Point tool">Point</button>
-            <button type="button" class="region-tool active" data-tool="circle" title="Click-drag to mark a pain region" aria-label="Region tool">Region</button>
-            <button type="button" class="region-tool show-clinical" data-tool="polygon" title="Click vertices · double-click or close on first point" aria-label="Polygon tool">Polygon</button>
-            <button type="button" class="region-tool" data-tool="eraser" title="Remove region" aria-label="Eraser tool">Eraser</button>
-            <button type="button" class="region-tool" id="btnUndo" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>Undo</button>
-            <button type="button" class="region-tool" id="btnRedo" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>Redo</button>
-            <span class="region-tool-divider" aria-hidden="true"></span>
-            <button type="button" class="region-tool region-tool-zoom" id="btnEnlargeAnatomy" title="Enlarge silhouette for precise marking" aria-label="Enlarge silhouette for accuracy" aria-pressed="false">Enlarge</button>
-          </div>
-          <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="3D anatomy — drag to rotate, tap to mark pain at snap views"></div>
-          <p class="avatar-hint" id="avatarHint">Drag to rotate · Tap the body to mark pain.</p>
+
+          <section class="timeline-panel" id="timelinePanel" aria-labelledby="timelineTitle">
+            <div class="timeline-panel-head">
+              <h2 class="block-title" id="timelineTitle">Recovery Timeline</h2>
+              <div class="timeline-panel-meta" id="timelineMeta">No entries logged yet.</div>
+            </div>
+            <div class="timeline-filters" id="timelineFilters">
+              <div class="pill-grid timeline-range" id="timelineRangeFilters" role="group" aria-label="Timeline date range">
+                <button type="button" class="pill" data-range="7">7 days</button>
+                <button type="button" class="pill" data-range="30">30 days</button>
+                <button type="button" class="pill" data-range="90">90 days</button>
+                <button type="button" class="pill active" data-range="all">All time</button>
+              </div>
+              <label class="meta-field timeline-region-filter">
+                <span class="sr-only">Filter by body region</span>
+                <select id="timelineRegionFilter" aria-label="Filter by body region">
+                  <option value="all">All regions</option>
+                </select>
+              </label>
+            </div>
+            <div class="chart-box timeline-chart-box">
+              <canvas id="timelineChart" aria-label="Pain intensity over time chart"></canvas>
+              <div class="chart-empty" id="chartEmpty">No entries yet. Log pain entries to build your timeline.</div>
+            </div>
+            <p class="timeline-a11y-summary sr-only" id="timelineA11ySummary" aria-live="polite">Recovery timeline is empty.</p>
+          </section>
+          <p class="simple-pain-footer shell-only-patient" aria-hidden="true">PainLocator · Design concept</p>
         </div>
 
-        <!-- PATIENT SHELL: step chrome + locate CTA + describe/review sheet (outside anatomy flex row) -->
-        <div id="patientLocateCta" class="patient-locate-cta shell-only-patient" hidden>
-          <p class="patient-locate-prompt">Where does it hurt? Rotate and tap the body to mark pain.</p>
-          <button type="button" class="btn btn-primary patient-locate-continue" id="btnPatientNextDescribe" disabled>Continue to Describe</button>
-          <p class="patient-locate-hint" id="patientLocateHint" role="status">Mark at least one pain location to continue.</p>
+        <!-- Legacy patient sheet hooks kept for compatibility (hidden in simple map) -->
+        <div id="patientLocateCta" class="patient-locate-cta" hidden>
+          <p class="patient-locate-prompt">Where does it hurt?</p>
+          <button type="button" class="btn btn-primary patient-locate-continue" id="btnPatientNextDescribe" disabled>Continue</button>
+          <p class="patient-locate-hint" id="patientLocateHint" role="status">Mark at least one pain location.</p>
         </div>
-        <div id="patientDescribeBar" class="patient-describe-bar shell-only-patient" hidden>
+        <div id="patientDescribeBar" class="patient-describe-bar" hidden>
           <button type="button" class="btn btn-primary btn-block" id="btnPatientDescribeReview">Review entry</button>
         </div>
-        <div id="patientSheetBackdrop" class="patient-sheet-backdrop shell-only-patient" hidden></div>
-        <aside id="patientSheet" class="patient-sheet shell-only-patient" hidden aria-live="polite">
-          <div class="patient-sheet-handle" aria-hidden="true"></div>
+        <div id="patientSheetBackdrop" class="patient-sheet-backdrop" hidden></div>
+        <aside id="patientSheet" class="patient-sheet" hidden aria-live="polite">
           <div class="patient-sheet-pane" data-pane="describe" id="patientDescribePane" hidden>
             <header class="patient-sheet-head">
               <h3 id="patientDescribeTitle">How does it feel?</h3>
               <button type="button" class="btn btn-ghost btn-sm" id="btnPatientBackLocate">Back to body</button>
             </header>
-            <div class="patient-sheet-body" id="patientDescribeMount">
-              <!-- Filled by patient-flow.js with dedicated patient describe controls -->
-            </div>
             <footer class="patient-sheet-foot">
               <button type="button" class="btn btn-primary btn-block" id="btnPatientToReview">Review entry</button>
             </footer>
@@ -338,39 +506,9 @@
                 <button type="button" class="btn btn-ghost" id="btnPatientEditLocation">Edit location</button>
                 <button type="button" class="btn btn-ghost" id="btnPatientEditDescribe">Edit description</button>
               </div>
-              <p id="patientSaveConfirm" class="patient-save-confirm" role="status" hidden>Pain entry saved.</p>
             </div>
-            <footer class="patient-sheet-foot">
-              <button type="button" class="btn btn-primary btn-block" id="btnPatientSave">Save Pain Entry</button>
-            </footer>
           </div>
         </aside>
-
-        <section class="timeline-panel" id="timelinePanel" aria-labelledby="timelineTitle">
-          <div class="timeline-panel-head">
-            <h2 class="block-title" id="timelineTitle">Recovery Timeline</h2>
-            <div class="timeline-panel-meta" id="timelineMeta">No entries logged yet.</div>
-          </div>
-          <div class="timeline-filters" id="timelineFilters">
-            <div class="pill-grid timeline-range" id="timelineRangeFilters" role="group" aria-label="Timeline date range">
-              <button type="button" class="pill" data-range="7">7 days</button>
-              <button type="button" class="pill" data-range="30">30 days</button>
-              <button type="button" class="pill" data-range="90">90 days</button>
-              <button type="button" class="pill active" data-range="all">All time</button>
-            </div>
-            <label class="meta-field timeline-region-filter">
-              <span class="sr-only">Filter by body region</span>
-              <select id="timelineRegionFilter" aria-label="Filter by body region">
-                <option value="all">All regions</option>
-              </select>
-            </label>
-          </div>
-          <div class="chart-box timeline-chart-box">
-            <canvas id="timelineChart" aria-label="Pain intensity over time chart"></canvas>
-            <div class="chart-empty" id="chartEmpty">No entries yet. Log pain entries to build your timeline.</div>
-          </div>
-          <p class="timeline-a11y-summary sr-only" id="timelineA11ySummary" aria-live="polite">Recovery timeline is empty.</p>
-        </section>
         </div>
       </section>
 
@@ -679,18 +817,134 @@
       </div>
     </dialog>
 
-    <!-- Share modal (JSON preview) -->
-    <dialog class="modal" id="shareModal">
+    <!-- Share with clinician -->
+    <dialog class="modal simple-sheet" id="shareModal" aria-labelledby="shareModalTitle">
       <div class="modal-head">
-        <h3>Share Record</h3>
-        <button type="button" class="modal-close" data-close>&times;</button>
+        <h3 id="shareModalTitle">Share</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-note">Data never leaves your device unless you copy or share it. This exports a JSON snapshot of your pain log.</p>
-        <textarea id="sharePayload" class="share-text" readonly rows="6"></textarea>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary" id="btnCopyShare">Copy JSON</button>
-          <button type="button" class="btn btn-primary" id="btnDownloadShare">Download File</button>
+        <p class="modal-note">Give your clinician a clear pain map. Nothing leaves this device until you save or send a file.</p>
+        <div class="simple-sheet-actions">
+          <button type="button" class="simple-sheet-action" id="btnSharePdf">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="file-text"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Clinical report</strong>
+              <em>Printable PDF for your visit</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSharePng">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="image"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Anatomy snapshot</strong>
+              <em>PNG of the marked figure</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnShareJson">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="braces"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Session file</strong>
+              <em>JSON you can import later</em>
+            </span>
+          </button>
+        </div>
+        <details class="simple-sheet-advanced">
+          <summary>Advanced JSON</summary>
+          <textarea id="sharePayload" class="share-text" readonly rows="5"></textarea>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btnCopyShare">Copy JSON</button>
+            <button type="button" class="btn btn-primary" id="btnDownloadShare">Download file</button>
+          </div>
+        </details>
+      </div>
+    </dialog>
+
+    <!-- More / Appearance -->
+    <dialog class="modal simple-sheet" id="simpleMoreModal" aria-labelledby="simpleMoreTitle">
+      <div class="modal-head">
+        <h3 id="simpleMoreTitle">More</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="simple-sheet-action is-featured" id="btnSimplePrefs">
+          <span class="simple-sheet-action-icon" aria-hidden="true">
+            <i data-lucide="palette"></i>
+          </span>
+          <span class="simple-sheet-action-copy">
+            <strong>Appearance</strong>
+            <em>Rebuild the figure — ancestry, build, height, skin, mark size</em>
+          </span>
+        </button>
+        <div class="simple-sheet-actions">
+          <button type="button" class="simple-sheet-action" id="btnSimpleBodyProfile">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="user"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Body profile</strong>
+              <em>Woman or man, and life stage</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleImport">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="upload"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Import</strong>
+              <em>Open a saved session file</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleExport">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="download"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Export</strong>
+              <em>Save a copy of this session</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleTheme">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="moon"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Theme</strong>
+              <em>Switch light or dark</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleHelp">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="circle-help"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Help &amp; safety</strong>
+              <em>How PainLocator uses your data</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" id="btnSimpleFeedback">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="message-square"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Feedback</strong>
+              <em>Tell us what to improve</em>
+            </span>
+          </button>
+          <button type="button" class="simple-sheet-action" data-presentation-option="clinician">
+            <span class="simple-sheet-action-icon" aria-hidden="true">
+              <i data-lucide="stethoscope"></i>
+            </span>
+            <span class="simple-sheet-action-copy">
+              <strong>Clinician console</strong>
+              <em>Clinical atlas and tools</em>
+            </span>
+          </button>
         </div>
       </div>
     </dialog>
@@ -706,6 +960,145 @@
 
     <!-- Hidden import picker -->
     <input type="file" id="importSessionInput" accept="application/json,.json" hidden>
+
+    <!-- Patient preferences -->
+    <dialog class="modal simple-sheet" id="simplePrefsModal" aria-labelledby="simplePrefsTitle">
+      <div class="modal-head">
+        <h3 id="simplePrefsTitle">Appearance</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-note">The map now uses your Blender standing figure. Appearance drives its stature and build shapekeys.</p>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Tap mark size</legend>
+          <p class="simple-prefs-hint">Default is small — half the previous size. Choose a larger mark if you want easier targets.</p>
+          <div class="simple-prefs-size" role="radiogroup" aria-label="Tap mark size">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleMarkSize" value="s" checked>
+              <span>Small</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleMarkSize" value="m">
+              <span>Medium</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleMarkSize" value="l">
+              <span>Large</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Ancestry</legend>
+          <p class="simple-prefs-hint">On a Blender mesh, named head / jaw / nose / hip parts reshape. The photo is left alone until a mesh is installed.</p>
+          <div class="simple-prefs-size simple-prefs-ancestry" role="radiogroup" aria-label="Ancestry">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="neutral" checked>
+              <span>As shown</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="european">
+              <span>European</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="east-asian">
+              <span>East Asian</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="south-asian">
+              <span>South Asian</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="african">
+              <span>African</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleAncestry" value="latino">
+              <span>Latino</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Skin tone</legend>
+          <p class="simple-prefs-hint">Skin on the 3D mesh, or a careful tint of the photograph. Shirt and shorts stay gray fabric.</p>
+          <div class="simple-prefs-swatches" role="radiogroup" aria-label="Skin tone">
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="natural" checked>
+              <span class="simple-swatch simple-swatch-natural" aria-hidden="true"></span>
+              <span>As shown</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="fair">
+              <span class="simple-swatch simple-swatch-fair" aria-hidden="true"></span>
+              <span>Fair</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="light">
+              <span class="simple-swatch simple-swatch-light" aria-hidden="true"></span>
+              <span>Light</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="olive">
+              <span class="simple-swatch simple-swatch-olive" aria-hidden="true"></span>
+              <span>Olive</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="tan">
+              <span class="simple-swatch simple-swatch-tan" aria-hidden="true"></span>
+              <span>Tan</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="brown">
+              <span class="simple-swatch simple-swatch-brown" aria-hidden="true"></span>
+              <span>Brown</span>
+            </label>
+            <label class="simple-prefs-swatch">
+              <input type="radio" name="simpleSkin" value="deep">
+              <span class="simple-swatch simple-swatch-deep" aria-hidden="true"></span>
+              <span>Deep</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Build</legend>
+          <p class="simple-prefs-hint">Soft-tissue girth on the 3D mesh. The photograph is not stretched.</p>
+          <div class="simple-prefs-size" role="radiogroup" aria-label="Build">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleWeight" value="slim">
+              <span>Slim</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleWeight" value="average" checked>
+              <span>Average</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleWeight" value="heavy">
+              <span>Heavy</span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="simple-prefs-fieldset">
+          <legend>Height</legend>
+          <p class="simple-prefs-hint">Stature on the 3D mesh. The photograph is not stretched.</p>
+          <div class="simple-prefs-size" role="radiogroup" aria-label="Height">
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleHeight" value="short">
+              <span>Shorter</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleHeight" value="average" checked>
+              <span>Average</span>
+            </label>
+            <label class="simple-prefs-size-opt">
+              <input type="radio" name="simpleHeight" value="tall">
+              <span>Taller</span>
+            </label>
+          </div>
+        </fieldset>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" data-close>Done</button>
+        </div>
+      </div>
+    </dialog>
 
     <!-- Help / privacy / safety -->
     <dialog class="modal" id="helpModal" aria-labelledby="helpModalTitle">
@@ -770,29 +1163,34 @@
   <script src="src/ui/toast.js?v=5.5"></script>
   <!-- Clinical Anatomy Engine -->
   <script src="src/engine/anatomy/regions.js?v=5.5"></script>
-  <script src="src/engine/annotations/pain-models.js?v=5.5"></script>
-  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.5"></script>
-  <script src="src/engine/annotations/pain-entry-store.js?v=5.5"></script>
+  <script src="src/engine/annotations/pain-models.js?v=5.28-sex-matrix"></script>
+  <script src="src/engine/coordinates/anatomy-coordinate-mapper.js?v=5.30-fit-more"></script>
+  <script src="src/engine/annotations/pain-entry-store.js?v=5.16-intensity-map"></script>
   <script src="src/layout/panel-resizers.js?v=5.5"></script>
-  <script src="src/engine/anatomy/asset-paths.js?v=5.5"></script>
+  <script src="src/engine/anatomy/asset-paths.js?v=5.34-glb-probe"></script>
+  <script src="src/engine/anatomy/plate-likeness.js?v=5.34-glb-probe"></script>
+  <script src="src/engine/anatomy/metahuman/body-dna.js?v=5.34-glb-probe"></script>
+  <script src="src/engine/anatomy/metahuman/glb-body.js?v=5.34-glb-probe"></script>
+  <script src="src/engine/anatomy/metahuman/parametric-body.js?v=5.34-glb-probe"></script>
   <script src="src/engine/anatomy/pain-colors.js?v=5.5"></script>
   <script src="src/engine/overlays/visualization-controller.js?v=5.5"></script>
-  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/annotations/markup-renderer.js?v=5.6"></script>
+  <script src="src/engine/anatomy/clinical-anatomy-engine.js?v=5.26-view-turn"></script>
+  <script src="src/engine/annotations/markup-renderer.js?v=5.34-glb-probe"></script>
   <!-- Spatial anatomy — Three.js + exterior GLB loaded lazily only in spatial mode -->
-  <script src="src/engine/spatial/spatial-projection.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-three-loader.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-manifest-loader.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/canonical-body-flag.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/exterior-canonical-conformer.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/canonical-body-loader.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/canonical-body-frame.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-layer-loader.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-layer-controller.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-scene-controller.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-annotation-layer.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/engine/spatial/spatial-anatomy-renderer.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/engine/spatial/spatial-projection.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-three-loader.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/anatomy/metahuman/metahuman-engine.js?v=5.34-glb-probe"></script>
+  <script src="src/engine/spatial/spatial-manifest-loader.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/canonical-body-flag.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/exterior-canonical-conformer.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/canonical-body-loader.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/canonical-body-frame.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-layer-loader.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-layer-controller.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-scene-controller.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-annotation-layer.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/engine/spatial/spatial-anatomy-renderer.js?v=2026-09-11-blender-surface"></script>
 
   <!-- PainLocator app -->
   <script src="src/utils/theme-tokens.js?v=5.5"></script>
@@ -800,27 +1198,27 @@
   <script src="src/utils/forms.js?v=5.5"></script>
   <script src="src/features/trends/trend-summary.js?v=5.5"></script>
   <script src="src/features/demo/demo-data.js?v=5.5"></script>
-  <script src="src/features/demo/demo-mode.js?v=5.5"></script>
+  <script src="src/features/demo/demo-mode.js?v=5.23-body-gallery"></script>
   <script src="src/features/demo/walkthrough.js?v=5.5"></script>
   <script src="src/features/feedback/feedback-service.js?v=5.5"></script>
   <script src="src/features/feedback/feedback-ui.js?v=5.5"></script>
   <script src="src/features/onboarding/welcome.js?v=5.5"></script>
-  <script src="src/features/capture/entry-crud.js?v=5.5"></script>
+  <script src="src/features/capture/entry-crud.js?v=5.22-peek-undo"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
-  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/features/anatomy/spatial-primary-chrome.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/features/anatomy/spatial-diagnostics.js?v=2026-09-11-blender-surface"></script>
   <script src="src/features/review/history-ui.js?v=5.13"></script>
-  <script src="src/engine/reporting/session-schema.js?v=5.5"></script>
-  <script src="src/engine/reporting/clinical-report.js?v=5.5"></script>
-  <script src="src/engine/reporting/session-io.js?v=5.5"></script>
+  <script src="src/engine/reporting/session-schema.js?v=5.31-mh-engine2"></script>
+  <script src="src/engine/reporting/clinical-report.js?v=5.30-fit-more"></script>
+  <script src="src/engine/reporting/session-io.js?v=5.29-likeness"></script>
   <script src="src/engine/reporting/reports.js?v=5.5"></script>
   <script src="src/ui/context-menu.js?v=5.5"></script>
   <script src="src/features/capture/speech.js?v=5.5"></script>
-  <script src="src/state/workflow.js?v=5.12"></script>
+  <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.7"></script>
-  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-07-bp3d-boot-1"></script>
-  <script src="src/app/bootstrap.js?v=2026-09-07-bp3d-boot-1"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.31-mh-engine2"></script>
+  <script src="src/app/bp3d-shell-engagement.js?v=2026-09-11-blender-surface"></script>
+  <script src="src/app/bootstrap.js?v=5.30-fit-more"></script>
 </body>
 </html>

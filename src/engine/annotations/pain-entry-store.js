@@ -211,8 +211,12 @@ class PainEntryStore {
   ensureActiveEntry(patientModel, defaults = {}) {
     let entry = this.getActiveEntry();
     const model = normalizeModelType(patientModel);
-    if (entry && normalizeModelType(entry.patientModel) !== model && this.isDraftActive()) {
-      entry.patientModel = model;
+    if (entry) {
+      // Always persist a canonical string model id (never a legacy object shape).
+      const current = normalizeModelType(entry.patientModel);
+      if (entry.patientModel !== current || (current !== model && this.isDraftActive())) {
+        entry.patientModel = this.isDraftActive() ? model : current;
+      }
     }
     if (!entry) entry = this.newEntry(patientModel, defaults);
     return entry;
@@ -577,6 +581,7 @@ class PainEntryStore {
           _entryNum: entryNum,
           _regionIndex: ri,
           _entryIntensity: entry.intensity,
+          _entryColor: (typeof PAIN_COLORS !== 'undefined' && PAIN_COLORS[entry.intensity]) || null,
           _entryLabel: regionLabel(entryNum, ri),
           _isDraft: isDraft,
           _isActiveEntry: this.getActiveEntry()?.id === entry.id
@@ -616,6 +621,7 @@ class PainEntryStore {
         createdAt: entry.createdAt,
         updatedAt: entry.updatedAt,
         intensity: entry.intensity,
+        color: (typeof PAIN_COLORS !== "undefined" && PAIN_COLORS[entry.intensity]) || null,
         quality: entry.quality,
         triggers: entry.triggers,
         easesAfter: entry.easesAfter,
@@ -632,7 +638,9 @@ class PainEntryStore {
           anchors: r.anchors.map(a => ({ x: +a.x.toFixed(4), y: +a.y.toFixed(4) })),
           radius: r.radius,
           radiusY: r.radiusY,
-          structureLabel: r.structureLabel
+          structureLabel: r.structureLabel,
+          intensity: entry.intensity,
+          color: (typeof PAIN_COLORS !== "undefined" && PAIN_COLORS[entry.intensity]) || null
         }))
       }))
     };

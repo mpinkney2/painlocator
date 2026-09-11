@@ -199,8 +199,13 @@
     }
 
     root.traverse((obj) => {
-      if (!obj.isMesh) return;
-      const meshId = obj.name || obj.userData?.meshId;
+      const utils =
+        (typeof SpatialManifestUtils !== "undefined" && SpatialManifestUtils) ||
+        global.SpatialManifestUtils;
+      const isMeshLike = utils?.isMeshLike || ((o) => !!(o && o.isMesh));
+      if (!isMeshLike(obj)) return;
+      const rawName = obj.name || obj.userData?.meshId;
+      const meshId = utils?.resolveGlbMeshId ? utils.resolveGlbMeshId(rawName, metaById) : rawName;
       if (!meshId) throw new Error(`Layer ${layerId} mesh missing stable name`);
       const meta = metaById.get(meshId);
       if (!meta) throw new Error(`Layer ${layerId} GLB mesh not in manifest: ${meshId}`);

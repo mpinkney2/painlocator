@@ -1,24 +1,26 @@
 /**
- * Patient mobile funnel: Locate → Describe → Review.
- * App shell only — shares entryStore + form adapters; not in src/engine/.
- *
- * PatientDescribeUI → form adapters → entryStore
- * Clinical documentation panel stays clinician-only.
+ * Simple pain-map shell: single screen (body + describe), warm white / navy / amber.
+ * Reuses entryStore save/history/share. Hides anatomy layers & technical chrome.
  */
 (function (global) {
   'use strict';
 
   var PatientSteps = Object.freeze(['locate', 'describe', 'review']);
 
-  var QUALITY_CHIPS = Object.freeze([
+  var PRIMARY_QUALITY = Object.freeze([
     { value: 'Ache', label: 'Aching', match: ['Ache', 'Aching'] },
-    { value: 'Burning', label: 'Burning', match: ['Burning'] },
     { value: 'Sharp', label: 'Sharp', match: ['Sharp'] },
+    { value: 'Burning', label: 'Burning', match: ['Burning'] }
+  ]);
+
+  var MORE_QUALITY = Object.freeze([
     { value: 'Throbbing', label: 'Throbbing', match: ['Throbbing'] },
     { value: 'Tingling', label: 'Tingling', match: ['Tingling'] },
     { value: 'Numbness', label: 'Numbness', match: ['Numbness'] },
     { value: 'Pressure', label: 'Pressure', match: ['Pressure'] }
   ]);
+
+  var QUALITY_CHIPS = Object.freeze(PRIMARY_QUALITY.concat(MORE_QUALITY));
 
   var TIMING_CHIPS = Object.freeze([
     { field: 'duration', value: 'Constant', label: 'Constant' },
@@ -50,6 +52,9 @@
   var describeBuilt = false;
   var saving = false;
   var lastFocusEl = null;
+  var simpleView = 'map'; // map | history
+  var assessStep = 'mark'; // mark | describe | save
+  var ASSESS_STEPS = Object.freeze(['mark', 'describe', 'save']);
 
   function toast(msg, type) {
     if (typeof global.showToast === 'function') {
@@ -65,6 +70,11 @@
 
   function getStore() {
     return typeof entryStore !== 'undefined' ? entryStore : global.entryStore;
+  }
+
+  function currentPatientModel() {
+    var st = getState();
+    return (st && st.modelType) || 'male';
   }
 
   function isPatientShell() {
@@ -172,7 +182,7 @@
   function pullFromStoreToPatientUI() {
     var store = getStore();
     if (store && typeof store.ensureActiveEntry === 'function') {
-      try { store.ensureActiveEntry({ view: 'anterior', gender: 'male' }); } catch (e) {}
+      try { store.ensureActiveEntry(currentPatientModel()); } catch (e) {}
     }
     var active = (store && store.getActiveEntry) ? store.getActiveEntry() : null;
     var form = safeGetFormValues();
@@ -194,8 +204,11 @@
       patientIntensity.value = String(intensity);
       patientIntensity.setAttribute('aria-valuenow', String(intensity));
       patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + intensity + ' out of 10');
+      patientIntensity.style.setProperty('--spm-slider-pct', (intensity * 10) + '%');
     }
     if (intensityValue) intensityValue.textContent = String(intensity);
+    // Keep anatomy marks colored to the active intensity.
+    refreshMarkColors();
 
     QUALITY_CHIPS.forEach(function (chip) {
       var btn = document.querySelector('[data-patient-quality="' + chip.value + '"]');
@@ -242,65 +255,303 @@
     return '<button type="button" class="patient-chip" ' + parts + ' aria-pressed="false">' + escapeHtml(label) + '</button>';
   }
 
+  function updateLocationChrome() {
+    var idEl = document.getElementById('simplePainId');
+    var titleEl = document.getElementById('simplePainLocationTitle');
+    var summaryEl = document.getElementById('simpleMarksSummary');
+    var undoMarkBtn = document.getElementById('btnSimpleUndoMark');
+    var saveSummary = document.getElementById('simpleSaveSummary');
+    var store = getStore();
+    var entry = store && store.getActiveEntry ? store.getActiveEntry() : null;
+    var regions = Array.isArray(entry && entry.regions) ? entry.regions : [];
+    var points = Array.isArray(entry && entry.points) ? entry.points : [];
+    var marks = regions.concat(points);
+    var count = marks.length;
+    if (idEl) {
+      idEl.textContent = count > 0 ? ('Pain ' + count) : 'Pain map';
+    }
+    if (titleEl) {
+      if (assessStep === 'describe') {
+        titleEl.textContent = count ? 'Describe how it feels' : 'Describe your pain';
+      } else if (assessStep === 'save') {
+        titleEl.textContent = 'Review & save';
+      } else if (!count) {
+        titleEl.textContent = 'Tap the body to begin';
+      } else {
+        var last = marks[marks.length - 1];
+        titleEl.textContent =
+          (last && (last.patientLabel || last.label || last.name || last.physicianLabel)) ||
+          ('Mark ' + count);
+      }
+    }
+    if (summaryEl) {
+      var strength = entry && entry.intensity != null ? entry.intensity : 5;
+      if (!count) {
+        summaryEl.textContent = 'No marks yet — choose Point or Area, then mark the body.';
+      } else if (count === 1) {
+        summaryEl.textContent = '1 mark · strength ' + strength + '/10. Continue to describe how it feels.';
+      } else {
+        summaryEl.textContent = count + ' marks · strength ' + strength + '/10. Use Remove to delete one, or continue.';
+      }
+    }
+    if (saveSummary) {
+      var intensity = entry && entry.intensity != null ? entry.intensity : '—';
+      var quality = entry && Array.isArray(entry.quality) && entry.quality.length
+        ? entry.quality.join(', ')
+        : 'Not specified';
+      saveSummary.innerHTML =
+        '<p><strong>Marks:</strong> ' + count + '</p>' +
+        '<p><strong>Strength:</strong> ' + escapeHtml(String(intensity)) + ' / 10</p>' +
+        '<p><strong>Feels like:</strong> ' + escapeHtml(quality) + '</p>';
+    }
+    if (undoMarkBtn) {
+      var canUndo = !!(store && typeof store.canUndo === 'function' && store.canUndo());
+      undoMarkBtn.disabled = !canUndo;
+    }
+    syncSimpleAnnotateActive();
+  }
+
+  function syncSimpleAnnotateActive() {
+    var store = getStore();
+    var tool = (store && store.activeTool) || 'point';
+    var bar = document.getElementById('captureTools');
+    if (bar) {
+      bar.querySelectorAll('.region-tool[data-tool]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tool') === tool);
+      });
+    }
+    document.querySelectorAll('[data-patient-tool]').forEach(function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-patient-tool') === tool);
+    });
+  }
+
+  function toolHint(tool) {
+    if (tool === 'eraser') return 'Tap a mark on the body to remove it.';
+    if (tool === 'circle') return 'Drag on the body to mark a pain area.';
+    if (tool === 'polygon') return 'Tap points to outline a pain shape. Double-tap to finish.';
+    return 'Tap the body where it hurts.';
+  }
+
+  function activatePatientTool(tool) {
+    try {
+      var store = getStore();
+      if (store && typeof store.setTool === 'function') store.setTool(tool);
+      if (typeof global.setRegionTool === 'function') global.setRegionTool(tool);
+      else if (typeof setRegionTool === 'function') setRegionTool(tool);
+    } catch (e) { /* ignore */ }
+    var bar = document.getElementById('captureTools');
+    if (bar) {
+      bar.querySelectorAll('.region-tool[data-tool]').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tool') === tool);
+      });
+    }
+    syncSimpleAnnotateActive();
+    var hint = document.getElementById('avatarHint');
+    if (hint) {
+      hint.textContent = toolHint(tool);
+      hint.classList.remove('hidden');
+    }
+  }
+
+
+  function refreshPatientIcons() {
+    try {
+      if (global.lucide && typeof global.lucide.createIcons === 'function') {
+        global.lucide.createIcons();
+      } else if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  function syncAnatomyLayout() {
+    try {
+      var st = getState();
+      var engine = st && st.engine;
+      if (engine && engine.clinicalRenderer && typeof engine.clinicalRenderer.syncLayout === 'function') {
+        engine.clinicalRenderer.syncLayout();
+      } else if (engine && typeof engine.renderPins === 'function') {
+        engine.renderPins();
+      }
+      if (typeof global.refreshUI === 'function') global.refreshUI();
+      else if (typeof refreshUI === 'function') refreshUI();
+    } catch (e) { /* ignore */ }
+  }
+
+  function setDrawerExpanded(expanded) {
+    expanded = !!expanded;
+    document.body.classList.toggle('simple-drawer-expanded', expanded);
+    var grab = document.getElementById('simpleDrawerGrab');
+    if (grab) {
+      grab.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      grab.setAttribute('title', expanded ? 'Collapse tools' : 'Open tools');
+      grab.setAttribute(
+        'aria-label',
+        expanded ? 'Collapse assessment panel' : 'Expand assessment panel — swipe up'
+      );
+    }
+    // Re-fit markers while the drawer/image eases, then once more after settle.
+    syncAnatomyLayout();
+    var schedule = typeof requestAnimationFrame === 'function'
+      ? requestAnimationFrame
+      : function (fn) { fn(); };
+    schedule(function () {
+      syncAnatomyLayout();
+      if (typeof setTimeout === 'function') {
+        setTimeout(syncAnatomyLayout, 220);
+        setTimeout(syncAnatomyLayout, 450);
+      }
+    });
+  }
+
+  function placePatientDrawerChrome() {
+    var tools = document.getElementById('captureTools');
+    var views = document.getElementById('simpleViewBar');
+    var hint = document.getElementById('avatarHint');
+    var panel = document.getElementById('simplePainPanel');
+    var sheet = document.getElementById('simpleDrawerSheet') || panel;
+    var wrap = document.getElementById('avatarWrap');
+    var stage = document.getElementById('avatarStage');
+    if (!tools || !wrap) return;
+
+    if (isPatientShell() && sheet) {
+      var context = sheet.querySelector('.simple-pain-context');
+      if (hint) {
+        hint.classList.add('simple-drawer-hint');
+        if (hint.parentElement !== sheet) {
+          sheet.insertBefore(hint, context ? context.nextSibling : sheet.firstChild);
+        }
+      }
+      if (tools.parentElement !== sheet) {
+        sheet.insertBefore(tools, sheet.querySelector('#simpleViewBar') || sheet.querySelector('.simple-pain-panel-body') || null);
+      }
+      if (views && views.parentElement !== sheet) {
+        sheet.insertBefore(views, sheet.querySelector('.simple-assess-nav') || sheet.querySelector('.simple-pain-panel-body') || null);
+      }
+      if (hint && tools) sheet.insertBefore(hint, tools);
+      if (tools && views) sheet.insertBefore(tools, views);
+      refreshPatientIcons();
+    } else {
+      if (hint) {
+        hint.classList.remove('simple-drawer-hint');
+        if (stage && stage.parentElement === wrap) wrap.insertBefore(hint, stage.nextSibling);
+        else wrap.appendChild(hint);
+      }
+      if (tools.parentElement !== wrap) wrap.appendChild(tools);
+      if (views && views.parentElement !== wrap) wrap.appendChild(views);
+    }
+  }
+
+  function setAssessStep(step, opts) {
+    if (ASSESS_STEPS.indexOf(step) < 0) step = 'mark';
+    assessStep = step;
+    var panel = document.getElementById('simplePainPanel');
+    if (panel) panel.setAttribute('data-assess-step', step);
+    document.body.setAttribute('data-assess-step', step);
+
+    document.querySelectorAll('.simple-assess-tab').forEach(function (tab) {
+      var on = tab.getAttribute('data-assess-step') === step;
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+
+    document.querySelectorAll('[data-assess-panel]').forEach(function (section) {
+      var panel = section.getAttribute('data-assess-panel');
+      var match = panel === step || (step === 'mark' && panel === 'mark');
+      if (panel === 'save') match = false; // mock uses Save CTA directly
+      if (step === 'describe' && panel === 'describe') match = true;
+      if (step === 'describe' && panel === 'mark') match = false;
+      if (step === 'mark' && panel === 'describe') match = false;
+      section.hidden = !match;
+      section.classList.toggle('is-active-panel', match);
+    });
+
+    var back = document.getElementById('btnAssessBack');
+    var next = document.getElementById('btnAssessNext');
+    var save = document.getElementById('btnPatientSave');
+    if (back) back.hidden = true;
+    if (next) {
+      next.hidden = false;
+      next.textContent = step === 'describe' ? 'Back to mark' : 'Describe pain';
+    }
+    if (save) save.hidden = false;
+
+    if (step === 'describe' || step === 'save') {
+      setDrawerExpanded(true);
+    } else if (opts && opts.forceExpand) {
+      setDrawerExpanded(true);
+    } else if (!(opts && opts.keepExpanded)) {
+      // leave drawer state as-is unless explicitly collapsing
+    }
+
+    updateLocationChrome();
+  }
+
   function buildDescribeUI() {
     var mount = document.getElementById('patientDescribeMount');
     if (!mount) return;
 
     if (!describeBuilt) {
       mount.innerHTML =
-        '<section class="patient-describe-section" aria-labelledby="patientIntensityHeading">' +
-          '<h3 id="patientIntensityHeading" class="patient-describe-heading">How bad is it?</h3>' +
-          '<div class="patient-intensity-row">' +
-            '<span class="patient-intensity-value" id="patientIntensityValue" aria-live="polite">5</span>' +
-            '<span class="patient-intensity-of">out of 10</span>' +
-          '</div>' +
-          '<label class="visually-hidden sr-only" for="patientIntensitySlider">Pain intensity from 0 to 10</label>' +
-          '<input type="range" id="patientIntensitySlider" class="patient-intensity-slider" min="0" max="10" step="1" value="5"' +
-            ' aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Pain intensity 5 out of 10" />' +
-          '<div class="patient-intensity-ends" aria-hidden="true"><span>0</span><span>10</span></div>' +
+        '<section class="simple-assess-panel simple-marks-section" data-assess-panel="mark" aria-labelledby="simpleMarksHeading">' +
+          '<h3 id="simpleMarksHeading" class="visually-hidden sr-only">Your marks</h3>' +
+          '<p class="simple-marks-summary" id="simpleMarksSummary">No marks yet — choose Point or Area, then mark the body.</p>' +
+          '<details class="simple-tool-help">' +
+            '<summary>Marking tips</summary>' +
+            '<ul>' +
+              '<li><strong>Tap</strong> — tap once for a specific spot.</li>' +
+              '<li><strong>Area</strong> — drag to cover a broader region.</li>' +
+              '<li><strong>Outline</strong> — tap corners of an irregular shape.</li>' +
+            '</ul>' +
+          '</details>' +
         '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientQualityHeading">' +
-          '<h3 id="patientQualityHeading" class="patient-describe-heading">How does it feel?</h3>' +
-          '<div class="patient-chip-grid" role="group" aria-labelledby="patientQualityHeading">' +
-            QUALITY_CHIPS.map(function (c) { return chipButton({ 'data-patient-quality': c.value }, c.label); }).join('') +
+        '<section class="simple-assess-panel patient-describe-section" data-assess-panel="describe" hidden aria-labelledby="patientQualityHeading">' +
+          '<h3 id="patientQualityHeading" class="patient-describe-heading">What does it feel like?</h3>' +
+          '<div class="patient-chip-grid patient-chip-grid-primary" role="group" aria-labelledby="patientQualityHeading">' +
+            PRIMARY_QUALITY.map(function (c) { return chipButton({ 'data-patient-quality': c.value }, c.label); }).join('') +
           '</div>' +
-        '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientTimingHeading">' +
-          '<h3 id="patientTimingHeading" class="patient-describe-heading">When does it happen?</h3>' +
-          '<div class="patient-chip-grid" role="group" aria-labelledby="patientTimingHeading">' +
-            TIMING_CHIPS.map(function (c) {
-              return chipButton(
-                c.field === 'duration'
-                  ? { 'data-patient-duration': c.value }
-                  : { 'data-patient-when': c.value },
-                c.label
-              );
-            }).join('') +
-          '</div>' +
-        '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientWorseHeading">' +
-          '<h3 id="patientWorseHeading" class="patient-describe-heading">What makes it worse?</h3>' +
-          '<div class="patient-chip-grid" role="group" aria-labelledby="patientWorseHeading">' +
-            TRIGGER_CHIPS.map(function (c) { return chipButton({ 'data-patient-trigger': c.value }, c.label); }).join('') +
-          '</div>' +
-        '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientHelpsHeading">' +
-          '<h3 id="patientHelpsHeading" class="patient-describe-heading">What helps?</h3>' +
-          '<p class="patient-describe-hint">How quickly does the pain ease after it flares?</p>' +
-          '<div class="patient-chip-grid" role="group" aria-labelledby="patientHelpsHeading">' +
-            RELIEF_CHIPS.map(function (c) { return chipButton({ 'data-patient-relief': c.value }, c.label); }).join('') +
-          '</div>' +
-        '</section>' +
-        '<section class="patient-describe-section" aria-labelledby="patientNoteHeading">' +
-          '<h3 id="patientNoteHeading" class="patient-describe-heading">Optional note</h3>' +
+          '<details class="simple-more-descriptions">' +
+            '<summary>More descriptions</summary>' +
+            '<div class="patient-chip-grid" role="group" aria-label="More descriptions">' +
+              MORE_QUALITY.map(function (c) { return chipButton({ 'data-patient-quality': c.value }, c.label); }).join('') +
+              TIMING_CHIPS.map(function (c) {
+                return chipButton(
+                  c.field === 'duration'
+                    ? { 'data-patient-duration': c.value }
+                    : { 'data-patient-when': c.value },
+                  c.label
+                );
+              }).join('') +
+              TRIGGER_CHIPS.map(function (c) { return chipButton({ 'data-patient-trigger': c.value }, c.label); }).join('') +
+              RELIEF_CHIPS.map(function (c) { return chipButton({ 'data-patient-relief': c.value }, c.label); }).join('') +
+            '</div>' +
+          '</details>' +
+          '<h3 id="patientNoteHeading" class="patient-describe-heading simple-subhead">Add a note <span class="optional-label">(optional)</span></h3>' +
           '<label class="visually-hidden sr-only" for="patientNoteInput">Optional note about your pain</label>' +
-          '<textarea id="patientNoteInput" class="patient-note-input" rows="3" maxlength="500"' +
-            ' placeholder="Anything else you want your care team to know?"></textarea>' +
+          '<textarea id="patientNoteInput" class="patient-note-input" rows="2" maxlength="500"' +
+            ' placeholder="e.g. Worse in the evening..."></textarea>' +
+        '</section>' +
+        '<section class="simple-assess-panel simple-save-panel" data-assess-panel="save" hidden aria-labelledby="simpleSaveHeading">' +
+          '<h3 id="simpleSaveHeading" class="patient-describe-heading">Ready to save?</h3>' +
+          '<div class="simple-save-summary" id="simpleSaveSummary"></div>' +
+          '<p class="simple-marks-summary">You can go back to adjust marks or description before saving.</p>' +
         '</section>';
+
+      on('btnSimpleUndoMark', 'click', function () {
+        var undoBtn = document.getElementById('btnUndo');
+        if (undoBtn && !undoBtn.disabled) undoBtn.click();
+        else if (typeof global.performUndo === 'function') global.performUndo();
+        updateLocationChrome();
+      });
 
       mount.addEventListener('click', function (event) {
         var target = event.target;
         if (!target || !target.closest) return;
+        var toolBtn = target.closest('[data-patient-tool]');
+        if (toolBtn) {
+          activatePatientTool(toolBtn.getAttribute('data-patient-tool'));
+          return;
+        }
         var chip = target.closest('.patient-chip');
         if (!chip) return;
 
@@ -309,9 +560,9 @@
           chip.hasAttribute('data-patient-trigger') ||
           chip.hasAttribute('data-patient-relief')
         ) {
-          var next = !chip.classList.contains('is-selected');
-          chip.classList.toggle('is-selected', next);
-          chip.setAttribute('aria-pressed', next ? 'true' : 'false');
+          var nextSel = !chip.classList.contains('is-selected');
+          chip.classList.toggle('is-selected', nextSel);
+          chip.setAttribute('aria-pressed', nextSel ? 'true' : 'false');
           pushToFormAndStore();
           return;
         }
@@ -338,18 +589,6 @@
         }
       });
 
-      var patientIntensity = document.getElementById('patientIntensitySlider');
-      if (patientIntensity) {
-        patientIntensity.addEventListener('input', function () {
-          var value = Number(patientIntensity.value || 5);
-          patientIntensity.setAttribute('aria-valuenow', String(value));
-          patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + value + ' out of 10');
-          var label = document.getElementById('patientIntensityValue');
-          if (label) label.textContent = String(value);
-          pushToFormAndStore();
-        });
-      }
-
       var noteInput = document.getElementById('patientNoteInput');
       if (noteInput) {
         noteInput.addEventListener('input', function () { pushToFormAndStore(); });
@@ -358,7 +597,74 @@
       describeBuilt = true;
     }
 
+    bindMapIntensityUI();
     pullFromStoreToPatientUI();
+    setAssessStep(assessStep, { skipExpand: assessStep === 'mark' });
+  }
+
+  function refreshMarkColors() {
+    try {
+      var st = getState();
+      var engine = st && st.engine;
+      if (engine && engine.clinicalRenderer && typeof engine.clinicalRenderer.renderRegions === 'function') {
+        engine.clinicalRenderer.renderRegions();
+      } else if (engine && typeof engine.renderPins === 'function') {
+        engine.renderPins();
+      }
+      if (typeof global.refreshUI === 'function') global.refreshUI();
+      else if (typeof refreshUI === 'function') refreshUI();
+    } catch (e) { /* ignore */ }
+  }
+
+  function applyIntensityValue(value, opts) {
+    var options = opts || {};
+    value = Math.max(0, Math.min(10, Number(value)));
+    if (!isFinite(value)) value = 5;
+    var patientIntensity = document.getElementById('patientIntensitySlider');
+    var label = document.getElementById('patientIntensityValue');
+    if (patientIntensity) {
+      patientIntensity.value = String(value);
+      patientIntensity.setAttribute('aria-valuenow', String(value));
+      patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + value + ' out of 10');
+      patientIntensity.style.setProperty('--spm-slider-pct', (value * 10) + '%');
+    }
+    if (label) label.textContent = String(value);
+    if (!options.skipStore) {
+      try {
+        var store = getStore();
+        if (store && typeof store.updateActiveEntry === 'function') {
+          store.updateActiveEntry({ intensity: value });
+        }
+        var intensitySlider = document.getElementById('intensitySlider');
+        if (intensitySlider) intensitySlider.value = String(value);
+        if (typeof updateIntensityUI === 'function') updateIntensityUI(value, true);
+      } catch (e) { /* ignore */ }
+    }
+    if (!options.skipRender) refreshMarkColors();
+    if (!options.skipChrome) {
+      try { updateLocationChrome(); } catch (e) { /* ignore */ }
+    }
+  }
+
+  var mapIntensityBound = false;
+  function bindMapIntensityUI() {
+    var patientIntensity = document.getElementById('patientIntensitySlider');
+    if (!patientIntensity) return;
+    if (!mapIntensityBound) {
+      mapIntensityBound = true;
+      patientIntensity.addEventListener('input', function () {
+        applyIntensityValue(patientIntensity.value);
+        pushToFormAndStore();
+      });
+      patientIntensity.addEventListener('change', function () {
+        applyIntensityValue(patientIntensity.value);
+        pushToFormAndStore();
+      });
+    }
+    patientIntensity.style.setProperty(
+      '--spm-slider-pct',
+      (Number(patientIntensity.value || 5) * 10) + '%'
+    );
   }
 
   function locationLines(entry) {
@@ -392,13 +698,8 @@
     var form = safeGetFormValues();
     var intensity = entry.intensity != null ? entry.intensity : (form.intensity != null ? form.intensity : '—');
     var quality = entry.quality && entry.quality.length ? entry.quality : form.quality;
-    var triggers = entry.triggers && entry.triggers.length ? entry.triggers : form.triggers;
-    var eases = entry.easesAfter && entry.easesAfter.length ? entry.easesAfter : form.easesAfter;
-    var duration = entry.duration || form.duration || '';
-    var whenOccurring = entry.whenOccurring || form.whenOccurring || '';
     var note = String(entry.note || form.note || '').trim();
     var locations = locationLines(entry);
-    var timingParts = [whenOccurring, duration].filter(Boolean);
 
     host.innerHTML =
       '<div class="patient-review-block">' +
@@ -412,25 +713,55 @@
         '<p class="patient-review-value">' + escapeHtml(String(intensity)) + ' out of 10</p>' +
       '</div>' +
       '<div class="patient-review-block">' +
-        '<h3 class="patient-review-label">Pain characteristics</h3>' +
+        '<h3 class="patient-review-label">Descriptions</h3>' +
         '<p class="patient-review-value">' + escapeHtml(formatList(quality)) + '</p>' +
       '</div>' +
       '<div class="patient-review-block">' +
-        '<h3 class="patient-review-label">Timing / duration</h3>' +
-        '<p class="patient-review-value">' + escapeHtml(timingParts.length ? timingParts.join(' · ') : 'Not specified') + '</p>' +
-      '</div>' +
-      '<div class="patient-review-block">' +
-        '<h3 class="patient-review-label">What makes it worse</h3>' +
-        '<p class="patient-review-value">' + escapeHtml(formatList(triggers)) + '</p>' +
-      '</div>' +
-      '<div class="patient-review-block">' +
-        '<h3 class="patient-review-label">What helps</h3>' +
-        '<p class="patient-review-value">' + escapeHtml(formatList(eases)) + '</p>' +
-      '</div>' +
-      '<div class="patient-review-block">' +
-        '<h3 class="patient-review-label">Optional note</h3>' +
+        '<h3 class="patient-review-label">Note</h3>' +
         '<p class="patient-review-value">' + escapeHtml(note || 'None') + '</p>' +
       '</div>';
+  }
+
+  function syncSimpleNav() {
+    var mapBtn = document.getElementById('btnSimplePainMap');
+    var histBtn = document.getElementById('btnSimpleHistory');
+    if (mapBtn) {
+      mapBtn.classList.toggle('is-active', simpleView === 'map');
+      mapBtn.setAttribute('aria-current', simpleView === 'map' ? 'page' : 'false');
+    }
+    if (histBtn) {
+      histBtn.classList.toggle('is-active', simpleView === 'history');
+      histBtn.setAttribute('aria-current', simpleView === 'history' ? 'page' : 'false');
+    }
+  }
+
+  function setSimpleView(view) {
+    simpleView = view === 'history' ? 'history' : 'map';
+    document.body.classList.toggle('simple-view-history', isPatientShell() && simpleView === 'history');
+    document.body.classList.toggle('simple-view-map', isPatientShell() && simpleView === 'map');
+    syncSimpleNav();
+
+    if (simpleView === 'history') {
+      if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('review');
+      else if (typeof setWorkflowMode === 'function') setWorkflowMode('review');
+      try {
+        if (typeof global.updateChartTheme === 'function') global.updateChartTheme();
+        else if (typeof updateChartTheme === 'function') updateChartTheme();
+        if (typeof global.updateChart === 'function') global.updateChart();
+        else if (typeof updateChart === 'function') updateChart();
+      } catch (e) { /* ignore */ }
+      setDrawerExpanded(false);
+    } else {
+      if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('capture');
+      else if (typeof setWorkflowMode === 'function') setWorkflowMode('capture');
+      buildDescribeUI();
+      activatePatientTool('point');
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(syncAnatomyLayout);
+      } else {
+        syncAnatomyLayout();
+      }
+    }
   }
 
   function updateStepChrome() {
@@ -443,15 +774,17 @@
     var describePane = document.getElementById('patientDescribePane');
     var reviewPane = document.getElementById('patientReviewPane');
     var describeBar = document.getElementById('patientDescribeBar');
-    var nextDescribe = document.getElementById('btnPatientNextDescribe');
     var confirm = document.getElementById('patientSaveConfirm');
     var indicator = document.getElementById('patientStepIndicator');
     var status = document.getElementById('patientStepStatus');
+    var panel = document.getElementById('simplePainPanel');
+    var headline = document.getElementById('simplePainHeadline');
 
     document.body.classList.toggle('patient-step-locate', !!(patient && step === 'locate'));
     document.body.classList.toggle('patient-step-describe', !!(patient && step === 'describe'));
     document.body.classList.toggle('patient-step-review', !!(patient && step === 'review'));
     document.body.classList.toggle('patient-describe-open', !!(patient && step === 'describe'));
+    document.body.classList.toggle('simple-pain-map', patient);
 
     if (!patient) {
       if (sheet) sheet.hidden = true;
@@ -464,50 +797,31 @@
         'patient-step-locate',
         'patient-step-describe',
         'patient-step-review',
-        'patient-describe-open'
+        'patient-describe-open',
+        'simple-pain-map',
+        'simple-view-map',
+        'simple-view-history'
       );
       return;
     }
 
-    if (indicator) indicator.hidden = false;
-    var index = PatientSteps.indexOf(step);
-    if (status) {
-      status.textContent = 'Step ' + (index + 1) + ' of 3 · ' + step.charAt(0).toUpperCase() + step.slice(1);
-    }
-    if (indicator) {
-      indicator.querySelectorAll('[data-patient-step]').forEach(function (el) {
-        var s = el.getAttribute('data-patient-step');
-        var stepIndex = PatientSteps.indexOf(s);
-        el.classList.toggle('is-current', s === step);
-        el.classList.toggle('is-complete', stepIndex >= 0 && stepIndex < index);
-        el.classList.toggle('is-done', stepIndex >= 0 && stepIndex < index);
-        el.setAttribute('aria-current', s === step ? 'step' : 'false');
-      });
-    }
+    // Single-screen map: hide legacy funnel chrome
+    if (indicator) indicator.hidden = true;
+    if (locateCta) locateCta.hidden = true;
+    if (describeBar) describeBar.hidden = true;
+    if (sheet) sheet.hidden = true;
+    if (backdrop) backdrop.hidden = true;
+    if (describePane) describePane.hidden = true;
+    if (reviewPane) reviewPane.hidden = true;
+    if (status) status.textContent = simpleView === 'history' ? 'History' : 'Pain map';
+    if (panel) panel.hidden = simpleView === 'history';
+    if (headline) headline.hidden = simpleView === 'history';
 
-    if (locateCta) locateCta.hidden = step !== 'locate';
-    var hasLocations = activeHasLocations();
-    if (nextDescribe) nextDescribe.disabled = !hasLocations;
-    if (locateCta) locateCta.classList.toggle('has-location', hasLocations);
-    var locateHint = document.getElementById('patientLocateHint');
-    if (locateHint) {
-      locateHint.hidden = hasLocations;
-      locateHint.setAttribute('aria-hidden', hasLocations ? 'true' : 'false');
-    }
-    if (describeBar) describeBar.hidden = step !== 'describe';
+    document.body.classList.toggle('simple-view-history', simpleView === 'history');
+    document.body.classList.toggle('simple-view-map', simpleView === 'map');
+    syncSimpleNav();
 
-    var showSheet = step === 'describe' || step === 'review';
-    if (sheet) {
-      sheet.hidden = !showSheet;
-      sheet.setAttribute('role', showSheet ? 'dialog' : 'presentation');
-      sheet.setAttribute('aria-modal', showSheet ? 'true' : 'false');
-      sheet.setAttribute('aria-labelledby', step === 'review' ? 'patientReviewTitle' : 'patientDescribeTitle');
-    }
-    if (backdrop) backdrop.hidden = !showSheet;
-    if (describePane) describePane.hidden = step !== 'describe';
-    if (reviewPane) reviewPane.hidden = step !== 'review';
-    if (confirm && step !== 'review') confirm.hidden = true;
-
+    if (simpleView === 'map') buildDescribeUI();
     if (step === 'review') updatePatientSummary();
   }
 
@@ -522,51 +836,32 @@
       return;
     }
 
-    if ((next === 'describe' || next === 'review') && !opts.force && !activeHasLocations()) {
-      toast('Mark at least one pain location to continue.', 'warning');
+    // Simple map keeps describe always available; only gate review/save on locations.
+    if (next === 'review' && !opts.force && !activeHasLocations()) {
+      toast('Mark at least one pain location before saving.', 'warning');
       next = 'locate';
     }
 
     if (st) st.patientStep = next;
 
-    if (next === 'describe' || next === 'review') {
-      if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('capture');
-      else if (typeof setWorkflowMode === 'function') setWorkflowMode('capture');
+    if (next === 'describe' || next === 'locate') {
+      setSimpleView('map');
     }
 
-    if (next === 'describe') buildDescribeUI();
+    if (next === 'describe' || next === 'locate' || next === 'review') {
+      buildDescribeUI();
+    }
     if (next === 'review') {
       pushToFormAndStore();
       updatePatientSummary();
     }
 
     updateStepChrome();
-
-    if (next === 'describe') {
-      var slider = document.getElementById('patientIntensitySlider');
-      var dTitle = document.getElementById('patientDescribeTitle');
-      if (slider && slider.focus) slider.focus();
-      else if (dTitle && dTitle.focus) dTitle.focus();
-    } else if (next === 'review') {
-      var rTitle = document.getElementById('patientReviewTitle');
-      if (rTitle && rTitle.focus) rTitle.focus();
-    } else if (lastFocusEl && lastFocusEl.focus) {
-      try { lastFocusEl.focus(); } catch (e) {
-        var btn = document.getElementById('btnPatientNextDescribe');
-        if (btn && btn.focus) btn.focus();
-      }
-    }
   }
 
   function goDescribe() {
-    if (!activeHasLocations()) {
-      toast('Mark at least one pain location to continue.', 'warning');
-      return;
-    }
     lastFocusEl = document.activeElement;
-    if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('capture');
-    else if (typeof setWorkflowMode === 'function') setWorkflowMode('capture');
-    setPatientStep('describe');
+    setPatientStep('describe', { force: true });
   }
 
   function goReview() {
@@ -576,8 +871,7 @@
   }
 
   function goLocate() {
-    if (typeof global.setWorkflowMode === 'function') global.setWorkflowMode('capture');
-    else if (typeof setWorkflowMode === 'function') setWorkflowMode('capture');
+    setSimpleView('map');
     setPatientStep('locate', { force: true });
   }
 
@@ -592,6 +886,11 @@
     }
 
     try {
+      if (!activeHasLocations()) {
+        toast('Tap the body to mark where it hurts, then save.', 'warning');
+        return null;
+      }
+
       pushToFormAndStore();
       var saved = null;
       if (typeof global.saveCurrentEntry === 'function') {
@@ -605,28 +904,33 @@
       var confirm = document.getElementById('patientSaveConfirm');
       if (confirm) {
         confirm.hidden = false;
-        confirm.textContent = 'Pain entry saved.';
+        confirm.textContent = 'Pain map saved.';
       }
-      toast('Pain entry saved.', 'success');
+      toast('Pain map saved.', 'success');
       setPatientStep('locate', { force: true });
+      try {
+        var store = getStore();
+        if (store && typeof store.ensureActiveEntry === 'function') {
+          store.ensureActiveEntry(currentPatientModel());
+        }
+        pullFromStoreToPatientUI();
+        refreshMarkColors();
+        updateLocationChrome();
+      } catch (e) { /* ignore */ }
       return saved;
     } finally {
       saving = false;
       if (saveBtn) {
         saveBtn.disabled = false;
         if (typeof saveBtn.removeAttribute === 'function') saveBtn.removeAttribute('aria-busy');
-        saveBtn.textContent = 'Save Pain Entry';
+        saveBtn.textContent = 'Save pain map';
       }
     }
   }
 
   function refreshPatientFlow() {
     updateStepChrome();
-    if (isPatientShell()) {
-      var step = (getState() && getState().patientStep) || 'locate';
-      if (step === 'describe') buildDescribeUI();
-      if (step === 'review') updatePatientSummary();
-    }
+    if (isPatientShell() && simpleView === 'map') buildDescribeUI();
   }
 
   function on(id, event, handler, capture) {
@@ -634,9 +938,53 @@
     if (el) el.addEventListener(event, handler, !!capture);
   }
 
+  function closeMoreMenu() {
+    var more = document.getElementById('simpleMoreModal');
+    var btn = document.getElementById('btnSimpleMore');
+    if (more && more.open && typeof more.close === 'function') more.close();
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function openMoreMenu() {
+    var more = document.getElementById('simpleMoreModal');
+    var btn = document.getElementById('btnSimpleMore');
+    if (more && typeof more.showModal === 'function') more.showModal();
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (global.lucide && typeof global.lucide.createIcons === 'function') {
+      global.lucide.createIcons();
+    } else if (typeof window !== 'undefined' && window.lucide && window.lucide.createIcons) {
+      window.lucide.createIcons();
+    }
+  }
+
   function initPatientFlow() {
     var st = getState();
-    setPatientStep((st && st.patientStep) || 'locate', { force: true });
+    if (st) st.patientStep = 'locate';
+    setSimpleView('map');
+    updateStepChrome();
+    buildDescribeUI();
+
+    // Prefer Point tool for simple map
+    placePatientDrawerChrome();
+    activatePatientTool('point');
+    setAssessStep('mark', { skipExpand: true });
+    bindMapIntensityUI();
+
+    // Keep summary + mark colors in sync as the patient taps the body.
+    try {
+      var stEngine = getState() && getState().engine;
+      if (stEngine && typeof stEngine.on === 'function') {
+        stEngine.on('regionplaced', function () {
+          updateLocationChrome();
+          refreshMarkColors();
+          syncAnatomyLayout();
+        });
+        stEngine.on('regionchanged', function () {
+          updateLocationChrome();
+          refreshMarkColors();
+        });
+      }
+    } catch (e) { /* ignore */ }
 
     on('btnPatientNextDescribe', 'click', goDescribe);
     on('btnPatientToReview', 'click', goReview);
@@ -647,59 +995,276 @@
     on('btnPatientEditDescribe', 'click', goDescribe);
     on('btnPatientSave', 'click', function () { void savePatientEntry(); });
 
-    on('patientSheetBackdrop', 'click', function () {
-      var step = (getState() && getState().patientStep) || '';
-      if (step === 'review') goDescribe();
-      else if (step === 'describe') goLocate();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape' || !isPatientShell()) return;
-      var step = (getState() && getState().patientStep) || '';
-      if (step === 'review') {
-        e.preventDefault();
-        goDescribe();
-      } else if (step === 'describe') {
-        e.preventDefault();
-        goLocate();
+    on('btnAssessNext', 'click', function () {
+      if (assessStep === 'describe') {
+        setAssessStep('mark');
+        setDrawerExpanded(true);
+      } else {
+        setAssessStep('describe', { forceExpand: true });
       }
     });
+    on('btnAssessBack', 'click', function () {
+      setAssessStep('mark');
+    });
 
-    on('btnCaptureWF', 'click', function (ev) {
-      if (!isPatientShell()) return;
-      ev.preventDefault();
-      ev.stopImmediatePropagation();
-      goLocate();
-    }, true);
-    on('btnClinicalWF', 'click', function (ev) {
-      if (!isPatientShell()) return;
-      ev.preventDefault();
-      ev.stopImmediatePropagation();
-      goDescribe();
-    }, true);
-    on('btnReviewWF', 'click', function (ev) {
-      if (!isPatientShell()) return;
-      ev.preventDefault();
-      ev.stopImmediatePropagation();
-      if (!activeHasLocations()) {
-        toast('Mark at least one pain location to continue.', 'warning');
-        return;
-      }
-      goReview();
-    }, true);
-
-    var store = getStore();
-    if (store && typeof store.onChange === 'function') {
-      store.onChange(function () {
-        if (!isPatientShell()) return;
-        updateStepChrome();
-        if (((getState() && getState().patientStep) || '') === 'review') updatePatientSummary();
+    var assessNav = document.getElementById('simpleAssessNav');
+    if (assessNav) {
+      assessNav.addEventListener('click', function (e) {
+        var tab = e.target && e.target.closest ? e.target.closest('[data-assess-step]') : null;
+        if (!tab) return;
+        setAssessStep(tab.getAttribute('data-assess-step'));
       });
     }
 
+    var drawerGrab = document.getElementById('simpleDrawerGrab');
+    if (drawerGrab) {
+      drawerGrab.addEventListener('click', function () {
+        setDrawerExpanded(!document.body.classList.contains('simple-drawer-expanded'));
+      });
+    }
+
+    // Start collapsed so the figure is full-screen; green up-arrow opens the tool drawer.
+    setDrawerExpanded(false);
+    refreshPatientIcons();
+
+    // Keep Recovery Timeline inside the patient workspace (regular scroll view).
+    try {
+      var timeline = document.getElementById('timelinePanel');
+      var workspace = document.getElementById('simplePainWorkspace');
+      if (timeline && workspace && timeline.parentElement !== workspace) {
+        workspace.appendChild(timeline);
+      }
+    } catch (e) { /* ignore */ }
+
+    on('btnSimplePainMap', 'click', function () { setSimpleView('map'); });
+    on('btnSimpleHistory', 'click', function () { setSimpleView('history'); });
+    on('btnSimpleShare', 'click', function () {
+      if (typeof global.openShareModal === 'function') global.openShareModal();
+      else if (typeof openShareModal === 'function') openShareModal();
+      else if (typeof global.openExportModal === 'function') global.openExportModal();
+      else if (typeof openExportModal === 'function') openExportModal();
+      else {
+        var exportBtn = document.getElementById('btnExport');
+        if (exportBtn) exportBtn.click();
+      }
+    });
+    on('btnSimpleMore', 'click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openMoreMenu();
+    });
+    var moreModal = document.getElementById('simpleMoreModal');
+    if (moreModal && moreModal.addEventListener) {
+      moreModal.addEventListener('close', function () {
+        var btn = document.getElementById('btnSimpleMore');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+    }
+    on('btnSimpleImport', 'click', function () {
+      closeMoreMenu();
+      var importBtn = document.getElementById('btnImport');
+      if (importBtn) importBtn.click();
+      else if (typeof global.openImportSessionPicker === 'function') global.openImportSessionPicker();
+    });
+    on('btnSimpleExport', 'click', function () {
+      closeMoreMenu();
+      if (typeof global.openExportModal === 'function') global.openExportModal();
+      else {
+        var exportBtn = document.getElementById('btnExport');
+        if (exportBtn) exportBtn.click();
+      }
+    });
+    on('btnSimpleBodyProfile', 'click', function () {
+      closeMoreMenu();
+      var gallery = document.getElementById('bodyTypeGallery');
+      if (!gallery) return;
+      gallery.classList.add('is-spotlight');
+      if (typeof gallery.scrollIntoView === 'function') {
+        gallery.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+      var first = gallery.querySelector('.body-type-option');
+      if (first && typeof first.focus === 'function') first.focus();
+      setTimeout(function () { gallery.classList.remove('is-spotlight'); }, 1600);
+    });
+    on('btnSimplePrefs', 'click', function () {
+      closeMoreMenu();
+      syncMarkSizePrefsUI();
+      syncLikenessPrefsUI();
+      var prefs = document.getElementById('simplePrefsModal');
+      var openPrefs = function () {
+        if (prefs && typeof prefs.showModal === 'function' && !prefs.open) prefs.showModal();
+      };
+      if (typeof queueMicrotask === 'function') queueMicrotask(openPrefs);
+      else setTimeout(openPrefs, 0);
+    });
+    var clinicianMore = document.querySelector('#simpleMoreModal [data-presentation-option]');
+    if (clinicianMore) {
+      clinicianMore.addEventListener('click', function () {
+        closeMoreMenu();
+      });
+    }
+    on('btnSimpleHelp', 'click', function () {
+      closeMoreMenu();
+      var help = document.getElementById('btnHelpMenu');
+      if (help) help.click();
+    });
+    on('btnSimpleTheme', 'click', function () {
+      closeMoreMenu();
+      if (typeof global.toggleTheme === 'function') global.toggleTheme();
+      else if (typeof toggleTheme === 'function') toggleTheme();
+    });
+    on('btnSimpleFeedback', 'click', function () {
+      closeMoreMenu();
+      var fb = document.getElementById('btnFeedback');
+      if (fb) fb.click();
+    });
+
+    document.addEventListener('click', function (e) {
+      var wrap = document.querySelector('.simple-more-wrap');
+      var more = document.getElementById('simpleMoreModal');
+      if (more && more.open) return;
+      if (!wrap || wrap.contains(e.target)) return;
+      closeMoreMenu();
+    });
+
+    var liveStore = getStore();
+    if (liveStore && typeof liveStore.onChange === 'function') {
+      liveStore.onChange(function () {
+        if (!isPatientShell()) return;
+        updateStepChrome();
+        updateLocationChrome();
+      });
+    }
+
+    function currentMarkSizePref() {
+      try {
+        var raw = localStorage.getItem('painlocator_mark_size');
+        return raw === 'm' || raw === 'l' ? raw : 's';
+      } catch (e) {
+        return 's';
+      }
+    }
+
+    function syncMarkSizePrefsUI() {
+      var size = currentMarkSizePref();
+      document.querySelectorAll('input[name="simpleMarkSize"]').forEach(function (input) {
+        input.checked = input.value === size;
+      });
+    }
+
+    function applyMarkSizePref(size) {
+      if (typeof global.setSimpleMarkSizePref === 'function') {
+        global.setSimpleMarkSizePref(size);
+      } else {
+        try { localStorage.setItem('painlocator_mark_size', size === 'm' || size === 'l' ? size : 's'); } catch (e) { /* ignore */ }
+        document.body.setAttribute('data-mark-size', size === 'm' || size === 'l' ? size : 's');
+      }
+      var st = getState();
+      var engine = st && st.engine;
+      if (engine && engine.clinicalRenderer && typeof engine.clinicalRenderer.renderRegions === 'function') {
+        engine.clinicalRenderer.renderRegions();
+      }
+    }
+
+    function bindMarkSizePrefs() {
+      syncMarkSizePrefsUI();
+      applyMarkSizePref(currentMarkSizePref());
+      var group = document.querySelector('#simplePrefsModal .simple-prefs-size');
+      if (!group || group.dataset.bound === '1') return;
+      group.dataset.bound = '1';
+      group.addEventListener('change', function (e) {
+        var input = e.target && e.target.closest ? e.target.closest('input[name="simpleMarkSize"]') : null;
+        if (!input) return;
+        applyMarkSizePref(input.value);
+      });
+    }
+
+    function currentLikenessPref() {
+      if (typeof global.getLikenessPref === 'function') return global.getLikenessPref();
+      if (typeof getLikenessPref === 'function') return getLikenessPref();
+      return { skin: 'natural', weight: 'average', height: 'average', ancestry: 'neutral' };
+    }
+
+    function syncLikenessPrefsUI() {
+      var pref = currentLikenessPref();
+      document.querySelectorAll('input[name="simpleSkin"]').forEach(function (input) {
+        input.checked = input.value === pref.skin;
+      });
+      document.querySelectorAll('input[name="simpleWeight"]').forEach(function (input) {
+        input.checked = input.value === pref.weight;
+      });
+      document.querySelectorAll('input[name="simpleHeight"]').forEach(function (input) {
+        input.checked = input.value === pref.height;
+      });
+      document.querySelectorAll('input[name="simpleAncestry"]').forEach(function (input) {
+        input.checked = input.value === (pref.ancestry || 'neutral');
+      });
+    }
+
+    function applyLikenessField(field, value) {
+      var patch = {};
+      patch[field] = value;
+      if (typeof global.setLikenessPref === 'function') global.setLikenessPref(patch);
+      else if (typeof setLikenessPref === 'function') setLikenessPref(patch);
+      if (field === 'skin' && typeof global.refreshPlateLikeness === 'function') {
+        global.refreshPlateLikeness();
+      } else if (typeof global.applyLikenessPresentation === 'function') {
+        global.applyLikenessPresentation();
+      }
+    }
+
+    function bindLikenessPrefs() {
+      syncLikenessPrefsUI();
+      if (typeof global.applyLikenessPresentation === 'function') global.applyLikenessPresentation();
+      var modal = document.getElementById('simplePrefsModal');
+      if (!modal || modal.dataset.likenessBound === '1') return;
+      modal.dataset.likenessBound = '1';
+      modal.addEventListener('change', function (e) {
+        var skin = e.target && e.target.closest ? e.target.closest('input[name="simpleSkin"]') : null;
+        if (skin) {
+          applyLikenessField('skin', skin.value);
+          return;
+        }
+        var weight = e.target && e.target.closest ? e.target.closest('input[name="simpleWeight"]') : null;
+        if (weight) {
+          applyLikenessField('weight', weight.value);
+          return;
+        }
+        var height = e.target && e.target.closest ? e.target.closest('input[name="simpleHeight"]') : null;
+        if (height) {
+          applyLikenessField('height', height.value);
+          return;
+        }
+        var ancestry = e.target && e.target.closest ? e.target.closest('input[name="simpleAncestry"]') : null;
+        if (ancestry) applyLikenessField('ancestry', ancestry.value);
+      });
+    }
+
+    function bindSimpleViewGroup(root) {
+      if (!root) return;
+      root.addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest ? e.target.closest('[data-view]') : null;
+        if (!btn || !root.contains(btn)) return;
+        var view = btn.getAttribute('data-view');
+        if (typeof global.setBodyView === 'function') global.setBodyView(view);
+        else if (typeof setBodyView === 'function') setBodyView(view);
+        requestAnimationFrame(refreshPatientIcons);
+      });
+    }
+    bindSimpleViewGroup(document.getElementById('simpleViewBar'));
+    bindSimpleViewGroup(document.getElementById('simpleViewCompass'));
+    bindMarkSizePrefs();
+    bindLikenessPrefs();
+
     document.addEventListener('presentationchange', function () {
-      if (isPatientShell()) setPatientStep((getState() && getState().patientStep) || 'locate', { force: true });
-      else refreshPatientFlow();
+      placePatientDrawerChrome();
+      if (isPatientShell()) {
+        setSimpleView('map');
+        setPatientStep('locate', { force: true });
+        setAssessStep('mark', { skipExpand: true });
+      } else {
+        refreshPatientFlow();
+      }
     });
   }
 
@@ -707,9 +1272,13 @@
   global.refreshPatientFlow = refreshPatientFlow;
   global.initPatientFlow = initPatientFlow;
   global.savePatientEntry = savePatientEntry;
+  global.setSimplePainView = setSimpleView;
+  global.setAssessStep = setAssessStep;
   global.PatientSteps = PatientSteps;
   global.__patientDescribe = {
     QUALITY_CHIPS: QUALITY_CHIPS,
+    PRIMARY_QUALITY: PRIMARY_QUALITY,
+    MORE_QUALITY: MORE_QUALITY,
     TIMING_CHIPS: TIMING_CHIPS,
     TRIGGER_CHIPS: TRIGGER_CHIPS,
     RELIEF_CHIPS: RELIEF_CHIPS,

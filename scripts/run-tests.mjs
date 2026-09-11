@@ -399,6 +399,17 @@ console.log('PainLocator tests\n');
     assert.equal(P.nearestSnapView(Math.PI - 0.1), 'back');
   });
 
+  test('spatial projection: cameraDistanceForBounds frames taller bodies farther', () => {
+    const close = P.cameraDistanceForBounds({ x: 0.5, y: 1.0, z: 0.3 }, 32, 0.6, 1);
+    const tall = P.cameraDistanceForBounds({ x: 0.5, y: 1.8, z: 0.3 }, 32, 0.6, 1);
+    const wide = P.cameraDistanceForBounds({ x: 2.0, y: 1.0, z: 0.3 }, 32, 0.6, 1);
+    assert.ok(tall > close);
+    assert.ok(wide > close);
+    assert.ok(P.cameraDistanceForBounds({ x: 0, y: 0, z: 0 }, 32, 1) >= 0.8);
+    const padded = P.cameraDistanceForBounds({ x: 0.5, y: 1.8, z: 0.3 }, 32, 0.6, 1.16);
+    assert.ok(Math.abs(padded - tall * 1.16) < 1e-9);
+  });
+
   test('spatial projection: yawForView matches VIEW_YAW table', () => {
     assert.equal(P.yawForView('front'), 0);
     assert.equal(P.yawForView('back'), Math.PI);
@@ -564,7 +575,8 @@ console.log('PainLocator tests\n');
     );
     const ok = U.validateModelManifest(manifest);
     assert.equal(ok.modelId, 'adult-male');
-    assert.equal(ok.layers.surface.file, './exterior-lod0.glb');
+    assert.equal(ok.layers.surface.file, '/anatomy/metahuman/body.glb');
+    assert.equal(ok.layers.surface.bindMode, 'single-mesh');
   });
 
   test('spatial manifest: indexMeshes maps stable meshId entries', () => {
@@ -572,10 +584,9 @@ console.log('PainLocator tests\n');
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
     const index = U.indexMeshes(manifest);
-    assert.ok(index.has('surface.torso'));
-    assert.ok(index.has('surface.upperArmL'));
-    assert.equal(index.get('surface.torso').structureId, 'PL:surface.torso');
-    assert.equal(index.get('surface.head').layer, 'surface');
+    assert.ok(index.has('surface.body'));
+    assert.equal(index.get('surface.body').structureId, 'PL:surface.body');
+    assert.equal(index.get('surface.body').layer, 'surface');
     assert.equal(index.size, manifest.layers.surface.meshes.length);
   });
 
@@ -650,17 +661,44 @@ console.log('PainLocator tests\n');
     const modelPath = join(root, 'public/anatomy/spatial/adult-male/manifest.json');
     const model = JSON.parse(readFileSync(modelPath, 'utf8'));
     U.validateModelManifest(model);
-    const glb = join(root, 'public/anatomy/spatial/adult-male/exterior-lod0.glb');
+    const file = model.layers.surface.file;
+    const glb = file.startsWith('/')
+      ? join(root, 'public', file.replace(/^\//, ''))
+      : join(root, 'public/anatomy/spatial/adult-male', file);
     const size = statSync(glb).size;
     assert.ok(size > 50_000, `GLB too small: ${size}`);
     assert.ok(size < 5_000_000, `GLB exceeds 5MB target: ${size}`);
 
     const manifestIds = model.layers.surface.meshes.map((m) => m.meshId);
     const glbIds = listGlbBodyMeshNames(glb);
-    U.assertManifestGlbIntegrity(manifestIds, glbIds);
+    if (model.layers.surface.bindMode === 'single-mesh') {
+      assert.equal(manifestIds.length, 1);
+      assert.equal(glbIds.length, 1);
+      assert.equal(manifestIds[0], 'surface.body');
+    } else {
+      U.assertManifestGlbIntegrity(manifestIds, glbIds);
+    }
     for (const entry of model.layers.surface.meshes) {
       assert.ok(String(entry.structureId).startsWith('PL:'), `structureId must be PL-local: ${entry.structureId}`);
     }
+  });
+
+  test('spatial manifest: resolveGlbMeshId restores GLTFLoader-stripped dots', () => {
+    const fake = new Map([
+      ['surface.head', {}],
+      ['surface.torso', {}]
+    ]);
+    assert.equal(U.compactMeshId('surface.head'), 'surfacehead');
+    assert.equal(U.resolveGlbMeshId('surface.head', fake), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surfacehead', fake), 'surface.head');
+    assert.equal(U.resolveGlbMeshId('surface.torso', fake), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('surfacetorso', fake), 'surface.torso');
+    assert.equal(U.resolveGlbMeshId('unknownMesh', fake), 'unknownMesh');
+    const manifest = JSON.parse(
+      readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
+    );
+    const index = U.indexMeshes(manifest);
+    assert.ok(index.has('surface.body'));
   });
 }
 
@@ -681,9 +719,9 @@ console.log('PainLocator tests\n');
   test('presentation: nav labels differ by shell', () => {
     const patient = sandbox.PresentationMode.navLabels('patient');
     const clinician = sandbox.PresentationMode.navLabels('clinician');
-    assert.equal(patient.capture.label, 'Locate');
-    assert.equal(patient.clinical.label, 'Describe');
-    assert.equal(patient.review.label, 'Review');
+    assert.equal(patient.capture.label, 'Pain map');
+    assert.equal(patient.clinical.label, 'Share');
+    assert.equal(patient.review.label, 'History');
     assert.equal(clinician.capture.label, 'Anatomy');
     assert.equal(clinician.review.label, 'History');
     assert.equal(clinician.clinical.label, 'Report');
@@ -743,10 +781,10 @@ console.log('PainLocator tests\n');
     assert.equal(sandbox.state.patientStep, 'locate');
   });
 
-  test('patient flow: cannot advance without a marked location', () => {
+  test('patient flow: describe is always available; review requires a mark', () => {
     const sandbox = makePatientSandbox(null);
     sandbox.setPatientStep('describe');
-    assert.equal(sandbox.state.patientStep, 'locate');
+    assert.equal(sandbox.state.patientStep, 'describe');
     sandbox.setPatientStep('review');
     assert.equal(sandbox.state.patientStep, 'locate');
   });
@@ -763,7 +801,7 @@ console.log('PainLocator tests\n');
     sandbox.state.patientStep = 'review';
     sandbox.document.getElementById = (id) => {
       if (id === 'btnPatientSave') {
-        return { disabled: false, textContent: 'Save Pain Entry' };
+        return { disabled: false, textContent: 'Save pain map' };
       }
       if (id === 'patientSaveConfirm') {
         return { hidden: true, textContent: '' };
@@ -1521,9 +1559,11 @@ console.log('PainLocator tests\n');
     const man = JSON.parse(
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
-    assert.equal(man.coordinateFrame.frameId, 'painlocator-bp3d-canonical-v1');
+    assert.equal(man.coordinateFrame.frameId, 'painlocator-blender-stand-v1');
     assert.equal(man.canonicalBridge.enabledByDefault, false);
     assert.equal(man.canonicalBridge.featureFlag, 'canonicalBodyMode');
+    assert.equal(man.canonicalBridge.skipExteriorConformer, true);
+    assert.equal(man.layers.surface.bindMode, 'single-mesh');
   });
 
   test('canonical: PainRegion schema still lacks canonicalBodyXYZ persistence fields', () => {
@@ -1840,6 +1880,367 @@ console.log('PainLocator tests\n');
   });
 }
 
+// --- Simple pain-map realistic body assets ---
+{
+  const sandbox = createSandbox();
+  loadScript('src/engine/anatomy/asset-paths.js', sandbox);
+
+  test('simple pain-map: getAssetPath uses MetaHuman plates', () => {
+    sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
+    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/metahuman/adult-male/front.png');
+    assert.equal(sandbox.getAssetPath('adult-male', 'back'), '/anatomy/metahuman/adult-male/back.png');
+    assert.equal(sandbox.getAssetPath('simple-pain-map', 'left'), '/anatomy/metahuman/adult-male/left.png');
+  });
+
+  test('simple pain-map: clinician path keeps CAE adult-male plates', () => {
+    sandbox.document.body.classList.contains = () => false;
+    sandbox.state = { presentationMode: 'clinician' };
+    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/adult-male/front.png');
+  });
+
+  test('simple pain-map: gallery profiles use matching MetaHuman plates', () => {
+    sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
+    sandbox.state = { presentationMode: 'patient' };
+    assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/metahuman/adult-female/front.png');
+    assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/metahuman/adult-female/back.png');
+    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/metahuman/teen-male/left.png');
+    assert.equal(sandbox.getAssetPath('teen-female', 'left'), '/anatomy/metahuman/teen-female/left.png');
+    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/metahuman/child-male/right.png');
+    assert.equal(sandbox.getAssetPath('child-female', 'right'), '/anatomy/metahuman/child-female/right.png');
+    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/metahuman/senior-male/front.png');
+    assert.equal(sandbox.getAssetPath('senior-female', 'front'), '/anatomy/metahuman/senior-female/front.png');
+    assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/metahuman/adult-male/front.png');
+    assert.equal(sandbox.composeBodyModel('teen', 'female'), 'teen-female');
+    const teenProfile = sandbox.parseBodyProfile('teen');
+    assert.equal(teenProfile.stage, 'teen');
+    assert.equal(teenProfile.sex, 'male');
+    assert.equal(teenProfile.model, 'teen-male');
+    assert.equal(sandbox.clinicianRadioValue('teen-female'), 'teen');
+    assert.equal(sandbox.classicAnatomyFolder('teen-female'), 'teen');
+  });
+
+  test('simple pain-map: clinician classic plates stay on 5 folders', () => {
+    sandbox.document.body.classList.contains = () => false;
+    sandbox.state = { presentationMode: 'clinician' };
+    assert.equal(sandbox.getAssetPath('teen-female', 'front'), '/anatomy/teen/front.png');
+    assert.equal(sandbox.getAssetPath('child-male', 'back'), '/anatomy/child/back.png');
+    assert.equal(sandbox.getAssetPath('senior-female', 'left'), '/anatomy/senior/left.png');
+    assert.equal(sandbox.getAssetPath('adult-female', 'front'), '/anatomy/adult-female/front.png');
+  });
+
+  test('simple pain-map: MetaHuman plate files exist in public/', () => {
+    const folders = [
+      'adult-male', 'adult-female',
+      'teen-male', 'teen-female',
+      'child-male', 'child-female',
+      'senior-male', 'senior-female',
+      'teen', 'child', 'senior'
+    ];
+    for (const folder of folders) {
+      for (const view of ['front', 'back', 'left', 'right']) {
+        assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/${view}.png`)).isFile());
+      }
+      assert.ok(statSync(join(root, `public/anatomy/metahuman/thumbs/${folder}.png`)).isFile());
+    }
+    assert.ok(statSync(join(root, 'public/anatomy/metahuman/body.glb')).isFile());
+  });
+
+  test('simple pain-map: female models use female clinical overlays', () => {
+    const overlayBox = createSandbox();
+    loadScript('src/engine/overlays/visualization-controller.js', overlayBox);
+    assert.equal(
+      overlayBox.overlayAssetPath('muscle', 'teen-female', 'front'),
+      '/anatomy/overlays/overlay_muscle_female_front.png'
+    );
+    assert.equal(
+      overlayBox.overlayAssetPath('muscle', 'teen', 'front'),
+      '/anatomy/overlays/overlay_muscle_male_front.png'
+    );
+    assert.equal(
+      overlayBox.overlayAssetPath('skeleton', 'child-female', 'back'),
+      '/anatomy/overlays/overlay_skeleton_female_back.png'
+    );
+  });
+
+  test('simple pain-map: MetaHuman plates are retina resolution', () => {
+    const buf = readFileSync(join(root, 'public/anatomy/metahuman/adult-male/front.png'));
+    assert.equal(buf.slice(1, 4).toString(), 'PNG');
+    const width = buf.readUInt32BE(16);
+    const height = buf.readUInt32BE(20);
+    const femaleBuf = readFileSync(join(root, 'public/anatomy/metahuman/teen-female/front.png'));
+    assert.ok(femaleBuf.readUInt32BE(16) >= 2048);
+    assert.ok(femaleBuf.readUInt32BE(20) >= 3072);
+  });
+
+  test('simple pain-map: viewport fit + patient annotation chrome', () => {
+    const css = readFileSync(join(root, 'src/layout/simple-pain-map.css'), 'utf8');
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    const flow = readFileSync(join(root, 'src/features/shell/patient-flow.js'), 'utf8');
+    assert.ok(css.includes('100dvh'));
+    assert.ok(css.includes('simple-pain-panel') && css.includes('position: fixed'));
+    assert.ok(css.includes('simple-drawer-grab'));
+    assert.ok(css.includes('simple-drawer-sheet') || css.includes('simple-drawer-expanded'));
+    assert.ok(css.includes('--spm-drawer-peek') && css.includes('translate3d'));
+    assert.ok(css.includes('spm-drawer-breathe') && css.includes('#22c55e'));
+    assert.ok(css.includes('cae-region-layer') && css.includes('z-index: 8'));
+    assert.ok(css.includes('height: 100% !important'));
+    assert.ok(css.includes('background: transparent !important'));
+    assert.ok(css.includes('5.1rem') || css.includes('--spm-drawer-peek'));
+    assert.ok(html.includes('id="simpleMapIntensity"'));
+    assert.ok(html.includes('id="patientIntensitySlider"'));
+    assert.ok(html.includes('How strong is it now?'));
+    // Intensity lives in the map column, not the tools drawer.
+    const mapColIdx = html.indexOf('simple-pain-map-col');
+    const intensityIdx = html.indexOf('id="simpleMapIntensity"');
+    const panelIdx = html.indexOf('id="simplePainPanel"');
+    assert.ok(mapColIdx > 0 && intensityIdx > mapColIdx && intensityIdx < panelIdx);
+    assert.ok(css.includes('simple-map-intensity'));
+    const mapper = readFileSync(join(root, 'src/engine/coordinates/anatomy-coordinate-mapper.js'), 'utf8');
+    const renderer = readFileSync(join(root, 'src/engine/annotations/markup-renderer.js'), 'utf8');
+    assert.ok(mapper.includes('SIMPLE_PAIN_MAP_DESKTOP_ZOOM = 1'));
+    assert.ok(mapper.includes('SIMPLE_PAIN_MAP_MOBILE_ZOOM = 1'));
+    assert.ok(css.includes('min(1280px, 100%)') || css.includes('1280px'));
+    assert.ok(renderer.includes('applySimplePainMapPresentationScale'));
+    assert.ok(flow.includes('bindMapIntensityUI'));
+    assert.ok(flow.includes('refreshMarkColors'));
+    assert.ok(flow.includes('applyIntensityValue'));
+    // Drawer describe UI must not re-host the intensity slider.
+    assert.ok(!flow.includes('patientIntensitySlider') || flow.indexOf('buildDescribeUI') < flow.lastIndexOf('bindMapIntensityUI'));
+    const describeBlock = flow.slice(flow.indexOf('function buildDescribeUI'), flow.indexOf('function refreshMarkColors'));
+    assert.ok(!describeBlock.includes('patientIntensitySlider'));
+    assert.ok(!describeBlock.includes('How strong is it now?'));
+    assert.ok(html.includes('simple-annotate-bar'));
+    assert.ok(html.includes('id="simplePainPanel"'));
+    assert.ok(html.includes('id="simpleDrawerSheet"'));
+    assert.ok(html.includes('id="timelinePanel"'));
+    assert.ok(html.includes('data-tool="point"') && html.includes('>Tap</span>'));
+    assert.ok(html.includes('data-tool="circle"') && html.includes('>Area</span>'));
+    assert.ok(html.includes('Describe pain'));
+    assert.ok(html.includes('Save pain map'));
+    assert.ok(html.includes('data-lucide="map-pin"'));
+    const toolsIdx = html.indexOf('id="captureTools"');
+    const viewsIdx = html.indexOf('id="simpleViewBar"');
+    const timelineIdx = html.indexOf('id="timelinePanel"');
+    const workspaceIdx = html.indexOf('id="simplePainWorkspace"');
+    assert.ok(panelIdx > 0 && toolsIdx > panelIdx && viewsIdx > toolsIdx);
+    assert.ok(workspaceIdx > 0 && timelineIdx > workspaceIdx);
+    assert.ok(html.includes('/anatomy/metahuman/adult-male/front.png'));
+    assert.ok(flow.includes('activatePatientTool'));
+    assert.ok(flow.includes('setAssessStep'));
+    assert.ok(flow.includes('setDrawerExpanded'));
+    assert.ok(flow.includes('syncAnatomyLayout'));
+    assert.ok(flow.includes('ensureActiveEntry(currentPatientModel())'));
+    assert.ok(!flow.includes("ensureActiveEntry({ view: 'anterior'"));
+    assert.ok(html.includes('id="bodyTypeGallery"'));
+    assert.ok(html.includes('id="btnSimpleBodyProfile"'));
+    assert.ok(html.includes('data-sex="female"') && html.includes('data-sex="male"'));
+    assert.ok(html.includes('data-stage="adult"') && html.includes('data-stage="teen"'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/adult-male.png'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/teen-male.png'));
+    assert.ok(css.includes('.body-type-gallery') && css.includes('.body-type-option'));
+    assert.ok(css.includes('.body-sex-toggle') && css.includes('.body-sex-btn'));
+    assert.ok(css.includes('theme-dark') && css.includes('--surface-elevated: #252b3a'));
+    assert.ok(flow.includes('btnSimpleBodyProfile') && flow.includes('bodyTypeGallery'));
+    for (const folder of ['adult-female', 'teen-female', 'child-female', 'senior-female', 'teen-male']) {
+      assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/front.png`)).isFile());
+    }
+    assert.ok(html.includes('id="simpleViewCompass"'));
+    assert.ok(html.includes('id="simpleDrawerPeekBar"'));
+    assert.ok(html.includes('id="btnPeekUndo"') && html.includes('id="btnPeekRedo"'));
+    // Peek undo/redo must stay open curves (not a closed circular arrow).
+    const peekUndo = html.slice(html.indexOf('id="btnPeekUndo"'), html.indexOf('id="simpleDrawerGrab"'));
+    const peekRedo = html.slice(html.indexOf('id="btnPeekRedo"'), html.indexOf('id="simpleDrawerSheet"'));
+    assert.ok(peekUndo.includes('v10.5h10.5'));
+    assert.ok(peekRedo.includes('v10.5h-10.5'));
+    assert.ok(!peekUndo.includes('a9 9 0 1 0'));
+    assert.ok(!peekRedo.includes('a9 9 0 1 1'));
+    assert.ok(css.includes('simple-peek-icon-btn') && css.includes('stroke-width: 1.2'));
+    assert.ok(css.includes('bottom: 3.65rem'));
+    assert.ok(html.includes('simple-compass-btn') && html.includes('data-view="left"'));
+    assert.ok(css.includes('.simple-view-compass'));
+    assert.ok(css.includes('.simple-more-wrap') && css.includes('z-index: 150'));
+    assert.ok(css.includes('.simple-sheet') && css.includes('.simple-sheet-action'));
+    assert.ok(css.includes('overflow: visible'));
+    const headlineCss = css.slice(css.indexOf('.simple-pain-headline h1'), css.indexOf('.simple-pain-headline p'));
+    assert.ok(headlineCss.includes('white-space: nowrap'));
+    assert.ok(!headlineCss.includes('max-width: 14ch'));
+    assert.ok(!css.includes('max-width: 11ch'));
+    const models = readFileSync(join(root, 'src/engine/annotations/pain-models.js'), 'utf8');
+    assert.ok(models.includes('function aspectCorrectedCircleRadii'));
+    assert.ok(renderer.includes('aspectCorrectedCircleRadii'));
+    assert.ok(flow.includes('simpleViewCompass'));
+    assert.ok(renderer.includes('swapSimpleView'));
+    assert.ok(renderer.includes('painlocator_mark_size'));
+    assert.ok(css.includes('is-turning-cw') && css.includes('is-turning-ccw'));
+    assert.ok(html.includes('id="simplePrefsModal"') && html.includes('id="btnSimplePrefs"'));
+    assert.ok(html.includes('id="simpleMoreModal"') && html.includes('Appearance'));
+    assert.ok(html.includes('id="btnSharePdf"') && html.includes('id="shareModal"'));
+    assert.ok(flow.includes('openMoreMenu') && flow.includes('simpleMoreModal'));
+    assert.ok(flow.includes('btnSimplePrefs') && flow.includes('simpleMarkSize'));
+    assert.ok(renderer.includes('_spmScaleMode === "fit"') || renderer.includes('letterbox the full plate'));
+    assert.ok(!renderer.includes('target = Math.max(1.28'));
+    assert.ok(html.includes('name="simpleSkin"') && html.includes('name="simpleWeight"') && html.includes('name="simpleHeight"'));
+    assert.ok(html.includes('name="simpleAncestry"') && html.includes('src/engine/anatomy/metahuman/body-dna.js'));
+    assert.ok(html.includes('src/engine/anatomy/metahuman/glb-body.js'));
+    assert.ok(html.includes('src/engine/anatomy/metahuman/metahuman-engine.js'));
+    assert.ok(html.includes('your Blender standing figure'));
+    assert.ok(html.includes('src/engine/anatomy/plate-likeness.js'));
+    assert.ok(css.includes('--spm-fit-x') && css.includes('--spm-fit-y'));
+    assert.ok(css.includes('grid-template-rows: auto minmax(0, 1fr) auto'));
+    assert.ok(css.includes('.simple-prefs-swatches'));
+    assert.ok(flow.includes('bindLikenessPrefs'));
+    assert.ok(renderer.includes('bindPlateImageSrc') || renderer.includes('setSimplePlateImage'));
+    const engineSrc = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    assert.ok(engineSrc.includes('swapSimpleView'));
+  });
+
+  test('simple pain-map: compass turns use shortest yaw', () => {
+    const s = createSandbox();
+    loadScript('src/engine/annotations/markup-renderer.js', s);
+    assert.equal(s.simpleViewTurnDir('front', 'left'), -1);
+    assert.equal(s.simpleViewTurnDir('front', 'right'), 1);
+    assert.equal(s.simpleViewTurnDir('front', 'back'), 0);
+    assert.equal(s.simpleViewTurnDir('left', 'front'), 1);
+    assert.equal(s.simpleViewTurnDir('right', 'back'), 1);
+    assert.equal(s.getSimpleMarkSizeScale(), 0.5);
+    s.setSimpleMarkSizePref('l');
+    assert.equal(s.getSimpleMarkSizeScale(), 1.5);
+    s.setSimpleMarkSizePref('s');
+    assert.equal(s.getSimpleMarkSizeScale(), 0.5);
+  });
+
+  test('simple pain-map: likeness shader preserves clothing and scales build/height', () => {
+    const s = createSandbox();
+    loadScript('src/engine/anatomy/plate-likeness.js', s);
+    const pref = s.normalizeLikeness({ skin: 'deep', weight: 'heavy', height: 'short', extra: 1 });
+    assert.equal(pref.skin, 'deep');
+    assert.equal(pref.weight, 'heavy');
+    assert.equal(pref.height, 'short');
+    assert.equal(s.normalizeLikeness({ skin: 'neon' }).skin, 'natural');
+    assert.equal(s.WEIGHT_SCALES.slim < 1, true);
+    assert.equal(s.WEIGHT_SCALES.heavy > 1, true);
+    assert.equal(s.HEIGHT_SCALES.short < 1, true);
+    assert.ok(s.HEIGHT_SCALES.tall >= s.HEIGHT_SCALES.average);
+    const data = new Uint8ClampedArray([
+      160, 160, 160, 255,
+      210, 158, 128, 255
+    ]);
+    s.recolorPlatePixels(data, 2, 1, s.SKIN_PRESETS.deep);
+    assert.equal(data[0], 160);
+    assert.equal(data[1], 160);
+    assert.equal(data[2], 160);
+    assert.ok(data[4] < 210, 'skin red should darken toward deep');
+    s.setLikenessPref({ skin: 'tan', weight: 'slim', height: 'tall', ancestry: 'african' });
+    const stored = s.getLikenessPref();
+    assert.equal(stored.skin, 'tan');
+    assert.equal(stored.weight, 'slim');
+    assert.equal(stored.height, 'tall');
+    assert.equal(stored.ancestry, 'african');
+  });
+
+  test('metahuman engine: DNA changes bone length and girth, not uniform scale', () => {
+    const s = createSandbox();
+    loadScript('src/engine/anatomy/asset-paths.js', s);
+    loadScript('src/engine/anatomy/metahuman/body-dna.js', s);
+    const adult = s.resolveBodyProportions({ model: 'adult-male' });
+    const tall = s.resolveBodyProportions({ model: 'adult-male', height: 'tall' });
+    const short = s.resolveBodyProportions({ model: 'adult-male', height: 'short' });
+    const heavy = s.resolveBodyProportions({ model: 'adult-male', weight: 'heavy' });
+    const slim = s.resolveBodyProportions({ model: 'adult-male', weight: 'slim' });
+    const woman = s.resolveBodyProportions({ model: 'adult-female' });
+    const child = s.resolveBodyProportions({ model: 'child-male' });
+    const african = s.resolveBodyProportions({ model: 'adult-male', ancestry: 'african' });
+    const east = s.resolveBodyProportions({ model: 'adult-male', ancestry: 'east-asian' });
+    assert.ok(tall.stature > adult.stature);
+    assert.ok(short.stature < adult.stature);
+    assert.ok(tall.thighLen > adult.thighLen);
+    assert.ok(Math.abs(tall.thighGirth - adult.thighGirth) < 1e-9, 'height must not change girth');
+    assert.ok(heavy.thighGirth > adult.thighGirth);
+    assert.ok(slim.waistW < adult.waistW);
+    assert.ok(Math.abs(heavy.thighLen - adult.thighLen) < 1e-9, 'build must not change bone length');
+    assert.ok(woman.hipW / woman.shoulderW > adult.hipW / adult.shoulderW);
+    assert.ok(child.headR / child.stature > adult.headR / adult.stature);
+    assert.ok(african.limb !== east.limb || african.faceW !== east.faceW);
+    assert.equal(s.isIdentityDna({ model: 'adult-male' }), true);
+    assert.equal(s.isIdentityDna({ model: 'adult-male', weight: 'heavy' }), false);
+    assert.ok(s.bodyDnaKey({ weight: 'heavy' }, 'front').includes('heavy'));
+  });
+
+  test('metahuman engine: Blender GLB drop paths and DNA scale', () => {
+    const s = createSandbox();
+    loadScript('src/engine/anatomy/asset-paths.js', s);
+    loadScript('src/engine/anatomy/metahuman/body-dna.js', s);
+    loadScript('src/engine/anatomy/metahuman/glb-body.js', s);
+    const paths = s.getMetahumanGlbCandidates('adult-female');
+    assert.ok(paths[0].endsWith('/anatomy/metahuman/adult-female/body.glb'));
+    assert.ok(paths.includes('/anatomy/metahuman/body.glb'));
+    assert.equal(s.getMetahumanGlbPath('teen'), '/anatomy/metahuman/teen-male/body.glb');
+    const avg = s.metahumanGlbScale({ model: 'adult-male' });
+    const tall = s.metahumanGlbScale({ model: 'adult-male', height: 'tall' });
+    const heavy = s.metahumanGlbScale({ model: 'adult-male', weight: 'heavy' });
+    assert.ok(tall.y > avg.y);
+    assert.ok(Math.abs(tall.x - avg.x) < 1e-9, 'height must not change girth scale');
+    assert.ok(heavy.x > avg.x);
+    assert.ok(Math.abs(heavy.y - avg.y) < 1e-9, 'build must not change stature scale');
+    const face = s.metahumanPartScale('Head', { model: 'adult-male', ancestry: 'east-asian' });
+    assert.ok(face && face.x > 1);
+    const identityMorph = s.metahumanMorphWeights({ model: 'adult-male' });
+    assert.equal(identityMorph.Stature, 0);
+    assert.equal(identityMorph.Waist, 0);
+    const tallMorph = s.metahumanMorphWeights({ model: 'adult-male', height: 'tall' });
+    const heavyMorph = s.metahumanMorphWeights({ model: 'adult-male', weight: 'heavy' });
+    assert.ok(tallMorph.Stature > identityMorph.Stature);
+    assert.ok(heavyMorph.Waist > identityMorph.Waist);
+    assert.ok(heavyMorph.Hips > identityMorph.Hips);
+    const headBone = s.metahumanRigBoneScale('head', { model: 'adult-male', ancestry: 'east-asian' });
+    assert.ok(headBone && headBone.x > 1);
+    const htmlHeaders = { get: (k) => (k === 'content-type' ? 'text/html; charset=utf-8' : null) };
+    const glbHeaders = { get: (k) => (k === 'content-type' ? 'model/gltf-binary' : k === 'content-length' ? '1015596' : null) };
+    assert.equal(s.isMetahumanGlbResponse({ ok: true, headers: htmlHeaders }), false);
+    assert.equal(s.isMetahumanGlbResponse({ ok: true, headers: glbHeaders }), true);
+    assert.ok(statSync(join(root, 'public/anatomy/metahuman/body.glb')).isFile());
+    const engine = readFileSync(join(root, 'src/engine/anatomy/metahuman/metahuman-engine.js'), 'utf8');
+    assert.ok(engine.includes('cloneMetahumanGlbBody'));
+    assert.ok(engine.includes('CAE_ALLOW_PARAMETRIC_METAHUMAN'));
+    assert.ok(engine.includes('_keepStill'));
+  });
+
+  test('simple pain-map: tap marks correct for portrait SVG stretch', () => {
+    const s = createSandbox();
+    const portrait = s.aspectCorrectedCircleRadii(200, 400, 0.03);
+    assert.equal(portrait.rx, 0.03);
+    assert.ok(Math.abs(portrait.ry - 0.015) < 1e-9);
+    // Screen radii: rx*W === ry*H
+    assert.ok(Math.abs(portrait.rx * 200 - portrait.ry * 400) < 1e-9);
+    const landscape = s.aspectCorrectedCircleRadii(400, 200, 0.03);
+    assert.ok(Math.abs(landscape.ry - 0.06) < 1e-9);
+    assert.equal(s.isCircularPainMark({ shape: 'circle', radius: 0.02 }), true);
+    assert.equal(s.isCircularPainMark({ shape: 'polygon' }), false);
+    assert.equal(s.isCircularPainMark({ shape: 'ellipse', radius: 0.04, radiusY: 0.02 }), false);
+  });
+
+  test('simple pain-map: marker layer fills frame (not avatar-stage svg 95%)', () => {
+    const css = readFileSync(join(root, 'src/layout/simple-pain-map.css'), 'utf8');
+    assert.ok(css.includes('.cae-region-layer'));
+    assert.ok(css.includes('height: 100% !important'));
+    assert.ok(css.includes('z-index: 8'));
+    assert.ok(css.includes('filter: none !important'));
+  });
+
+  test('normalizeModelType coerces legacy object patientModel', () => {
+    const s = createSandbox();
+    assert.equal(s.normalizeModelType({ view: 'anterior', gender: 'male' }), 'adult-male');
+    assert.equal(s.normalizeModelType({ gender: 'female' }), 'adult-female');
+    assert.equal(s.normalizeModelType('male'), 'adult-male');
+    assert.equal(s.normalizeModelType('teen'), 'teen-male');
+    assert.equal(s.normalizeModelType('teen-female'), 'teen-female');
+    assert.equal(s.normalizeModelType('child'), 'child-male');
+    assert.equal(s.normalizeModelType('senior'), 'senior-male');
+    const entry = s.createPainEntry({ patientModel: { gender: 'male' }, regions: [] });
+    assert.equal(entry.patientModel, 'adult-male');
+  });
+}
+
 // --- BP3D shell engagement (Patient + Clinician) ---
 {
   const sandbox = {
@@ -1918,8 +2319,143 @@ console.log('PainLocator tests\n');
     assert.equal(Eng.shouldPreferSpatial(), true);
   });
 
+  test('bp3d engagement: simple pain-map shell forces 2D person plate', async () => {
+    sandbox.location.search = '';
+    const classSet = new Set(['simple-pain-map', 'shell-patient']);
+    sandbox.document.body = {
+      classList: {
+        contains: (name) => classSet.has(name),
+        add: (...names) => names.forEach((n) => classSet.add(n)),
+        remove: (...names) => names.forEach((n) => classSet.delete(n)),
+        toggle: (name, on) => {
+          if (on) classSet.add(name);
+          else classSet.delete(name);
+        }
+      },
+      dataset: { presentation: 'patient' }
+    };
+    assert.equal(Eng.shouldPreferSpatial(), false);
+    let called = null;
+    const engine = {
+      spatialPrimaryNoPlate: true,
+      async setDisplayMode(mode) {
+        called = mode;
+        this.displayMode = mode;
+        return true;
+      }
+    };
+    const ok = await Eng.preferSpatialAcrossShells(engine);
+    assert.equal(ok, false);
+    assert.equal(called, 'plate');
+    assert.equal(engine.spatialPrimaryNoPlate, false);
+    // Restore body for subsequent clinician Spatial-default tests
+    sandbox.document.body = {
+      classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
+      dataset: {}
+    };
+  });
+
+  test('spatial chrome: intentional plate clears spatial-primary (no CAE placeholder trap)', () => {
+    const chromeSandbox = {
+      console,
+      Math,
+      Object,
+      Number,
+      Array,
+      Map,
+      Set,
+      JSON,
+      Error,
+      Promise,
+      URLSearchParams,
+      window: {},
+      document: {},
+      location: { search: '' },
+      entryStore: { activeTool: 'point', setTool() {} }
+    };
+    chromeSandbox.window = chromeSandbox;
+    chromeSandbox.globalThis = chromeSandbox;
+    const classSet = new Set(['shell-patient', 'simple-pain-map', 'spatial-primary']);
+    const hint = { textContent: '', classList: { remove() {}, add() {} } };
+    chromeSandbox.document = {
+      body: {
+        classList: {
+          contains: (name) => classSet.has(name),
+          toggle: (name, on) => {
+            if (on) classSet.add(name);
+            else classSet.delete(name);
+          },
+          add: (...names) => names.forEach((n) => classSet.add(n)),
+          remove: (...names) => names.forEach((n) => classSet.delete(n))
+        }
+      },
+      getElementById: (id) => (id === 'avatarHint' ? hint : null),
+      querySelector: () => null,
+      querySelectorAll: () => []
+    };
+    vm.createContext(chromeSandbox);
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', chromeSandbox);
+    const Chrome = chromeSandbox.SpatialPrimaryChrome;
+    assert.equal(Chrome.wantsPlateSurface(), true);
+    Chrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+    assert.equal(classSet.has('spatial-primary'), false);
+    assert.equal(classSet.has('spatial-ready'), false);
+    assert.match(hint.textContent, /Tap the body/i);
+  });
+
+  test('spatial chrome: clinician default keeps spatial-primary while waiting', () => {
+    const chromeSandbox = {
+      console,
+      Math,
+      Object,
+      Number,
+      Array,
+      Map,
+      Set,
+      JSON,
+      Error,
+      Promise,
+      URLSearchParams,
+      window: {},
+      document: {},
+      location: { search: '' },
+      entryStore: { activeTool: 'point', setTool() {} }
+    };
+    chromeSandbox.window = chromeSandbox;
+    chromeSandbox.globalThis = chromeSandbox;
+    const classSet = new Set(['shell-clinician']);
+    const hint = { textContent: '', classList: { remove() {}, add() {} } };
+    chromeSandbox.document = {
+      body: {
+        classList: {
+          contains: (name) => classSet.has(name),
+          toggle: (name, on) => {
+            if (on) classSet.add(name);
+            else classSet.delete(name);
+          },
+          add: (...names) => names.forEach((n) => classSet.add(n)),
+          remove: (...names) => names.forEach((n) => classSet.delete(n))
+        }
+      },
+      getElementById: (id) => (id === 'avatarHint' ? hint : null),
+      querySelector: () => null,
+      querySelectorAll: () => []
+    };
+    vm.createContext(chromeSandbox);
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', chromeSandbox);
+    chromeSandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, {
+      keepSpatialPrimary: true
+    });
+    assert.equal(classSet.has('spatial-primary'), true);
+    assert.match(hint.textContent, /Waiting for the 3D body/i);
+  });
+
   test('bp3d engagement: preferSpatialAcrossShells calls setDisplayMode', async () => {
     sandbox.location.search = '';
+    sandbox.document.body = {
+      classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
+      dataset: {}
+    };
     sandbox.SpatialThreeLoader = { isWebGLAvailable: () => true };
     let called = null;
     const engine = {
@@ -1991,10 +2527,11 @@ console.log('PainLocator tests\n');
   test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
     loadScript('src/engine/spatial/spatial-boot-utils.js', sandbox);
     assert.ok(sandbox.SpatialBootUtils);
-    assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.probeWebGL, 'function');
+    assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-11-blender-surface');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2546,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-09-11-blender-surface'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2045,6 +2582,19 @@ console.log('PainLocator tests\n');
       'DEGRADED'
     );
     assert.equal(u.classifySpatialHealth({ spatialReady: false, state: 'failed-spatial' }), 'FAILED');
+    assert.equal(
+      u.classifySpatialHealth({ spatialReady: true, exteriorLoaded: true, exteriorModelId: 'adult-male' }),
+      'HEALTHY'
+    );
+    const liveEngine = {
+      displayMode: 'plate',
+      spatialBootState: u.createBootState({ state: 'idle' }),
+      spatialRenderer: { ready: true, scene: { modelId: 'adult-male', meshById: { size: 18 } } }
+    };
+    const liveSnap = u.collectDiagnostics(liveEngine);
+    assert.equal(liveSnap.spatialReady, true);
+    assert.equal(liveSnap.health, 'HEALTHY');
+    assert.equal(liveSnap.exteriorLoaded, true);
     const engine = { spatialBootState: null, trigger() {} };
     u.setBootState(engine, u.BOOT_STATES.LOADING_THREE, { stage: 'loading-three' });
     assert.equal(engine.spatialBootState.state, 'loading-three');
@@ -2096,9 +2646,10 @@ console.log('PainLocator tests\n');
       'public/vendor/three.module.min.js',
       'public/vendor/GLTFLoader.js',
       'public/vendor/meshopt_decoder.module.js',
+      'public/utils/BufferGeometryUtils.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
-      'public/anatomy/spatial/adult-male/exterior-lod0.glb',
+      'public/anatomy/metahuman/body.glb',
       'public/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb',
       'public/anatomy/spatial/prototype-bp3d/muscle.glb',
       'public/anatomy/spatial/prototype-bp3d/skeletal.glb'
@@ -2115,7 +2666,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-09-11-blender-surface';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2138,6 +2689,54 @@ console.log('PainLocator tests\n');
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('_initLayerController'));
     assert.ok(renderer.includes('Surface (styled exterior)') || renderer.includes('Muscle (BP3D)'));
+  });
+
+  test('spatial output: WebGL dispose never force-loses context', () => {
+    const sceneSrc = readFileSync(join(root, 'src/engine/spatial/spatial-scene-controller.js'), 'utf8');
+    assert.equal(/\brenderer\.forceContextLoss\s*\(/.test(sceneSrc), false);
+    assert.equal(/\bloseContext\s*\(/.test(sceneSrc), false);
+    assert.ok(sceneSrc.includes('Never forceContextLoss'));
+    assert.ok(sceneSrc.includes('fitToBody'));
+    assert.ok(sceneSrc.includes('ACESFilmicToneMapping') || sceneSrc.includes('toneMapping'));
+    assert.ok(sceneSrc.includes('HemisphereLight'));
+    assert.ok(sceneSrc.includes('_lowPower') || sceneSrc.includes('probeWebGL'));
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('MeshLambertMaterial'));
+  });
+
+  test('spatial output: overlay clears when exterior is interactive, before canonical', () => {
+    const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
+    const engine = readFileSync(join(root, 'src/engine/anatomy/clinical-anatomy-engine.js'), 'utf8');
+    const interactiveIdx = renderer.indexOf('options.onInteractive');
+    const canonCallIdx = renderer.indexOf('this._initCanonicalFrameIfEnabled()');
+    const layerCallIdx = renderer.indexOf('this._initLayerController();');
+    assert.ok(interactiveIdx > 0 && canonCallIdx > interactiveIdx);
+    assert.ok(layerCallIdx > canonCallIdx);
+    assert.ok(engine.includes('_revealSpatialViewport'));
+    assert.ok(engine.includes('onInteractive:'));
+    assert.ok(engine.includes('retrying'));
+    assert.ok(renderer.includes('onInteractive'));
+    assert.ok(renderer.includes('fitToBody'));
+    assert.ok(renderer.includes('skipCanonicalConformer'));
+  });
+
+  test('spatial output: clinical exterior material is warm-neutral not game-metal', () => {
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('0xcbb7a8'));
+    assert.equal(loader.includes('0xb9c2cc'), false);
+  });
+
+  test('spatial output: GLTFLoader relative ESM imports resolve to shipped files', () => {
+    const gltfSrc = readFileSync(join(root, 'public/vendor/GLTFLoader.js'), 'utf8');
+    const rel = [...gltfSrc.matchAll(/from\s+['"](\.\.?\/[^'"]+)['"]/g)].map((m) => m[1]);
+    assert.ok(rel.includes('../utils/BufferGeometryUtils.js'));
+    for (const spec of rel) {
+      const resolved = join(root, 'public/vendor', spec);
+      assert.ok(statSync(resolved).isFile(), `missing GLTFLoader import target: ${spec} → ${resolved}`);
+    }
+    const utilsSrc = readFileSync(join(root, 'public/utils/BufferGeometryUtils.js'), 'utf8');
+    assert.ok(utilsSrc.includes('export function toTrianglesDrawMode'));
+    assert.ok(utilsSrc.includes('from "three"') || utilsSrc.includes("from 'three'"));
   });
 }
 
