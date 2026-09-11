@@ -2071,7 +2071,9 @@ console.log('PainLocator tests\n');
     assert.ok(!renderer.includes('target = Math.max(1.28'));
     assert.ok(html.includes('name="simpleSkin"') && html.includes('name="simpleWeight"') && html.includes('name="simpleHeight"'));
     assert.ok(html.includes('name="simpleAncestry"') && html.includes('src/engine/anatomy/metahuman/body-dna.js'));
+    assert.ok(html.includes('src/engine/anatomy/metahuman/glb-body.js'));
     assert.ok(html.includes('src/engine/anatomy/metahuman/metahuman-engine.js'));
+    assert.ok(html.includes('When a 3D body from Blender is installed'));
     assert.ok(html.includes('src/engine/anatomy/plate-likeness.js'));
     assert.ok(css.includes('--spm-fit-x') && css.includes('--spm-fit-y'));
     assert.ok(css.includes('grid-template-rows: auto minmax(0, 1fr) auto'));
@@ -2152,6 +2154,30 @@ console.log('PainLocator tests\n');
     assert.equal(s.isIdentityDna({ model: 'adult-male' }), true);
     assert.equal(s.isIdentityDna({ model: 'adult-male', weight: 'heavy' }), false);
     assert.ok(s.bodyDnaKey({ weight: 'heavy' }, 'front').includes('heavy'));
+  });
+
+  test('metahuman engine: Blender GLB drop paths and DNA scale', () => {
+    const s = createSandbox();
+    loadScript('src/engine/anatomy/asset-paths.js', s);
+    loadScript('src/engine/anatomy/metahuman/body-dna.js', s);
+    loadScript('src/engine/anatomy/metahuman/glb-body.js', s);
+    const paths = s.getMetahumanGlbCandidates('adult-female');
+    assert.ok(paths[0].endsWith('/anatomy/metahuman/adult-female/body.glb'));
+    assert.ok(paths.includes('/anatomy/metahuman/body.glb'));
+    assert.equal(s.getMetahumanGlbPath('teen'), '/anatomy/metahuman/teen-male/body.glb');
+    const avg = s.metahumanGlbScale({ model: 'adult-male' });
+    const tall = s.metahumanGlbScale({ model: 'adult-male', height: 'tall' });
+    const heavy = s.metahumanGlbScale({ model: 'adult-male', weight: 'heavy' });
+    assert.ok(tall.y > avg.y);
+    assert.ok(Math.abs(tall.x - avg.x) < 1e-9, 'height must not change girth scale');
+    assert.ok(heavy.x > avg.x);
+    assert.ok(Math.abs(heavy.y - avg.y) < 1e-9, 'build must not change stature scale');
+    const face = s.metahumanPartScale('Head', { model: 'adult-male', ancestry: 'east-asian' });
+    assert.ok(face && face.x > 1);
+    const engine = readFileSync(join(root, 'src/engine/anatomy/metahuman/metahuman-engine.js'), 'utf8');
+    assert.ok(engine.includes('cloneMetahumanGlbBody'));
+    assert.ok(engine.includes('CAE_ALLOW_PARAMETRIC_METAHUMAN'));
+    assert.ok(engine.includes('_keepStill'));
   });
 
   test('simple pain-map: tap marks correct for portrait SVG stretch', () => {

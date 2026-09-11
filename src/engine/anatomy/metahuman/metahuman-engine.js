@@ -1,10 +1,10 @@
 /**
- * Clinical Anatomy Engine — MetaHuman variation engine.
+ * Clinical Anatomy Engine — MetaHuman plate baker.
  *
- * Bakes orthographic plates from a parametric body. Identity DNA (neutral
- * ancestry, natural skin, average build/height) keeps the captured MetaHuman
- * stills. Any Appearance change rebuilds geometry — it does not tint or
- * CSS-scale the still.
+ * Prefers a Blender / glTF mesh dropped at
+ * /anatomy/metahuman/{profile}/body.glb. Identity DNA without a mesh keeps
+ * the captured stills. The parametric capsule figure is not used on the
+ * patient map — it is only a last-resort lab hook.
  */
 
 (function (global) {
@@ -30,65 +30,86 @@ function _loadThree() {
   return Promise.reject(new Error("SpatialThreeLoader unavailable"));
 }
 
+function _resolveBody(mod, dna) {
+  const model = (dna && dna.model) || "adult-male";
+  const findGlb = typeof findMetahumanGlb === "function"
+    ? findMetahumanGlb
+    : () => Promise.resolve(null);
+  return findGlb(model).then((url) => {
+    if (url && typeof cloneMetahumanGlbBody === "function") {
+      return cloneMetahumanGlbBody(mod, dna, url);
+    }
+    if (global.CAE_ALLOW_PARAMETRIC_METAHUMAN && typeof buildParametricBody === "function") {
+      return buildParametricBody(mod, dna);
+    }
+    return null;
+  });
+}
+
 function bakeMetahumanPlate(dna, view, THREE) {
   const key = typeof bodyDnaKey === "function" ? bodyDnaKey(dna, view) : String(view);
   if (bakeCache.has(key)) return Promise.resolve(bakeCache.get(key));
   if (bakeInflight.has(key)) return bakeInflight.get(key);
 
   const work = Promise.resolve(THREE || _loadThree()).then((mod) => {
-    const body = buildParametricBody(mod, dna);
-    if (!body) throw new Error("parametric body failed");
+    return _resolveBody(mod, dna).then((body) => {
+      if (!body) throw new Error("no blender mesh");
 
-    const scene = new mod.Scene();
-    scene.background = null;
-    body.rotation.y = _viewYaw(view);
-    scene.add(body);
+      const scene = new mod.Scene();
+      scene.background = null;
+      body.rotation.y += _viewYaw(view);
+      scene.add(body);
 
-    const hemi = new mod.HemisphereLight(0xfff4ea, 0xd8d2c8, 0.95);
-    scene.add(hemi);
-    const keyL = new mod.DirectionalLight(0xfff7f0, 0.85);
-    keyL.position.set(1.4, 2.4, 2.2);
-    scene.add(keyL);
-    const fill = new mod.DirectionalLight(0xe8eef6, 0.35);
-    fill.position.set(-1.6, 1.4, 1.2);
-    scene.add(fill);
+      const hemi = new mod.HemisphereLight(0xfff4ea, 0xd8d2c8, 1.05);
+      scene.add(hemi);
+      const keyL = new mod.DirectionalLight(0xfff7f0, 1.05);
+      keyL.position.set(1.4, 2.4, 2.2);
+      scene.add(keyL);
+      const fill = new mod.DirectionalLight(0xe8eef6, 0.45);
+      fill.position.set(-1.6, 1.4, 1.2);
+      scene.add(fill);
+      const rim = new mod.DirectionalLight(0xf4f7ff, 0.28);
+      rim.position.set(-0.4, 1.8, -2.2);
+      scene.add(rim);
 
-    const box = new mod.Box3().setFromObject(body);
-    const size = box.getSize(new mod.Vector3());
-    const center = box.getCenter(new mod.Vector3());
-    const canvas = document.createElement("canvas");
-    canvas.width = BAKE_W;
-    canvas.height = BAKE_H;
-    const renderer = new mod.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: true,
-      preserveDrawingBuffer: true
+      body.updateMatrixWorld(true);
+      const box = new mod.Box3().setFromObject(body);
+      const size = box.getSize(new mod.Vector3());
+      const center = box.getCenter(new mod.Vector3());
+      const canvas = document.createElement("canvas");
+      canvas.width = BAKE_W;
+      canvas.height = BAKE_H;
+      const renderer = new mod.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        preserveDrawingBuffer: true
+      });
+      renderer.setClearColor(0x000000, 0);
+      renderer.setSize(BAKE_W, BAKE_H, false);
+      renderer.outputColorSpace = mod.SRGBColorSpace || renderer.outputColorSpace;
+      if (mod.ACESFilmicToneMapping) renderer.toneMapping = mod.ACESFilmicToneMapping;
+
+      const aspect = BAKE_W / BAKE_H;
+      const pad = 1.08;
+      const halfH = Math.max(size.y * 0.5 * pad, (size.x * 0.5 * pad) / aspect);
+      const halfW = halfH * aspect;
+      const camera = new mod.OrthographicCamera(-halfW, halfW, halfH, -halfH, 0.1, 16);
+      camera.position.set(center.x, center.y, center.z + 6);
+      camera.lookAt(center);
+
+      renderer.render(scene, camera);
+      const url = canvas.toDataURL("image/png");
+      renderer.dispose();
+      scene.traverse((obj) => {
+        if (obj.material) {
+          const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+          mats.forEach((m) => m.dispose && m.dispose());
+        }
+      });
+      bakeCache.set(key, url);
+      return url;
     });
-    renderer.setClearColor(0x000000, 0);
-    renderer.setSize(BAKE_W, BAKE_H, false);
-    renderer.outputColorSpace = mod.SRGBColorSpace || renderer.outputColorSpace;
-
-    const aspect = BAKE_W / BAKE_H;
-    const pad = 1.08;
-    const halfH = Math.max(size.y * 0.5 * pad, (size.x * 0.5 * pad) / aspect);
-    const halfW = halfH * aspect;
-    const camera = new mod.OrthographicCamera(-halfW, halfW, halfH, -halfH, 0.1, 8);
-    camera.position.set(center.x, center.y, center.z + 3);
-    camera.lookAt(center);
-
-    renderer.render(scene, camera);
-    const url = canvas.toDataURL("image/png");
-    renderer.dispose();
-    scene.traverse((obj) => {
-      if (obj.geometry && obj.geometry.dispose) obj.geometry.dispose();
-      if (obj.material) {
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-        mats.forEach((m) => m.dispose && m.dispose());
-      }
-    });
-    bakeCache.set(key, url);
-    return url;
   }).finally(() => {
     bakeInflight.delete(key);
   });
@@ -100,6 +121,15 @@ function bakeMetahumanPlate(dna, view, THREE) {
 function currentEngineDna(modelType) {
   const like = typeof getLikenessPref === "function" ? getLikenessPref() : {};
   return resolveBodyDna(modelType, like);
+}
+
+function _keepStill(img, fallbackPath) {
+  if (typeof bindPlateImageSrc === "function" && fallbackPath) {
+    bindPlateImageSrc(img, fallbackPath);
+    return Promise.resolve(fallbackPath);
+  }
+  if (fallbackPath) img.src = fallbackPath;
+  return Promise.resolve(fallbackPath || null);
 }
 
 function applyMetahumanEnginePlate(img, fallbackPath, modelType, view) {
@@ -116,26 +146,26 @@ function applyMetahumanEnginePlate(img, fallbackPath, modelType, view) {
   }
 
   const dna = currentEngineDna(model);
-  if (typeof isIdentityDna === "function" && isIdentityDna(dna)) {
-    if (typeof bindPlateImageSrc === "function" && fallbackPath) {
-      bindPlateImageSrc(img, fallbackPath);
-    }
-    return Promise.resolve(fallbackPath);
-  }
+  const findGlb = typeof findMetahumanGlb === "function"
+    ? findMetahumanGlb
+    : () => Promise.resolve(null);
 
-  const gen = Number(img.dataset.mhGen || 0) + 1;
-  img.dataset.mhGen = String(gen);
-  return bakeMetahumanPlate(dna, vw).then((url) => {
-    if (img.dataset.mhGen !== String(gen)) return url;
-    img.src = url;
-    img.dataset.mhBaked = "1";
-    return url;
-  }).catch((err) => {
-    console.warn("[cae-metahuman] bake failed", err);
-    if (img.dataset) img.dataset.mhError = String(err && err.message ? err.message : err);
-    if (fallbackPath && img.dataset.mhGen === String(gen)) img.src = fallbackPath;
-    return fallbackPath;
-  });
+  return findGlb(model).then((glbUrl) => {
+    if (!glbUrl) return _keepStill(img, fallbackPath);
+    const gen = Number(img.dataset.mhGen || 0) + 1;
+    img.dataset.mhGen = String(gen);
+    return bakeMetahumanPlate(dna, vw).then((url) => {
+      if (img.dataset.mhGen !== String(gen)) return url;
+      img.src = url;
+      img.dataset.mhBaked = "1";
+      img.dataset.mhMesh = "glb";
+      return url;
+    }).catch((err) => {
+      console.warn("[cae-metahuman] blender bake failed", err);
+      if (img.dataset) img.dataset.mhError = String(err && err.message ? err.message : err);
+      return _keepStill(img, fallbackPath);
+    });
+  }).catch(() => _keepStill(img, fallbackPath));
 }
 
 function refreshMetahumanFigure() {
