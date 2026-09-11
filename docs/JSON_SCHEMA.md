@@ -44,7 +44,7 @@ Major schema version (`1`) must match for import. Future versions will require m
 | `model` | string | Canonical: `adult-male`, `adult-female`, `teen-male`, `teen-female`, `child-male`, `child-female`, `senior-male`, `senior-female`. Legacy aliases `male`/`female`/`teen`/`child`/`senior` still import. |
 | `view` | string | `front`, `back`, `left`, `right` |
 | `label` | string | Human-readable model name (optional) |
-| `likeness` | object | Optional appearance prefs: `skin` (`natural` \| `fair` \| `light` \| `olive` \| `tan` \| `brown` \| `deep`), `weight` (`slim` \| `average` \| `heavy`), `height` (`short` \| `average` \| `tall`). Presentation only. |
+| `likeness` | object | Optional MetaHuman DNA: `skin`, `weight` (`slim` \| `average` \| `heavy`), `height` (`short` \| `average` \| `tall`), `ancestry` (`neutral` \| `european` \| `east-asian` \| `south-asian` \| `african` \| `latino`). Identity (natural / average / neutral) keeps the captured still. Any other value is rebuilt by the CAE MetaHuman engine as new geometry. |
 
 ### `workflow`
 

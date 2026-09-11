@@ -331,6 +331,10 @@ body.shell-patient.simple-pain-map .simple-sheet-advanced .share-text {
   gap: 0.45rem;
 }
 
+.simple-prefs-ancestry {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .simple-prefs-size-opt {
   display: flex;
   align-items: center;

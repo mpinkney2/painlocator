@@ -24,7 +24,7 @@
  * @property {string} model   - adult-male | adult-female | teen-male | teen-female | child-male | child-female | senior-male | senior-female
  * @property {string} view    - front | back | left | right
  * @property {string} [label] - Optional display label
- * @property {{ skin?: string, weight?: string, height?: string }} [likeness] - Appearance prefs (skin shader, build, height)
+ * @property {{ skin?: string, weight?: string, height?: string, ancestry?: string }} [likeness] - MetaHuman DNA prefs (engine rebuilds geometry when not identity)
  *
  * @typedef {Object} SessionWorkflow
  * @property {"capture"|"review"|"clinical"} mode

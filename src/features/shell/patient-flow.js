@@ -1182,7 +1182,7 @@
     function currentLikenessPref() {
       if (typeof global.getLikenessPref === 'function') return global.getLikenessPref();
       if (typeof getLikenessPref === 'function') return getLikenessPref();
-      return { skin: 'natural', weight: 'average', height: 'average' };
+      return { skin: 'natural', weight: 'average', height: 'average', ancestry: 'neutral' };
     }
 
     function syncLikenessPrefsUI() {
@@ -1195,6 +1195,9 @@
       });
       document.querySelectorAll('input[name="simpleHeight"]').forEach(function (input) {
         input.checked = input.value === pref.height;
+      });
+      document.querySelectorAll('input[name="simpleAncestry"]').forEach(function (input) {
+        input.checked = input.value === (pref.ancestry || 'neutral');
       });
     }
 
@@ -1228,7 +1231,12 @@
           return;
         }
         var height = e.target && e.target.closest ? e.target.closest('input[name="simpleHeight"]') : null;
-        if (height) applyLikenessField('height', height.value);
+        if (height) {
+          applyLikenessField('height', height.value);
+          return;
+        }
+        var ancestry = e.target && e.target.closest ? e.target.closest('input[name="simpleAncestry"]') : null;
+        if (ancestry) applyLikenessField('ancestry', ancestry.value);
       });
     }
 

@@ -77,6 +77,14 @@ function simplePlateSrc(model, view) {
 
 function setSimplePlateImage(img, path) {
   if (!img || !path) return;
+  const viewMatch = String(path).match(/\/(front|back|left|right)\.png/i);
+  const modelMatch = String(path).match(/metahuman\/([^/?#]+)\//i);
+  const view = viewMatch ? viewMatch[1] : "front";
+  const model = modelMatch ? modelMatch[1] : (typeof state !== "undefined" ? state.modelType : "adult-male");
+  if (typeof applyMetahumanEnginePlate === "function") {
+    applyMetahumanEnginePlate(img, path, model, view);
+    return;
+  }
   if (typeof bindPlateImageSrc === "function") bindPlateImageSrc(img, path);
   else img.src = path;
 }
