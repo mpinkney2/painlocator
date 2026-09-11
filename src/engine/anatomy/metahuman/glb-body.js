@@ -1,8 +1,9 @@
 /**
  * Clinical Anatomy Engine — Blender / glTF body drop-in.
  *
- * Loads a standing figure exported from Blender (or Meshy / MetaHuman glTF)
- * and applies Body DNA as component-aware scale + skin, not a photo tint.
+ * Loads a standing figure exported from Blender and applies Body DNA through
+ * shapekeys (Stature, Shoulders, Waist, Hips, LegBuild, ArmBuild), rig bones,
+ * and skin — not a photo tint.
  *
  * Drop order (first file that exists wins):
  *   /anatomy/metahuman/{profile}/body.glb
@@ -10,8 +11,7 @@
  *   /anatomy/metahuman/{profile}/body.gltf
  *   /anatomy/metahuman/body.glb
  *
- * Blender export: File → Export → glTF 2.0 → Format: glTF Binary (.glb),
- * +Y Up, +X Forward, Apply Modifiers, selected collection of body parts OK.
+ * Shipped mesh: public/anatomy/metahuman/body.glb (New-avatar-stand, meshopt).
  */
 
 (function (global) {
@@ -24,6 +24,7 @@ const PART_JAW = /jaw|mandible|chin/i;
 const PART_NOSE = /nose|nasal/i;
 const PART_CLOTH = /cloth|shirt|tee|tank|short|pant|fabric|denim|cotton|outfit|garment/i;
 const PART_HAIR = /hair|brow|lash|beard/i;
+const PART_SKIN = /clinical|porcelain|anatomy|skin|body/i;
 
 function metahumanGlbCandidates(modelType) {
   if (typeof getMetahumanGlbCandidates === "function") {
@@ -66,6 +67,51 @@ function metahumanPartScale(name, dna) {
   return null;
 }
 
+function metahumanMorphWeights(dna) {
+  const d = typeof normalizeBodyDna === "function"
+    ? normalizeBodyDna(dna)
+    : { height: "average", weight: "average", sex: "male", stage: "adult" };
+  const heavy = d.weight === "heavy";
+  const slim = d.weight === "slim";
+  const female = d.sex === "female";
+  return {
+    Stature: d.height === "tall" ? 0.9 : 0,
+    Shoulders: heavy ? (female ? 0.45 : 0.72) : 0,
+    Waist: heavy ? 0.88 : slim ? 0 : 0,
+    Hips: heavy ? (female ? 1 : 0.72) : (female && !slim ? 0.28 : 0),
+    LegBuild: heavy ? 0.78 : 0,
+    ArmBuild: heavy ? 0.7 : 0
+  };
+}
+
+function metahumanRigBoneScale(name, dna) {
+  const p = typeof resolveBodyProportions === "function"
+    ? resolveBodyProportions(dna)
+    : null;
+  if (!p || !name) return null;
+  const d = p.dna || {};
+  const n = String(name).toLowerCase();
+  const bone = (typeof HEIGHT_BONE !== "undefined" && HEIGHT_BONE[d.height]) || 1;
+  const soft = (typeof BUILD_SOFT !== "undefined" && BUILD_SOFT[d.weight]) || 1;
+  if (n === "head") return { x: p.faceW, y: 1, z: p.midface };
+  if (n === "neck_01" || n === "neck") {
+    return { x: (p.faceW + 1) / 2, y: 1, z: (p.midface + 1) / 2 };
+  }
+  if (n === "pelvis") {
+    const hip = (typeof ANCESTRY_MORPH !== "undefined"
+      && ANCESTRY_MORPH[d.ancestry]
+      && ANCESTRY_MORPH[d.ancestry].hip) || 1;
+    return { x: soft * hip, y: 1, z: soft };
+  }
+  if (n === "spine_01") return { x: soft, y: bone, z: soft };
+  if (n.startsWith("spine")) return { x: soft, y: 1, z: soft };
+  if (n.startsWith("thigh") || n.startsWith("calf")) return { x: soft, y: bone, z: soft };
+  if (n.includes("upperarm") || n.includes("lowerarm") || n.startsWith("clavicle")) {
+    return { x: soft, y: p.limb, z: soft };
+  }
+  return null;
+}
+
 function _probeUrl(url) {
   if (!url) return Promise.resolve(null);
   if (probeHits.has(url)) return Promise.resolve(probeHits.get(url) ? url : null);
@@ -77,15 +123,16 @@ function _probeUrl(url) {
     }
     if (res.status === 405 || res.status === 501) {
       return fetch(url, { method: "GET", cache: "force-cache" }).then((getRes) => {
-        if (getRes.ok) {
-          probeHits.set(url, true);
-          return url;
-        }
-        return null;
+        probeHits.set(url, !!getRes.ok);
+        return getRes.ok ? url : null;
       });
     }
+    probeHits.set(url, false);
     return null;
-  }).catch(() => null);
+  }).catch(() => {
+    probeHits.set(url, false);
+    return null;
+  });
 }
 
 function findMetahumanGlb(modelType) {
@@ -164,8 +211,28 @@ function _detachMaterials(root) {
   });
 }
 
+function _cloneSkinnedGraph(THREE, source) {
+  const root = source.clone(true);
+  const named = new Map();
+  root.traverse((obj) => {
+    if (obj.name) named.set(obj.name, obj);
+  });
+  root.traverse((obj) => {
+    if (!obj.isSkinnedMesh || !obj.skeleton) return;
+    const bones = obj.skeleton.bones.map((bone) => named.get(bone.name) || bone);
+    const inverses = obj.skeleton.boneInverses.map((m) => m.clone());
+    obj.bind(new THREE.Skeleton(bones, inverses), obj.bindMatrix.clone());
+    obj.frustumCulled = false;
+    if (obj.morphTargetInfluences) {
+      obj.morphTargetInfluences = obj.morphTargetInfluences.slice();
+    }
+  });
+  return root;
+}
+
 function _isClothingMaterial(obj, mat) {
   const name = `${obj && obj.name ? obj.name : ""} ${mat && mat.name ? mat.name : ""}`;
+  if (PART_SKIN.test(name)) return false;
   if (PART_CLOTH.test(name) || PART_HAIR.test(name)) return true;
   const color = mat && mat.color;
   if (!color) return false;
@@ -202,6 +269,38 @@ function _tintSkin(root, dna) {
   });
 }
 
+function _applyMorphs(root, dna) {
+  const weights = metahumanMorphWeights(dna);
+  root.traverse((obj) => {
+    if (!obj.morphTargetInfluences) return;
+    const dict = obj.morphTargetDictionary || {};
+    Object.keys(weights).forEach((key) => {
+      const idx = dict[key];
+      if (idx == null) return;
+      obj.morphTargetInfluences[idx] = weights[key];
+    });
+  });
+}
+
+function _hasClinicalRig(root) {
+  let found = false;
+  root.traverse((obj) => {
+    const n = String(obj.name || "").toLowerCase();
+    if (n === "pelvis" || n === "head" || n === "thigh_l") found = true;
+  });
+  return found;
+}
+
+function _applyRigBones(root, dna) {
+  root.traverse((obj) => {
+    const scale = metahumanRigBoneScale(obj.name, dna);
+    if (!scale || !obj.scale) return;
+    obj.scale.x *= scale.x;
+    obj.scale.y *= scale.y;
+    obj.scale.z *= scale.z;
+  });
+}
+
 function _applyNamedParts(root, dna) {
   root.traverse((obj) => {
     if (!obj.isMesh && !obj.isGroup) return;
@@ -215,7 +314,7 @@ function _applyNamedParts(root, dna) {
 
 function _standUpright(THREE, root) {
   root.updateMatrixWorld(true);
-  const box = new THREE.Box3().setFromObject(root);
+  const box = metahumanBodyBox(THREE, root);
   const size = box.getSize(new THREE.Vector3());
   if (size.y + 1e-6 < size.z * 0.88) {
     root.rotation.x -= Math.PI / 2;
@@ -223,24 +322,74 @@ function _standUpright(THREE, root) {
   }
 }
 
+function _stageUniform(dna) {
+  const d = typeof normalizeBodyDna === "function" ? normalizeBodyDna(dna) : {};
+  const table = typeof STAGE_STATURE !== "undefined" ? STAGE_STATURE : null;
+  if (!table || !table.adult) return 1;
+  const sex = d.sex === "female" ? "female" : "male";
+  const stage = table[d.stage] || table.adult;
+  const adult = table.adult[sex] || 1.76;
+  const now = stage[sex] || adult;
+  const sexMul = sex === "female" ? 0.97 : 1;
+  return (now / adult) * sexMul;
+}
+
 function applyDnaToGlbRoot(THREE, root, dna) {
   if (!THREE || !root) return root;
-  const scale = metahumanGlbScale(dna);
-  root.scale.set(
-    (root.scale.x || 1) * scale.x,
-    (root.scale.y || 1) * scale.y,
-    (root.scale.z || 1) * scale.z
-  );
-  _applyNamedParts(root, dna);
+  const d = typeof normalizeBodyDna === "function" ? normalizeBodyDna(dna) : {};
+  const hasMorphs = (() => {
+    let hit = false;
+    root.traverse((obj) => {
+      if (obj.morphTargetDictionary && obj.morphTargetDictionary.Stature != null) hit = true;
+    });
+    return hit;
+  })();
+  const hasRig = _hasClinicalRig(root);
+  root.scale.multiplyScalar(_stageUniform(dna));
+  if (hasMorphs) {
+    _applyMorphs(root, dna);
+    if (d.height === "short") {
+      root.scale.y *= (typeof HEIGHT_BONE !== "undefined" ? HEIGHT_BONE.short : 0.92);
+    }
+  }
+  if (hasRig) {
+    const rigDna = hasMorphs
+      ? { ...d, height: "average", weight: "average" }
+      : d;
+    _applyRigBones(root, rigDna);
+  } else if (!hasMorphs) {
+    const scale = metahumanGlbScale(dna);
+    root.scale.x *= scale.x;
+    root.scale.y *= scale.y;
+    root.scale.z *= scale.z;
+    _applyNamedParts(root, dna);
+  }
   _tintSkin(root, dna);
   _standUpright(THREE, root);
   root.userData.caeSource = "blender-glb";
   return root;
 }
 
+function metahumanBodyBox(THREE, root) {
+  const box = new THREE.Box3();
+  let skinned = false;
+  root.updateMatrixWorld(true);
+  root.traverse((obj) => {
+    if (!obj.isSkinnedMesh) return;
+    skinned = true;
+    if (obj.skeleton && obj.skeleton.update) obj.skeleton.update();
+    if (typeof obj.computeBoundingBox === "function") obj.computeBoundingBox();
+    if (obj.boundingBox && !obj.boundingBox.isEmpty()) {
+      box.union(obj.boundingBox.clone().applyMatrix4(obj.matrixWorld));
+    }
+  });
+  if (!skinned || box.isEmpty()) box.setFromObject(root);
+  return box;
+}
+
 function cloneMetahumanGlbBody(THREE, dna, url) {
   return loadMetahumanGlbTemplate(url).then((packed) => {
-    const root = packed.scene.clone(true);
+    const root = _cloneSkinnedGraph(THREE, packed.scene);
     root.name = root.name || "caeBlenderBody";
     _detachMaterials(root);
     applyDnaToGlbRoot(THREE, root, dna);
@@ -257,8 +406,11 @@ function clearMetahumanGlbCache() {
 global.metahumanGlbCandidates = metahumanGlbCandidates;
 global.metahumanGlbScale = metahumanGlbScale;
 global.metahumanPartScale = metahumanPartScale;
+global.metahumanMorphWeights = metahumanMorphWeights;
+global.metahumanRigBoneScale = metahumanRigBoneScale;
 global.findMetahumanGlb = findMetahumanGlb;
 global.cloneMetahumanGlbBody = cloneMetahumanGlbBody;
 global.applyDnaToGlbRoot = applyDnaToGlbRoot;
+global.metahumanBodyBox = metahumanBodyBox;
 global.clearMetahumanGlbCache = clearMetahumanGlbCache;
 })(typeof window !== "undefined" ? window : globalThis);

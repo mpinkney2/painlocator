@@ -49,5 +49,5 @@
     "left",
     "right"
   ],
-  "notes": "Retina 2048x3072 plates. Optional Blender mesh at {model}/body.glb or /anatomy/metahuman/body.glb."
+  "notes": "Retina 2048x3072 stills plus shipped Blender GLB at /anatomy/metahuman/body.glb (New-avatar-stand, meshopt)."
 }
