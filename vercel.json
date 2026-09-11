@@ -9,7 +9,7 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|anatomy/|vendor/|src/|utils/).*)",
       "destination": "/index.html"
     }
   ],

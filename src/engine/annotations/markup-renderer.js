@@ -24,7 +24,7 @@ function polygonPoints(anchors) {
 const SIMPLE_MARK_SIZE_KEY = "painlocator_mark_size";
 const SIMPLE_MARK_SIZE_SCALES = { s: 0.5, m: 1, l: 1.5 };
 const SIMPLE_VIEW_YAW = ["front", "right", "back", "left"];
-const SIMPLE_PLATE_CACHE = "spm-mh-glb2";
+const SIMPLE_PLATE_CACHE = "spm-mh-glb3";
 
 function getSimpleMarkSizeScale() {
   try {
