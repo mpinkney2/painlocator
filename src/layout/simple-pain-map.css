@@ -1486,7 +1486,6 @@ body.shell-patient.simple-pain-map .review-tools,
 body.shell-patient.simple-pain-map .capture-tools .region-tool[data-tool='select'],
 body.shell-patient.simple-pain-map #btnEnlargeAnatomy,
 body.shell-patient.simple-pain-map .capture-tools .region-tool-divider,
-body.shell-patient.simple-pain-map #displayModeToggle,
 body.shell-patient.simple-pain-map #quickViewBar,
 body.shell-patient.simple-pain-map #patientStepIndicator,
 body.shell-patient.simple-pain-map #patientLocateCta,
@@ -1498,9 +1497,74 @@ body.shell-patient.simple-pain-map #demoModeBadge {
   display: none !important;
 }
 
-/* Always show the plate image frame on the simple pain chart (never spatial-primary trap).
+/* Human | 3D toggle — overlays the figure stage (same grid row as avatar-wrap) */
+body.shell-patient.simple-pain-map .simple-pain-map-col > .avatar-wrap {
+  grid-row: 2;
+}
+
+body.shell-patient.simple-pain-map #displayModeToggle.display-mode-dock {
+  display: inline-flex !important;
+  grid-row: 2;
+  grid-column: 1;
+  justify-self: end;
+  align-self: start;
+  position: relative;
+  top: 0.7rem;
+  right: max(0.45rem, env(safe-area-inset-right, 0px));
+  left: auto;
+  bottom: auto;
+  z-index: 26;
+  margin: 0;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  border: 1px solid var(--spm-border, var(--border));
+  background: color-mix(in srgb, var(--spm-white, var(--surface)) 94%, transparent);
+  box-shadow: 0 4px 16px rgba(24, 42, 66, 0.12);
+  pointer-events: auto;
+}
+
+body.shell-patient.simple-pain-map #displayModeToggle[hidden] {
+  display: none !important;
+}
+
+body.shell-patient.simple-pain-map #displayModeToggle .display-mode-btn {
+  min-height: 36px;
+  min-width: 4.25rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--spm-navy, var(--text-primary));
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+body.shell-patient.simple-pain-map #displayModeToggle .display-mode-btn:hover {
+  background: color-mix(in srgb, var(--spm-amber, #F9B847) 18%, transparent);
+}
+
+body.shell-patient.simple-pain-map #displayModeToggle .display-mode-btn.active,
+body.shell-patient.simple-pain-map #displayModeToggle .display-mode-btn[aria-pressed="true"] {
+  background: var(--spm-amber, #F9B847);
+  color: var(--spm-navy, #182A42);
+  border-color: transparent;
+}
+
+body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-map-intensity {
+  grid-row: 3;
+}
+
+/* Soft-hide body-profile gallery while the rotatable 3D body is active */
+body.shell-patient.simple-pain-map.simple-display-spatial .body-type-gallery {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Plate forced visible only while Human mode (not when 3D is ready).
    Do NOT force inset/full-size — mapper syncFrameToImage owns letterbox + enlarge bounds. */
-body.shell-patient.simple-pain-map .cae-clinical-viewport .cae-image-frame,
+body.shell-patient.simple-pain-map:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame,
 body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
   display: block !important;
   visibility: visible !important;
@@ -1508,7 +1572,7 @@ body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-clin
   position: absolute !important;
 }
 
-body.shell-patient.simple-pain-map .cae-anatomy-image.is-loaded,
+body.shell-patient.simple-pain-map:not(.spatial-ready) .cae-anatomy-image.is-loaded,
 body.shell-patient.simple-pain-map.spatial-primary:not(.spatial-ready) .cae-anatomy-image.is-loaded {
   display: block !important;
   visibility: visible !important;

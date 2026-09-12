@@ -1,12 +1,11 @@
 /**
  * Spatial-primary locate chrome.
  *
- * Product rule: interactive locate is the rotatable 3D body (snap views + tap to mark).
- * The CAE 2D plate image must NOT appear as the default locate surface.
- * Plate is only for:
+ * Product rule: interactive locate is the rotatable 3D body (snap views + tap to mark)
+ * for clinician. Simple pain-map defaults to Human (2D) with an on-map Human|3D toggle.
+ * Plate is also used for:
  * - explicit opt-in (?plate=1 / ?displayMode=plate)
  * - "Use 2D diagram"
- * - simple pain-map shell (MetaHuman-style 2D likeness plates)
  * - off-stage report/PDF compositing
  *
  * Critical: when plate is intentional, never leave body.spatial-primary on while
@@ -42,18 +41,51 @@
     return params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"));
   }
 
-  /** Plate is the intentional locate surface (URL opt-in or simple pain-map). */
+  /**
+   * Plate is the intentional locate surface when the user (or URL) chose Human/2D.
+   * On simple pain-map, that is the default unless preference/URL requests Spatial.
+   */
   function wantsPlateSurface() {
-    return wantsPlateOptIn() || isSimplePainMapShell();
+    if (wantsPlateOptIn()) return true;
+    if (!isSimplePainMapShell()) return false;
+    if (typeof global.Bp3dShellEngagement?.shouldPreferSpatial === "function") {
+      return !global.Bp3dShellEngagement.shouldPreferSpatial();
+    }
+    return true;
   }
 
   function allowPlateToggle() {
     const params = readParams();
     return (
+      isSimplePainMapShell() ||
       isTruthyFlag(params.get("displayToggle")) ||
       isTruthyFlag(params.get("dev")) ||
       wantsPlateOptIn()
     );
+  }
+
+  function syncSimpleDisplayLabels(isSpatial) {
+    const plate = document.getElementById("btnPlateMode");
+    const spatial = document.getElementById("btnSpatialMode");
+    const dock = document.getElementById("displayModeToggle");
+    if (!plate || !spatial) return;
+    if (isSimplePainMapShell()) {
+      if (dock) dock.setAttribute("aria-label", "Human or 3D body");
+      plate.textContent = "Human";
+      plate.title = "Human body image";
+      if (!spatial.disabled) {
+        spatial.textContent = "3D";
+        spatial.title = "Rotatable 3D body";
+      }
+      return;
+    }
+    if (dock) dock.setAttribute("aria-label", "Anatomy display mode");
+    plate.textContent = "2D";
+    plate.title = "2D clinical plate (fallback)";
+    if (!spatial.disabled) {
+      spatial.textContent = "Spatial";
+      spatial.title = "Spatial body (3D)";
+    }
   }
 
   function setActiveToolButton(tool) {
@@ -183,7 +215,7 @@
     const body = document.body;
     if (!body) return;
 
-    // Intentional plate (simple pain-map, ?plate=1, or explicit keepSpatialPrimary:false)
+    // Intentional plate (simple pain-map Human mode, ?plate=1, or explicit keepSpatialPrimary:false)
     // must clear spatial-primary so the real plate PNG is not CSS-hidden.
     const intentionalPlate =
       opts.keepSpatialPrimary === false || wantsPlateSurface();
@@ -193,6 +225,7 @@
     body.classList.toggle("spatial-primary", spatialPrimaryShell);
     body.classList.toggle("allow-plate-toggle", allowPlateToggle());
     body.classList.toggle("spatial-ready", !!isSpatial);
+    body.classList.toggle("simple-display-spatial", !!(isSimplePainMapShell() && isSpatial));
 
     const dock = document.getElementById("displayModeToggle");
     if (dock) {
@@ -200,6 +233,7 @@
       dock.hidden = !showToggle;
       dock.setAttribute("aria-hidden", showToggle ? "false" : "true");
     }
+    syncSimpleDisplayLabels(!!isSpatial);
 
     const enlarge = document.getElementById("btnEnlargeAnatomy");
     if (enlarge) {
@@ -268,6 +302,7 @@
     isSimplePainMapShell,
     applySpatialPrimaryChrome,
     renderStageStatus,
-    humanReason
+    humanReason,
+    syncSimpleDisplayLabels
   };
 })(typeof window !== "undefined" ? window : globalThis);

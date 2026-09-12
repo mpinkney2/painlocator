@@ -10,7 +10,7 @@
  */
 (function (global) {
   /** Bump together with all Spatial classic-script ?v= query tokens in index.html */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-11-blender-surface";
+  const SPATIAL_RUNTIME_VERSION = "2026-09-12-human-3d-toggle";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",
