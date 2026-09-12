@@ -198,7 +198,9 @@ function initDisplayModeToggle() {
     }
     refreshUI?.();
   });
-  syncDisplayModeButtons(state.engine?.isSpatialMode?.() ? 'spatial' : (state.engine?.displayMode === 'plate' ? 'plate' : 'spatial'));
+  syncDisplayModeButtons(state.engine?.isSpatialMode?.()
+    ? 'spatial'
+    : (state.engine?.displayMode === 'spatial' ? 'spatial' : 'plate'));
 }
 
 function updateTrendSummary() {

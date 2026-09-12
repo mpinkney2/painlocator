@@ -153,7 +153,14 @@ function applyMetahumanEnginePlate(img, fallbackPath, modelType, view) {
     : () => Promise.resolve(null);
 
   return findGlb(model).then((glbUrl) => {
-    if (!glbUrl) return _keepStill(img, fallbackPath);
+    // Simple pain-map Human mode must stay a still plate — never live-bake GLB
+    // (that looks like the 3D body and confuses the Human|3D toggle).
+    const simpleMap =
+      typeof document !== "undefined" &&
+      document.body?.classList?.contains("simple-pain-map");
+    const forceStill =
+      simpleMap && !document.body.classList.contains("simple-display-spatial");
+    if (!glbUrl || forceStill) return _keepStill(img, fallbackPath);
     const gen = Number(img.dataset.mhGen || 0) + 1;
     img.dataset.mhGen = String(gen);
     return bakeMetahumanPlate(dna, vw).then((url) => {

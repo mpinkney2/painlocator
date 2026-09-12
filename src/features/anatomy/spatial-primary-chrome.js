@@ -225,7 +225,9 @@
     body.classList.toggle("spatial-primary", spatialPrimaryShell);
     body.classList.toggle("allow-plate-toggle", allowPlateToggle());
     body.classList.toggle("spatial-ready", !!isSpatial);
-    body.classList.toggle("simple-display-spatial", !!(isSimplePainMapShell() && isSpatial));
+    const simpleShell = isSimplePainMapShell();
+    body.classList.toggle("simple-display-spatial", !!(simpleShell && isSpatial));
+    body.classList.toggle("simple-display-plate", !!(simpleShell && !isSpatial));
 
     const dock = document.getElementById("displayModeToggle");
     if (dock) {
@@ -236,12 +238,27 @@
     syncSimpleDisplayLabels(!!isSpatial);
 
     const gallery = document.getElementById("bodyTypeGallery");
-    if (gallery && isSimplePainMapShell()) {
+    if (gallery && simpleShell) {
       const hideGallery = !!isSpatial;
       gallery.hidden = hideGallery;
       gallery.setAttribute("aria-hidden", hideGallery ? "true" : "false");
       if (hideGallery) gallery.setAttribute("inert", "");
       else gallery.removeAttribute("inert");
+    }
+
+    // Human mode: strip any leftover Spatial canvas so only the 2D plate remains.
+    if (simpleShell && !isSpatial) {
+      document
+        .querySelectorAll(
+          "#avatarStage .cae-spatial-viewport, #avatarStage .cae-spatial-canvas, #avatarStage canvas.cae-spatial-canvas"
+        )
+        .forEach((node) => {
+          try {
+            node.remove();
+          } catch (_) { /* ignore */ }
+        });
+      document.getElementById("avatarStage")?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
+      document.getElementById("avatarWrap")?.classList?.remove("display-spatial");
     }
 
     const enlarge = document.getElementById("btnEnlargeAnatomy");

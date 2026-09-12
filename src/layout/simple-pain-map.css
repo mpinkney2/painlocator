@@ -496,12 +496,14 @@ body.shell-patient.simple-pain-map .simple-pain-headline p {
 }
 
 /* Intensity dock stays in the large map view (not the tools drawer). */
+body.shell-patient.simple-pain-map .simple-map-intensity:not(.simple-intensity-rail) {
+  display: none;
+}
+
 body.shell-patient.simple-pain-map .simple-map-intensity {
   flex: 0 0 auto;
   position: relative;
   z-index: 3;
-  grid-row: 3;
-  grid-column: 1;
   margin: 0;
   padding: 0.55rem 0.35rem 0.75rem;
   background: linear-gradient(
@@ -542,7 +544,7 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
   position: relative;
 }
@@ -622,8 +624,9 @@ body.shell-patient.simple-pain-map .simple-pain-map-col {
   }
 }
 
-body.shell-patient.simple-pain-map .avatar-wrap,
-body.shell-patient.simple-pain-map .anatomy-viewer {
+/* Direct map-col child only — when nested in .simple-figure-stage, stage owns placement. */
+body.shell-patient.simple-pain-map .simple-pain-map-col > .avatar-wrap,
+body.shell-patient.simple-pain-map .simple-pain-map-col > .anatomy-viewer {
   flex: 1 1 0%;
   min-height: 0;
   min-width: 0;
@@ -631,6 +634,24 @@ body.shell-patient.simple-pain-map .anatomy-viewer {
   height: auto;
   grid-row: 2;
   grid-column: 1;
+  padding-bottom: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+body.shell-patient.simple-pain-map .avatar-wrap,
+body.shell-patient.simple-pain-map .anatomy-viewer {
+  flex: 1 1 0%;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: auto;
   padding-bottom: 0;
   border-radius: 0;
   background: transparent;
@@ -1592,14 +1613,10 @@ body.shell-patient.simple-pain-map #displayModeToggle .display-mode-btn[aria-pre
   border-color: transparent;
 }
 
-body.shell-patient.simple-pain-map .simple-pain-map-col > .avatar-wrap {
+body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-figure-stage {
   grid-row: 2;
   grid-column: 1;
-}
-
-body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-map-intensity {
-  grid-row: 3;
-  grid-column: 1;
+  min-height: 0;
 }
 
 /* Hide body-profile rail in 3D (plate profiles do not apply); restore on Human */
@@ -2057,9 +2074,7 @@ body.shell-patient.simple-view-map #timelinePanel {
    * Mobile stacked chrome (WCAG 2.2 touch targets, no overlay collision):
    * 1) Headline + Human|3D
    * 2) Horizontal body profile strip
-   * 3) Figure stage (remaining height)
-   * 4) Equal-width Front/Left/Right/Back bar
-   * 5) Intensity
+   * 3) Figure stage with left vertical intensity rail (fills remaining height)
    */
   body.shell-patient.simple-pain-map .simple-pain-map-col {
     min-height: 0;
@@ -2070,9 +2085,9 @@ body.shell-patient.simple-view-map #timelinePanel {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto minmax(12rem, 1fr) auto auto;
+    grid-template-rows: auto auto minmax(14rem, 1fr);
     align-content: stretch;
-    gap: 0.35rem;
+    gap: 0.3rem;
   }
 
   body.shell-patient.simple-pain-map .simple-pain-headline {
@@ -2202,9 +2217,9 @@ body.shell-patient.simple-view-map #timelinePanel {
     font-size: 0.68rem;
   }
 
-  body.shell-patient.simple-pain-map .avatar-wrap,
-  body.shell-patient.simple-pain-map .anatomy-viewer,
-  body.shell-patient.simple-pain-map .simple-pain-map-col > .avatar-wrap {
+  /* Legacy: only if wrap is still a direct map-col child (not figure-stage). */
+  body.shell-patient.simple-pain-map .simple-pain-map-col > .avatar-wrap,
+  body.shell-patient.simple-pain-map .simple-pain-map-col > .anatomy-viewer {
     grid-row: 3 !important;
     grid-column: 1 !important;
     justify-self: stretch;
@@ -2216,6 +2231,15 @@ body.shell-patient.simple-view-map #timelinePanel {
     overflow: hidden;
     z-index: 1;
     position: relative !important;
+    margin: 0 !important;
+  }
+
+  body.shell-patient.simple-pain-map .simple-figure-stage .avatar-wrap,
+  body.shell-patient.simple-pain-map .simple-figure-stage .anatomy-viewer {
+    grid-row: 1 !important;
+    grid-column: 2 !important;
+    min-height: 0 !important;
+    height: 100% !important;
     margin: 0 !important;
   }
 
@@ -2236,28 +2260,6 @@ body.shell-patient.simple-view-map #timelinePanel {
     max-width: 100%;
   }
 
-  body.shell-patient.simple-pain-map .simple-view-compass {
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
-    inset: auto !important;
-    grid-row: 4;
-    grid-column: 1;
-    justify-self: stretch;
-    align-self: stretch;
-    margin: 0 !important;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: auto;
-    gap: 0.35rem;
-    z-index: 2;
-    filter: none;
-    padding: 0 0.1rem;
-  }
-
   body.shell-patient.simple-pain-map .simple-compass-btn,
   body.shell-patient.simple-pain-map .simple-compass-btn[data-view="front"],
   body.shell-patient.simple-pain-map .simple-compass-btn[data-view="left"],
@@ -2272,8 +2274,8 @@ body.shell-patient.simple-view-map #timelinePanel {
     border-radius: 12px;
   }
 
-  body.shell-patient.simple-pain-map .simple-map-intensity,
-  body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-map-intensity {
+  /* Horizontal dock only if intensity is still a direct map-col child (legacy). */
+  body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-map-intensity:not(.simple-intensity-rail) {
     grid-row: 5 !important;
     grid-column: 1 !important;
     flex: 0 0 auto;
@@ -2288,13 +2290,18 @@ body.shell-patient.simple-view-map #timelinePanel {
     background: var(--spm-warm-white);
   }
 
-  body.shell-patient.simple-pain-map .body-type-gallery {
-    grid-row: 2 !important;
+  body.shell-patient.simple-pain-map .simple-figure-stage > .simple-intensity-rail {
+    grid-row: 1 !important;
     grid-column: 1 !important;
+    display: flex !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    background: color-mix(in srgb, var(--spm-white, var(--surface)) 94%, transparent);
+    padding: 0.35rem 0.15rem;
   }
 
-  body.shell-patient.simple-pain-map .simple-view-compass {
-    grid-row: 4 !important;
+  body.shell-patient.simple-pain-map .body-type-gallery {
+    grid-row: 2 !important;
     grid-column: 1 !important;
   }
 
@@ -2523,4 +2530,249 @@ body.shell-clinician .simple-pain-workspace {
 body.shell-patient.simple-pain-map #anatomyFirstTip,
 body.shell-patient.simple-pain-map .anatomy-first-tip {
   display: none !important;
+}
+
+
+/* ========== Vertical intensity rail + figure stage ========== */
+body.shell-patient.simple-pain-map .simple-figure-stage {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  gap: 0.35rem;
+  align-items: stretch;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+body.shell-patient.simple-pain-map .simple-figure-stage > .avatar-wrap,
+body.shell-patient.simple-pain-map .simple-figure-stage > .anatomy-viewer {
+  grid-row: 1 !important;
+  grid-column: 2 !important;
+  min-height: 0 !important;
+  min-width: 0;
+  width: 100%;
+  height: 100% !important;
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1 1 auto;
+  align-self: stretch;
+  justify-self: stretch;
+}
+
+body.shell-patient.simple-pain-map .simple-figure-stage .avatar-stage {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  min-width: 0;
+  width: 100%;
+  height: auto !important;
+  position: relative;
+  z-index: 1;
+}
+
+body.shell-patient.simple-pain-map .simple-figure-stage > .simple-intensity-rail,
+body.shell-patient.simple-pain-map .simple-intensity-rail {
+  grid-row: 1 !important;
+  grid-column: 1 !important;
+  position: relative;
+  z-index: 6;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  margin: 0;
+  padding: 0.35rem 0.2rem;
+  width: clamp(3.35rem, 14vw, 4.35rem);
+  min-height: 0 !important;
+  height: 100% !important;
+  border-radius: 18px;
+  border: 1px solid var(--spm-border, var(--border));
+  background: color-mix(in srgb, var(--spm-white, var(--surface)) 94%, transparent);
+  box-shadow: 0 4px 16px rgba(24, 42, 66, 0.1);
+  flex: 0 0 auto;
+  align-self: stretch;
+  justify-self: stretch;
+}
+
+body.shell-patient.simple-pain-map .simple-intensity-rail-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  width: 100%;
+  height: 100%;
+  min-height: 12rem;
+}
+
+body.shell-patient.simple-pain-map .simple-intensity-tick {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--spm-navy, var(--text-primary));
+  line-height: 1;
+}
+
+body.shell-patient.simple-pain-map .simple-intensity-rail-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 0;
+  order: 3;
+}
+
+body.shell-patient.simple-pain-map .simple-intensity-rail .patient-intensity-value {
+  font-size: clamp(2rem, 8.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--spm-navy, var(--text-primary));
+}
+
+body.shell-patient.simple-pain-map .simple-intensity-rail .patient-intensity-of {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted, #6b7280);
+  line-height: 1.1;
+}
+
+body.shell-patient.simple-pain-map .patient-intensity-slider-vertical {
+  order: 2;
+  flex: 1 1 auto;
+  width: 48px;
+  min-height: 8rem;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  appearance: slider-vertical;
+  -webkit-appearance: slider-vertical;
+  accent-color: var(--spm-amber, #F9B847);
+  touch-action: none;
+  cursor: pointer;
+}
+
+body.shell-patient.simple-pain-map .simple-intensity-tick-max { order: 1; }
+body.shell-patient.simple-pain-map .simple-intensity-tick-min { order: 4; }
+
+body.shell-patient.simple-pain-map .simple-intensity-rail .patient-describe-heading,
+body.shell-patient.simple-pain-map .simple-intensity-rail .patient-intensity-ends {
+  display: none !important;
+}
+
+/* Compass overlays the figure — NEVER in document flow (that collapsed the body). */
+body.shell-patient.simple-pain-map .simple-figure-stage .simple-view-compass,
+body.shell-patient.simple-pain-map .avatar-wrap > .simple-view-compass {
+  position: absolute !important;
+  inset: unset !important;
+  top: auto !important;
+  right: 0.35rem !important;
+  bottom: 0.45rem !important;
+  left: 0.35rem !important;
+  transform: none !important;
+  z-index: 14 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-rows: auto !important;
+  gap: 0.3rem !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0.25rem !important;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--spm-white, #fff) 92%, transparent);
+  border: 1px solid var(--spm-border, var(--border));
+  box-shadow: 0 4px 14px rgba(24, 42, 66, 0.12);
+  filter: none !important;
+  justify-self: unset !important;
+  align-self: unset !important;
+  grid-row: auto !important;
+  grid-column: auto !important;
+  pointer-events: auto;
+}
+
+body.shell-patient.simple-pain-map .simple-figure-stage .simple-compass-btn,
+body.shell-patient.simple-pain-map .simple-figure-stage .simple-compass-btn[data-view="front"],
+body.shell-patient.simple-pain-map .simple-figure-stage .simple-compass-btn[data-view="left"],
+body.shell-patient.simple-pain-map .simple-figure-stage .simple-compass-btn[data-view="right"],
+body.shell-patient.simple-pain-map .simple-figure-stage .simple-compass-btn[data-view="back"],
+body.shell-patient.simple-pain-map .avatar-wrap > .simple-view-compass .simple-compass-btn {
+  grid-column: auto !important;
+  grid-row: auto !important;
+  min-height: 44px;
+  min-width: 0;
+  border-radius: 999px;
+  font-size: 0.72rem;
+}
+
+@media (min-width: 901px) {
+  body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-figure-stage {
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  body.shell-patient.simple-pain-map .body-type-gallery {
+    left: calc(clamp(3.35rem, 14vw, 4.35rem) + 0.85rem);
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-map-col {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  body.shell-patient.simple-pain-map .simple-pain-map-col > .simple-figure-stage {
+    grid-row: 3 !important;
+    grid-column: 1 !important;
+    min-height: 0;
+    height: 100%;
+  }
+
+  body.shell-patient.simple-pain-map .body-type-gallery {
+    grid-row: 2 !important;
+  }
+
+  body.shell-patient.simple-pain-map .simple-pain-headline {
+    grid-row: 1 !important;
+  }
+
+  body.shell-patient.simple-pain-map .simple-intensity-rail {
+    width: 3.75rem;
+    padding: 0.35rem 0.15rem;
+    border-radius: 16px;
+  }
+
+  body.shell-patient.simple-pain-map .simple-intensity-rail .patient-intensity-value {
+    font-size: 2rem;
+  }
+
+  body.shell-patient.simple-pain-map .patient-intensity-slider-vertical {
+    width: 48px;
+    min-height: 10rem;
+  }
+}
+
+/* Human (plate) must never leave a live Spatial canvas visible */
+body.shell-patient.simple-pain-map:not(.simple-display-spatial) .cae-spatial-viewport,
+body.shell-patient.simple-pain-map:not(.simple-display-spatial) .cae-spatial-canvas,
+body.shell-patient.simple-pain-map.simple-display-plate .cae-spatial-viewport,
+body.shell-patient.simple-pain-map.simple-display-plate .cae-spatial-canvas,
+body.shell-patient.simple-pain-map.simple-display-plate .cae-spatial-status {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+body.shell-patient.simple-pain-map.simple-display-plate .cae-anatomy-image,
+body.shell-patient.simple-pain-map:not(.simple-display-spatial) .cae-anatomy-image.is-loaded {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }

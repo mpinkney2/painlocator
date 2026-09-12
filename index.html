@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-12-human-3d-toggle">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.34-mobile-stack">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.38-vertical-rail">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -341,35 +341,40 @@
                   </button>
                 </div>
               </div>
-              <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
-                <div class="region-tools review-tools show-review" id="reviewTools">
-                  <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
-                  <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
-                  <button type="button" class="region-tool" data-review-tool="compare" title="Compare two entries">Compare</button>
-                  <button type="button" class="btn btn-ghost btn-sm region-tool-edit" id="btnEditEntry" title="Enable region editing">Edit Entry</button>
+              <div class="simple-figure-stage" id="simpleFigureStage">
+                <!-- Tall vertical intensity rail — frees bottom space for the body -->
+                <section class="simple-map-intensity simple-intensity-rail shell-only-patient" id="simpleMapIntensity" aria-labelledby="patientIntensityHeading">
+                  <h3 id="patientIntensityHeading" class="patient-describe-heading visually-hidden sr-only">How strong is it now?</h3>
+                  <div class="simple-intensity-rail-inner">
+                    <span class="simple-intensity-tick simple-intensity-tick-max" aria-hidden="true">10</span>
+                    <label class="visually-hidden sr-only" for="patientIntensitySlider">Pain intensity from 0 to 10</label>
+                    <input type="range" id="patientIntensitySlider" class="patient-intensity-slider patient-intensity-slider-vertical" min="0" max="10" step="1" value="5"
+                      aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Pain intensity 5 out of 10"
+                      orient="vertical" />
+                    <div class="patient-intensity-row simple-intensity-rail-value" aria-live="polite">
+                      <span class="patient-intensity-value" id="patientIntensityValue">5</span>
+                      <span class="patient-intensity-of">/10</span>
+                    </div>
+                    <span class="simple-intensity-tick simple-intensity-tick-min" aria-hidden="true">0</span>
+                  </div>
+                </section>
+                <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
+                  <div class="region-tools review-tools show-review" id="reviewTools">
+                    <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
+                    <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
+                    <button type="button" class="region-tool" data-review-tool="compare" title="Compare two entries">Compare</button>
+                    <button type="button" class="btn btn-ghost btn-sm region-tool-edit" id="btnEditEntry" title="Enable region editing">Edit Entry</button>
+                  </div>
+                  <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Body map — tap to mark pain"></div>
+                  <!-- Compact view snaps over the figure (not a full horizontal dock) -->
+                  <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
+                    <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
+                    <button type="button" class="simple-compass-btn" data-view="left" title="Left view" aria-pressed="false">Left</button>
+                    <button type="button" class="simple-compass-btn" data-view="right" title="Right view" aria-pressed="false">Right</button>
+                    <button type="button" class="simple-compass-btn" data-view="back" title="Back view" aria-pressed="false">Back</button>
+                  </div>
                 </div>
-                <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Body map — tap to mark pain"></div>
               </div>
-              <!-- View snaps: D-pad overlay on desktop, equal-width bar on mobile -->
-              <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
-                <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
-                <button type="button" class="simple-compass-btn" data-view="left" title="Left view" aria-pressed="false">Left</button>
-                <button type="button" class="simple-compass-btn" data-view="right" title="Right view" aria-pressed="false">Right</button>
-                <button type="button" class="simple-compass-btn" data-view="back" title="Back view" aria-pressed="false">Back</button>
-              </div>
-              <section class="simple-map-intensity shell-only-patient" id="simpleMapIntensity" aria-labelledby="patientIntensityHeading">
-                <h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>
-                <div class="patient-intensity-row">
-                  <span class="patient-intensity-value" id="patientIntensityValue" aria-live="polite">5</span>
-                  <span class="patient-intensity-of">/ 10</span>
-                </div>
-                <label class="visually-hidden sr-only" for="patientIntensitySlider">Pain intensity from 0 to 10</label>
-                <input type="range" id="patientIntensitySlider" class="patient-intensity-slider" min="0" max="10" step="1" value="5"
-                  aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Pain intensity 5 out of 10" />
-                <div class="patient-intensity-ends" aria-hidden="true">
-                  <span>0 · No pain</span><span>10 · Worst pain imaginable</span>
-                </div>
-              </section>
             </div>
             <aside class="simple-pain-panel shell-only-patient" id="simplePainPanel" aria-labelledby="simplePainLocationTitle" data-assess-step="mark">
               <div class="simple-drawer-peek-bar" id="simpleDrawerPeekBar">
@@ -1187,7 +1192,7 @@
   <script src="src/engine/spatial/spatial-projection.js?v=2026-09-12-human-3d-toggle"></script>
   <script src="src/engine/spatial/spatial-boot-utils.js?v=2026-09-12-human-3d-toggle"></script>
   <script src="src/engine/spatial/spatial-three-loader.js?v=2026-09-12-human-3d-toggle"></script>
-  <script src="src/engine/anatomy/metahuman/metahuman-engine.js?v=5.34-glb-probe"></script>
+  <script src="src/engine/anatomy/metahuman/metahuman-engine.js?v=5.35-still-plate"></script>
   <script src="src/engine/spatial/spatial-manifest-loader.js?v=2026-09-12-human-3d-toggle"></script>
   <script src="src/engine/spatial/canonical-body-flag.js?v=2026-09-12-human-3d-toggle"></script>
   <script src="src/engine/spatial/exterior-canonical-conformer.js?v=2026-09-12-human-3d-toggle"></script>

@@ -365,12 +365,20 @@ class ClinicalAnatomyEngine {
 
   enablePlateMode(reason) {
     this._displayModeToken += 1;
-    this.spatialRenderer?.dispose?.();
+    try {
+      this.spatialRenderer?.dispose?.();
+    } catch (_) { /* ignore */ }
     this.spatialRenderer = null;
     this.displayMode = "plate";
     this.spatialPrimaryNoPlate = false;
     this.stage?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
     this.stage?.classList?.add("cae-plate-active");
+    // Guarantee no orphaned WebGL canvas remains when returning to Human.
+    try {
+      this.stage
+        ?.querySelectorAll?.(".cae-spatial-viewport, .cae-spatial-canvas, canvas.cae-spatial-canvas")
+        ?.forEach((node) => node.remove());
+    } catch (_) { /* ignore */ }
     this.render();
     this.trigger("displaymodechanged", { displayMode: "plate", reason: reason || null });
     return true;
