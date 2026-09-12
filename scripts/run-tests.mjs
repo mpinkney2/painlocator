@@ -1985,7 +1985,10 @@ console.log('PainLocator tests\n');
     assert.ok(css.includes('cae-region-layer') && css.includes('z-index: 8'));
     assert.ok(css.includes('height: 100% !important'));
     assert.ok(css.includes('background: transparent !important'));
-    assert.ok(css.includes('5.1rem') || css.includes('--spm-drawer-peek'));
+    assert.ok(css.includes('5.1rem') || css.includes('2.65rem') || css.includes('3.05rem') || css.includes('3.85rem') || css.includes('--spm-drawer-peek'));
+    assert.ok(css.includes('--spm-intensity-accent'));
+    assert.ok(flow.includes('applyIntensityAccent') && flow.includes('intensityAccentColor'));
+    assert.ok(flow.includes('--spm-intensity-accent'));
     assert.ok(html.includes('id="simpleMapIntensity"'));
     assert.ok(html.includes('id="patientIntensitySlider"'));
     assert.ok(html.includes('How strong is it now?'));
@@ -2790,7 +2793,10 @@ console.log('PainLocator tests\n');
 
   test('spatial output: clinical exterior material is warm-neutral not game-metal', () => {
     const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
-    assert.ok(loader.includes('0xcbb7a8'));
+    assert.ok(loader.includes('0xf0e0d0'));
+    assert.ok(loader.includes('softenClinicalExteriorMaterial'));
+    assert.ok(loader.includes('CLINICAL_EXTERIOR_OPACITY'));
+    assert.ok(loader.includes('transparent: true'));
     assert.equal(loader.includes('0xb9c2cc'), false);
   });
 

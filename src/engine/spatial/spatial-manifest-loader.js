@@ -114,6 +114,40 @@
     return meshes;
   }
 
+  /** Warm clinical exterior — brighter and lightly translucent for consumer readability. */
+  const CLINICAL_EXTERIOR_COLOR = 0xf0e0d0;
+  const CLINICAL_EXTERIOR_OPACITY = 0.62;
+
+  /**
+   * Brighten + translucify an exterior material in place (keeps textures when present).
+   * @param {import('three').Material} mat
+   */
+  function softenClinicalExteriorMaterial(mat) {
+    if (!mat) return;
+    if (mat.color && typeof mat.color.setRGB === "function" && typeof mat.color.r === "number") {
+      // Pull strongly toward warm light skin for a brighter clinical read.
+      mat.color.r = Math.min(1, mat.color.r * 0.28 + 0.94 * 0.72);
+      mat.color.g = Math.min(1, mat.color.g * 0.28 + 0.88 * 0.72);
+      mat.color.b = Math.min(1, mat.color.b * 0.28 + 0.82 * 0.72);
+    } else if (mat.color && typeof mat.color.setHex === "function") {
+      mat.color.setHex(CLINICAL_EXTERIOR_COLOR);
+    }
+    mat.transparent = true;
+    mat.opacity = CLINICAL_EXTERIOR_OPACITY;
+    if ("metalness" in mat && typeof mat.metalness === "number") {
+      mat.metalness = Math.min(mat.metalness, 0.04);
+    }
+    if ("roughness" in mat && typeof mat.roughness === "number") {
+      mat.roughness = Math.max(mat.roughness, 0.62);
+    }
+    if (mat.emissive && typeof mat.emissive.setHex === "function") {
+      mat.emissive.setHex(0xfff5ec);
+      if ("emissiveIntensity" in mat) mat.emissiveIntensity = 0.28;
+    }
+    mat.depthWrite = true;
+    mat.needsUpdate = true;
+  }
+
   function applySurfaceMeshMeta(THREE, obj, meshId, meta, modelId, keepSourceMaterials) {
     obj.name = meshId;
     obj.userData.meshId = meshId;
@@ -126,10 +160,17 @@
     if (obj.isSkinnedMesh || obj.type === "SkinnedMesh") {
       obj.frustumCulled = false;
     }
-    if (keepSourceMaterials) return;
+    if (keepSourceMaterials) {
+      const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+      mats.forEach(softenClinicalExteriorMaterial);
+      return;
+    }
     if (obj.material) {
       const mat = new THREE.MeshLambertMaterial({
-        color: 0xcbb7a8
+        color: CLINICAL_EXTERIOR_COLOR,
+        transparent: true,
+        opacity: CLINICAL_EXTERIOR_OPACITY,
+        depthWrite: true
       });
       if (obj.material.dispose) obj.material.dispose();
       obj.material = mat;
@@ -338,6 +379,9 @@
     resolveGlbMeshId,
     isMeshLike,
     collectBodyMeshes,
+    softenClinicalExteriorMaterial,
+    CLINICAL_EXTERIOR_COLOR,
+    CLINICAL_EXTERIOR_OPACITY,
     DEFAULT_CATALOG_URL
   };
 })(typeof window !== "undefined" ? window : globalThis);

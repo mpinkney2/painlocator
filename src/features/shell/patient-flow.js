@@ -205,8 +205,12 @@
       patientIntensity.setAttribute('aria-valuenow', String(intensity));
       patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + intensity + ' out of 10');
       patientIntensity.style.setProperty('--spm-slider-pct', (intensity * 10) + '%');
+      applyIntensityAccent(intensity, patientIntensity);
     }
-    if (intensityValue) intensityValue.textContent = String(intensity);
+    if (intensityValue) {
+      intensityValue.textContent = String(intensity);
+      intensityValue.style.color = intensityAccentColor(intensity);
+    }
     // Keep anatomy marks colored to the active intensity.
     refreshMarkColors();
 
@@ -616,6 +620,25 @@
     } catch (e) { /* ignore */ }
   }
 
+  function intensityAccentColor(value) {
+    var n = Math.max(0, Math.min(10, Math.round(Number(value) || 0)));
+    var colors = (typeof PAIN_COLORS !== 'undefined' && PAIN_COLORS) ||
+      (typeof window !== 'undefined' && window.PAIN_COLORS) ||
+      null;
+    return (colors && colors[n]) || '#f59e0b';
+  }
+
+  function applyIntensityAccent(value, el) {
+    var color = intensityAccentColor(value);
+    var target = el || document.getElementById('patientIntensitySlider');
+    if (target) target.style.setProperty('--spm-intensity-accent', color);
+    var rail = document.getElementById('simpleMapIntensity') ||
+      document.querySelector('.simple-intensity-rail');
+    if (rail) rail.style.setProperty('--spm-intensity-accent', color);
+    document.body.style.setProperty('--spm-intensity-accent', color);
+    return color;
+  }
+
   function applyIntensityValue(value, opts) {
     var options = opts || {};
     value = Math.max(0, Math.min(10, Number(value)));
@@ -627,8 +650,12 @@
       patientIntensity.setAttribute('aria-valuenow', String(value));
       patientIntensity.setAttribute('aria-valuetext', 'Pain intensity ' + value + ' out of 10');
       patientIntensity.style.setProperty('--spm-slider-pct', (value * 10) + '%');
+      applyIntensityAccent(value, patientIntensity);
     }
-    if (label) label.textContent = String(value);
+    if (label) {
+      label.textContent = String(value);
+      label.style.color = intensityAccentColor(value);
+    }
     if (!options.skipStore) {
       try {
         var store = getStore();
@@ -665,6 +692,7 @@
       '--spm-slider-pct',
       (Number(patientIntensity.value || 5) * 10) + '%'
     );
+    applyIntensityAccent(patientIntensity.value || 5, patientIntensity);
   }
 
   function locationLines(entry) {
