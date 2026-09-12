@@ -1,0 +1,53 @@
+{
+  "id": "metahuman",
+  "label": "Lifelike body (MetaHuman-style)",
+  "schemaVersion": 1,
+  "width": 2048,
+  "height": 3072,
+  "models": {
+    "adult-male": {
+      "label": "Adult man",
+      "thumb": "/anatomy/metahuman/thumbs/adult-male.png"
+    },
+    "adult-female": {
+      "label": "Adult woman",
+      "thumb": "/anatomy/metahuman/thumbs/adult-female.png"
+    },
+    "teen-male": {
+      "label": "Teen boy",
+      "thumb": "/anatomy/metahuman/thumbs/teen-male.png"
+    },
+    "teen-female": {
+      "label": "Teen girl",
+      "thumb": "/anatomy/metahuman/thumbs/teen-female.png"
+    },
+    "child-male": {
+      "label": "Boy",
+      "thumb": "/anatomy/metahuman/thumbs/child-male.png"
+    },
+    "child-female": {
+      "label": "Girl",
+      "thumb": "/anatomy/metahuman/thumbs/child-female.png"
+    },
+    "senior-male": {
+      "label": "Elderly man",
+      "thumb": "/anatomy/metahuman/thumbs/senior-male.png"
+    },
+    "senior-female": {
+      "label": "Elderly woman",
+      "thumb": "/anatomy/metahuman/thumbs/senior-female.png"
+    }
+  },
+  "aliases": {
+    "teen": "teen-male",
+    "child": "child-male",
+    "senior": "senior-male"
+  },
+  "views": [
+    "front",
+    "back",
+    "left",
+    "right"
+  ],
+  "notes": "Retina 2048x3072 stills plus shipped Blender GLB at /anatomy/metahuman/body.glb (New-avatar-stand, meshopt)."
+}

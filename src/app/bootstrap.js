@@ -1,5 +1,19 @@
+function restoreSavedBodyType() {
+  try {
+    const storedBody = localStorage.getItem('painlocator_body_type');
+    if (!storedBody) return;
+    const model = typeof normalizeModelType === 'function' ? normalizeModelType(storedBody) : storedBody;
+    state.modelType = model;
+    try { localStorage.setItem('painlocator_body_type', model); } catch (_) { /* ignore */ }
+    const radioValue = typeof clinicianRadioValue === 'function' ? clinicianRadioValue(model) : storedBody;
+    const storedRadio = document.querySelector(`#modelSelector input[name="patient_model"][value="${radioValue}"]`);
+    if (storedRadio) storedRadio.checked = true;
+  } catch (_) { /* ignore */ }
+}
+
 function init() {
   restoreSavedTheme();
+  restoreSavedBodyType();
 
   // Demo mode may remap storage key before load
   demoMode?.initControls?.();
@@ -94,16 +108,12 @@ function init() {
 
   document.querySelectorAll('input[name="patient_model"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
-      state.modelType = e.target.value;
-      const active = entryStore.getActiveEntry();
-      if (active && entryStore.isDraftActive()) {
-        entryStore.updateActiveEntry({ patientModel: normalizeModelType(state.modelType) });
-      }
-      state.engine.update({ modelType: state.modelType });
-      state.vizController?.refreshAvailability(state.modelType, state.view);
-      refreshUI();
+      applyBodyProfile(e.target.value);
     });
   });
+
+  initBodyTypeGallery();
+  syncBodyTypeGallery(state.modelType);
 
   document.querySelectorAll('#viewSelector .view-btn, #quickViewBar .view-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -177,6 +187,14 @@ function init() {
   document.getElementById('btnDeleteEntry').addEventListener('click', deleteActiveEntry);
   document.getElementById('btnUndo')?.addEventListener('click', performUndo);
   document.getElementById('btnRedo')?.addEventListener('click', performRedo);
+  document.getElementById('btnPeekUndo')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    performUndo();
+  });
+  document.getElementById('btnPeekRedo')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    performRedo();
+  });
   document.getElementById('btnDupRegion')?.addEventListener('click', () => {
     const id = entryStore.selectedRegionIds[0];
     if (id) { entryStore.duplicateRegion(id); refreshUI(); }
@@ -211,31 +229,34 @@ function init() {
     openExportModal();
     trackEvent?.('report_opened');
   });
-  ['btnExportPdf', 'btnExportPdfModal'].forEach(id => {
+  ['btnExportPdf', 'btnExportPdfModal', 'btnSharePdf'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
       setSaveStatus?.('report', 'Preparing report…');
       await printClinicalReport();
       setSaveStatus?.('report', 'Report ready');
       trackEvent?.('report_exported', { format: 'pdf' });
       document.getElementById('exportModal')?.close();
+      document.getElementById('shareModal')?.close();
     });
   });
-  ['btnExportJson', 'btnExportJsonModal'].forEach(id => {
+  ['btnExportJson', 'btnExportJsonModal', 'btnShareJson'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => {
       exportSessionJson();
       setSaveStatus?.('exported');
       showToast?.('Session JSON exported.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'json' });
       document.getElementById('exportModal')?.close();
+      document.getElementById('shareModal')?.close();
     });
   });
-  ['btnExportPng', 'btnExportPngModal'].forEach(id => {
+  ['btnExportPng', 'btnExportPngModal', 'btnSharePng'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', async () => {
       await captureClinicalSnapshot();
       setSaveStatus?.('exported');
       showToast?.('Anatomy snapshot saved.', { type: 'success' });
       trackEvent?.('report_exported', { format: 'png' });
       document.getElementById('exportModal')?.close();
+      document.getElementById('shareModal')?.close();
     });
   });
   ['btnImport', 'btnImportSidebar'].forEach(id => {
@@ -305,6 +326,11 @@ function setBodyView(view) {
     b.classList.toggle('active', b.dataset.view === view);
     b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false');
   });
+  document.querySelectorAll('#simpleViewBar [data-view], #simpleViewCompass [data-view]').forEach((b) => {
+    const on = b.getAttribute('data-view') === view;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
   state.view = view;
   state.engine?.update({ viewType: state.view });
   state.vizController?.refreshAvailability(state.modelType, state.view);
@@ -328,3 +354,77 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 window.setBodyView = setBodyView;
+
+function applyBodyProfile(modelType) {
+  const model = typeof normalizeModelType === 'function' ? normalizeModelType(modelType) : modelType;
+  state.modelType = model;
+  try { localStorage.setItem('painlocator_body_type', model); } catch (_) { /* ignore */ }
+  const active = entryStore.getActiveEntry();
+  if (active && entryStore.isDraftActive()) {
+    entryStore.updateActiveEntry({ patientModel: model });
+  }
+  state.engine?.update({ modelType: model });
+  state.vizController?.refreshAvailability(model, state.view);
+  syncBodyTypeGallery(model);
+  refreshUI();
+}
+
+/** Sync Woman/Man + Adult/Teen/Child/Elderly gallery with the canonical model id. */
+function syncBodyTypeGallery(model) {
+  const profile = typeof parseBodyProfile === 'function'
+    ? parseBodyProfile(model)
+    : { stage: 'adult', sex: 'male', model: model || 'adult-male' };
+  document.querySelectorAll('#bodyTypeGallery .body-sex-btn').forEach((btn) => {
+    const on = btn.dataset.sex === profile.sex;
+    btn.classList.toggle('is-active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  document.querySelectorAll('#bodyTypeGallery .body-type-option').forEach((btn) => {
+    const on = btn.dataset.stage === profile.stage;
+    btn.classList.toggle('is-selected', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    const img = btn.querySelector('img');
+    if (img && typeof composeBodyModel === 'function') {
+      const thumbModel = composeBodyModel(btn.dataset.stage, profile.sex);
+      img.src = typeof getAnatomyThumbPath === 'function'
+        ? getAnatomyThumbPath(thumbModel)
+        : `/anatomy/metahuman/thumbs/${thumbModel}.png`;
+    }
+  });
+  const radioValue = typeof clinicianRadioValue === 'function'
+    ? clinicianRadioValue(profile.model)
+    : profile.stage === 'adult' ? (profile.sex === 'female' ? 'female' : 'male') : profile.stage;
+  const radio = document.querySelector(`#modelSelector input[name="patient_model"][value="${radioValue}"]`);
+  if (radio && !radio.checked) radio.checked = true;
+}
+
+function initBodyTypeGallery() {
+  const gallery = document.getElementById('bodyTypeGallery');
+  if (!gallery || gallery.dataset.bound === '1') return;
+  gallery.dataset.bound = '1';
+  gallery.querySelectorAll('.body-sex-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const sex = btn.dataset.sex;
+      if (!sex) return;
+      const stage = typeof parseBodyProfile === 'function'
+        ? parseBodyProfile(state.modelType).stage
+        : 'adult';
+      applyBodyProfile(composeBodyModel(stage, sex));
+    });
+  });
+  gallery.querySelectorAll('.body-type-option').forEach((btn) => {
+    btn.setAttribute('role', 'radio');
+    btn.addEventListener('click', () => {
+      const stage = btn.dataset.stage;
+      if (!stage) return;
+      const sex = typeof parseBodyProfile === 'function'
+        ? parseBodyProfile(state.modelType).sex
+        : 'male';
+      applyBodyProfile(composeBodyModel(stage, sex));
+    });
+  });
+}
+
+window.syncBodyTypeGallery = syncBodyTypeGallery;
+window.applyBodyProfile = applyBodyProfile;

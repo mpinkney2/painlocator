@@ -1,13 +1,15 @@
 /**
- * Engage BP3D-aligned Spatial as the primary locate surface across shells.
+ * Engage locate surface across shells.
  *
  * Product default:
- * - Patient + Clinician: rotatable 3D body (snap views + tap to mark)
- * - CAE 2D plate image is NOT shown on failure (status panel + Retry instead)
- * - Opt in to plate: ?displayMode=plate | ?plate=1 | "Use 2D diagram"
- * - Show 2D/Spatial toggle: ?displayToggle=1 | ?dev=1
+ * - Clinician: rotatable 3D body (snap views + tap to mark)
+ * - Simple pain-map (patient): Human (2D) by default; user may toggle 3D
+ * - Explicit plate: ?displayMode=plate | ?plate=1 | "Use 2D diagram"
+ * - Show Human/3D toggle: simple pain-map always; elsewhere ?displayToggle=1 | ?dev=1
  */
 (function (global) {
+  var SIMPLE_DISPLAY_PREF_KEY = "painlocator_simple_display_mode";
+
   function isFalsyFlag(value) {
     if (value == null || value === "") return false;
     const v = String(value).trim().toLowerCase();
@@ -28,6 +30,36 @@
     }
   }
 
+  function isSimplePainMapShell() {
+    try {
+      if (document.body?.classList?.contains("simple-pain-map")) return true;
+      const mode =
+        (typeof state !== "undefined" && state?.presentationMode) ||
+        document.body?.dataset?.presentation ||
+        "";
+      return mode === "patient" && document.body?.classList?.contains("shell-patient");
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function readSimpleDisplayPreference() {
+    try {
+      const raw = global.localStorage?.getItem?.(SIMPLE_DISPLAY_PREF_KEY);
+      if (raw === "spatial" || raw === "3d") return "spatial";
+      if (raw === "plate" || raw === "human" || raw === "2d") return "plate";
+    } catch (_) { /* ignore */ }
+    return null;
+  }
+
+  function writeSimpleDisplayPreference(mode) {
+    if (!isSimplePainMapShell()) return;
+    try {
+      const next = mode === "spatial" ? "spatial" : "plate";
+      global.localStorage?.setItem?.(SIMPLE_DISPLAY_PREF_KEY, next);
+    } catch (_) { /* ignore */ }
+  }
+
   function configureCanonicalEngagement() {
     const params = readParams();
     const raw =
@@ -45,14 +77,19 @@
   }
 
   /**
-   * Prefer Spatial unless the user explicitly opted into plate.
-   * Do NOT gate on the WebGL probe — probes are flaky in embedded previews;
-   * always attempt the real mount and surface failure in the status panel.
+   * Prefer Spatial unless plate is requested.
+   * Simple pain-map defaults to Human (plate); honors URL + saved toggle preference.
    */
   function shouldPreferSpatial() {
     const params = readParams();
     if (params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"))) {
       return false;
+    }
+    if (params.get("displayMode") === "spatial") {
+      return true;
+    }
+    if (isSimplePainMapShell()) {
+      return readSimpleDisplayPreference() === "spatial";
     }
     return true;
   }
@@ -76,6 +113,21 @@
   async function preferSpatialAcrossShells(engine) {
     if (!engine || typeof engine.setDisplayMode !== "function") return false;
     if (!shouldPreferSpatial()) {
+      engine.spatialPrimaryNoPlate = false;
+      try {
+        document.body?.classList?.remove("spatial-primary", "spatial-ready");
+      } catch (_) { /* ignore */ }
+      try {
+        await engine.setDisplayMode("plate");
+        // Ensure plate paint even if a prior spatial-loading stage lingered.
+        if (engine.displayMode !== "plate") {
+          engine.enablePlateMode?.("simple-pain-map");
+        } else {
+          engine.render?.();
+        }
+      } catch (err) {
+        console.warn("[PainLocator] Plate locate failed", err);
+      }
       syncSpatialChrome(false);
       return false;
     }
@@ -84,7 +136,6 @@
       const ok = await engine.setDisplayMode("spatial");
       syncSpatialChrome(!!ok);
       if (!ok && engine.displayMode === "plate") {
-        // Belt-and-suspenders: never leave the plate PNG as Spatial-primary UI.
         engine.showSpatialUnavailable?.(
           engine.lastSpatialFailure || "spatial-mount-failed"
         );
@@ -102,11 +153,13 @@
     if (global.__bp3dPresentationBound) return;
     global.__bp3dPresentationBound = true;
     document.addEventListener("presentationchange", () => {
+      preferSpatialAcrossShells(engine).catch((err) => {
+        console.warn("[PainLocator] presentation mode remount failed", err);
+      });
       const spatial = engine?.spatialRenderer;
       if (!spatial?.ready) return;
       try {
         spatial.refreshPresentationShell?.();
-        syncSpatialChrome(true);
       } catch (err) {
         console.warn("[PainLocator] presentation shell refresh failed", err);
       }
@@ -118,9 +171,10 @@
     bindPresentationShellRefresh(engine);
     const spatialOn = await preferSpatialAcrossShells(engine);
     if (typeof console !== "undefined" && console.info) {
-      console.info("[PainLocator] Spatial-primary locate engagement", {
+      console.info("[PainLocator] locate engagement", {
         canonicalBodyMode: canonicalOn,
         spatialPrimary: spatialOn,
+        simplePainMapPlate: isSimplePainMapShell() && !spatialOn,
         plateFallback: engine?.displayMode === "plate",
         spatialStatus: engine?.displayMode,
         lastSpatialFailure: engine?.lastSpatialFailure || null,
@@ -134,10 +188,14 @@
   global.Bp3dShellEngagement = {
     configureCanonicalEngagement,
     shouldPreferSpatial,
+    isSimplePainMapShell,
     preferSpatialAcrossShells,
     bindPresentationShellRefresh,
     engageBp3dAcrossShells,
     syncSpatialChrome,
+    readSimpleDisplayPreference,
+    writeSimpleDisplayPreference,
+    SIMPLE_DISPLAY_PREF_KEY,
     isFalsyFlag,
     isTruthyFlag
   };

@@ -38,7 +38,33 @@ window.LOCAL_SCHEMA_VERSION = LOCAL_SCHEMA_VERSION;
 window.isEntryContentEmpty = isEntryContentEmpty;
 
 function normalizeModelType(modelType) {
-  const map = { male: "adult-male", female: "adult-female", child: "child", teen: "teen", senior: "senior" };
+  // Coerce legacy / mistaken object shapes like { gender: 'male', view: 'anterior' }.
+  if (modelType && typeof modelType === "object") {
+    if (modelType.id || modelType.modelType) {
+      return normalizeModelType(modelType.id || modelType.modelType);
+    }
+    const nested = modelType.model;
+    if (typeof nested === "string" && nested.includes("-")) {
+      return normalizeModelType(nested);
+    }
+    const gender = String(modelType.gender || modelType.sex || nested || "").toLowerCase();
+    if (gender.includes("female")) return "adult-female";
+    if (gender.includes("male")) return "adult-male";
+    return "adult-male";
+  }
+  if (typeof normalizeAnatomyModel === "function") {
+    return normalizeAnatomyModel(modelType);
+  }
+  const map = {
+    male: "adult-male",
+    female: "adult-female",
+    man: "adult-male",
+    woman: "adult-female",
+    child: "child-male",
+    teen: "teen-male",
+    senior: "senior-male",
+    elderly: "senior-male"
+  };
   return map[modelType] || modelType || "adult-male";
 }
 
@@ -80,7 +106,7 @@ function createPainEntry(partial = {}) {
   return {
     id: entryId,
     title: partial.title || null,
-    patientModel: partial.patientModel || "adult-male",
+    patientModel: normalizeModelType(partial.patientModel),
     createdAt: partial.createdAt || now,
     updatedAt: partial.updatedAt || now,
     intensity: typeof partial.intensity === "number" ? partial.intensity : 5,
@@ -114,6 +140,29 @@ function getRegionRadii(region, intensity = 5) {
   const rx = base * scale;
   const ry = (region.radiusY || base) * scale;
   return { rx, ry };
+}
+
+/**
+ * Convert a normalized radius into viewBox rx/ry that paint as a screen circle.
+ * SVG layers use viewBox 0 0 1 1 + preserveAspectRatio=none, so equal rx/ry
+ * become ovals on a portrait plate.
+ * @param {number} width displayed overlay width in px
+ * @param {number} height displayed overlay height in px
+ * @param {number} radius radius in x-normalized (0–1) units
+ */
+function aspectCorrectedCircleRadii(width, height, radius) {
+  const w = Math.max(Number(width) || 0, 1e-6);
+  const h = Math.max(Number(height) || 0, 1e-6);
+  const r = Math.max(Number(radius) || 0, 0.008);
+  return { rx: r, ry: r * (w / h) };
+}
+
+function isCircularPainMark(region) {
+  if (!region || region.shape === "polygon") return false;
+  if (region.shape === "ellipse" && region.radiusY != null) {
+    return Math.abs(Number(region.radiusY) - Number(region.radius || region.radiusY)) < 0.004;
+  }
+  return region.shape === "circle" || region.shape === "point" || region.radiusY == null;
 }
 
 function getRegionOpacity(region, intensity = 5) {

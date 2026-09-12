@@ -1304,8 +1304,8 @@ body.spatial-primary .capture-tools .region-tool[data-tool="polygon"] {
 }
 
 /* While Spatial-primary is booting / unavailable, never show the plate PNG */
-body.spatial-primary:not(.spatial-ready) .cae-anatomy-image,
-body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame {
+body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-anatomy-image,
+body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-clinical-viewport .cae-image-frame {
   display: none !important;
 }
 
@@ -1315,6 +1315,12 @@ body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame
   height: 100%;
   touch-action: none;
   cursor: grab;
+  background: transparent;
+}
+
+.cae-spatial-viewport .cae-spatial-canvas {
+  position: absolute;
+  inset: 0;
 }
 
 .cae-spatial-canvas:active {
@@ -1518,7 +1524,7 @@ body.spatial-primary:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame
   z-index: 10;
 }
 
-.avatar-stage svg {
+.avatar-stage svg:not(.cae-region-layer):not(.cae-layer-overlay):not(.cae-marker-layer) {
   height: 95%;
   width: auto;
   max-width: 100%;

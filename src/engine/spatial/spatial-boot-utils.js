@@ -10,7 +10,7 @@
  */
 (function (global) {
   /** Bump together with all Spatial classic-script ?v= query tokens in index.html */
-  const SPATIAL_RUNTIME_VERSION = "2026-09-07-bp3d-boot-1";
+  const SPATIAL_RUNTIME_VERSION = "2026-09-12-human-3d-toggle";
 
   const BOOT_STATES = Object.freeze({
     IDLE: "idle",
@@ -75,8 +75,9 @@
   /**
    * Soft WebGL probe. Do NOT call loseContext() — that can poison the next
    * real WebGLRenderer in Electron / Cursor Simple Browser.
+   * @returns {{ ok: boolean, software: boolean, renderer: string|null }}
    */
-  function isWebGLReallyAvailable() {
+  function probeWebGL() {
     try {
       const canvas = document.createElement("canvas");
       const attrs = {
@@ -90,13 +91,36 @@
         canvas.getContext("webgl2", attrs) ||
         canvas.getContext("webgl", attrs) ||
         canvas.getContext("experimental-webgl", attrs);
-      if (!gl) return false;
-      if (typeof gl.isContextLost === "function" && gl.isContextLost()) return false;
+      if (!gl) return { ok: false, software: true, renderer: null };
+      if (typeof gl.isContextLost === "function" && gl.isContextLost()) {
+        return { ok: false, software: true, renderer: null };
+      }
       gl.viewport(0, 0, 1, 1);
-      return true;
+      let renderer = null;
+      try {
+        const info = gl.getExtension("WEBGL_debug_renderer_info");
+        if (info) {
+          renderer = String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL) || "") || null;
+        }
+      } catch (_) {
+        renderer = null;
+      }
+      const blob = `${renderer || ""} ${gl.getParameter(gl.RENDERER) || ""}`;
+      const software = /swiftshader|llvmpipe|softwar|microsoft basic render|mesa offscreen/i.test(
+        blob
+      );
+      return { ok: true, software, renderer };
     } catch (_) {
-      return false;
+      return { ok: false, software: true, renderer: null };
     }
+  }
+
+  /**
+   * Soft WebGL probe. Do NOT call loseContext() — that can poison the next
+   * real WebGLRenderer in Electron / Cursor Simple Browser.
+   */
+  function isWebGLReallyAvailable() {
+    return probeWebGL().ok;
   }
 
   /**
@@ -240,6 +264,7 @@
       (getGlobal("state") && getGlobal("state").presentationMode) ||
       null;
     const spatialRenderer = engine && engine.spatialRenderer;
+    const liveReady = !!(spatialRenderer && spatialRenderer.ready);
     const layerController = spatialRenderer && spatialRenderer.layerController;
     const depth = layerController && typeof layerController.getDepth === "function"
       ? layerController.getDepth()
@@ -253,6 +278,7 @@
     const canonicalReady = !!(spatialRenderer && spatialRenderer.isCanonicalBodyMode && spatialRenderer.isCanonicalBodyMode());
     const canonicalExpected = !!(flag && flag.isEnabled && flag.isEnabled());
     const spatialReady =
+      liveReady ||
       boot.state === BOOT_STATES.READY_SPATIAL ||
       boot.state === BOOT_STATES.READY_CANONICAL ||
       boot.state === BOOT_STATES.CANONICAL_DEGRADED ||
@@ -269,8 +295,13 @@
         boot.canonicalStatus === "failed",
       canonicalExpected,
       threeRevision: boot.threeRevision || (three && three.REVISION) || null,
-      exteriorModelId: boot.exteriorModelId || null,
-      exteriorLoaded: spatialReady,
+      gpuRenderer: boot.gpuRenderer || null,
+      softwareWebGL: boot.softwareWebGL === true,
+      exteriorModelId:
+        boot.exteriorModelId ||
+        (spatialRenderer && spatialRenderer.scene && spatialRenderer.scene.modelId) ||
+        null,
+      exteriorLoaded: liveReady || spatialReady,
       meshCount,
       presentationMode: presentation,
       layerDepth: depth,
@@ -338,6 +369,7 @@
     REQUIRED_VENDOR,
     getGlobal,
     withTimeout,
+    probeWebGL,
     isWebGLReallyAvailable,
     resolveModuleHref,
     importEsm,

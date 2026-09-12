@@ -1,10 +1,16 @@
 /**
  * Spatial-primary locate chrome.
  *
- * Product rule: interactive locate is the rotatable 3D body (snap views + tap to mark).
- * The CAE 2D plate image must NOT appear as the default locate surface.
- * Plate is only for explicit opt-in (?plate=1) or the "Use 2D diagram" control,
- * plus off-stage report/PDF compositing.
+ * Product rule: interactive locate is the rotatable 3D body (snap views + tap to mark)
+ * for clinician. Simple pain-map defaults to Human (2D) with an on-map Human|3D toggle.
+ * Plate is also used for:
+ * - explicit opt-in (?plate=1 / ?displayMode=plate)
+ * - "Use 2D diagram"
+ * - off-stage report/PDF compositing
+ *
+ * Critical: when plate is intentional, never leave body.spatial-primary on while
+ * Spatial is not ready — CSS hides .cae-anatomy-image and only the CAE placeholder
+ * SVG remains visible.
  */
 (function (global) {
   function readParams() {
@@ -21,18 +27,65 @@
     return v === "1" || v === "true" || v === "yes" || v === "on";
   }
 
+  function isSimplePainMapShell() {
+    try {
+      if (document.body?.classList?.contains("simple-pain-map")) return true;
+      return !!global.Bp3dShellEngagement?.isSimplePainMapShell?.();
+    } catch (_) {
+      return false;
+    }
+  }
+
   function wantsPlateOptIn() {
     const params = readParams();
     return params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"));
   }
 
+  /**
+   * Plate is the intentional locate surface when the user (or URL) chose Human/2D.
+   * On simple pain-map, that is the default unless preference/URL requests Spatial.
+   */
+  function wantsPlateSurface() {
+    if (wantsPlateOptIn()) return true;
+    if (!isSimplePainMapShell()) return false;
+    if (typeof global.Bp3dShellEngagement?.shouldPreferSpatial === "function") {
+      return !global.Bp3dShellEngagement.shouldPreferSpatial();
+    }
+    return true;
+  }
+
   function allowPlateToggle() {
     const params = readParams();
     return (
+      isSimplePainMapShell() ||
       isTruthyFlag(params.get("displayToggle")) ||
       isTruthyFlag(params.get("dev")) ||
       wantsPlateOptIn()
     );
+  }
+
+  function syncSimpleDisplayLabels(isSpatial) {
+    const plate = document.getElementById("btnPlateMode");
+    const spatial = document.getElementById("btnSpatialMode");
+    const dock = document.getElementById("displayModeToggle");
+    if (!plate || !spatial) return;
+    if (isSimplePainMapShell()) {
+      if (dock) dock.setAttribute("aria-label", "Human or 3D body");
+      plate.textContent = "Human";
+      plate.title = "Human body image";
+      if (!spatial.disabled) {
+        spatial.textContent = "3D";
+        spatial.title = "Rotatable 3D body";
+      }
+      return;
+    }
+    if (dock) dock.setAttribute("aria-label", "Anatomy display mode");
+    plate.textContent = "2D";
+    plate.title = "2D clinical plate (fallback)";
+    if (!spatial.disabled) {
+      spatial.textContent = "Spatial";
+      spatial.title = "Spatial body (3D)";
+    }
   }
 
   function setActiveToolButton(tool) {
@@ -162,10 +215,19 @@
     const body = document.body;
     if (!body) return;
 
-    const spatialPrimaryShell = opts.keepSpatialPrimary || !!isSpatial || !wantsPlateOptIn();
+    // Intentional plate (simple pain-map Human mode, ?plate=1, or explicit keepSpatialPrimary:false)
+    // must clear spatial-primary so the real plate PNG is not CSS-hidden.
+    const intentionalPlate =
+      opts.keepSpatialPrimary === false || wantsPlateSurface();
+    const spatialPrimaryShell = intentionalPlate
+      ? !!isSpatial
+      : !!(opts.keepSpatialPrimary || isSpatial);
     body.classList.toggle("spatial-primary", spatialPrimaryShell);
     body.classList.toggle("allow-plate-toggle", allowPlateToggle());
     body.classList.toggle("spatial-ready", !!isSpatial);
+    const simpleShell = isSimplePainMapShell();
+    body.classList.toggle("simple-display-spatial", !!(simpleShell && isSpatial));
+    body.classList.toggle("simple-display-plate", !!(simpleShell && !isSpatial));
 
     const dock = document.getElementById("displayModeToggle");
     if (dock) {
@@ -173,10 +235,35 @@
       dock.hidden = !showToggle;
       dock.setAttribute("aria-hidden", showToggle ? "false" : "true");
     }
+    syncSimpleDisplayLabels(!!isSpatial);
+
+    const gallery = document.getElementById("bodyTypeGallery");
+    if (gallery && simpleShell) {
+      const hideGallery = !!isSpatial;
+      gallery.hidden = hideGallery;
+      gallery.setAttribute("aria-hidden", hideGallery ? "true" : "false");
+      if (hideGallery) gallery.setAttribute("inert", "");
+      else gallery.removeAttribute("inert");
+    }
+
+    // Human mode: strip any leftover Spatial canvas so only the 2D plate remains.
+    if (simpleShell && !isSpatial) {
+      document
+        .querySelectorAll(
+          "#avatarStage .cae-spatial-viewport, #avatarStage .cae-spatial-canvas, #avatarStage canvas.cae-spatial-canvas"
+        )
+        .forEach((node) => {
+          try {
+            node.remove();
+          } catch (_) { /* ignore */ }
+        });
+      document.getElementById("avatarStage")?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
+      document.getElementById("avatarWrap")?.classList?.remove("display-spatial");
+    }
 
     const enlarge = document.getElementById("btnEnlargeAnatomy");
     if (enlarge) {
-      const hidePlateTools = spatialPrimaryShell && !wantsPlateOptIn();
+      const hidePlateTools = spatialPrimaryShell && !wantsPlateSurface();
       enlarge.hidden = hidePlateTools || !!isSpatial;
       enlarge.disabled = !!isSpatial || hidePlateTools;
     }
@@ -186,7 +273,7 @@
         '.capture-tools .region-tool[data-tool="circle"], .capture-tools .region-tool[data-tool="polygon"]'
       )
       .forEach((btn) => {
-        const hide = (spatialPrimaryShell && !wantsPlateOptIn()) || !!isSpatial;
+        const hide = (spatialPrimaryShell && !wantsPlateSurface()) || !!isSpatial;
         btn.hidden = hide;
         if (hide) btn.classList.remove("active");
       });
@@ -220,11 +307,14 @@
           "aria-label",
           "3D anatomy — drag to rotate, tap to mark pain at snap views"
         );
-    } else if (spatialPrimaryShell && !wantsPlateOptIn()) {
+    } else if (spatialPrimaryShell && !wantsPlateSurface()) {
       if (hint) {
         hint.textContent = "Waiting for the 3D body — rotate and tap once it loads.";
         hint.classList.remove("hidden");
       }
+    } else if (isSimplePainMapShell() && hint) {
+      hint.textContent = "Tap the body where it hurts.";
+      hint.classList.remove("hidden");
     }
 
     document.getElementById("avatarWrap")?.classList.toggle("display-spatial", !!isSpatial);
@@ -234,8 +324,11 @@
   global.SpatialPrimaryChrome = {
     allowPlateToggle,
     wantsPlateOptIn,
+    wantsPlateSurface,
+    isSimplePainMapShell,
     applySpatialPrimaryChrome,
     renderStageStatus,
-    humanReason
+    humanReason,
+    syncSimpleDisplayLabels
   };
 })(typeof window !== "undefined" ? window : globalThis);
