@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-12-human-3d-toggle">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.41-clinical-ready">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.42-faces">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -357,6 +357,9 @@
                     </div>
                     <span class="simple-intensity-tick simple-intensity-tick-min" aria-hidden="true">0</span>
                   </div>
+                  <button type="button" class="simple-faces-launch" id="btnOpenFacesScale" data-open-faces-scale title="Open the faces pain chart">
+                    Faces
+                  </button>
                 </section>
                 <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
                   <div class="region-tools review-tools show-review" id="reviewTools">
@@ -893,6 +896,15 @@
             <em>Rebuild the figure — ancestry, build, height, skin, mark size</em>
           </span>
         </button>
+        <button type="button" class="simple-sheet-action is-featured" id="btnSimpleFaces" data-open-faces-scale>
+          <span class="simple-sheet-action-icon" aria-hidden="true">
+            <i data-lucide="smile"></i>
+          </span>
+          <span class="simple-sheet-action-copy">
+            <strong>Faces pain chart</strong>
+            <em>Optional smile-to-cry scale for your doctor — does not replace the body map</em>
+          </span>
+        </button>
         <div class="simple-sheet-actions">
           <button type="button" class="simple-sheet-action" id="btnSimpleBodyProfile">
             <span class="simple-sheet-action-icon" aria-hidden="true">
@@ -957,6 +969,49 @@
               <em>Clinical atlas and tools</em>
             </span>
           </button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Optional Faces pain chart (Wong-Baker style, interactive) — does not replace the body map -->
+    <dialog class="modal simple-sheet simple-faces-sheet" id="simpleFacesModal" aria-labelledby="simpleFacesTitle">
+      <div class="modal-head">
+        <h3 id="simpleFacesTitle">How strong is the pain?</h3>
+        <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body simple-faces-body">
+        <p class="modal-note">Optional chart for your doctor. Drag the slider — smile means feels good, cry means unmentionable pain. Your body map stays available.</p>
+        <div class="simple-faces-stage" aria-hidden="true">
+          <svg id="facesPainSvg" class="simple-faces-svg" viewBox="0 0 140 140" role="img" aria-label="Pain face">
+            <circle id="facesPainRing" class="simple-faces-ring" cx="70" cy="70" r="62" fill="none" stroke-width="4"></circle>
+            <circle id="facesPainHead" class="simple-faces-head" cx="70" cy="70" r="52" stroke-width="3"></circle>
+            <ellipse id="facesPainCheekL" class="simple-faces-cheek" cx="42" cy="78" rx="9" ry="6" fill="#f9a8d4"></ellipse>
+            <ellipse id="facesPainCheekR" class="simple-faces-cheek" cx="98" cy="78" rx="9" ry="6" fill="#f9a8d4"></ellipse>
+            <path id="facesPainBrowL" class="simple-faces-brow" d="M 38 48 L 58 46" fill="none" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round"></path>
+            <path id="facesPainBrowR" class="simple-faces-brow" d="M 82 46 L 102 48" fill="none" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round"></path>
+            <ellipse id="facesPainEyeL" class="simple-faces-eye" cx="50" cy="60" rx="5.5" ry="5" fill="#0f172a"></ellipse>
+            <ellipse id="facesPainEyeR" class="simple-faces-eye" cx="90" cy="60" rx="5.5" ry="5" fill="#0f172a"></ellipse>
+            <path id="facesPainMouth" class="simple-faces-mouth" d="M 42 78 C 55 100, 85 100, 98 78" fill="none" stroke="#1e293b" stroke-width="4.5" stroke-linecap="round"></path>
+            <path id="facesPainTearL" class="simple-faces-tear" d="M 44 70 C 40 78, 42 88, 48 90 C 52 86, 50 78, 44 70 Z" fill="#38bdf8" opacity="0"></path>
+            <path id="facesPainTearR" class="simple-faces-tear" d="M 96 70 C 100 78, 98 88, 92 90 C 88 86, 90 78, 96 70 Z" fill="#38bdf8" opacity="0"></path>
+          </svg>
+        </div>
+        <div class="simple-faces-readout" aria-live="polite">
+          <span class="simple-faces-value" id="facesPainValue">5</span>
+          <span class="simple-faces-of">/ 10</span>
+          <p class="simple-faces-label" id="facesPainLabel">Hurts quite a bit</p>
+        </div>
+        <label class="simple-faces-slider-label" for="facesIntensitySlider">Pain level</label>
+        <input type="range" id="facesIntensitySlider" class="simple-faces-slider" min="0" max="10" step="1" value="5"
+          aria-valuemin="0" aria-valuemax="10" aria-valuenow="5" aria-valuetext="Hurts quite a bit, 5 out of 10" />
+        <div class="simple-faces-ends" aria-hidden="true">
+          <span>Smile · feels good</span>
+          <span>Cry · worst pain</span>
+        </div>
+        <p class="simple-faces-status" id="facesPainStatus" hidden></p>
+        <div class="simple-faces-actions">
+          <button type="button" class="btn btn-ghost" id="btnFacesCancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="btnFacesSave">Save for doctor</button>
         </div>
       </div>
     </dialog>
@@ -1229,7 +1284,8 @@
   <script src="src/features/capture/speech.js?v=5.5"></script>
   <script src="src/state/workflow.js?v=5.15-marker-layer"></script>
   <script src="src/state/presentation.js?v=5.7"></script>
-  <script src="src/features/shell/patient-flow.js?v=5.31-mh-engine2"></script>
+  <script src="src/features/capture/faces-pain-scale.js?v=5.42-faces"></script>
+  <script src="src/features/shell/patient-flow.js?v=5.42-faces"></script>
   <script src="src/app/bp3d-shell-engagement.js?v=2026-09-12-human-3d-toggle"></script>
   <script src="src/app/bootstrap.js?v=5.30-fit-more"></script>
 </body>
