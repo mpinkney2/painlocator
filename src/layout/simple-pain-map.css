@@ -58,9 +58,11 @@ body.shell-patient.simple-pain-map {
   --chart-point-active: var(--spm-white);
   --chart-point-border: var(--spm-amber);
 
-  --spm-drawer-peek: calc(5.85rem + env(safe-area-inset-bottom, 0px));
+  /* Compact peek: green arrow sits lower so the body keeps more height. */
+  --spm-drawer-peek: calc(2.65rem + env(safe-area-inset-bottom, 0px));
   --spm-drawer-open: min(78dvh, 640px);
   --spm-ease-drawer: cubic-bezier(0.22, 1, 0.36, 1);
+  --spm-intensity-accent: #f59e0b;
 }
 
 body.shell-patient.simple-pain-map.theme-dark {
@@ -2330,11 +2332,11 @@ body.shell-patient.simple-view-map #timelinePanel {
     border-left: 0;
     border-top: 1px solid var(--border);
     border-radius: 20px 20px 0 0;
-    padding: 0.2rem 0.9rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    padding: 0 0.9rem calc(0.12rem + env(safe-area-inset-bottom, 0px));
     background: var(--spm-warm-white);
     box-shadow: 0 -8px 28px rgba(24, 42, 66, 0.12);
     overflow: hidden;
-    gap: 0.35rem;
+    gap: 0.1rem;
     display: flex;
     flex-direction: column;
     transform: translate3d(0, calc(100% - var(--spm-drawer-peek)), 0);
@@ -2348,13 +2350,13 @@ body.shell-patient.simple-view-map #timelinePanel {
 
   body.shell-patient.simple-pain-map .simple-drawer-peek-bar {
     display: grid;
-    grid-template-columns: 2.6rem minmax(0, 1fr) 2.6rem;
+    grid-template-columns: 2rem minmax(0, 1fr) 2rem;
     align-items: center;
     justify-items: center;
     flex: 0 0 auto;
     width: 100%;
-    min-height: 2.5rem;
-    padding: 0.05rem 0.15rem 0.05rem;
+    min-height: 1.65rem;
+    padding: 0;
     pointer-events: auto;
     z-index: 4;
   }
@@ -2366,8 +2368,10 @@ body.shell-patient.simple-view-map #timelinePanel {
     appearance: none;
     margin: 0;
     padding: 0;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
     border: 0;
     background: transparent;
     color: var(--spm-navy);
@@ -2386,8 +2390,8 @@ body.shell-patient.simple-view-map #timelinePanel {
   }
 
   body.shell-patient.simple-pain-map .simple-peek-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     stroke: currentColor;
     stroke-width: 1.2;
     stroke-linecap: round;
@@ -2402,8 +2406,8 @@ body.shell-patient.simple-view-map #timelinePanel {
   body.shell-patient.simple-pain-map .simple-drawer-grab {
     display: block;
     width: 3.25rem;
-    height: 2.35rem;
-    margin: 0.15rem auto 0.1rem;
+    height: 1.75rem;
+    margin: 0 auto;
     border-radius: 0;
     background: transparent;
     flex: 0 0 auto;
@@ -2632,7 +2636,8 @@ body.shell-patient.simple-pain-map .simple-intensity-rail .patient-intensity-val
   font-size: clamp(2rem, 8.5vw, 2.75rem);
   font-weight: 800;
   line-height: 1;
-  color: var(--spm-navy, var(--text-primary));
+  color: var(--spm-intensity-accent, var(--spm-navy, var(--text-primary)));
+  transition: color 0.12s ease;
 }
 
 body.shell-patient.simple-pain-map .simple-intensity-rail .patient-intensity-of {
@@ -2654,7 +2659,8 @@ body.shell-patient.simple-pain-map .patient-intensity-slider-vertical {
   direction: rtl;
   appearance: slider-vertical;
   -webkit-appearance: slider-vertical;
-  accent-color: var(--spm-amber, #F9B847);
+  /* Live clinical NRS color: green (0) → amber → red (10) */
+  accent-color: var(--spm-intensity-accent, var(--spm-amber, #F9B847));
   touch-action: none;
   cursor: pointer;
 }

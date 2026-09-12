@@ -59,7 +59,7 @@
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
       if (!this._lowPower && THREE.ACESFilmicToneMapping != null) {
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.06;
+        this.renderer.toneMappingExposure = 1.35;
       }
       this.canvas = this.renderer.domElement;
       this.canvas.className = "cae-spatial-canvas";
@@ -77,12 +77,15 @@
       this.camera.lookAt(0, this._lookAtY, 0);
 
       this.scene = new THREE.Scene();
-      // Calm clinical lighting — hemisphere fill + soft key/rim. No hard game rims.
-      this.scene.add(new THREE.HemisphereLight(0xf6f3ee, 0x8a93a2, 0.82));
-      const key = new THREE.DirectionalLight(0xfff7f0, 0.58);
+      // Brighter clinical lighting for a translucent consumer exterior.
+      this.scene.add(new THREE.HemisphereLight(0xfffaf5, 0xa8b0be, 1.2));
+      const key = new THREE.DirectionalLight(0xfffaf5, 1.05);
       key.position.set(1.8, 3.4, 2.6);
       this.scene.add(key);
-      const rim = new THREE.DirectionalLight(0xd5e2f2, 0.26);
+      const fill = new THREE.DirectionalLight(0xffffff, 0.45);
+      fill.position.set(-1.2, 2.4, 1.8);
+      this.scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xe8f0fa, 0.5);
       rim.position.set(-2.4, 1.2, -2.1);
       this.scene.add(rim);
 
