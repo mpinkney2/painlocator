@@ -235,6 +235,15 @@
     }
     syncSimpleDisplayLabels(!!isSpatial);
 
+    const gallery = document.getElementById("bodyTypeGallery");
+    if (gallery && isSimplePainMapShell()) {
+      const hideGallery = !!isSpatial;
+      gallery.hidden = hideGallery;
+      gallery.setAttribute("aria-hidden", hideGallery ? "true" : "false");
+      if (hideGallery) gallery.setAttribute("inert", "");
+      else gallery.removeAttribute("inert");
+    }
+
     const enlarge = document.getElementById("btnEnlargeAnatomy");
     if (enlarge) {
       const hidePlateTools = spatialPrimaryShell && !wantsPlateSurface();

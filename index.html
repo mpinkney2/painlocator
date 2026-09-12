@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-09-12-human-3d-toggle">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
-  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.32-human-3d-toggle">
+  <link rel="stylesheet" href="src/layout/simple-pain-map.css?v=5.34-mobile-stack">
   <!-- Three.js import map: GLTFLoader (vendored ESM) resolves `three` without bundling -->
   <script type="importmap">
   {
@@ -295,49 +295,53 @@
           <div class="simple-pain-grid">
             <div class="simple-pain-map-col">
               <header class="simple-pain-headline shell-only-patient" id="simplePainHeadline">
-                <h1>Show where it hurts.</h1>
-                <p>Tap the body to mark a location.</p>
+                <div class="simple-pain-headline-row">
+                  <div class="simple-pain-headline-copy">
+                    <h1>Show where it hurts.</h1>
+                    <p>Tap the body to mark a location.</p>
+                  </div>
+                  <!-- In-flow on mobile; floating overlay on desktop (CSS) -->
+                  <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Human or 3D body" hidden>
+                    <button type="button" class="region-tool display-mode-btn" id="btnPlateMode" data-display="plate" title="Human body image" aria-pressed="true">Human</button>
+                    <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Rotatable 3D body" aria-pressed="false">3D</button>
+                  </div>
+                </div>
               </header>
+              <!-- Body profile: vertical rail on desktop, horizontal strip on mobile -->
+              <div class="body-type-gallery shell-only-patient" id="bodyTypeGallery" aria-label="Choose a body profile that fits you">
+                <p class="body-type-gallery-title">Body</p>
+                <div class="body-sex-toggle" role="group" aria-label="Woman or man">
+                  <button type="button" class="body-sex-btn" data-sex="female" aria-pressed="false">Woman</button>
+                  <button type="button" class="body-sex-btn is-active" data-sex="male" aria-pressed="true">Man</button>
+                </div>
+                <div class="body-stage-list" role="radiogroup" aria-label="Life stage">
+                  <button type="button" class="body-type-option is-selected" data-stage="adult" aria-pressed="true" title="Adult">
+                    <span class="body-type-silhouette" aria-hidden="true">
+                      <img src="/anatomy/metahuman/thumbs/adult-male.png" alt="">
+                    </span>
+                    <span class="body-type-label">Adult</span>
+                  </button>
+                  <button type="button" class="body-type-option" data-stage="teen" aria-pressed="false" title="Teen">
+                    <span class="body-type-silhouette" aria-hidden="true">
+                      <img src="/anatomy/metahuman/thumbs/teen-male.png" alt="">
+                    </span>
+                    <span class="body-type-label">Teen</span>
+                  </button>
+                  <button type="button" class="body-type-option" data-stage="child" aria-pressed="false" title="Child">
+                    <span class="body-type-silhouette" aria-hidden="true">
+                      <img src="/anatomy/metahuman/thumbs/child-male.png" alt="">
+                    </span>
+                    <span class="body-type-label">Child</span>
+                  </button>
+                  <button type="button" class="body-type-option" data-stage="senior" aria-pressed="false" title="Elderly">
+                    <span class="body-type-silhouette" aria-hidden="true">
+                      <img src="/anatomy/metahuman/thumbs/senior-male.png" alt="">
+                    </span>
+                    <span class="body-type-label">Elderly</span>
+                  </button>
+                </div>
+              </div>
               <div class="avatar-wrap anatomy-viewer" id="avatarWrap">
-                <div class="body-type-gallery shell-only-patient" id="bodyTypeGallery" aria-label="Choose a body profile that fits you">
-                  <p class="body-type-gallery-title">Body</p>
-                  <div class="body-sex-toggle" role="group" aria-label="Woman or man">
-                    <button type="button" class="body-sex-btn" data-sex="female" aria-pressed="false">Woman</button>
-                    <button type="button" class="body-sex-btn is-active" data-sex="male" aria-pressed="true">Man</button>
-                  </div>
-                  <div class="body-stage-list" role="radiogroup" aria-label="Life stage">
-                    <button type="button" class="body-type-option is-selected" data-stage="adult" aria-pressed="true" title="Adult">
-                      <span class="body-type-silhouette" aria-hidden="true">
-                        <img src="/anatomy/metahuman/thumbs/adult-male.png" alt="">
-                      </span>
-                      <span class="body-type-label">Adult</span>
-                    </button>
-                    <button type="button" class="body-type-option" data-stage="teen" aria-pressed="false" title="Teen">
-                      <span class="body-type-silhouette" aria-hidden="true">
-                        <img src="/anatomy/metahuman/thumbs/teen-male.png" alt="">
-                      </span>
-                      <span class="body-type-label">Teen</span>
-                    </button>
-                    <button type="button" class="body-type-option" data-stage="child" aria-pressed="false" title="Child">
-                      <span class="body-type-silhouette" aria-hidden="true">
-                        <img src="/anatomy/metahuman/thumbs/child-male.png" alt="">
-                      </span>
-                      <span class="body-type-label">Child</span>
-                    </button>
-                    <button type="button" class="body-type-option" data-stage="senior" aria-pressed="false" title="Elderly">
-                      <span class="body-type-silhouette" aria-hidden="true">
-                        <img src="/anatomy/metahuman/thumbs/senior-male.png" alt="">
-                      </span>
-                      <span class="body-type-label">Elderly</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
-                  <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
-                  <button type="button" class="simple-compass-btn" data-view="left" title="Left view" aria-pressed="false">Left</button>
-                  <button type="button" class="simple-compass-btn" data-view="right" title="Right view" aria-pressed="false">Right</button>
-                  <button type="button" class="simple-compass-btn" data-view="back" title="Back view" aria-pressed="false">Back</button>
-                </div>
                 <div class="region-tools review-tools show-review" id="reviewTools">
                   <button type="button" class="region-tool active" data-review-tool="select" title="Select entries and regions">Select</button>
                   <button type="button" class="region-tool" data-review-tool="filter" title="Filter pain history">Filter</button>
@@ -346,10 +350,12 @@
                 </div>
                 <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Body map — tap to mark pain"></div>
               </div>
-              <!-- Outside overflow:hidden avatar-wrap so Human|3D is never clipped -->
-              <div class="display-mode-toggle display-mode-dock" id="displayModeToggle" role="group" aria-label="Human or 3D body" hidden>
-                <button type="button" class="region-tool display-mode-btn" id="btnPlateMode" data-display="plate" title="Human body image" aria-pressed="true">Human</button>
-                <button type="button" class="region-tool display-mode-btn" id="btnSpatialMode" data-display="spatial" title="Rotatable 3D body" aria-pressed="false">3D</button>
+              <!-- View snaps: D-pad overlay on desktop, equal-width bar on mobile -->
+              <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
+                <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
+                <button type="button" class="simple-compass-btn" data-view="left" title="Left view" aria-pressed="false">Left</button>
+                <button type="button" class="simple-compass-btn" data-view="right" title="Right view" aria-pressed="false">Right</button>
+                <button type="button" class="simple-compass-btn" data-view="back" title="Back view" aria-pressed="false">Back</button>
               </div>
               <section class="simple-map-intensity shell-only-patient" id="simpleMapIntensity" aria-labelledby="patientIntensityHeading">
                 <h3 id="patientIntensityHeading" class="patient-describe-heading">How strong is it now?</h3>
@@ -1203,7 +1209,7 @@
   <script src="src/features/demo/walkthrough.js?v=5.5"></script>
   <script src="src/features/feedback/feedback-service.js?v=5.5"></script>
   <script src="src/features/feedback/feedback-ui.js?v=5.5"></script>
-  <script src="src/features/onboarding/welcome.js?v=5.5"></script>
+  <script src="src/features/onboarding/welcome.js?v=5.6-simple-no-tip"></script>
   <script src="src/features/capture/entry-crud.js?v=5.22-peek-undo"></script>
   <script src="src/features/review/timeline.js?v=5.5"></script>
   <script src="src/features/clinical-analysis/insights.js?v=5.5"></script>
