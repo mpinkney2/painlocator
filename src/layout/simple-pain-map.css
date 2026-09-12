@@ -2782,3 +2782,152 @@ body.shell-patient.simple-pain-map:not(.simple-display-spatial) .cae-anatomy-ima
   visibility: visible !important;
   opacity: 1 !important;
 }
+
+/* ========== Optional Faces pain chart (does not replace the body map) ========== */
+body.shell-patient.simple-pain-map .simple-faces-launch {
+  appearance: none;
+  margin: 0.35rem 0 0;
+  padding: 0.35rem 0.2rem;
+  width: 100%;
+  border: 1px solid var(--spm-border, var(--border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--spm-white, #fff) 88%, var(--spm-amber, #F9B847));
+  color: var(--spm-navy, var(--text-primary));
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  line-height: 1.1;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-launch:focus-visible {
+  outline: 2px solid var(--spm-navy);
+  outline-offset: 2px;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-sheet {
+  max-width: min(92vw, 26rem);
+}
+
+body.shell-patient.simple-pain-map .simple-faces-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  text-align: center;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-stage {
+  width: min(72vw, 15.5rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin: 0.15rem 0 0.1rem;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 10px 22px rgba(24, 42, 66, 0.14));
+  transition: filter 0.15s ease;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-head {
+  transition: fill 0.12s ease, stroke 0.12s ease;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-mouth,
+body.shell-patient.simple-pain-map .simple-faces-brow {
+  transition: d 0.12s ease, stroke 0.12s ease;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-tear {
+  transition: opacity 0.18s ease;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-cheek {
+  transition: opacity 0.18s ease;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.15rem 0.35rem;
+  margin: 0;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-value {
+  font-size: clamp(2.4rem, 10vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--faces-accent, var(--spm-amber, #F9B847));
+  transition: color 0.12s ease;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-of {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-muted, #6b7280);
+}
+
+body.shell-patient.simple-pain-map .simple-faces-label {
+  flex: 1 1 100%;
+  margin: 0.15rem 0 0;
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.3;
+  color: var(--spm-navy, var(--text-primary));
+}
+
+body.shell-patient.simple-pain-map .simple-faces-slider-label {
+  align-self: stretch;
+  margin: 0.35rem 0 0.15rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: left;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-slider {
+  width: 100%;
+  height: 2.75rem;
+  margin: 0;
+  accent-color: var(--spm-intensity-accent, var(--spm-amber, #F9B847));
+  cursor: pointer;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-ends {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 650;
+  color: var(--text-muted, #6b7280);
+}
+
+body.shell-patient.simple-pain-map .simple-faces-status {
+  margin: 0.15rem 0 0;
+  min-height: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #059669;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-actions {
+  display: flex;
+  gap: 0.55rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+body.shell-patient.simple-pain-map .simple-faces-actions .btn {
+  flex: 1 1 0;
+  min-height: 44px;
+}
+

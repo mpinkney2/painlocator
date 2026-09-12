@@ -997,6 +997,9 @@
     activatePatientTool('point');
     setAssessStep('mark', { skipExpand: true });
     bindMapIntensityUI();
+    if (global.FacesPainScale && typeof global.FacesPainScale.bind === 'function') {
+      global.FacesPainScale.bind();
+    }
 
     // Keep summary + mark colors in sync as the patient taps the body.
     try {
@@ -1302,6 +1305,8 @@
   global.savePatientEntry = savePatientEntry;
   global.setSimplePainView = setSimpleView;
   global.setAssessStep = setAssessStep;
+  global.applyIntensityValue = applyIntensityValue;
+  global.closeMoreMenu = closeMoreMenu;
   global.PatientSteps = PatientSteps;
   global.__patientDescribe = {
     QUALITY_CHIPS: QUALITY_CHIPS,
