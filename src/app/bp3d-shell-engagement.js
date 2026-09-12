@@ -3,11 +3,13 @@
  *
  * Product default:
  * - Clinician: rotatable 3D body (snap views + tap to mark)
- * - Simple pain-map (patient): 2D person plate image — not Spatial
+ * - Simple pain-map (patient): Human (2D) by default; user may toggle 3D
  * - Explicit plate: ?displayMode=plate | ?plate=1 | "Use 2D diagram"
- * - Show 2D/Spatial toggle: ?displayToggle=1 | ?dev=1
+ * - Show Human/3D toggle: simple pain-map always; elsewhere ?displayToggle=1 | ?dev=1
  */
 (function (global) {
+  var SIMPLE_DISPLAY_PREF_KEY = "painlocator_simple_display_mode";
+
   function isFalsyFlag(value) {
     if (value == null || value === "") return false;
     const v = String(value).trim().toLowerCase();
@@ -41,6 +43,23 @@
     }
   }
 
+  function readSimpleDisplayPreference() {
+    try {
+      const raw = global.localStorage?.getItem?.(SIMPLE_DISPLAY_PREF_KEY);
+      if (raw === "spatial" || raw === "3d") return "spatial";
+      if (raw === "plate" || raw === "human" || raw === "2d") return "plate";
+    } catch (_) { /* ignore */ }
+    return null;
+  }
+
+  function writeSimpleDisplayPreference(mode) {
+    if (!isSimplePainMapShell()) return;
+    try {
+      const next = mode === "spatial" ? "spatial" : "plate";
+      global.localStorage?.setItem?.(SIMPLE_DISPLAY_PREF_KEY, next);
+    } catch (_) { /* ignore */ }
+  }
+
   function configureCanonicalEngagement() {
     const params = readParams();
     const raw =
@@ -58,16 +77,19 @@
   }
 
   /**
-   * Prefer Spatial unless plate is requested or the simple pain-map shell is active.
+   * Prefer Spatial unless plate is requested.
+   * Simple pain-map defaults to Human (plate); honors URL + saved toggle preference.
    */
   function shouldPreferSpatial() {
     const params = readParams();
     if (params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"))) {
       return false;
     }
-    // Force the 2D person image in the simple pain-chart UI.
+    if (params.get("displayMode") === "spatial") {
+      return true;
+    }
     if (isSimplePainMapShell()) {
-      return false;
+      return readSimpleDisplayPreference() === "spatial";
     }
     return true;
   }
@@ -171,6 +193,9 @@
     bindPresentationShellRefresh,
     engageBp3dAcrossShells,
     syncSpatialChrome,
+    readSimpleDisplayPreference,
+    writeSimpleDisplayPreference,
+    SIMPLE_DISPLAY_PREF_KEY,
     isFalsyFlag,
     isTruthyFlag
   };

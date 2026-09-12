@@ -2319,8 +2319,14 @@ console.log('PainLocator tests\n');
     assert.equal(Eng.shouldPreferSpatial(), true);
   });
 
-  test('bp3d engagement: simple pain-map shell forces 2D person plate', async () => {
+  test('bp3d engagement: simple pain-map defaults to Human plate', async () => {
     sandbox.location.search = '';
+    sandbox.localStorage = {
+      store: Object.create(null),
+      getItem(key) { return this.store[key] ?? null; },
+      setItem(key, value) { this.store[key] = String(value); },
+      removeItem(key) { delete this.store[key]; }
+    };
     const classSet = new Set(['simple-pain-map', 'shell-patient']);
     sandbox.document.body = {
       classList: {
@@ -2348,7 +2354,38 @@ console.log('PainLocator tests\n');
     assert.equal(ok, false);
     assert.equal(called, 'plate');
     assert.equal(engine.spatialPrimaryNoPlate, false);
+
+    Eng.writeSimpleDisplayPreference('spatial');
+    assert.equal(Eng.readSimpleDisplayPreference(), 'spatial');
+    assert.equal(Eng.shouldPreferSpatial(), true);
+
     // Restore body for subsequent clinician Spatial-default tests
+    sandbox.document.body = {
+      classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
+      dataset: {}
+    };
+  });
+
+  test('bp3d engagement: simple pain-map URL can force 3D', () => {
+    const classSet = new Set(['simple-pain-map', 'shell-patient']);
+    sandbox.document.body = {
+      classList: {
+        contains: (name) => classSet.has(name),
+        add() {},
+        remove() {},
+        toggle() {}
+      },
+      dataset: { presentation: 'patient' }
+    };
+    sandbox.localStorage = {
+      getItem() { return null; },
+      setItem() {},
+      removeItem() {}
+    };
+    sandbox.location.search = '?displayMode=spatial';
+    assert.equal(Eng.shouldPreferSpatial(), true);
+    sandbox.location.search = '';
+    assert.equal(Eng.shouldPreferSpatial(), false);
     sandbox.document.body = {
       classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
       dataset: {}
@@ -2512,16 +2549,37 @@ console.log('PainLocator tests\n');
     loadScript('src/features/anatomy/spatial-primary-chrome.js', sandbox);
     assert.ok(sandbox.SpatialPrimaryChrome);
     sandbox.location.search = '';
+    sandbox.document.body = {
+      classList: { contains: () => false, add() {}, remove() {}, toggle() {} },
+      dataset: {}
+    };
     assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), false);
     sandbox.location.search = '?displayToggle=1';
     assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
     sandbox.location.search = '?dev=1';
     assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
+    sandbox.location.search = '';
+    const classSet = new Set(['simple-pain-map', 'shell-patient']);
+    sandbox.document.body = {
+      classList: {
+        contains: (name) => classSet.has(name),
+        add() {},
+        remove() {},
+        toggle() {}
+      },
+      dataset: { presentation: 'patient' }
+    };
+    assert.equal(sandbox.SpatialPrimaryChrome.allowPlateToggle(), true);
     const docs = readFileSync(join(root, 'docs/BP3D_SHELL_ENGAGEMENT.md'), 'utf8');
-    assert.ok(docs.includes('Spatial is the interactive'));
+    assert.ok(docs.includes('Human|3D') || docs.includes('Human | 3D'));
     assert.ok(docs.includes('fallback'));
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-primary-chrome.js'));
+    assert.ok(html.includes('>Human</button>'));
+    assert.ok(html.includes('>3D</button>'));
+    const css = readFileSync(join(root, 'src/layout/simple-pain-map.css'), 'utf8');
+    assert.ok(css.includes('#displayModeToggle.display-mode-dock'));
+    assert.ok(!css.match(/#displayModeToggle,\s*\nbody\.shell-patient\.simple-pain-map #quickViewBar/));
   });
 
   test('spatial boot utils: withTimeout rejects and WebGL helper exists', async () => {
@@ -2531,7 +2589,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-11-blender-surface');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-12-human-3d-toggle');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2546,7 +2604,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-11-blender-surface'));
+    assert.ok(html.includes('?v=2026-09-12-human-3d-toggle'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2666,7 +2724,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-11-blender-surface';
+    const ver = '2026-09-12-human-3d-toggle';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
