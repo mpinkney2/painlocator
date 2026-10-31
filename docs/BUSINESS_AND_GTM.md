@@ -9,6 +9,8 @@
 | **Product baseline** | Early, pre-production clinical SaaS. Docs describe the **v0.1.0** foundation. `package.json` / changelog build is **5.5.0** (through 29 July 2026). Lead externally with “early clinical product,” never with “5.5” as if it were a mature major release. |
 | **This document** | Operating plan. It is not a customer claim, a legal opinion, or evidence of FDA clearance, HIPAA certification, or an Epic partnership. None of those exist. |
 
+**Mandate:** Grok owns commercialization execution; founder approves claims, price, and legal; engineering owns product gates.
+
 Sell only what the repo can demonstrate today: a client-only pain-mapping web app on the Clinical Anatomy Engine. Patients and clinicians mark **where** it hurts, **how** it feels, and **how it changes**, then export a JSON session, a browser-print PDF, or a PNG snapshot. Session data stays in the browser (`localStorage`) unless someone exports a file. There are no accounts, no server sync, and no EHR write-back. Rule-based pattern notes are labeled **Assistive Clinical Observation — Not a Medical Diagnosis.**
 
 ---
