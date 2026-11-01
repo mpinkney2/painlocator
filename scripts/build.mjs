@@ -35,11 +35,13 @@ const adultManifest = join(dist, 'anatomy', 'spatial', 'adult-male', 'manifest.j
 const vendorThree = join(dist, 'vendor', 'three.module.min.js');
 const vendorGltf = join(dist, 'vendor', 'GLTFLoader.js');
 const vendorMeshopt = join(dist, 'vendor', 'meshopt_decoder.module.js');
+const vendorGltfUtils = join(dist, 'utils', 'BufferGeometryUtils.js');
 const canonicalGlb = join(dist, 'anatomy', 'spatial', 'prototype-bp3d-fullbody', 'canonical-body.glb');
 const requiredSpatialRuntime = [
   vendorThree,
   vendorGltf,
   vendorMeshopt,
+  vendorGltfUtils,
   spatialManifest,
   adultManifest,
   spatialGlb,

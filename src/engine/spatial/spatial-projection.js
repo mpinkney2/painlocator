@@ -49,6 +49,30 @@
   }
 
   /**
+   * Perspective distance that frames a body AABB in the camera (Y-up, camera on +Z).
+   * Pure math — used by SpatialSceneController.fitToBody without WebGL.
+   * @param {{x?: number, y?: number, z?: number}} size
+   * @param {number} fovDeg
+   * @param {number} aspect
+   * @param {number} [padding]
+   * @returns {number}
+   */
+  function cameraDistanceForBounds(size, fovDeg, aspect, padding = 1.16) {
+    const sx = Math.max(0, Number(size?.x) || 0);
+    const sy = Math.max(0, Number(size?.y) || 0);
+    const sz = Math.max(0, Number(size?.z) || 0);
+    const fov = ((Number(fovDeg) || 32) * Math.PI) / 180;
+    const half = Math.tan(fov / 2);
+    const a = Math.max(0.25, Number(aspect) || 1);
+    if (!(half > 0) || !Number.isFinite(half)) return 4;
+    const distY = sy / (2 * half);
+    const distX = sx / (2 * half * a);
+    const distZ = sz * 0.55;
+    const pad = Number(padding) > 0 ? Number(padding) : 1.16;
+    return Math.max(distY, distX, distZ, 0.8) * pad;
+  }
+
+  /**
    * Project a world point through the active spatial camera to 0–1 anchors.
    *
    * Phase 1 accuracy note (intentional, not a bug):
@@ -163,6 +187,7 @@
     normalizeYaw,
     yawForView,
     nearestSnapView,
+    cameraDistanceForBounds,
     worldToNormalizedAnchors,
     attachmentFromIntersection,
     resolveMesh,

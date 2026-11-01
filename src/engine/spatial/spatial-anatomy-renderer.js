@@ -160,7 +160,6 @@
           global.SpatialAnnotationLayer;
         if (!AnnotationLayer) throw new Error("SpatialAnnotationLayer missing");
         this.annotations = new AnnotationLayer(this.scene, this.THREE);
-        this._initLayerController();
         this._bindPointer();
         if (this.store?.onChange) {
           this._onStoreChange = () => {
@@ -170,22 +169,35 @@
         }
         this.ready = true;
         this.mountEl.style.visibility = "";
+        this.scene.fitToBody?.();
 
         const meshCount = this.scene?.meshById?.size ?? null;
         const exteriorModelId =
           this.scene?.exteriorModelId ||
           this.scene?.modelId ||
           "adult-male";
+        const probe = bootUtils && bootUtils.probeWebGL ? bootUtils.probeWebGL() : null;
         setBoot(STATES.READY_SPATIAL || "ready-spatial", {
           exteriorModelId,
           meshCount,
           threeRevision: this.THREE.REVISION || null,
-          error: null
+          error: null,
+          softwareWebGL: !!(this.scene && this.scene._lowPower) || !!(probe && probe.software),
+          gpuRenderer: (probe && probe.renderer) || null
         });
 
         const view = this.engine.viewType || "front";
         this.scene.snapToView(view, { animate: false });
         this._syncFromStore();
+
+        // Reveal the body now — canonical / clinician packs must not keep the overlay up.
+        if (typeof options.onInteractive === "function") {
+          try {
+            options.onInteractive({ exteriorModelId, meshCount });
+          } catch (interactiveErr) {
+            console.warn("[CAE Spatial] onInteractive failed", interactiveErr);
+          }
+        }
 
         // Canonical frame is enhancement — timeout and continue without it.
         onProgress("Aligning body frame…");
@@ -199,6 +211,7 @@
             "Canonical body frame"
           );
           if (this.isCanonicalBodyMode()) {
+            this.scene.fitToBody?.();
             setBoot(STATES.READY_CANONICAL || "ready-canonical", {
               canonicalStatus: "ready"
             });
@@ -221,6 +234,9 @@
           this._teardownMount({ keepAttachments: true });
           return false;
         }
+
+        // Clinician packs after canonical so registration URL matches the live frame.
+        this._initLayerController();
 
         onProgress("Ready");
         if (bootUtils && bootUtils.logDiagnosticsOnce) {
@@ -408,6 +424,7 @@
 
         this.canonicalFrame = frame;
         this.canonicalBodyMode = true;
+        this.scene.fitToBody?.();
         this._canonicalPerf = {
           loadMs: frame.getMeta().loadMs,
           byteLength: frame.getMeta().byteLength,
@@ -649,8 +666,13 @@
         -((clientY - rect.top) / rect.height) * 2 + 1
       );
       this.scene.raycaster.setFromCamera(pointer, this.scene.camera);
-      const hits = this.scene.raycaster.intersectObjects(markers, false);
-      return hits[0]?.object?.userData?.regionId || null;
+      const hits = this.scene.raycaster.intersectObjects(markers, true);
+      let obj = hits[0]?.object || null;
+      while (obj) {
+        if (obj.userData?.regionId) return obj.userData.regionId;
+        obj = obj.parent;
+      }
+      return null;
     }
 
     _place(hit) {
