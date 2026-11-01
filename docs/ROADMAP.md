@@ -75,11 +75,31 @@ See [AI_ROADMAP.md](./AI_ROADMAP.md).
 - Compare sessions across dates
 - Annotation comments per region
 
+## Production path (Clinic Map → Chart Complement → Service Line)
+
+Commercial and engineering sequencing for clinic/hospital adoption lives in:
+
+- [PRODUCTION_READINESS.md](./PRODUCTION_READINESS.md) — build gates (tenancy, audit, chart-grade PDF, EHR complement)
+- [BUSINESS_AND_GTM.md](./BUSINESS_AND_GTM.md) — Grok commercialization mandate (beachhead clinics first; hospitals later)
+
+Do **not** treat health-system Epic/MyChart partnership pitches as near-term engineering work until paid-pilot gates are green and design-partner clinics are filing PDFs under a BAA.
+
+### Near-term production slices (ordered)
+
+| Slice | Focus |
+|-------|--------|
+| S0 | Demo hardening, claim fence, multi-view report design |
+| S1 | Auth + visit links + server session store (Clinic Map) |
+| S2 | Audit, wipe, delete/export, encryption at rest |
+| S3 | Chart-grade multi-view PDF + clinic branding |
+| S4 | Clinician review state + portable FHIR document export |
+| S5–S7 | Admin/ops → PDF filing SOP → SMART/DocumentReference only after references |
+
 ## Long Term
 
 - **CAE as standalone package** — extract `src/engine/` for reuse in other clinical apps
 - **Collaborative sessions** — optional sync (requires backend; out of scope for current client-only architecture)
-- **EHR integration** — FHIR or PDF handoff patterns
+- **EHR integration** — FHIR or PDF handoff patterns (after Clinic Map production gates)
 - **Mobile-optimized capture** — touch-first region tools
 
 ## How to Propose Work
@@ -90,10 +110,14 @@ Use feature branches as described in [CONTRIBUTING.md](./CONTRIBUTING.md):
 - `feature/clinical-overlays`
 - `feature/ai-analysis`
 - `feature/session-import-export`
+- `feature/clinic-map-tenancy`
+- `feature/chart-complement-fhir`
 
 ## Related Documents
 
 - [PRODUCT_VISION.md](./PRODUCT_VISION.md)
+- [PRODUCTION_READINESS.md](./PRODUCTION_READINESS.md)
+- [BUSINESS_AND_GTM.md](./BUSINESS_AND_GTM.md)
 - [ARCHITECTURE.md](./ARCHITECTURE.md)
 - [AI_ROADMAP.md](./AI_ROADMAP.md)
 - [CHANGELOG.md](./CHANGELOG.md)

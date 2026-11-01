@@ -38,6 +38,8 @@ Full project documentation lives in [`/docs`](./docs/):
 |----------|-------------|
 | [PRODUCT_VISION.md](./docs/PRODUCT_VISION.md) | Product goals, users, and design principles |
 | [ROADMAP.md](./docs/ROADMAP.md) | Shipped vs planned features |
+| [PRODUCTION_READINESS.md](./docs/PRODUCTION_READINESS.md) | Production finish plan (Clinic Map → EHR complement) |
+| [BUSINESS_AND_GTM.md](./docs/BUSINESS_AND_GTM.md) | Grok commercialization & hospital/clinic GTM plan |
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Technical structure and data model |
 | [CLINICAL_ANATOMY_ENGINE.md](./docs/CLINICAL_ANATOMY_ENGINE.md) | CAE modules and boundaries |
 | [UI_GUIDELINES.md](./docs/UI_GUIDELINES.md) | Theme tokens, layout, accessibility |

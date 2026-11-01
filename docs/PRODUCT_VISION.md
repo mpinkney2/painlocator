@@ -67,6 +67,19 @@ PainLocator organizes the UI into three workflow modes. See [ARCHITECTURE.md](./
 
 Future directions are tracked in [ROADMAP.md](./ROADMAP.md) and [AI_ROADMAP.md](./AI_ROADMAP.md). v0.1.0 does **not** include server sync, accounts, diagnostic AI, or a published CAE npm package.
 
+## Path to clinic and health-system adoption
+
+PainLocator’s intended clinical job is to replace the paper body chart + pen with a structured visual map patients can complete and physicians can review — as a **complement** to MyChart/Epic (and other EHRs), not as a diagnostic device.
+
+Operating plans:
+
+| Doc | Owner | Purpose |
+|-----|-------|---------|
+| [PRODUCTION_READINESS.md](./PRODUCTION_READINESS.md) | Engineering | Production gates for Clinic Map → Chart Complement → Service Line |
+| [BUSINESS_AND_GTM.md](./BUSINESS_AND_GTM.md) | Grok (commercialization) | Beachhead ICP, 90-day GTM sprint, pricing, partnerships |
+
+Beachhead: independent pain clinics still using paper diagrams. Hospital systems come after tenancy, BAA-ready architecture, and reference clinics.
+
 ## Success Metrics (Future)
 
 As the product matures, success will be measured by:
@@ -75,9 +88,12 @@ As the product matures, success will be measured by:
 - Clarity and completeness of exported clinical reports
 - Session portability (export → import fidelity)
 - Clinician adoption of structured pain maps in consultation prep
+- (Later) Share of agreed visit types with a filed map PDF; in-visit clinician use rate
 
 ## Related Documents
 
 - [ARCHITECTURE.md](./ARCHITECTURE.md) — technical structure
 - [ROADMAP.md](./ROADMAP.md) — planned development
+- [PRODUCTION_READINESS.md](./PRODUCTION_READINESS.md) — production finish plan
+- [BUSINESS_AND_GTM.md](./BUSINESS_AND_GTM.md) — commercialization / GTM
 - [CHANGELOG.md](./CHANGELOG.md) — release history
