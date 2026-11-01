@@ -136,10 +136,14 @@ function updateEntryButtons() {
 }
 
 function updateUndoRedoButtons() {
-  const undo = document.getElementById('btnUndo');
-  const redo = document.getElementById('btnRedo');
-  if (undo) undo.disabled = !entryStore.canUndo();
-  if (redo) redo.disabled = !entryStore.canRedo();
+  const canUndo = !!entryStore.canUndo();
+  const canRedo = !!entryStore.canRedo();
+  document.querySelectorAll('#btnUndo, #btnPeekUndo').forEach((btn) => {
+    btn.disabled = !canUndo;
+  });
+  document.querySelectorAll('#btnRedo, #btnPeekRedo').forEach((btn) => {
+    btn.disabled = !canRedo;
+  });
 }
 
 function syncFormToActiveEntry() {

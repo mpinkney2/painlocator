@@ -130,7 +130,9 @@ function syncDisplayModeButtons(mode) {
   plate?.setAttribute('aria-pressed', (!isSpatial).toString());
   spatial?.setAttribute('aria-pressed', isSpatial.toString());
   if (typeof SpatialPrimaryChrome !== 'undefined') {
-    SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial);
+    SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial, {
+      keepSpatialPrimary: isSpatial ? undefined : false
+    });
   } else {
     const enlarge = document.getElementById('btnEnlargeAnatomy');
     if (enlarge) {
@@ -149,22 +151,40 @@ function initDisplayModeToggle() {
   const spatial = document.getElementById('btnSpatialMode');
   if (!plate || !spatial) return;
 
+  const spatialIdleLabel = () =>
+    (typeof SpatialPrimaryChrome !== 'undefined' &&
+      SpatialPrimaryChrome.isSimplePainMapShell?.())
+      ? '3D'
+      : 'Spatial';
+
   plate.addEventListener('click', () => {
+    if (typeof Bp3dShellEngagement?.writeSimpleDisplayPreference === 'function') {
+      Bp3dShellEngagement.writeSimpleDisplayPreference('plate');
+    }
     state.engine?.setDisplayMode?.('plate');
   });
   spatial.addEventListener('click', async () => {
     if (state.engine?.isSpatialMode?.()) return;
+    if (typeof Bp3dShellEngagement?.writeSimpleDisplayPreference === 'function') {
+      Bp3dShellEngagement.writeSimpleDisplayPreference('spatial');
+    }
     spatial.disabled = true;
     spatial.textContent = 'Loading…';
     try {
       const ok = await state.engine?.setDisplayMode?.('spatial');
       syncDisplayModeButtons(ok ? 'spatial' : 'plate');
       if (!ok) {
-        showToast?.('3D body unavailable — using 2D plate fallback', 'warning');
+        if (typeof Bp3dShellEngagement?.writeSimpleDisplayPreference === 'function') {
+          Bp3dShellEngagement.writeSimpleDisplayPreference('plate');
+        }
+        showToast?.('3D body unavailable — using human image', 'warning');
       }
     } finally {
       spatial.disabled = false;
-      spatial.textContent = 'Spatial';
+      spatial.textContent = spatialIdleLabel();
+      SpatialPrimaryChrome?.syncSimpleDisplayLabels?.(
+        !!state.engine?.isSpatialMode?.()
+      );
     }
   });
 
@@ -178,7 +198,9 @@ function initDisplayModeToggle() {
     }
     refreshUI?.();
   });
-  syncDisplayModeButtons(state.engine?.isSpatialMode?.() ? 'spatial' : (state.engine?.displayMode === 'plate' ? 'plate' : 'spatial'));
+  syncDisplayModeButtons(state.engine?.isSpatialMode?.()
+    ? 'spatial'
+    : (state.engine?.displayMode === 'spatial' ? 'spatial' : 'plate'));
 }
 
 function updateTrendSummary() {

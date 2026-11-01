@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: '.',
   publicDir: 'public',
+  appType: 'mpa',
   server: {
     host: '0.0.0.0',
     port: 5500,

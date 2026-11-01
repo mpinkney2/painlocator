@@ -57,6 +57,8 @@
           row("bootState", s.bootState) +
           row("WebGL", s.webglAvailable) +
           row("Three REVISION", s.threeRevision) +
+          row("GPU", s.gpuRenderer || "—") +
+          row("softwareWebGL", s.softwareWebGL) +
           row("runtime", s.runtimeVersion)
       ) +
       section(

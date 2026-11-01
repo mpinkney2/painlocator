@@ -21,9 +21,10 @@
  * @property {"light"|"dark"} theme
  *
  * @typedef {Object} SessionPatient
- * @property {string} model   - adult-male | adult-female | child | teen | senior
+ * @property {string} model   - adult-male | adult-female | teen-male | teen-female | child-male | child-female | senior-male | senior-female
  * @property {string} view    - front | back | left | right
  * @property {string} [label] - Optional display label
+ * @property {{ skin?: string, weight?: string, height?: string, ancestry?: string }} [likeness] - MetaHuman DNA prefs (engine rebuilds geometry when not identity)
  *
  * @typedef {Object} SessionWorkflow
  * @property {"capture"|"review"|"clinical"} mode
@@ -59,9 +60,15 @@ function formatPatientModelLabel(model) {
   const labels = {
     'adult-male': 'Adult Male',
     'adult-female': 'Adult Female',
-    child: 'Child',
-    teen: 'Teen',
-    senior: 'Senior',
+    'teen-male': 'Teen Male',
+    'teen-female': 'Teen Female',
+    'child-male': 'Child Male',
+    'child-female': 'Child Female',
+    'senior-male': 'Senior Male',
+    'senior-female': 'Senior Female',
+    child: 'Child Male',
+    teen: 'Teen Male',
+    senior: 'Senior Male',
     male: 'Adult Male',
     female: 'Adult Female'
   };
@@ -136,7 +143,8 @@ function buildSessionExport(state, store) {
     patient: {
       model,
       view: state.view,
-      label: formatPatientModelLabel(model)
+      label: formatPatientModelLabel(model),
+      likeness: typeof getLikenessPref === 'function' ? getLikenessPref() : undefined
     },
     workflow: {
       mode: state.workflowMode || 'capture',

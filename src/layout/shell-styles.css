@@ -182,8 +182,7 @@ body.shell-patient .anatomy-viewer {
   align-items: stretch;
   width: 100%;
   min-width: 0;
-  /* Clear tool dock + stacked locate CTA (prompt + button + hint) */
-  padding-bottom: calc(220px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
 }
 
@@ -260,8 +259,7 @@ body.shell-patient .capture-tools .region-tool[data-tool="polygon"] {
 body.shell-patient .region-tools.capture-tools,
 body.shell-patient .capture-tools {
   top: auto;
-  /* Clear stacked locate CTA (prompt + button + hint + safe area) */
-  bottom: calc(168px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
   z-index: 95;
   left: 50%;
   transform: translateX(-50%);

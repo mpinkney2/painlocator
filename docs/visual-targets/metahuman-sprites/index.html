@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MetaHuman-style sprite set</title>
+  <style>
+    :root {
+      --bg: #0b0f16;
+      --panel: #121826;
+      --line: #243044;
+      --text: #e8eef7;
+      --muted: #93a4bd;
+      --accent: #7dd3fc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 420px at 50% -8%, #1a2740 0%, var(--bg) 55%);
+      line-height: 1.45;
+    }
+    header, main { max-width: 1100px; margin: 0 auto; padding: 1.25rem; }
+    h1 { margin: 0 0 0.35rem; font-size: 1.4rem; }
+    .lede { margin: 0; color: var(--muted); max-width: 68ch; }
+    .badge {
+      display: inline-block; margin-top: 0.75rem; padding: 0.2rem 0.55rem;
+      border: 1px solid var(--line); border-radius: 999px; color: var(--accent);
+      font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .atlas {
+      margin: 1rem 0 1.5rem; padding: 1rem; background: var(--panel);
+      border: 1px solid var(--line); border-radius: 12px;
+    }
+    .atlas h2, .sheet h2 { margin: 0 0 0.65rem; font-size: 1rem; }
+    .checker {
+      background:
+        linear-gradient(45deg, #1c2330 25%, transparent 25%),
+        linear-gradient(-45deg, #1c2330 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #1c2330 75%),
+        linear-gradient(-45deg, transparent 75%, #1c2330 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+      background-color: #0f141d;
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+    .atlas img, .sheet img { display: block; width: 100%; height: auto; }
+    .grid { display: grid; gap: 1rem; }
+    .sheet {
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 12px; padding: 0.85rem 1rem 1rem;
+    }
+    .sheet h2 span { color: var(--muted); font-weight: 500; font-size: 0.8rem; margin-left: 0.5rem; }
+    .frames {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.75rem;
+    }
+    @media (max-width: 720px) { .frames { grid-template-columns: repeat(2, 1fr); } }
+    .frame {
+      background: #0a0e15; border: 1px solid var(--line); border-radius: 8px; padding: 0.4rem;
+    }
+    .frame figcaption {
+      font-size: 0.7rem; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 0.35rem;
+    }
+    .frame .checker { padding: 0.35rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MetaHuman-style sprite set</h1>
+    <p class="lede">
+      Woman · man · teen · child · elderly — each with front / back / left / right
+      full-length figures. Transparent PNG (checker shows alpha). Eval art only.
+    </p>
+    <div class="badge">No background · RGBA · not runtime-wired</div>
+  </header>
+  <main>
+    <section class="atlas">
+      <h2>Atlas (5 × 4)</h2>
+      <div class="checker">
+        <img src="./metahuman-atlas.png" alt="MetaHuman-style transparent atlas" />
+      </div>
+    </section>
+    <div class="grid" id="sheets"></div>
+  </main>
+  <script>
+    const profiles = ["woman", "man", "teen", "child", "elderly"];
+    const views = ["front", "back", "left", "right"];
+    const root = document.getElementById("sheets");
+    for (const p of profiles) {
+      const sec = document.createElement("section");
+      sec.className = "sheet";
+      sec.innerHTML = `<h2>${p[0].toUpperCase()}${p.slice(1)} <span>sprite sheet</span></h2>
+        <div class="checker"><img src="./sheets/${p}.png" alt="${p} sheet" /></div>
+        <div class="frames"></div>`;
+      const frames = sec.querySelector(".frames");
+      for (const v of views) {
+        const fig = document.createElement("figure");
+        fig.className = "frame";
+        fig.innerHTML = `<figcaption>${v}</figcaption><div class="checker"><img src="./frames/${p}-${v}.png" alt="${p} ${v}" /></div>`;
+        frames.appendChild(fig);
+      }
+      root.appendChild(sec);
+    }
+  </script>
+</body>
+</html>

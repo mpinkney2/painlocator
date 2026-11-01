@@ -90,6 +90,13 @@
   }
 
   function showAnatomyTip(force = false) {
+    // Simple pain-map already teaches via headline + Human|3D chrome; an overlay tip
+    // covers the figure and fails mobile touch accessibility.
+    if (document.body?.classList?.contains('simple-pain-map')) {
+      const tip = document.getElementById('anatomyFirstTip');
+      if (tip) tip.hidden = true;
+      return;
+    }
     try {
       if (!force && localStorage.getItem(FIRST_TIP_KEY) === '1') return;
     } catch { /* ignore */ }
