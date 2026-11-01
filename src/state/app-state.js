@@ -35,6 +35,15 @@ const state = {
   vizController: null
 };
 
+// Classic scripts share a lexical `state` binding, but diagnostics, Spatial chrome,
+// and browser smoke tests need a stable window accessor (`const` is not a window prop).
+if (typeof globalThis !== 'undefined') {
+  globalThis.state = state;
+  if (typeof globalThis.entryStore === 'undefined') {
+    globalThis.entryStore = entryStore;
+  }
+}
+
 function useClinicalLabels() {
   return state.workflowMode === 'clinical';
 }

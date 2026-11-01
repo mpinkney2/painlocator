@@ -1994,7 +1994,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-vite-esm-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2009,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-09-07-vite-esm-1'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2021,12 +2021,13 @@ console.log('PainLocator tests\n');
     // rewrites those into ESM and classic tags then fail. String-inside-Function is OK.
     const threeLoaderSrc = readFileSync(join(root, 'src/engine/spatial/spatial-three-loader.js'), 'utf8');
     const bootSrc = readFileSync(join(root, 'src/engine/spatial/spatial-boot-utils.js'), 'utf8');
-    assert.ok(bootSrc.includes('new Function("u", "return import(u)")'));
-    assert.ok(threeLoaderSrc.includes('importVendorModule'));
-    assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(bootSrc), false);
+    assert.ok(threeLoaderSrc.includes('loadPainLocatorSpatialRuntime') || threeLoaderSrc.includes('loadSpatialRuntime'));
+    assert.ok(threeLoaderSrc.includes('createGLTFLoader'));
+    assert.equal(/\/vendor\/three\.module/.test(threeLoaderSrc), false);
     assert.equal(/\bimport\s*\(\s*(?:\/\*|[`'"])/.test(threeLoaderSrc), false);
     loadScript('src/engine/spatial/spatial-three-loader.js', sandbox);
     assert.equal(typeof sandbox.SpatialThreeLoader?.loadThreeModule, 'function');
+    assert.equal(typeof sandbox.SpatialThreeLoader?.createGLTFLoader, 'function');
     assert.equal(typeof sandbox.SpatialThreeLoader?.clearThreeCache, 'function');
   });
 
@@ -2046,8 +2047,8 @@ console.log('PainLocator tests\n');
     );
     assert.equal(u.classifySpatialHealth({ spatialReady: false, state: 'failed-spatial' }), 'FAILED');
     const engine = { spatialBootState: null, trigger() {} };
-    u.setBootState(engine, u.BOOT_STATES.LOADING_THREE, { stage: 'loading-three' });
-    assert.equal(engine.spatialBootState.state, 'loading-three');
+    u.setBootState(engine, u.BOOT_STATES.LOADING_SPATIAL_RUNTIME, { stage: 'loading-spatial-runtime' });
+    assert.equal(engine.spatialBootState.state, 'loading-spatial-runtime');
     u.setBootState(engine, u.BOOT_STATES.READY_SPATIAL, { exteriorModelId: 'adult-male' });
     assert.equal(engine.spatialBootState.state, 'ready-spatial');
     u.setBootState(engine, u.BOOT_STATES.CANONICAL_DEGRADED, { canonicalStatus: 'degraded' });
@@ -2093,15 +2094,15 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: runtime assets exist for production', () => {
     const required = [
-      'public/vendor/three.module.min.js',
-      'public/vendor/GLTFLoader.js',
-      'public/vendor/meshopt_decoder.module.js',
+      'src/spatial-bootstrap.js',
+      'src/engine/spatial/spatial-runtime-entry.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
       'public/anatomy/spatial/adult-male/exterior-lod0.glb',
       'public/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb',
       'public/anatomy/spatial/prototype-bp3d/muscle.glb',
-      'public/anatomy/spatial/prototype-bp3d/skeletal.glb'
+      'public/anatomy/spatial/prototype-bp3d/skeletal.glb',
+      'public/vendor/THREE_LICENSE'
     ];
     for (const rel of required) {
       let ok = false;
@@ -2109,13 +2110,18 @@ console.log('PainLocator tests\n');
       assert.ok(ok, `missing ${rel}`);
     }
     const buildSrc = readFileSync(join(root, 'scripts/build.mjs'), 'utf8');
-    assert.ok(buildSrc.includes('meshopt_decoder.module.js'));
+    assert.ok(buildSrc.includes('vite build'));
     assert.ok(buildSrc.includes('canonical-body.glb'));
+    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+    assert.equal(pkg.dependencies?.three, '0.170.0');
   });
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-09-07-vite-esm-1';
+    assert.ok(html.includes('spatial-bootstrap.js'));
+    assert.ok(html.includes('type="module"'));
+    assert.equal(html.includes('type="importmap"'), false);
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2129,6 +2135,11 @@ console.log('PainLocator tests\n');
     ]) {
       assert.ok(html.includes(`${file}?v=${ver}`), file);
     }
+    const entry = readFileSync(join(root, 'src/engine/spatial/spatial-runtime-entry.js'), 'utf8');
+    assert.ok(entry.includes('from "three"'));
+    assert.ok(entry.includes('GLTFLoader'));
+    assert.ok(entry.includes('MeshoptDecoder'));
+    assert.equal(/\/vendor\/(three|GLTFLoader)/.test(entry), false);
   });
 
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {

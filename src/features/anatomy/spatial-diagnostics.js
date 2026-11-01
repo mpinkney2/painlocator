@@ -51,37 +51,42 @@
       '<header class="cae-spatial-diag-header"><strong>SPATIAL STATUS</strong>' +
       '<button type="button" class="cae-spatial-diag-close" id="caeSpatialDiagClose" aria-label="Close diagnostics">×</button></header>' +
       section(
-        "Renderer",
-        row("health", s.health) +
-          row("displayMode", s.displayMode) +
-          row("bootState", s.bootState) +
-          row("WebGL", s.webglAvailable) +
-          row("Three REVISION", s.threeRevision) +
+        "Spatial runtime",
+        row("Vite ESM chunk", s.viteRuntimeReady ? "loaded" : "missing") +
+          row("runtime source", s.runtimeSource || "—") +
+          row("Three", s.threeRevision != null ? "r" + s.threeRevision : "—") +
+          row("WebGLRenderer", s.webglAvailable) +
+          row("GLTFLoader", s.gltfLoaderReady) +
+          row("Meshopt", s.meshoptReady) +
           row("runtime", s.runtimeVersion)
       ) +
       section(
         "Exterior",
         row("modelId", s.exteriorModelId || "—") +
           row("loaded", s.exteriorLoaded) +
-          row("meshCount", s.meshCount != null ? s.meshCount : "—")
+          row("meshes", s.meshCount != null ? s.meshCount : "—")
       ) +
       section(
         "Canonical",
-        row("expected", s.canonicalExpected) +
+        row("BP3D frame", s.canonicalReady ? "ready" : s.canonicalDegraded ? "degraded" : s.canonicalExpected ? "pending" : "—") +
+          row("expected", s.canonicalExpected) +
           row("ready", s.canonicalReady) +
           row("degraded", s.canonicalDegraded) +
           row("fromCache", s.canonicalFromCache)
       ) +
       section(
-        "BP3D Layers",
+        "Clinician layers",
         row("depth", s.layerDepth) +
-          row("muscleLoaded", s.muscleLoaded) +
-          row("skeletalLoaded", s.skeletalLoaded) +
+          row("Muscle", s.muscleLoaded ? "loaded" : "available") +
+          row("Skeletal", s.skeletalLoaded ? "loaded" : "available") +
           row("patientIsolation", s.patientLayerIsolation)
       ) +
       section(
-        "Presentation",
-        row("mode", s.presentationMode || "—")
+        "Boot",
+        row("state", s.bootState) +
+          row("displayMode", s.displayMode) +
+          row("health", s.health) +
+          row("presentation", s.presentationMode || "—")
       ) +
       section("Last error", row("message", s.lastFailure || "none")) +
       '<div class="cae-spatial-diag-actions">' +

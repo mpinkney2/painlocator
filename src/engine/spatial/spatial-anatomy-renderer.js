@@ -81,10 +81,11 @@
 
         onProgress("Checking WebGL…");
         const probeOk = threeLoader.isWebGLAvailable();
-        setBoot(STATES.LOADING_THREE || "loading-three", {
+        setBoot(STATES.LOADING_SPATIAL_RUNTIME || STATES.LOADING_THREE || "loading-spatial-runtime", {
           webglAvailable: !!probeOk,
           error: null,
-          canonicalStatus: "idle"
+          canonicalStatus: "idle",
+          runtimeSource: "vite-esm"
         });
         // Soft probe only — never block here. Some previews lie; WebGLRenderer is authoritative.
         // Also: never call loseContext during probe (poisons Electron/Cursor WebGL).
@@ -96,11 +97,21 @@
         this._teardownMount({ keepAttachments: true });
 
         onProgress("Loading 3D library…");
-        this.THREE = await withTimeout(
-          threeLoader.loadThreeModule(),
-          timeouts.threeMs || 12000,
-          "Three.js"
-        );
+        const runtime =
+          typeof threeLoader.loadSpatialRuntime === "function"
+            ? await withTimeout(
+                threeLoader.loadSpatialRuntime(),
+                timeouts.threeMs || 12000,
+                "Spatial Vite runtime"
+              )
+            : null;
+        this.THREE = runtime?.THREE
+          ? runtime.THREE
+          : await withTimeout(
+              threeLoader.loadThreeModule(),
+              timeouts.threeMs || 12000,
+              "Three.js"
+            );
         if (this.disposed || generation !== this._mountGeneration) return false;
         if (!this.THREE?.WebGLRenderer) {
           throw new Error("Three.js loaded without WebGLRenderer");

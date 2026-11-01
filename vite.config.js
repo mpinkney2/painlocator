@@ -17,8 +17,25 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    sourcemap: true,
+    // Keep classic scripts as separate assets; only type=module Spatial bootstrap is bundled.
+    modulePreload: false,
     rollupOptions: {
-      input: './index.html',
-    },
+      input: {
+        main: './index.html'
+      },
+      output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
+    }
   },
+  optimizeDeps: {
+    include: [
+      'three',
+      'three/examples/jsm/loaders/GLTFLoader.js',
+      'three/examples/jsm/libs/meshopt_decoder.module.js'
+    ]
+  }
 });

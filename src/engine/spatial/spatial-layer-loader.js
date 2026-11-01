@@ -80,69 +80,27 @@
   }
 
   async function loadMeshoptDecoder() {
-    if (meshoptReady) return meshoptReady;
-    const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
-      || (typeof window !== "undefined" && window.SpatialBootUtils)
-      || null;
-    const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
-    const meshoptMs = (boot && boot.TIMEOUTS && boot.TIMEOUTS.meshoptMs) || 5000;
-
-    const importVendor =
-      (typeof globalThis !== "undefined" &&
-        globalThis.SpatialBootUtils &&
-        globalThis.SpatialBootUtils.importVendorModule) ||
-      (typeof window !== "undefined" &&
-        window.SpatialBootUtils &&
-        window.SpatialBootUtils.importVendorModule) ||
-      null;
-    if (!importVendor) {
-      return Promise.reject(new Error("SpatialBootUtils.importVendorModule required"));
-    }
-
-    meshoptReady = withTimeout(
-      importVendor("/vendor/meshopt_decoder.module.js").then((mod) => {
-        const decoder = mod.MeshoptDecoder || mod.default?.MeshoptDecoder || mod.default;
-        if (!decoder) throw new Error("MeshoptDecoder unavailable");
-        return Promise.resolve(decoder.ready || Promise.resolve()).then(() => decoder);
-      }),
-      meshoptMs,
-      "MeshoptDecoder"
-    ).catch((err) => {
-      meshoptReady = null;
-      throw err;
-    });
-    return meshoptReady;
+    // Meshopt is configured by the Vite Spatial runtime GLTF factory.
+    return null;
   }
 
   async function getGltfLoader() {
     if (gltfLoaderPromise) return gltfLoaderPromise;
     gltfLoaderPromise = (async () => {
-      const boot = (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils)
-        || (typeof window !== "undefined" && window.SpatialBootUtils)
-        || null;
+      const threeLoader =
+        (typeof globalThis !== "undefined" && globalThis.SpatialThreeLoader) ||
+        (typeof window !== "undefined" && window.SpatialThreeLoader) ||
+        null;
+      if (!threeLoader || typeof threeLoader.createGLTFLoader !== "function") {
+        throw new Error("SpatialThreeLoader.createGLTFLoader required");
+      }
+      const boot =
+        (typeof globalThis !== "undefined" && globalThis.SpatialBootUtils) ||
+        (typeof window !== "undefined" && window.SpatialBootUtils) ||
+        null;
       const withTimeout = boot && boot.withTimeout ? boot.withTimeout : (p) => p;
       const gltfLoaderMs = (boot && boot.TIMEOUTS && boot.TIMEOUTS.gltfLoaderMs) || 10000;
-      const importVendor = boot && boot.importVendorModule ? boot.importVendorModule : null;
-      if (!importVendor) throw new Error("SpatialBootUtils.importVendorModule required");
-
-      const mod = await withTimeout(
-        importVendor("/vendor/GLTFLoader.js"),
-        gltfLoaderMs,
-        "GLTFLoader import"
-      );
-      const Loader = mod.GLTFLoader || mod.default?.GLTFLoader;
-      if (!Loader) throw new Error("GLTFLoader export missing");
-      const loader = new Loader();
-      try {
-        const decoder = await loadMeshoptDecoder();
-        if (decoder && typeof loader.setMeshoptDecoder === "function") {
-          loader.setMeshoptDecoder(decoder);
-        }
-      } catch (err) {
-        // Meshopt is optional — exterior/canonical may still load without it.
-        console.warn("[CAE Spatial] MeshoptDecoder skipped", err?.message || err);
-      }
-      return loader;
+      return withTimeout(threeLoader.createGLTFLoader(), gltfLoaderMs, "GLTFLoader");
     })().catch((err) => {
       gltfLoaderPromise = null;
       throw err;
@@ -178,11 +136,29 @@
     return root;
   }
 
+  /**
+   * Prototype BP3D GLBs may store undotted mesh names (muscledeltoidclavicularleft)
+   * while the manifest uses dotted meshIds (muscle.deltoid.clavicular.left).
+   * Match by stripping dots; prefer the manifest's dotted id as the stable key.
+   * @param {string} rawId
+   * @param {Map<string, object>} metaById
+   * @param {Map<string, string>} undottedToId
+   */
+  function resolveLayerMeshId(rawId, metaById, undottedToId) {
+    const raw = String(rawId || "");
+    if (!raw) return null;
+    if (metaById.has(raw)) return raw;
+    const undotted = raw.replace(/\./g, "");
+    return undottedToId.get(undotted) || null;
+  }
+
   function bindMeshMetadata(root, layerId, manifestLayer) {
     /** @type {Map<string, import('three').Mesh>} */
     const meshById = new Map();
     /** @type {Map<string, object>} */
     const metaById = new Map();
+    /** @type {Map<string, string>} */
+    const undottedToId = new Map();
 
     for (const entry of manifestLayer?.meshes || []) {
       metaById.set(entry.meshId, {
@@ -196,14 +172,16 @@
         sourceElementFileId: entry.sourceElementFileId || null,
         parentStructureId: entry.parentStructureId || null
       });
+      undottedToId.set(String(entry.meshId).replace(/\./g, ""), entry.meshId);
     }
 
     root.traverse((obj) => {
       if (!obj.isMesh) return;
-      const meshId = obj.name || obj.userData?.meshId;
-      if (!meshId) throw new Error(`Layer ${layerId} mesh missing stable name`);
+      const rawId = obj.name || obj.userData?.meshId;
+      if (!rawId) throw new Error(`Layer ${layerId} mesh missing stable name`);
+      const meshId = resolveLayerMeshId(rawId, metaById, undottedToId);
+      if (!meshId) throw new Error(`Layer ${layerId} GLB mesh not in manifest: ${rawId}`);
       const meta = metaById.get(meshId);
-      if (!meta) throw new Error(`Layer ${layerId} GLB mesh not in manifest: ${meshId}`);
       obj.name = meshId;
       obj.userData.meshId = meshId;
       obj.userData.structureId = meta.structureId;

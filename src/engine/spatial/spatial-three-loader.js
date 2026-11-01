@@ -1,6 +1,7 @@
 /**
- * Lazy-load Three.js only when spatial mode is requested.
- * All vendor ESM goes through SpatialBootUtils.importVendorModule — never source-level import().
+ * Spatial runtime loader bridge for the classic app.
+ * Lazily loads the Vite ESM Spatial chunk (npm three + GLTFLoader + Meshopt).
+ * Retires /public/vendor Three imports.
  */
 (function (global) {
   let pending = null;
@@ -9,69 +10,67 @@
     return global.SpatialBootUtils || (typeof globalThis !== "undefined" ? globalThis.SpatialBootUtils : null);
   }
 
-  function resolveThreeUrl() {
-    if (global.PAINLOCATOR_THREE_URL) return global.PAINLOCATOR_THREE_URL;
-    return "/vendor/three.module.min.js";
-  }
-
-  function importVendor(path) {
-    const utils = boot();
-    if (utils && typeof utils.importVendorModule === "function") {
-      return utils.importVendorModule(path);
-    }
-    throw new Error("SpatialBootUtils.importVendorModule required before Three load");
-  }
-
   function clearThreeCache() {
     pending = null;
     global.__PAINLOCATOR_THREE__ = null;
+    if (global.PainLocatorSpatialRuntime) {
+      try {
+        delete global.PainLocatorSpatialRuntime;
+      } catch (_) {
+        global.PainLocatorSpatialRuntime = null;
+      }
+    }
   }
 
-  function loadThreeModule() {
-    if (global.__PAINLOCATOR_THREE__ && global.__PAINLOCATOR_THREE__.WebGLRenderer) {
-      return Promise.resolve(global.__PAINLOCATOR_THREE__);
+  /**
+   * Ensure Vite Spatial runtime bridge is ready.
+   * @returns {Promise<object>}
+   */
+  function loadSpatialRuntime() {
+    if (global.PainLocatorSpatialRuntime?.ready && global.PainLocatorSpatialRuntime.THREE?.WebGLRenderer) {
+      return Promise.resolve(global.PainLocatorSpatialRuntime);
     }
-    global.__PAINLOCATOR_THREE__ = null;
     if (pending) return pending;
     const utils = boot();
     const withTimeout = utils && utils.withTimeout ? utils.withTimeout : (p) => p;
     const threeMs = (utils && utils.TIMEOUTS && utils.TIMEOUTS.threeMs) || 12000;
 
-    pending = withTimeout(
-      (async () => {
-        let mod = null;
-        let primaryErr = null;
-        try {
-          mod = await importVendor(resolveThreeUrl());
-        } catch (urlErr) {
-          primaryErr = urlErr;
-          // Fallback to import-map bare specifier when absolute URL import is blocked.
-          try {
-            mod = await importVendor("three");
-          } catch (_) {
-            throw primaryErr;
-          }
-        }
-        const THREE =
-          mod && typeof mod.WebGLRenderer === "function"
-            ? mod
-            : mod && mod.default && typeof mod.default.WebGLRenderer === "function"
-              ? mod.default
-              : null;
-        if (!THREE) {
-          throw new Error("Three.js module loaded without WebGLRenderer");
-        }
-        global.__PAINLOCATOR_THREE__ = THREE;
-        pending = null;
-        return THREE;
-      })(),
-      threeMs,
-      "Three.js import"
-    ).catch((err) => {
+    const loader =
+      typeof global.loadPainLocatorSpatialRuntime === "function"
+        ? global.loadPainLocatorSpatialRuntime
+        : null;
+    if (!loader) {
+      return Promise.reject(
+        new Error("Spatial Vite bootstrap missing (loadPainLocatorSpatialRuntime)")
+      );
+    }
+
+    pending = withTimeout(loader(), threeMs, "Spatial Vite runtime").then((runtime) => {
+      if (!runtime?.THREE?.WebGLRenderer) {
+        throw new Error("Spatial runtime loaded without WebGLRenderer");
+      }
+      global.PainLocatorSpatialRuntime = runtime;
+      global.__PAINLOCATOR_THREE__ = runtime.THREE;
+      pending = null;
+      return runtime;
+    }).catch((err) => {
       pending = null;
       throw err;
     });
     return pending;
+  }
+
+  function loadThreeModule() {
+    return loadSpatialRuntime().then((runtime) => runtime.THREE);
+  }
+
+  function createGLTFLoader(options) {
+    return loadSpatialRuntime().then((runtime) => {
+      if (typeof runtime.createGLTFLoader !== "function") {
+        throw new Error("Spatial runtime createGLTFLoader missing");
+      }
+      return runtime.createGLTFLoader(options);
+    });
   }
 
   function isWebGLAvailable() {
@@ -92,10 +91,10 @@
   }
 
   global.SpatialThreeLoader = {
+    loadSpatialRuntime,
     loadThreeModule,
+    createGLTFLoader,
     isWebGLAvailable,
-    resolveThreeUrl,
-    importVendor,
     clearThreeCache
   };
 })(typeof window !== "undefined" ? window : globalThis);
