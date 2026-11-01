@@ -1,11 +1,10 @@
 /**
- * Engage BP3D-aligned Spatial as the primary locate surface across shells.
+ * Engage anatomy display across Patient + Clinician shells.
  *
- * Product default:
- * - Patient + Clinician: rotatable 3D body (snap views + tap to mark)
- * - CAE 2D plate image is NOT shown on failure (status panel + Retry instead)
- * - Opt in to plate: ?displayMode=plate | ?plate=1 | "Use 2D diagram"
- * - Show 2D/Spatial toggle: ?displayToggle=1 | ?dev=1
+ * Product default (UX proposal):
+ * - Reliable 2D body map is the foundation for both roles
+ * - Optional 3D (Spatial) loads only when requested (?spatial=1 | ?displayMode=spatial | UI toggle)
+ * - A 3D failure must leave a usable 2D map and preserve entries
  */
 (function (global) {
   function isFalsyFlag(value) {
@@ -45,22 +44,25 @@
   }
 
   /**
-   * Prefer Spatial unless the user explicitly opted into plate.
-   * Do NOT gate on the WebGL probe — probes are flaky in embedded previews;
-   * always attempt the real mount and surface failure in the status panel.
+   * Prefer Spatial only when explicitly requested.
+   * Default is the reliable 2D plate for both patient and clinician.
    */
   function shouldPreferSpatial() {
     const params = readParams();
     if (params.get("displayMode") === "plate" || isTruthyFlag(params.get("plate"))) {
       return false;
     }
-    return true;
+    if (params.get("displayMode") === "spatial" || isTruthyFlag(params.get("spatial"))) {
+      return true;
+    }
+    return false;
   }
 
   function syncSpatialChrome(isSpatial) {
     if (typeof global.SpatialPrimaryChrome?.applySpatialPrimaryChrome === "function") {
       global.SpatialPrimaryChrome.applySpatialPrimaryChrome(!!isSpatial, {
-        keepSpatialPrimary: shouldPreferSpatial()
+        keepSpatialPrimary: shouldPreferSpatial(),
+        forcePlate: !shouldPreferSpatial() && !isSpatial
       });
       return;
     }
@@ -76,6 +78,14 @@
   async function preferSpatialAcrossShells(engine) {
     if (!engine || typeof engine.setDisplayMode !== "function") return false;
     if (!shouldPreferSpatial()) {
+      // 2D default: ensure plate is active and Spatial-primary chrome is off.
+      try {
+        engine.spatialPrimaryNoPlate = false;
+        if (typeof engine.enablePlateMode === "function") engine.enablePlateMode();
+        else await engine.setDisplayMode("plate");
+      } catch (err) {
+        console.warn("[PainLocator] Plate default failed", err);
+      }
       syncSpatialChrome(false);
       return false;
     }
@@ -83,16 +93,30 @@
     try {
       const ok = await engine.setDisplayMode("spatial");
       syncSpatialChrome(!!ok);
-      if (!ok && engine.displayMode === "plate") {
-        // Belt-and-suspenders: never leave the plate PNG as Spatial-primary UI.
-        engine.showSpatialUnavailable?.(
-          engine.lastSpatialFailure || "spatial-mount-failed"
-        );
+      if (!ok) {
+        // Failure must recover to usable 2D — do not leave an empty Spatial-primary stage.
+        engine.spatialPrimaryNoPlate = false;
+        try {
+          if (typeof engine.enablePlateMode === "function") {
+            engine.enablePlateMode(engine.lastSpatialFailure || "spatial-mount-failed");
+          } else {
+            await engine.setDisplayMode("plate");
+          }
+        } catch (_) { /* ignore */ }
+        syncSpatialChrome(false);
+        if (typeof global.showToast === "function") {
+          global.showToast("3D body unavailable — showing 2D diagram.", { type: "warning" });
+        }
       }
       return !!ok;
     } catch (err) {
       console.warn("[PainLocator] Spatial primary failed", err);
-      engine.showSpatialUnavailable?.(err?.message || "spatial-exception");
+      engine.spatialPrimaryNoPlate = false;
+      try {
+        if (typeof engine.enablePlateMode === "function") {
+          engine.enablePlateMode(err?.message || "spatial-exception");
+        }
+      } catch (_) { /* ignore */ }
       syncSpatialChrome(false);
       return false;
     }

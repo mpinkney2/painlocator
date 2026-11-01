@@ -49,8 +49,10 @@
     const captureBtn = document.getElementById('btnCaptureWF');
     const reviewBtn = document.getElementById('btnReviewWF');
     const clinicalBtn = document.getElementById('btnClinicalWF');
+    const workflowTabs = document.querySelector('.workflow-toggle .toggle-buttons');
 
     if (next === 'patient') {
+      if (workflowTabs) workflowTabs.setAttribute('aria-label', 'Workflow: Locate, Describe, Review');
       if (captureBtn) {
         captureBtn.textContent = 'Locate';
         captureBtn.title = 'Where does it hurt?';
@@ -64,13 +66,15 @@
         reviewBtn.title = 'Review & save';
       }
     } else {
+      // Clinician console: Review / Compare / Report
+      if (workflowTabs) workflowTabs.setAttribute('aria-label', 'Workflow: Review, Compare, Report');
       if (captureBtn) {
-        captureBtn.textContent = 'Anatomy';
-        captureBtn.title = 'Anatomy workspace';
+        captureBtn.textContent = 'Review';
+        captureBtn.title = 'Review patient marks on anatomy';
       }
       if (reviewBtn) {
-        reviewBtn.textContent = 'History';
-        reviewBtn.title = 'Visit history';
+        reviewBtn.textContent = 'Compare';
+        reviewBtn.title = 'Compare visits';
       }
       if (clinicalBtn) {
         clinicalBtn.innerHTML =
@@ -82,14 +86,50 @@
     const pointBtn = document.querySelector('.capture-tools .region-tool[data-tool="point"]');
     const circleBtn = document.querySelector('.capture-tools .region-tool[data-tool="circle"]');
     const eraserBtn = document.querySelector('.capture-tools .region-tool[data-tool="eraser"]');
+    const helpToolName = document.getElementById('helpMarkingToolName');
+    const helpMarkingCopy = document.getElementById('helpMarkingCopy');
     if (next === 'patient') {
-      if (pointBtn) { pointBtn.textContent = 'Tap'; pointBtn.title = 'Tap a pain point'; }
-      if (circleBtn) { circleBtn.textContent = 'Area'; circleBtn.title = 'Mark a pain area'; }
-      if (eraserBtn) { eraserBtn.textContent = 'Remove'; eraserBtn.title = 'Remove a mark'; }
+      if (pointBtn) {
+        pointBtn.textContent = 'Tap';
+        pointBtn.title = 'Tap a pain point';
+        pointBtn.setAttribute('aria-label', 'Tap tool');
+      }
+      if (circleBtn) {
+        circleBtn.textContent = 'Area';
+        circleBtn.title = 'Mark a pain area';
+        circleBtn.setAttribute('aria-label', 'Area tool');
+      }
+      if (eraserBtn) {
+        eraserBtn.textContent = 'Remove';
+        eraserBtn.title = 'Remove a mark';
+        eraserBtn.setAttribute('aria-label', 'Remove mark');
+      }
+      if (helpToolName) helpToolName.textContent = 'Tap';
+      if (helpMarkingCopy) {
+        helpMarkingCopy.innerHTML =
+          'Use <strong id="helpMarkingToolName">Tap</strong> to place a pain mark on the body. Use Area to outline a wider region, and Remove to clear a mark. Rotate the body, then use Front / Back / Left / Right to snap the view.';
+      }
     } else {
-      if (pointBtn) { pointBtn.textContent = 'Point'; pointBtn.title = 'Mark a pain point'; }
-      if (circleBtn) { circleBtn.textContent = 'Region'; circleBtn.title = 'Click-drag to mark a pain region'; }
-      if (eraserBtn) { eraserBtn.textContent = 'Eraser'; eraserBtn.title = 'Remove region'; }
+      if (pointBtn) {
+        pointBtn.textContent = 'Point';
+        pointBtn.title = 'Mark a pain point';
+        pointBtn.setAttribute('aria-label', 'Point tool');
+      }
+      if (circleBtn) {
+        circleBtn.textContent = 'Region';
+        circleBtn.title = 'Click-drag to mark a pain region';
+        circleBtn.setAttribute('aria-label', 'Region tool');
+      }
+      if (eraserBtn) {
+        eraserBtn.textContent = 'Eraser';
+        eraserBtn.title = 'Remove region';
+        eraserBtn.setAttribute('aria-label', 'Eraser tool');
+      }
+      if (helpToolName) helpToolName.textContent = 'Point';
+      if (helpMarkingCopy) {
+        helpMarkingCopy.innerHTML =
+          'Use <strong id="helpMarkingToolName">Point</strong> to place a pain mark on the body. Use Region to outline a wider area, and Eraser to clear a mark. Editing stays behind explicit Edit Entry actions. Front / Back / Left / Right snap the view.';
+      }
     }
 
     if (typeof global.refreshPatientFlow === 'function') global.refreshPatientFlow();
@@ -122,11 +162,23 @@
     return next;
   }
 
+  function closePresentationMenu() {
+    const menu = document.getElementById('presentationMenu');
+    const toggle = document.getElementById('btnPresentationMenu');
+    if (!menu) return false;
+    const wasOpen = menu.classList.contains('open') || !menu.hasAttribute('hidden');
+    menu.setAttribute('hidden', '');
+    menu.classList.remove('open');
+    toggle?.setAttribute('aria-expanded', 'false');
+    return wasOpen;
+  }
+
   function initPresentationMode() {
     applyPresentationMode(readStored(), { persist: false });
 
     document.getElementById('btnPresentationMenu')?.addEventListener('click', (e) => {
       e.stopPropagation();
+      e.preventDefault();
       const menu = document.getElementById('presentationMenu');
       if (menu) {
         const open = menu.hasAttribute('hidden');
@@ -137,27 +189,47 @@
     });
 
     document.querySelectorAll('[data-presentation-option]').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         applyPresentationMode(btn.getAttribute('data-presentation-option'));
-        const menu = document.getElementById('presentationMenu');
-        if (menu) { menu.setAttribute('hidden', ''); menu.classList.remove('open'); }
-        document.getElementById('btnPresentationMenu')?.setAttribute('aria-expanded', 'false');
+        closePresentationMenu();
+        // Switching from Help must close the dialog so the intended shell is usable.
+        try { document.getElementById('helpModal')?.close?.(); } catch (_) { /* ignore */ }
+        btn.focus?.();
       });
     });
 
-    document.addEventListener('click', (e) => {
+    // Swallow the outside gesture so anatomy never receives the same pointer that dismisses chrome.
+    document.addEventListener('pointerdown', (e) => {
       const menu = document.getElementById('presentationMenu');
       const toggle = document.getElementById('btnPresentationMenu');
       if (!menu || !toggle) return;
+      if (!menu.classList.contains('open') && menu.hasAttribute('hidden')) return;
       if (menu.contains(e.target) || toggle.contains(e.target)) return;
-      menu.setAttribute('hidden', '');
-      menu.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
+      closePresentationMenu();
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
 
-    // Clinician shortcuts: 1–4 change view (skip when typing in fields)
     document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (closePresentationMenu()) {
+          e.preventDefault();
+          document.getElementById('btnPresentationMenu')?.focus?.();
+          return;
+        }
+        const openDialog = document.querySelector('dialog[open]');
+        if (openDialog) {
+          try { openDialog.close(); } catch (_) { /* ignore */ }
+          e.preventDefault();
+          return;
+        }
+      }
+
       if (typeof state === 'undefined' || state.presentationMode === 'patient') return;
+      if (document.querySelector('dialog[open]')) return;
+      if (global.UiChrome?.isUiChromeBlockingMarks?.()) return;
       const tag = (e.target && e.target.tagName) || '';
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.target?.isContentEditable) return;
       const map = { Digit1: 'front', Digit2: 'right', Digit3: 'back', Digit4: 'left' };
@@ -184,8 +256,8 @@
         };
       }
       return {
-        capture: { label: 'Anatomy', title: 'Anatomy workspace' },
-        review: { label: 'History', title: 'Visit history' },
+        capture: { label: 'Review', title: 'Review patient marks on anatomy' },
+        review: { label: 'Compare', title: 'Compare visits' },
         clinical: { label: 'Report', title: 'Clinical report' }
       };
     },

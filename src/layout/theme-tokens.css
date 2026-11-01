@@ -79,6 +79,12 @@
 
   --font: 'Inter', system-ui, sans-serif;
   --display: 'Outfit', var(--font);
+
+  /* Shared chrome metrics (patient warm + clinician teal shells) */
+  --control-radius: 10px;
+  --btn-min-height: 40px;
+  --touch-target: 44px;
+  --chrome-gap: 8px;
 }
 
 body.theme-dark {
@@ -218,7 +224,7 @@ body.shell-patient {
   );
 
   --radius-sheet: 20px;
-  --radius-control: 12px;
+  --radius-control: var(--control-radius, 12px);
   --shadow-sheet: 0 -8px 32px rgba(28, 25, 23, 0.12), 0 -2px 8px rgba(28, 25, 23, 0.06);
 
   --brand-pain: var(--text-primary);
@@ -320,7 +326,7 @@ body.shell-clinician {
   --anatomy-stage-bg: radial-gradient(ellipse at center, #e8edf2 0%, #d5dde6 100%);
 
   --radius-sheet: 14px;
-  --radius-control: 8px;
+  --radius-control: var(--control-radius, 8px);
   --shadow-sheet: 0 -4px 20px rgba(15, 23, 42, 0.1);
 
   --left-panel-width: 210px;

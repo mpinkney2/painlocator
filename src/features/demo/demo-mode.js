@@ -14,8 +14,9 @@
   let active = false;
   let scenarioId = localStorage.getItem(DEMO_SCENARIO_KEY) || 'post-procedure';
 
+  /** Single source of truth after init — kept in sync with localStorage. */
   function isActive() {
-    return active || localStorage.getItem(DEMO_ACTIVE_KEY) === '1';
+    return active === true;
   }
 
   function getScenario() {
@@ -23,16 +24,20 @@
   }
 
   function updateBadge() {
+    const on = isActive();
     const badge = document.getElementById('demoModeBadge');
     const exitBtn = document.getElementById('btnExitDemo');
     const resetBtn = document.getElementById('btnResetDemo');
     const scenarioSel = document.getElementById('demoScenarioSelect');
-    document.body.classList.toggle('demo-mode-active', isActive());
-    if (badge) badge.hidden = !isActive();
-    if (exitBtn) exitBtn.hidden = !isActive();
-    if (resetBtn) resetBtn.hidden = !isActive();
+    document.body.classList.toggle('demo-mode-active', on);
+    if (badge) {
+      badge.hidden = !on;
+      badge.setAttribute('aria-hidden', on ? 'false' : 'true');
+    }
+    if (exitBtn) exitBtn.hidden = !on;
+    if (resetBtn) resetBtn.hidden = !on;
     if (scenarioSel) {
-      scenarioSel.hidden = !isActive();
+      scenarioSel.hidden = !on;
       scenarioSel.value = scenarioId;
     }
   }
@@ -84,6 +89,8 @@
       radio.checked = true;
       state.modelType = scenario.model;
     }
+    if (typeof syncBodyTypeGallery === 'function') syncBodyTypeGallery(state.modelType);
+    else if (typeof window.syncBodyTypeGallery === 'function') window.syncBodyTypeGallery(state.modelType);
     if (typeof setBodyView === 'function') setBodyView(scenario.defaultView);
     else state.view = scenario.defaultView;
   }
@@ -222,6 +229,7 @@
     getScenario,
     showEndPanel,
     initControls,
+    updateBadge,
     DEMO_STORAGE_KEY,
     REAL_STORAGE_KEY,
     WALKTHROUGH_DONE_KEY,
