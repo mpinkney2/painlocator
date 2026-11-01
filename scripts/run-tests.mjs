@@ -2141,6 +2141,24 @@ console.log('PainLocator tests\n');
   });
 }
 
+// --- Anatomy pack paths (classic vs metahuman) ---
+{
+  const { spawnSync } = await import('node:child_process');
+  const r = spawnSync(process.execPath, [join(root, 'tests/anatomy/anatomy-pack-paths.test.mjs')], {
+    cwd: root,
+    encoding: 'utf8'
+  });
+  if (r.status === 0) {
+    passed += 1;
+    console.log('ok - anatomy pack paths');
+  } else {
+    failed += 1;
+    console.error('not ok - anatomy pack paths');
+    if (r.stdout) console.error(r.stdout);
+    if (r.stderr) console.error(r.stderr);
+  }
+}
+
 // --- BodyParts3D Phase 2 Slice 2 prototype integrity (offline pack) ---
 {
   const { spawnSync } = await import('node:child_process');

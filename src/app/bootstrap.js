@@ -290,6 +290,8 @@ function init() {
   else if (typeof window.initPresentationMode === 'function') window.initPresentationMode();
   if (typeof initPatientFlow === 'function') initPatientFlow();
   else if (typeof window.initPatientFlow === 'function') window.initPatientFlow();
+  if (typeof LikenessBuilder !== 'undefined') LikenessBuilder.init();
+  else if (typeof window.LikenessBuilder?.init === 'function') window.LikenessBuilder.init();
 
   refreshUI();
   maybeShowWelcome?.();

@@ -1,0 +1,34 @@
+{
+  "id": "metahuman",
+  "label": "Lifelike body (MetaHuman-style)",
+  "schemaVersion": 1,
+  "models": {
+    "adult-male": {
+      "label": "Man",
+      "thumb": "/anatomy/metahuman/thumbs/adult-male.png"
+    },
+    "adult-female": {
+      "label": "Woman",
+      "thumb": "/anatomy/metahuman/thumbs/adult-female.png"
+    },
+    "teen": {
+      "label": "Teen",
+      "thumb": "/anatomy/metahuman/thumbs/teen.png"
+    },
+    "child": {
+      "label": "Child",
+      "thumb": "/anatomy/metahuman/thumbs/child.png"
+    },
+    "senior": {
+      "label": "Elderly",
+      "thumb": "/anatomy/metahuman/thumbs/senior.png"
+    }
+  },
+  "views": [
+    "front",
+    "back",
+    "left",
+    "right"
+  ],
+  "notes": "Letterboxed RGBA plates from docs/visual-targets/metahuman-sprites. Eval likeness pack."
+}
