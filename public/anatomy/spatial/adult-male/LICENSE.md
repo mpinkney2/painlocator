@@ -2,68 +2,67 @@
 
 ## Status
 
-**Interim Slice 1 asset** for PainLocator Spatial Anatomy.
+**Interim patient exterior** for PainLocator Spatial Anatomy.
 
-This is **not** a BodyParts3D redistribution. It is original PainLocator-authored
-**procedural geometry** (capsules/spheres/boxes), not medically validated anatomy,
-exported to GLB for production-path wiring
-(manifest → meshId → raycast → attachment) while a BodyParts3D-derived
-exterior pipeline is prepared.
+This mesh is a **stylized presentation** of BodyParts3D (DBCLS) full-body skin
+(FMA:7163) with PainLocator clinical skin materials and soft lighting. It is a
+locator surface, not a diagnostic atlas.
 
 ## Source
 
 | Field | Value |
 | --- | --- |
-| Source | PainLocator authored procedural geometry |
-| Generator script | `scripts/generate-exterior-glb.mjs` |
-| Export tool | three.js `GLTFExporter` (**build-time / npm `three@0.170.0` only**) |
-| Runtime loader | Vendored `public/vendor/GLTFLoader.js` + `public/vendor/three.module.min.js` (r170) |
-| Retrieved / generated | 2026-09-06 |
+| Anatomy source | BodyParts3D / Anatomography (DBCLS), FMA:7163 *skin* |
+| Presentation | PainLocator warm clinical materials (runtime override) |
+| Runtime loader | Vendored `public/vendor/GLTFLoader.js` + meshopt + `three.module.min.js` (r170) |
+| Retrieved / adapted | 2026-11-01 |
 | Canonical identifier | `painlocator:spatial:adult-male:exterior-lod0` |
-| Intended successor | BodyParts3D (DBCLS) exterior subset, CC BY 4.0 — see `docs/SPATIAL_ANATOMY_PHASE2_DECISION.md` |
+| Coordinate frame | `painlocator-bp3d-canonical-v1` (native; identity vs hidden canonical body) |
 
 ## Structure IDs
 
-Mesh entries use **PainLocator-local interim** `structureId` values of the form
-`PL:surface.*`. These are **not** FMA IDs. Future BodyParts3D / FMA mapping will
-replace or map these IDs through the spatial manifest contract without changing
-runtime attachment identity (`meshId`).
+Mesh entry uses PainLocator-local `structureId` `PL:surface.body` with
+`fmaId` `FMA:7163` documented in the model manifest. Regional pain labels may
+still resolve through CAE region helpers; attachment identity uses `meshId`
+`surface.body`.
 
 ## License
 
-Copyright © 2026 PainLocator contributors.
+BodyParts3D content is **CC BY 4.0** (DBCLS). Redistribution of this derived
+exterior with PainLocator requires retaining BodyParts3D attribution:
 
-Permission is granted to use, copy, modify, and redistribute this interim
-asset **as part of PainLocator** under the same terms as the PainLocator
-application repository.
+> BodyParts3D, © The Database Center for Life Science licensed under CC Attribution-Share Alike 2.1 Japan  
+> (official LATEST packs use CC BY 4.0 — see `docs/BODYPARTS3D_SOURCE_PROVENANCE.md`)
 
-This mesh is a **locator surface**, not a clinical anatomy atlas. Do not
-claim BodyParts3D provenance or diagnostic anatomical accuracy for this
-interim file.
+PainLocator material / lighting presentation code is Copyright © 2026
+PainLocator contributors.
 
 ## Attribution requirements
 
 When distributing PainLocator builds that include this file, retain this
 `LICENSE.md` beside the GLB / reference it from the spatial manifest
-`provenance.licenseRef`.
+`provenance.licenseRef`, and keep BodyParts3D credit in product documentation.
 
-three.js / GLTFExporter are MIT-licensed; see `public/vendor/THREE_LICENSE`.
+three.js / GLTFExporter / meshopt are MIT-licensed; see `public/vendor/THREE_LICENSE`.
 
 ## Modifications
 
-- Generated as multi-mesh humanoid capsules/spheres/boxes with clinical-neutral
-  materials and stable `meshId` names (`surface.*`).
-- No third-party anatomy mesh files were imported.
+- 2026-11-01: Replaced procedural capsule mannequin with BP3D FMA:7163 skin
+  shell as the patient exterior; node/mesh named `surface.body` with extras
+  `meshId`. Runtime applies warm clinical MeshPhysicalMaterial + soft lighting
+  (not raw atlas materials).
+- Landmark-based exterior→canonical conformer is **identity** for this native
+  BP3D exterior (same frame as hidden canonical body).
 
 ## Commercial redistribution
 
-Allowed with the PainLocator product distribution, subject to the
-application repository license. Replace with BodyParts3D-derived assets
-before claiming FMA-backed clinical structure coverage.
+Allowed under BodyParts3D CC BY 4.0 with attribution, together with the
+PainLocator application license. Licensed commercial exteriors (Zygote /
+SciePro, etc.) may later replace this mesh via the same `modelId` / `meshId`
+manifest contract.
 
 ## Payload
 
-`exterior-lod0.glb` is **293,968 bytes** (~287 KiB) as of regeneration with
-`three@0.170.0` / `GLTFExporter` — well under the 3–5 MB initial exterior
-transfer target. Exact bytes may vary slightly across regenerations; do not
-treat the GLB as byte-identical across exports.
+`exterior-lod0.glb` is an uncompressed baked BP3D skin (~2.0 MB) with
+vertex normals and feet on y=0 — under the 3–5 MB initial exterior
+transfer target. Regenerate with `node scripts/bake-bp3d-patient-exterior.mjs`.

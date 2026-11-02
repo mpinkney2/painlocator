@@ -193,7 +193,9 @@
       root.updateMatrixWorld(true);
       root.traverse((obj) => {
         if (!obj.isMesh) return;
-        const meshId = obj.name || obj.userData?.meshId;
+        // Prefer extras.meshId: Three's GLTFLoader sanitizes Object3D.name and strips
+        // dots (surface.head → surfacehead), which would break manifest identity.
+        const meshId = obj.userData?.meshId || obj.name;
         if (!meshId) {
           throw new Error("GLB body mesh is missing a stable name/meshId");
         }
@@ -208,21 +210,37 @@
         obj.userData.layer = meta?.layer || meta?.layerId || "surface";
         obj.userData.spatialBody = true;
         obj.userData.modelId = packed.modelId;
-        // Clinical-neutral override — avoid game-like GLB materials.
-        if (obj.material) {
-          const mat = new THREE.MeshStandardMaterial({
-            color: 0xb9c2cc,
-            roughness: 0.82,
-            metalness: 0.04,
-            flatShading: false
-          });
-          if (obj.material.dispose) obj.material.dispose();
+        // Warm clinical skin override — calm human tone, not cool mannequin gray.
+        // Always assign (BP3D-derived shells may arrive without materials).
+        {
+          const appearance =
+            (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+            (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+            null;
+          const mat = appearance?.createSkinMaterial
+            ? appearance.createSkinMaterial(THREE, meshId)
+            : new THREE.MeshStandardMaterial({
+                color: 0xc9a992,
+                roughness: 0.58,
+                metalness: 0.0,
+                flatShading: false
+              });
+          if (obj.material) {
+            if (Array.isArray(obj.material)) obj.material.forEach((m) => m?.dispose?.());
+            else obj.material.dispose?.();
+          }
           obj.material = mat;
         }
         meshById.set(meshId, obj);
       });
 
       assertManifestGlbIntegrity(known.keys(), glbMeshIds);
+
+      const appearance =
+        (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+        (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+        null;
+      appearance?.prepareExteriorGeometry?.(root);
 
       return {
         modelId: packed.modelId,
