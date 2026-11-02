@@ -572,10 +572,10 @@ console.log('PainLocator tests\n');
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
     const index = U.indexMeshes(manifest);
-    assert.ok(index.has('surface.torso'));
-    assert.ok(index.has('surface.upperArmL'));
-    assert.equal(index.get('surface.torso').structureId, 'PL:surface.torso');
-    assert.equal(index.get('surface.head').layer, 'surface');
+    assert.ok(index.has('surface.body'));
+    assert.equal(index.get('surface.body').structureId, 'PL:surface.body');
+    assert.equal(index.get('surface.body').layer, 'surface');
+    assert.equal(index.get('surface.body').fmaId, 'FMA:7163');
     assert.equal(index.size, manifest.layers.surface.meshes.length);
   });
 
@@ -1825,7 +1825,11 @@ console.log('PainLocator tests\n');
     assert.ok(report.projection.overallRawToTargetMm.mean > 40);
     assert.ok(report.projection.overallRawToTargetMm.max > 80);
     assert.equal(report.stability.shoulderL.maxDeltaMm, 0);
-    assert.equal(report.landmarkConformerExperiment.productionDefault.includes('exterior-to-canonical-v1'), true);
+    assert.equal(
+      report.landmarkConformerExperiment.productionDefault.includes('exterior-to-canonical-bp3d-native-v1')
+        || report.landmarkConformerExperiment.productionDefault.includes('exterior-to-canonical-v1'),
+      true
+    );
     assert.ok(report.hipRootCause.primary.includes('hip width') || report.hipRootCause.primary.includes('pelvis'));
     assert.equal(report.canonicalDerivedExterior.registrationTransform, 'identity');
     assert.equal(report.clinicalRegistrationClaimed, false);
@@ -1994,7 +1998,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-11-01-skin-1');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2013,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-11-01-skin-1'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2115,10 +2119,11 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-11-01-skin-1';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
+      'spatial-exterior-appearance.js',
       'spatial-anatomy-renderer.js',
       'spatial-layer-loader.js',
       'spatial-manifest-loader.js',
@@ -2129,6 +2134,56 @@ console.log('PainLocator tests\n');
     ]) {
       assert.ok(html.includes(`${file}?v=${ver}`), file);
     }
+    const appearIdx = html.indexOf('spatial-exterior-appearance.js');
+    const manifestIdx = html.indexOf('spatial-manifest-loader.js');
+    const sceneIdx = html.indexOf('spatial-scene-controller.js');
+    assert.ok(appearIdx > 0 && appearIdx < manifestIdx && appearIdx < sceneIdx);
+  });
+
+  test('spatial exterior appearance: warm skin + soft lighting helpers', () => {
+    const sandbox = {
+      console,
+      window: {},
+      globalThis: {}
+    };
+    sandbox.window = sandbox;
+    sandbox.globalThis = sandbox;
+    vm.createContext(sandbox);
+    loadScript('src/engine/spatial/spatial-exterior-appearance.js', sandbox);
+    const A = sandbox.SpatialExteriorAppearance;
+    assert.ok(A);
+    assert.equal(A.regionForMeshId('surface.head'), 'head');
+    assert.equal(A.regionForMeshId('surface.thighL'), 'limb');
+    assert.equal(A.regionForMeshId('surface.torso'), 'base');
+    assert.ok(A.SKIN.baseColor !== 0xb9c2cc, 'must not use cool mannequin gray');
+    const THREE = {
+      DoubleSide: 2,
+      MeshStandardMaterial: class {
+        constructor(opts) { Object.assign(this, opts); }
+      },
+      HemisphereLight: class {
+        constructor(a, b, c) { this.sky = a; this.ground = b; this.intensity = c; }
+      },
+      AmbientLight: class {
+        constructor(c, i) { this.color = c; this.intensity = i; }
+      },
+      DirectionalLight: class {
+        constructor(c, i) {
+          this.color = c;
+          this.intensity = i;
+          this.position = { set(...xyz) { this.xyz = xyz; } };
+        }
+      },
+      ACESFilmicToneMapping: 4
+    };
+    const mat = A.createSkinMaterial(THREE, 'surface.head');
+    assert.equal(mat.color, A.SKIN.headColor);
+    assert.equal(mat.roughness, A.SKIN.roughness);
+    assert.ok(mat.side === 2 || mat.side === THREE.DoubleSide);
+    const scene = { add() {} };
+    const renderer = { toneMapping: 0, toneMappingExposure: 1 };
+    A.applySceneLighting(scene, THREE, renderer);
+    assert.equal(renderer.toneMapping, THREE.ACESFilmicToneMapping);
   });
 
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {

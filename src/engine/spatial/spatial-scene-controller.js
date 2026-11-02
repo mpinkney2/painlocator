@@ -31,6 +31,9 @@
         this.renderer = new THREE.WebGLRenderer({
           antialias: true,
           alpha: true,
+          // Needed so on-demand frames remain readable for screenshots / some GPUs
+          // after the last draw (Spatial only renders when dirty).
+          preserveDrawingBuffer: true,
           powerPreference: "default",
           failIfMajorPerformanceCaveat: false,
           depth: true,
@@ -58,17 +61,28 @@
       const w = Math.max(1, mountEl.clientWidth || 320);
       const h = Math.max(1, mountEl.clientHeight || 480);
       this.camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
-      this.camera.position.set(0, 1.0, 4.0);
-      this.camera.lookAt(0, 0.95, 0);
+      // Framed for ~1.7 m adult body centered near y≈0.85 (BP3D skin AABB).
+      this.camera.position.set(0, 0.95, 3.6);
+      this.camera.lookAt(0, 0.85, 0.05);
 
       this.scene = new THREE.Scene();
-      this.scene.add(new THREE.AmbientLight(0xffffff, 0.72));
-      const key = new THREE.DirectionalLight(0xffffff, 0.85);
-      key.position.set(2.5, 4, 3);
-      this.scene.add(key);
-      const fill = new THREE.DirectionalLight(0xa8c4ff, 0.35);
-      fill.position.set(-3, 1, -2);
-      this.scene.add(fill);
+      const appearance =
+        (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+        (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+        null;
+      if (appearance?.applySceneLighting) {
+        appearance.applySceneLighting(this.scene, THREE, this.renderer);
+      } else {
+        // Fallback if appearance module failed to load — still soft wrap lighting.
+        this.scene.add(new THREE.HemisphereLight(0xfff1e6, 0x8a7a6c, 0.55));
+        this.scene.add(new THREE.AmbientLight(0xfff6ef, 0.28));
+        const key = new THREE.DirectionalLight(0xfff2e4, 0.95);
+        key.position.set(2.2, 5.0, 3.2);
+        this.scene.add(key);
+        const fill = new THREE.DirectionalLight(0xc8d6ef, 0.28);
+        fill.position.set(-3.2, 1.4, -1.8);
+        this.scene.add(fill);
+      }
 
       this.bodyRoot = new THREE.Group();
       this.bodyRoot.name = "spatialBodyRoot";
@@ -86,8 +100,8 @@
       this.meshByName = this.meshById;
 
       const ground = new THREE.Mesh(
-        new THREE.CircleGeometry(0.55, 32),
-        new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.12 })
+        new THREE.CircleGeometry(0.58, 48),
+        new THREE.MeshBasicMaterial({ color: 0x8a7a6c, transparent: true, opacity: 0.1 })
       );
       ground.rotation.x = -Math.PI / 2;
       ground.position.y = 0;
@@ -221,8 +235,13 @@
         }
       }
 
-      if (this._needsFrame) {
+      // Always render while snapping; otherwise render dirty frames. Also render at
+      // least every ~500ms so on-demand mode recovers if a requestFrame is missed
+      // (headless/WebGL timing) and the body never paints.
+      const now = performance.now();
+      if (this._needsFrame || this._snapping || !this._lastPaintMs || now - this._lastPaintMs > 500) {
         this.renderer.render(this.scene, this.camera);
+        this._lastPaintMs = now;
         if (!this._snapping) this._needsFrame = false;
       }
 
