@@ -35,6 +35,12 @@ const state = {
   vizController: null
 };
 
+// Classic scripts use lexical `const` — expose for IIFE modules that only see `window`.
+if (typeof window !== 'undefined') {
+  window.state = state;
+  window.entryStore = entryStore;
+}
+
 function useClinicalLabels() {
   return state.workflowMode === 'clinical';
 }

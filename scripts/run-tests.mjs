@@ -662,6 +662,23 @@ console.log('PainLocator tests\n');
       assert.ok(String(entry.structureId).startsWith('PL:'), `structureId must be PL-local: ${entry.structureId}`);
     }
   });
+
+  test('spatial manifest: runtime meshId prefers userData over Three-sanitized name', () => {
+    const src = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(src.includes('userData?.meshId'));
+    assert.ok(src.includes('userData?.name'));
+    assert.ok(src.includes("sanitizeNodeName") || src.includes('Three.js PropertyBinding') || src.includes("strips '.'"));
+    // Simulate Three sanitization: '.' removed from Object3D.name, original kept in userData.
+    const resolve = (obj) => obj.userData?.meshId || obj.userData?.name || obj.name || null;
+    assert.equal(
+      resolve({ name: 'surfacehead', userData: { meshId: 'surface.head', name: 'surface.head' } }),
+      'surface.head'
+    );
+    assert.equal(resolve({ name: 'surfacehead', userData: { name: 'surface.head' } }), 'surface.head');
+    const layerSrc = readFileSync(join(root, 'src/engine/spatial/spatial-layer-loader.js'), 'utf8');
+    assert.ok(layerSrc.includes('userData?.meshId'));
+    assert.ok(layerSrc.includes('userData?.name'));
+  });
 }
 
 // --- Product Experience V1: presentation mode ---
@@ -687,6 +704,15 @@ console.log('PainLocator tests\n');
     assert.equal(clinician.capture.label, 'Anatomy');
     assert.equal(clinician.review.label, 'History');
     assert.equal(clinician.clinical.label, 'Report');
+  });
+
+  test('presentation: query param selects clinician shell', () => {
+    const src = readFileSync(join(root, 'src/state/presentation.js'), 'utf8');
+    assert.ok(src.includes('readQueryMode'));
+    assert.ok(src.includes("params.get('presentation')"));
+    assert.ok(src.includes('fromQuery || readStored()'));
+    const boot = readFileSync(join(root, 'src/app/bootstrap.js'), 'utf8');
+    assert.ok(boot.indexOf('initPresentationMode') < boot.indexOf('engageBp3dAcrossShells'));
   });
 
   test('presentation: persist preference to localStorage', () => {
@@ -1994,7 +2020,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.withTimeout, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-07-bp3d-boot-1');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-11-01-2d3d-harden-4');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2009,7 +2035,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-07-bp3d-boot-1'));
+    assert.ok(html.includes('?v=2026-11-01-2d3d-harden-4'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2095,6 +2121,7 @@ console.log('PainLocator tests\n');
     const required = [
       'public/vendor/three.module.min.js',
       'public/vendor/GLTFLoader.js',
+      'public/vendor/utils/BufferGeometryUtils.js',
       'public/vendor/meshopt_decoder.module.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
@@ -2108,6 +2135,12 @@ console.log('PainLocator tests\n');
       try { ok = !!statSync(join(root, rel)); } catch (_) { ok = false; }
       assert.ok(ok, `missing ${rel}`);
     }
+    const gltfLoader = readFileSync(join(root, 'public/vendor/GLTFLoader.js'), 'utf8');
+    assert.ok(
+      gltfLoader.includes("from './utils/BufferGeometryUtils.js'"),
+      'GLTFLoader must import BufferGeometryUtils from /vendor/utils (not ../utils → /utils SPA fallback)'
+    );
+    assert.equal(gltfLoader.includes("from '../utils/BufferGeometryUtils.js'"), false);
     const buildSrc = readFileSync(join(root, 'scripts/build.mjs'), 'utf8');
     assert.ok(buildSrc.includes('meshopt_decoder.module.js'));
     assert.ok(buildSrc.includes('canonical-body.glb'));
@@ -2115,7 +2148,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-07-bp3d-boot-1';
+    const ver = '2026-11-01-2d3d-harden-4';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2129,6 +2162,50 @@ console.log('PainLocator tests\n');
     ]) {
       assert.ok(html.includes(`${file}?v=${ver}`), file);
     }
+  });
+
+  test('spatial-primary: explicit plate clears spatial-primary shell', () => {
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', sandbox);
+    sandbox.location.search = '';
+    sandbox.document.body = {
+      classList: {
+        _set: new Set(['spatial-primary']),
+        toggle(name, on) {
+          if (on) this._set.add(name);
+          else this._set.delete(name);
+        },
+        contains(name) {
+          return this._set.has(name);
+        }
+      }
+    };
+    // Minimal DOM stubs used by applySpatialPrimaryChrome
+    const els = {};
+    sandbox.document.getElementById = (id) => {
+      if (!els[id]) {
+        els[id] = {
+          hidden: false,
+          disabled: false,
+          textContent: '',
+          classList: { toggle() {}, remove() {}, add() {} },
+          setAttribute() {},
+          querySelectorAll: () => []
+        };
+      }
+      return els[id];
+    };
+    sandbox.document.querySelectorAll = () => [];
+    sandbox.document.querySelector = () => null;
+    sandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+    assert.equal(sandbox.document.body.classList.contains('spatial-primary'), false);
+    sandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+    assert.equal(sandbox.document.body.classList.contains('spatial-primary'), true);
+  });
+
+  test('display mode sync: plate path must pass keepSpatialPrimary false', () => {
+    const src = readFileSync(join(root, 'src/features/review/history-ui.js'), 'utf8');
+    assert.ok(src.includes('keepSpatialPrimary: isSpatial ? true : false'));
+    assert.ok(src.includes("SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial"));
   });
 
   test('spatial boot: patient never loads BP3D packs via layer controller guard', () => {
