@@ -103,10 +103,14 @@
     global.__bp3dPresentationBound = true;
     document.addEventListener("presentationchange", () => {
       const spatial = engine?.spatialRenderer;
-      if (!spatial?.ready) return;
+      if (!spatial?.ready) {
+        // Spatial still booting — mount completion will refresh once ready.
+        engine.__pendingPresentationShellRefresh = true;
+        return;
+      }
       try {
         spatial.refreshPresentationShell?.();
-        syncSpatialChrome(true);
+        syncSpatialChrome(!!engine.isSpatialMode?.());
       } catch (err) {
         console.warn("[PainLocator] presentation shell refresh failed", err);
       }
@@ -117,6 +121,22 @@
     const canonicalOn = configureCanonicalEngagement();
     bindPresentationShellRefresh(engine);
     const spatialOn = await preferSpatialAcrossShells(engine);
+    // Catch races where presentation changed while Spatial was still mounting.
+    if (spatialOn && engine?.spatialRenderer?.ready) {
+      try {
+        engine.spatialRenderer.refreshPresentationShell?.();
+        engine.__pendingPresentationShellRefresh = false;
+      } catch (err) {
+        console.warn("[PainLocator] post-engage presentation refresh failed", err);
+      }
+    } else if (engine?.__pendingPresentationShellRefresh && spatialOn) {
+      try {
+        engine.spatialRenderer?.refreshPresentationShell?.();
+        engine.__pendingPresentationShellRefresh = false;
+      } catch (_) {
+        /* ignore */
+      }
+    }
     if (typeof console !== "undefined" && console.info) {
       console.info("[PainLocator] Spatial-primary locate engagement", {
         canonicalBodyMode: canonicalOn,

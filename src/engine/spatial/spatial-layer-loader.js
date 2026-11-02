@@ -200,7 +200,12 @@
 
     root.traverse((obj) => {
       if (!obj.isMesh) return;
-      const meshId = obj.name || obj.userData?.meshId;
+      // Prefer extras identity — Three sanitizes '.' out of Object3D.name.
+      const meshId =
+        obj.userData?.meshId ||
+        obj.userData?.name ||
+        obj.name ||
+        null;
       if (!meshId) throw new Error(`Layer ${layerId} mesh missing stable name`);
       const meta = metaById.get(meshId);
       if (!meta) throw new Error(`Layer ${layerId} GLB mesh not in manifest: ${meshId}`);

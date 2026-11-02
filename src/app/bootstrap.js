@@ -44,6 +44,10 @@ function init() {
   initAnatomyZoom();
   initDisplayModeToggle();
 
+  // Apply Patient/Clinician shell BEFORE Spatial mounts so layer chrome binds correctly.
+  if (typeof initPresentationMode === 'function') initPresentationMode();
+  else if (typeof window.initPresentationMode === 'function') window.initPresentationMode();
+
   // Spatial-primary locate: rotatable 3D across Patient + Clinician (plate = explicit only).
   if (typeof Bp3dShellEngagement !== "undefined") {
     Bp3dShellEngagement.engageBp3dAcrossShells(state.engine).catch((err) => {
@@ -286,8 +290,12 @@ function init() {
   updateChartTheme();
   syncThemeToggleLabel();
 
-  if (typeof initPresentationMode === 'function') initPresentationMode();
-  else if (typeof window.initPresentationMode === 'function') window.initPresentationMode();
+  // Presentation already applied before Spatial engagement; refresh chrome if needed.
+  if (typeof applyPresentationMode === 'function' && typeof state !== 'undefined') {
+    applyPresentationMode(state.presentationMode || 'patient', { persist: false });
+  } else if (typeof window.applyPresentationMode === 'function' && typeof state !== 'undefined') {
+    window.applyPresentationMode(state.presentationMode || 'patient', { persist: false });
+  }
   if (typeof initPatientFlow === 'function') initPatientFlow();
   else if (typeof window.initPatientFlow === 'function') window.initPatientFlow();
 

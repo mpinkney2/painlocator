@@ -193,7 +193,13 @@
       root.updateMatrixWorld(true);
       root.traverse((obj) => {
         if (!obj.isMesh) return;
-        const meshId = obj.name || obj.userData?.meshId;
+        // Three.js PropertyBinding.sanitizeNodeName strips '.' from Object3D.name.
+        // Authoritative IDs live in extras → userData.meshId / userData.name.
+        const meshId =
+          obj.userData?.meshId ||
+          obj.userData?.name ||
+          obj.name ||
+          null;
         if (!meshId) {
           throw new Error("GLB body mesh is missing a stable name/meshId");
         }

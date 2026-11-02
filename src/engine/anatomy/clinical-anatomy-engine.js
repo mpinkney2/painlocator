@@ -320,6 +320,13 @@ class ClinicalAnatomyEngine {
       this.displayMode = "spatial";
       this.stage.classList.remove("cae-spatial-staging");
       this.stage.classList.add("cae-spatial-active");
+      // Re-bind Patient/Clinician chrome now that Spatial is ready (covers boot races).
+      try {
+        this.spatialRenderer?.refreshPresentationShell?.();
+        this.__pendingPresentationShellRefresh = false;
+      } catch (_) {
+        /* ignore */
+      }
       this.trigger("displaymodechanged", { displayMode: "spatial" });
       bootUtils?.logDiagnosticsOnce?.(this);
       return true;
@@ -339,7 +346,15 @@ class ClinicalAnatomyEngine {
     this.spatialPrimaryNoPlate = false;
     this.stage?.classList?.remove("cae-spatial-active", "cae-spatial-staging");
     this.stage?.classList?.add("cae-plate-active");
+    // Drop leftover Spatial status overlays so the plate image is the only stage UI.
+    this.stage?.querySelectorAll?.(".cae-spatial-status, .cae-spatial-viewport")?.forEach((el) => {
+      el.remove();
+    });
     this.render();
+    const chrome =
+      (typeof window !== "undefined" && window.SpatialPrimaryChrome) || null;
+    // Explicit plate opt-in must clear spatial-primary CSS that hides the plate PNG.
+    chrome?.applySpatialPrimaryChrome?.(false, { keepSpatialPrimary: false });
     this.trigger("displaymodechanged", { displayMode: "plate", reason: reason || null });
     return true;
   }

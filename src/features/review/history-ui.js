@@ -130,7 +130,10 @@ function syncDisplayModeButtons(mode) {
   plate?.setAttribute('aria-pressed', (!isSpatial).toString());
   spatial?.setAttribute('aria-pressed', isSpatial.toString());
   if (typeof SpatialPrimaryChrome !== 'undefined') {
-    SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial);
+    // Plate mode must clear spatial-primary CSS that hides the 2D anatomy image.
+    SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial, {
+      keepSpatialPrimary: isSpatial ? true : false
+    });
   } else {
     const enlarge = document.getElementById('btnEnlargeAnatomy');
     if (enlarge) {
@@ -151,6 +154,10 @@ function initDisplayModeToggle() {
 
   plate.addEventListener('click', () => {
     state.engine?.setDisplayMode?.('plate');
+    if (typeof SpatialPrimaryChrome !== 'undefined') {
+      SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+    }
+    syncDisplayModeButtons('plate');
   });
   spatial.addEventListener('click', async () => {
     if (state.engine?.isSpatialMode?.()) return;
@@ -160,7 +167,22 @@ function initDisplayModeToggle() {
       const ok = await state.engine?.setDisplayMode?.('spatial');
       syncDisplayModeButtons(ok ? 'spatial' : 'plate');
       if (!ok) {
-        showToast?.('3D body unavailable — using 2D plate fallback', 'warning');
+        const primary =
+          typeof Bp3dShellEngagement !== 'undefined' &&
+          Bp3dShellEngagement.shouldPreferSpatial?.();
+        if (primary) {
+          showToast?.('3D body unavailable — Retry 3D or use the 2D diagram', 'warning');
+          if (typeof SpatialPrimaryChrome !== 'undefined') {
+            SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+          }
+        } else {
+          showToast?.('3D body unavailable — using 2D plate fallback', 'warning');
+          if (typeof SpatialPrimaryChrome !== 'undefined') {
+            SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+          }
+        }
+      } else if (typeof SpatialPrimaryChrome !== 'undefined') {
+        SpatialPrimaryChrome.applySpatialPrimaryChrome(true);
       }
     } finally {
       spatial.disabled = false;
@@ -171,8 +193,14 @@ function initDisplayModeToggle() {
   state.engine?.on?.('displaymodechanged', ({ displayMode }) => {
     if (displayMode === 'spatial') {
       syncDisplayModeButtons('spatial');
+      if (typeof SpatialPrimaryChrome !== 'undefined') {
+        SpatialPrimaryChrome.applySpatialPrimaryChrome(true);
+      }
     } else if (displayMode === 'plate') {
       syncDisplayModeButtons('plate');
+      if (typeof SpatialPrimaryChrome !== 'undefined') {
+        SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+      }
     } else if (typeof SpatialPrimaryChrome !== 'undefined') {
       SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
     }

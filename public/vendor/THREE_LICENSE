@@ -29,7 +29,9 @@ Vendored runtime files in this directory:
 | File | Role | Three.js revision |
 | --- | --- | --- |
 | `three.module.min.js` | Runtime Three.js ESM (`REVISION` / build id **170**) | **r170** / npm `three@0.170.0` |
-| `GLTFLoader.js` | Runtime GLTF/GLB loader (ESM; resolves `three` via import map) | **r170** companion from `three@0.170.0` examples |
+| `GLTFLoader.js` | Runtime GLTF/GLB loader (ESM; resolves `three` via import map; imports `./utils/BufferGeometryUtils.js`) | **r170** companion from `three@0.170.0` examples |
+| `utils/BufferGeometryUtils.js` | Companion ESM for GLTFLoader triangle conversion | **r170** companion from `three@0.170.0` examples |
+| `meshopt_decoder.module.js` | Optional Meshopt decoder for compressed GLBs | meshoptimizer companion |
 
 **Runtime source of truth:** these vendored files (loaded only when Spatial mode is
 selected). Do **not** add `three` as an application runtime dependency.
