@@ -101,8 +101,8 @@ mesh.scale.set(1, 1, 1);
 mesh.updateMatrix();
 geo.computeBoundingBox();
 geo.translate(0, -geo.boundingBox.min.y, 0);
-// After bake, width is X (~0.67m) and depth is Z (~0.29m) — anterior faces +Z,
-// matching SpatialProjection front view (camera on +Z).
+// Baked bounds are ~0.67m X (left–right) × ~0.29m Z (AP) with anterior toward +Z,
+// matching SpatialProjection front view (camera on +Z, yaw 0).
 geo.computeVertexNormals();
 geo.computeBoundingBox();
 geo.computeBoundingSphere();
