@@ -5,6 +5,14 @@
   "installCommand": "npm install",
   "rewrites": [
     {
+      "source": "/care-chronology",
+      "destination": "/care-chronology/index.html"
+    },
+    {
+      "source": "/care-chronology/",
+      "destination": "/care-chronology/index.html"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },

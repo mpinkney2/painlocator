@@ -10,7 +10,7 @@
     "build": "node scripts/build.mjs",
     "preview": "vite preview --host 0.0.0.0 --port 5500 --strictPort",
     "typecheck": "tsc --noEmit",
-    "test": "node scripts/run-tests.mjs",
+    "test": "node scripts/run-tests.mjs && node --test scripts/care-chronology.test.mjs",
     "bp3d:fetch": "node tools/bp3d-ingest/fetch-source.mjs",
     "bp3d:verify": "python3 tools/bp3d-ingest/verify_source.py",
     "bp3d:ingest": "python3 tools/bp3d-ingest/ingest.py",

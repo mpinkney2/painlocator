@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="description" content="CareChronology, a synthetic-data prototype for connected medical timelines and PainLocator anatomical symptom history.">
+  <title>CareChronology | PainLocator</title>
+  <link rel="stylesheet" href="/care-chronology/styles.css">
+  <script type="module" src="/care-chronology/app.js"></script>
+</head>
+<body>
+  <a href="#timeline" class="skip-link">Skip to chronology</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/care-chronology/" aria-label="CareChronology home">
+        <span class="brand-symbol" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span>care<span class="brand-accent">chronology</span></span>
+      </a>
+      <div class="topbar-actions">
+        <span class="demo-pill">Synthetic data only</span>
+        <a class="subtle-link" href="/">Open PainLocator</a>
+        <button class="button outline small" type="button" id="integrationInfo">Epic / MyChart <span class="unconnected">Not connected</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">LONGITUDINAL CARE EXPERIENCE <span class="eyebrow-dot"></span> PROTOTYPE 0.1</p>
+        <h1>Make the story of care easier to see.</h1>
+        <p class="intro-sub">A unified view of symptoms, visits, laboratory results, procedures, and documented communications — with PainLocator anatomy at its center.</p>
+      </div>
+      <div class="mode-toggle" role="group" aria-label="View mode">
+        <button type="button" id="patientMode" class="selected" aria-pressed="true">Patient view</button>
+        <button type="button" id="clinicianMode" aria-pressed="false">Clinical view</button>
+      </div>
+    </section>
+
+    <div class="notice" role="note">
+      <span class="notice-icon" aria-hidden="true">✦</span>
+      <span>Fictional example. This is <strong>not a medical record</strong>, not clinical decision support, and not connected to any hospital, Epic, or MyChart account.</span>
+    </div>
+
+    <section class="patient-hero" aria-labelledby="patientName">
+      <div class="patient-avatar" aria-hidden="true">AM</div>
+      <div class="patient-main">
+        <p class="eyebrow dark">EXAMPLE PATIENT · SYNTHETIC</p>
+        <h2 id="patientName">Avery Morgan</h2>
+        <p id="patientEpisode">Left knee recovery · Post-procedure recovery and follow-up</p>
+      </div>
+      <div class="patient-metrics">
+        <div><strong id="countEvents">11</strong><span>Care events</span></div>
+        <div><strong id="countSymptoms">3</strong><span>Pain reports</span></div>
+        <div><strong id="countSources">11</strong><span>Source links</span></div>
+      </div>
+    </section>
+
+    <div class="dashboard">
+      <section class="panel chronology-panel" id="timeline" aria-labelledby="timelineHeading">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">YOUR CARE, IN CONTEXT</p>
+            <h2 id="timelineHeading">Care chronology</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="text-button" id="resetExample">Reset example</button>
+          </div>
+        </div>
+        <div class="tools-row">
+          <label class="search-field"><span class="visually-hidden">Search care events</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+            <input id="searchEvents" type="search" placeholder="Search visits, notes, results..." autocomplete="off">
+          </label>
+          <label class="filter-label"><span class="visually-hidden">Filter event type</span>
+            <select id="filterKind">
+              <option value="all">All events</option>
+              <option value="symptom">PainLocator</option>
+              <option value="visit">Visits</option>
+              <option value="lab">Laboratory</option>
+              <option value="procedure">Procedures</option>
+              <option value="medication">Medication</option>
+              <option value="communication">Messages</option>
+              <option value="diagnosis">Conditions</option>
+            </select>
+          </label>
+        </div>
+        <p id="resultSummary" class="results-summary" aria-live="polite"></p>
+        <div id="eventList" class="event-list" role="list" aria-label="Chronological events"></div>
+        <p id="emptyState" class="empty-state" hidden>No events match these filters.</p>
+      </section>
+
+      <aside class="insights-column">
+        <section class="panel anatomy-panel" aria-labelledby="bodyHeading">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">PAINLOCATOR × CHRONOLOGY</p>
+              <h2 id="bodyHeading">Where symptoms occur</h2>
+            </div>
+            <span class="mini-badge">Body map</span>
+          </div>
+          <div class="body-view-controls" role="group" aria-label="Anatomical view">
+            <button id="viewFront" type="button" class="selected" data-view="front" aria-pressed="true">Front</button>
+            <button id="viewBack" type="button" data-view="back" aria-pressed="false">Back</button>
+          </div>
+          <div class="anatomy-main">
+            <div class="anatomy-figure" id="anatomyFigure">
+              <img id="anatomyImage" src="/anatomy/adult-male/front.png" alt="Front-view clinical body illustration for showing patient-reported symptom locations">
+              <div id="painMarkers" class="pain-markers" aria-label="Reported symptom locations"></div>
+            </div>
+            <div class="anatomy-description">
+              <p class="mini-label">SELECTED RECORD</p>
+              <strong id="anatomyTitle">Patient-reported left knee</strong>
+              <p id="anatomyDesc">Select a PainLocator event to review its anatomical location, severity and note.</p>
+              <div class="severity-value"><span>Reported intensity</span><strong id="selectedSeverity">7<span>/10</span></strong></div>
+              <div class="severity-track"><div id="severityBar"></div></div>
+              <small>Patient-reported, not a clinician-confirmed finding.</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel trends-panel" aria-labelledby="trendsHeading">
+          <div class="panel-heading">
+            <div><p class="eyebrow">CHANGES OVER TIME</p><h2 id="trendsHeading">Patient &amp; lab trends</h2></div>
+            <span class="mini-badge">Descriptive only</span>
+          </div>
+          <div class="chart-tabs" role="group" aria-label="Trend type">
+            <button type="button" id="trendPain" aria-pressed="true" class="selected">Pain severity</button>
+            <button type="button" id="trendLab" aria-pressed="false">Hemoglobin</button>
+          </div>
+          <div id="chartContainer" class="chart-container" role="img" aria-label="Visual trend chart"></div>
+          <div id="trendDetails" class="trend-details" aria-live="polite"></div>
+          <p class="chart-footnote">Charts display recorded values only. They do not establish causes, treatment effectiveness, or clinical significance.</p>
+        </section>
+
+        <section class="panel record-panel" aria-labelledby="recordHeading">
+          <div class="panel-heading">
+            <div><p class="eyebrow">TRACEABLE CONTEXT</p><h2 id="recordHeading">Selected event</h2></div>
+          </div>
+          <div id="eventDetails" class="event-details" aria-live="polite"></div>
+        </section>
+
+        <section class="panel import-panel" aria-labelledby="importHeading">
+          <div class="panel-heading">
+            <div><p class="eyebrow">PROTOTYPE DATA ADAPTER</p><h2 id="importHeading">Explore a file locally</h2></div>
+          </div>
+          <p>Load a <strong>fictional</strong> PainLocator session or synthetic FHIR R4 Bundle to see it transformed into chronology events. Files are processed in this browser and are not uploaded.</p>
+          <label class="checkbox-row"><input id="fictionalConfirm" type="checkbox"> <span>I confirm this file contains fictional, non-patient data.</span></label>
+          <label class="file-button" for="importFile">Choose demo JSON file</label>
+          <input id="importFile" type="file" accept=".json,application/json" hidden>
+          <div class="import-status" id="importStatus" role="status" aria-live="polite"></div>
+          <p class="small-muted">No account connection, background synchronization, write-back, or persistent storage. Do not use real medical records in this prototype.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer"><span>CareChronology × PainLocator · Prototype</span><span>Independent demo · No Epic affiliation or integration enabled</span></footer>
+
+  <dialog id="integrationDialog" aria-labelledby="integrationHeading">
+    <div class="dialog-inner">
+      <p class="eyebrow">INTEGRATION ROADMAP</p>
+      <h2 id="integrationHeading">Epic / MyChart is not connected</h2>
+      <p>This prototype demonstrates an isolated data model. A real integration will require patient-authorized SMART on FHIR OAuth, a registered application, health-system endpoint configuration, data provenance checks, security review, and consent handling.</p>
+      <p>MyChart message access and clinical write-back must be verified separately. No healthcare data is retrieved or sent from this demonstration.</p>
+      <form method="dialog"><button class="button primary" type="submit">Got it</button></form>
+    </div>
+  </dialog>
+</body>
+</html>
