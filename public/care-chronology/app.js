@@ -16,7 +16,7 @@ const fmtShort = date => new Intl.DateTimeFormat("en-US", {
 }).format(new Date(date));
 const icons = { visit: "✚", lab: "◈", procedure: "✦", medication: "✜", symptom: "●", communication: "✉", diagnosis: "◇" };
 const state = {
-  events: [...DEMO_EVENTS], imported: [],
+  events: [...DEMO_EVENTS], imported: [], anatomyModel: "adult-male",
   selectedId: "e05", kind: "all", query: "", viewMode: "patient",
   bodyView: "front", trend: "pain"
 };
@@ -39,8 +39,8 @@ function renderHeader() {
   $("countEvents").textContent = events().length;
   $("countSymptoms").textContent = allPain().length;
   $("countSources").textContent = events().filter(event => event.source?.id).length;
-  $("patientName").textContent = DEMO_PATIENT.name;
-  $("patientEpisode").textContent = DEMO_PATIENT.episode + " · " + DEMO_PATIENT.subtitle;
+  $("patientName").textContent = state.events.length ? DEMO_PATIENT.name : "Imported fictional dataset";
+  $("patientEpisode").textContent = state.events.length ? DEMO_PATIENT.episode + " · " + DEMO_PATIENT.subtitle : "Local file · Unverified records · Not combined with demo patient";
 }
 
 function eventMarkup(event) {
@@ -102,7 +102,7 @@ function renderAnatomy() {
   const pain = s?.kind === "symptom" ? s : allPain().at(-1);
   const view = state.bodyView;
   const img = $("anatomyImage");
-  const src = "/anatomy/adult-male/" + view + ".png";
+  const src = "/anatomy/" + state.anatomyModel + "/" + view + ".png";
   if (!img.src.endsWith(src)) img.src = src;
   img.alt = view + "-view clinical body illustration with symptom overlays";
   document.querySelectorAll("[data-view]").forEach(btn => {
@@ -223,7 +223,9 @@ function selectEvent(id) {
   render();
 }
 function resetDemo() {
+  state.events = [...DEMO_EVENTS];
   state.imported = [];
+  state.anatomyModel = "adult-male";
   state.selectedId = "e05";
   state.kind = "all";
   state.query = "";
@@ -259,13 +261,16 @@ async function importDemoFile(file) {
   if (content.resourceType === "Bundle") imported = normalizeFhirR4Bundle(content);
   else imported = normalizePainLocatorSession(content);
   if (!imported.length) throw new Error("The file has no supported, dated events.");
+  state.events = []; // Never mix an imported dataset with a different sample patient.
   state.imported = imported;
+  const anatomyModel = content?.patient?.model || content?.entries?.[0]?.patientModel;
+  state.anatomyModel = ["adult-male","adult-female","child","teen","senior"].includes(anatomyModel) ? anatomyModel : "adult-male";
   state.selectedId = imported[0].id;
   state.kind = "all";
   state.query = "";
   $("filterKind").value = "all";
   $("searchEvents").value = "";
-  status.textContent = imported.length + " fictional-data event(s) added to this view. Nothing was uploaded or saved.";
+  status.textContent = imported.length + " fictional-data event(s) displayed separately from the example patient. Nothing was uploaded or saved.";
   render();
 }
 
