@@ -2,7 +2,7 @@
  * Clinical Anatomy Engine — likeness prefs (storage + identity stills).
  *
  * Identity DNA (natural / average / neutral) keeps the captured still unless
- * a Blender GLB is installed. When a mesh is present, the MetaHuman engine
+ * a Blender GLB is installed. When a mesh is present, the lifelike body engine
  * bakes that figure. Without a mesh, Appearance keeps the photographed body.
  */
 

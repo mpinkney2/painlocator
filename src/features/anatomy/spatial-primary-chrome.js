@@ -64,6 +64,16 @@
     );
   }
 
+  function resolveEngine() {
+    if (typeof state !== "undefined" && state && state.engine) return state.engine;
+    return global.state?.engine || null;
+  }
+
+  function resolveEntryStore() {
+    if (typeof entryStore !== "undefined" && entryStore) return entryStore;
+    return global.entryStore || resolveEngine()?.markerStore || null;
+  }
+
   function syncSimpleDisplayLabels(isSpatial) {
     const plate = document.getElementById("btnPlateMode");
     const spatial = document.getElementById("btnSpatialMode");
@@ -98,6 +108,9 @@
     const r = String(reason || "");
     if (/SpatialThreeLoader failed to load|Can't find variable: SpatialThreeLoader|SpatialThreeLoader is not defined/i.test(r)) {
       return "A 3D boot script did not load. Hard-refresh (Cmd+Shift+R), then Retry 3D.";
+    }
+    if (/BufferGeometryUtils|GLTFLoader|Failed to fetch dynamically imported module/i.test(r)) {
+      return "A 3D model loader dependency failed. Hard-refresh (Cmd+Shift+R), then Retry 3D.";
     }
     if (/^WebGL unavailable$/i.test(r) || /webgl unavailable/i.test(r)) {
       return "WebGL 3D is blocked in this preview. Open http://localhost:5500 in system Chrome or Edge (not the Cursor preview panel), then Retry.";
@@ -186,7 +199,7 @@
 
     if (!loading) {
       status.querySelector("#btnRetrySpatial")?.addEventListener("click", () => {
-        const engine = global.state?.engine;
+        const engine = resolveEngine();
         global.SpatialThreeLoader?.clearThreeCache?.();
         global.SpatialBootUtils?.resetDiagnosticsLogFlag?.();
         renderStageStatus(stage, "loading", null, "Retrying 3D body…");
@@ -201,7 +214,8 @@
         });
       });
       status.querySelector("#btnUsePlateFallback")?.addEventListener("click", () => {
-        global.state?.engine?.setDisplayMode?.("plate");
+        const engine = resolveEngine();
+        engine?.setDisplayMode?.("plate");
         applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
       });
     }
@@ -215,13 +229,12 @@
     const body = document.body;
     if (!body) return;
 
-    // Intentional plate (simple pain-map Human mode, ?plate=1, or explicit keepSpatialPrimary:false)
-    // must clear spatial-primary so the real plate PNG is not CSS-hidden.
-    const intentionalPlate =
-      opts.keepSpatialPrimary === false || wantsPlateSurface();
-    const spatialPrimaryShell = intentionalPlate
-      ? !!isSpatial
-      : !!(opts.keepSpatialPrimary || isSpatial);
+    // keepSpatialPrimary:false is definitive (explicit "Use 2D diagram" / Human toggle).
+    // Otherwise Spatial-primary stays on unless the surface is intentionally plate.
+    const spatialPrimaryShell =
+      opts.keepSpatialPrimary === false
+        ? false
+        : !!(opts.keepSpatialPrimary || isSpatial || (!wantsPlateSurface() && !wantsPlateOptIn()));
     body.classList.toggle("spatial-primary", spatialPrimaryShell);
     body.classList.toggle("allow-plate-toggle", allowPlateToggle());
     body.classList.toggle("spatial-ready", !!isSpatial);
@@ -280,12 +293,13 @@
 
     const hint = document.getElementById("avatarHint");
     const locatePrompt = document.querySelector("#patientLocateCta .patient-locate-prompt");
+    const store = resolveEntryStore();
+    const presentation =
+      (typeof state !== "undefined" && state?.presentationMode) ||
+      global.state?.presentationMode ||
+      "patient";
 
     if (isSpatial) {
-      const store =
-        typeof entryStore !== "undefined"
-          ? entryStore
-          : global.entryStore || global.state?.engine?.markerStore;
       const current = store?.activeTool || "point";
       const next =
         current === "select" || current === "eraser" || current === "point" ? current : "point";
@@ -312,9 +326,27 @@
         hint.textContent = "Waiting for the 3D body — rotate and tap once it loads.";
         hint.classList.remove("hidden");
       }
-    } else if (isSimplePainMapShell() && hint) {
-      hint.textContent = "Tap the body where it hurts.";
-      hint.classList.remove("hidden");
+    } else {
+      // Explicit 2D plate — patients tap to mark; Area/circle remains available for clinicians.
+      if (presentation === "patient" && store?.setTool) {
+        const current = store.activeTool || "point";
+        if (current === "circle" || current === "polygon" || current === "brush" || current === "lasso") {
+          store.setTool("point");
+          setActiveToolButton("point");
+        }
+      }
+      if (hint) {
+        hint.textContent = isSimplePainMapShell()
+          ? "Tap the body where it hurts."
+          : "Tap the body diagram to mark where it hurts. Use Front / Back / Left / Right to change view.";
+        hint.classList.remove("hidden");
+      }
+      if (locatePrompt) {
+        locatePrompt.textContent = "Where does it hurt? Tap the body diagram to mark pain.";
+      }
+      document
+        .getElementById("avatarStage")
+        ?.setAttribute("aria-label", "2D anatomy diagram — tap to mark pain");
     }
 
     document.getElementById("avatarWrap")?.classList.toggle("display-spatial", !!isSpatial);
@@ -329,6 +361,8 @@
     applySpatialPrimaryChrome,
     renderStageStatus,
     humanReason,
-    syncSimpleDisplayLabels
+    syncSimpleDisplayLabels,
+    resolveEngine,
+    resolveEntryStore
   };
 })(typeof window !== "undefined" ? window : globalThis);

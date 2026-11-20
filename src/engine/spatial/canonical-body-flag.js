@@ -13,13 +13,15 @@
   const COORDINATE_FRAME_VERSION = "painlocator-bp3d-canonical-v1";
   const CANONICAL_MODEL_ID = "bp3d-canonical-body";
   const CANONICAL_MODEL_VERSION = "bp3d-fullbody-skin-canonical-v0";
-  const EXTERIOR_CONFORMER_VERSION = "exterior-to-canonical-v1";
+  // Patient exterior is BP3D-native (FMA:7163) — identity into the canonical frame.
+  // Legacy procedural-mannequin fit remains at exterior-to-canonical-v1.json for archives/tests.
+  const EXTERIOR_CONFORMER_VERSION = "exterior-to-canonical-bp3d-native-v1";
   const IDENTITY_SHOULDER_REGISTRATION_URL =
     "/anatomy/spatial/registration/bp3d-shoulder-canonical-identity.json";
   const LEGACY_SHOULDER_REGISTRATION_URL =
     "/anatomy/spatial/registration/bp3d-shoulder-adult-male.json";
   const EXTERIOR_CONFORMER_URL =
-    "/anatomy/spatial/registration/exterior-to-canonical-v1.json";
+    "/anatomy/spatial/registration/exterior-to-canonical-bp3d-native-v1.json";
   const CANONICAL_MANIFEST_URL =
     "/anatomy/spatial/prototype-bp3d-fullbody/manifest.json";
   const CANONICAL_BODY_URL =

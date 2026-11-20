@@ -157,9 +157,13 @@
         console.warn("[PainLocator] presentation mode remount failed", err);
       });
       const spatial = engine?.spatialRenderer;
-      if (!spatial?.ready) return;
+      if (!spatial?.ready) {
+        engine.__pendingPresentationShellRefresh = true;
+        return;
+      }
       try {
         spatial.refreshPresentationShell?.();
+        syncSpatialChrome(!!engine.isSpatialMode?.());
       } catch (err) {
         console.warn("[PainLocator] presentation shell refresh failed", err);
       }
@@ -170,6 +174,21 @@
     const canonicalOn = configureCanonicalEngagement();
     bindPresentationShellRefresh(engine);
     const spatialOn = await preferSpatialAcrossShells(engine);
+    if (spatialOn && engine?.spatialRenderer?.ready) {
+      try {
+        engine.spatialRenderer.refreshPresentationShell?.();
+        engine.__pendingPresentationShellRefresh = false;
+      } catch (err) {
+        console.warn("[PainLocator] post-engage presentation refresh failed", err);
+      }
+    } else if (engine?.__pendingPresentationShellRefresh && spatialOn) {
+      try {
+        engine.spatialRenderer?.refreshPresentationShell?.();
+        engine.__pendingPresentationShellRefresh = false;
+      } catch (_) {
+        /* ignore */
+      }
+    }
     if (typeof console !== "undefined" && console.info) {
       console.info("[PainLocator] locate engagement", {
         canonicalBodyMode: canonicalOn,

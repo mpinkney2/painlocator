@@ -1,5 +1,5 @@
 /**
- * Clinical Anatomy Engine — MetaHuman body DNA.
+ * Clinical Anatomy Engine — Lifelike body DNA.
  *
  * A DNA vector is the reusable input to the variation engine. It is not a
  * CSS scale and not a pixel tint: resolveBodyProportions() returns bone

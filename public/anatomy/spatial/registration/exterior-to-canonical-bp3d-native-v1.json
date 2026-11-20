@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "registrationId": "adult-male-bp3d-exterior→bp3d-canonical-identity-v1",
+  "registrationVersion": "exterior-to-canonical-bp3d-native-v1",
+  "sourceModelId": "adult-male",
+  "targetModelId": "bp3d-canonical-body",
+  "sourceAssetVersion": "bp3d-fullbody-skin-patient-exterior-v1",
+  "targetAssetVersion": "bp3d-fullbody-skin-canonical-v0",
+  "coordinateFrameVersion": "painlocator-bp3d-canonical-v1",
+  "method": "identity",
+  "units": "meters",
+  "coordinateSystem": "y-up-right-handed",
+  "scope": "whole-body-global",
+  "regionalPatches": false,
+  "transform": {
+    "scale": 1,
+    "rotationEuler": [0, 0, 0],
+    "rotationOrder": "XYZ",
+    "translation": [0, 0, 0]
+  },
+  "derivation": {
+    "summary": "Patient exterior is BP3D FMA:7163 skin already in painlocator-bp3d-canonical-v1. Global conformer is identity — no scale/translation.",
+    "fitMethod": "identity (same mesh family / same ingest remap as hidden canonical body)",
+    "landmarksUsed": [],
+    "qualityGate": "pass",
+    "notes": "Replaces exterior-to-canonical-v1 (procedural mannequin fit) when adult-male exterior is BP3D-native."
+  },
+  "stopCondition": null
+}

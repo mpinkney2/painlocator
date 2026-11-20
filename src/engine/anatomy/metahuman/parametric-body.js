@@ -1,5 +1,5 @@
 /**
- * Clinical Anatomy Engine — parametric MetaHuman mesh.
+ * Clinical Anatomy Engine — parametric lifelike mesh.
  *
  * Builds a clothed standing figure from resolveBodyProportions(). Soft tissue,
  * bone lengths, and craniofacial scales are independent. Requires a Three.js

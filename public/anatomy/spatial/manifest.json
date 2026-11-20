@@ -7,5 +7,5 @@
       "manifest": "./adult-male/manifest.json"
     }
   ],
-  "notes": "Clinician Spatial surface is the Blender standing figure at /anatomy/metahuman/body.glb."
+  "notes": "Clinician/patient 3D exterior is BP3D FMA:7163 skin at adult-male/exterior-lod0.glb. Human mode uses photo plates."
 }

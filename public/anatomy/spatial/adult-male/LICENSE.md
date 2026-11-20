@@ -1,35 +1,23 @@
 # Adult Male Exterior — License & Provenance
 
-## Status
-
-Clinician Spatial surface for PainLocator. This is the **Blender standing figure**
-(`New-avatar-stand`) shared with the patient simple-map baker.
-
-It is a locator surface, not a diagnostic anatomy atlas.
-
-## Source
+**Interim patient exterior** for PainLocator Spatial Anatomy (3D mode). A stylized
+presentation of BodyParts3D (DBCLS) full-body skin (FMA:7163) with PainLocator
+clinical materials. Locator surface only — not a diagnostic atlas.
 
 | Field | Value |
 | --- | --- |
-| Source | Author Blender export (`New-avatar-stand.glb`) |
-| Runtime path | `/anatomy/metahuman/body.glb` |
-| Runtime loader | Vendored `GLTFLoader.js` + meshopt decoder (r170) |
-| Retrieved | 2026-09-11 |
-| Identifier | `painlocator:spatial:adult-male:blender-stand` |
-
-The retired procedural mannequin (`exterior-lod0.glb`, capsules/spheres) is no longer the clinician exterior.
-
-## Structure IDs
-
-Single mesh `surface.body` / `PL:surface.body`. PainLocator-local — not an FMA ID.
+| Anatomy source | BodyParts3D / Anatomography (DBCLS), FMA:7163 *skin* |
+| Runtime path | `/anatomy/spatial/adult-male/exterior-lod0.glb` |
+| Loader | Vendored `GLTFLoader.js` + meshopt + `three.module.min.js` (r170) |
+| Identifier | `painlocator:spatial:adult-male:exterior-lod0` |
+| Frame | `painlocator-bp3d-canonical-v1` (native; identity vs hidden canonical body) |
 
 ## License
 
-Copyright © 2026 PainLocator contributors and the figure author.
+**BodyParts3D, © The Database Center for Life Science, licensed under CC BY 4.0.**  
+See `docs/BODYPARTS3D_SOURCE_PROVENANCE.md`. Retain this file beside the GLB and keep
+BodyParts3D credit in product documentation when redistributing.
 
-Permission is granted to use this mesh as part of PainLocator under the same
-terms as the application repository.
+PainLocator material / lighting presentation code is Copyright © 2026 PainLocator contributors.
 
-## Payload
-
-`/anatomy/metahuman/body.glb` is meshopt-compressed glTF Binary (~1 MB).
+`exterior-lod0.glb` (~2.0 MB) — regenerate with `node scripts/bake-bp3d-patient-exterior.mjs`.

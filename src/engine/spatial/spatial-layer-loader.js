@@ -204,7 +204,12 @@
         global.SpatialManifestUtils;
       const isMeshLike = utils?.isMeshLike || ((o) => !!(o && o.isMesh));
       if (!isMeshLike(obj)) return;
-      const rawName = obj.name || obj.userData?.meshId;
+      // Prefer extras identity — Three's GLTFLoader sanitizes '.' out of Object3D.name.
+      const rawName =
+        obj.userData?.meshId ||
+        obj.userData?.name ||
+        obj.name ||
+        null;
       const meshId = utils?.resolveGlbMeshId ? utils.resolveGlbMeshId(rawName, metaById) : rawName;
       if (!meshId) throw new Error(`Layer ${layerId} mesh missing stable name`);
       const meta = metaById.get(meshId);

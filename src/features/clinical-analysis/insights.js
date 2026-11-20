@@ -48,11 +48,12 @@ function generateInsights() {
   if (topRegion) briefParts.push(topRegion[0]);
   if (topTrigger) briefParts.push(`trigger: ${topTrigger[0]}`);
 
+  const esc = typeof escapeHtml === 'function' ? escapeHtml : (v) => String(v ?? '');
   let html = '';
   if (alerts.length) {
-    html += alerts.map(a => `<div class="insight-alert"><i data-lucide="info"></i><span>${a}</span></div>`).join('');
+    html += alerts.map(a => `<div class="insight-alert"><i data-lucide="info"></i><span>${esc(a)}</span></div>`).join('');
   }
-  html += '<ul>' + notes.map(n => `<li>${n}</li>`).join('') + '</ul>';
+  html += '<ul>' + notes.map(n => `<li>${esc(n)}</li>`).join('') + '</ul>';
   return { html, alerts, brief: briefParts.join(' · ') };
 }
 

@@ -85,7 +85,7 @@ function validateBody(body) {
   return { payload };
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   const headers = corsHeaders(req);
   Object.entries(headers).forEach(([k, v]) => res.setHeader(k, v));
 

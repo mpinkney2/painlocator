@@ -1,5 +1,5 @@
 /**
- * Clinical Anatomy Engine — MetaHuman plate baker.
+ * Clinical Anatomy Engine — Lifelike plate baker.
  *
  * Prefers a Blender / glTF mesh dropped at
  * /anatomy/metahuman/{profile}/body.glb. Identity DNA without a mesh keeps

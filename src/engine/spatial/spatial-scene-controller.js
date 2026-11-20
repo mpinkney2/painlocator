@@ -23,11 +23,12 @@
       this._yaw = 0;
       this._targetYaw = 0;
       this._snapping = false;
+      this._lastPaintMs = 0;
       this._exterior = null;
       this.modelId = null;
       this.provenance = null;
       this._ground = null;
-      this._lookAtY = 0.95;
+      this._lookAtY = 0.85;
       this._lowPower = false;
       this._lastFitSize = { w: 0, h: 0 };
 
@@ -39,6 +40,8 @@
         this.renderer = new THREE.WebGLRenderer({
           antialias: !this._lowPower,
           alpha: true,
+          // Keep last frame readable for screenshots / some GPUs in on-demand mode.
+          preserveDrawingBuffer: true,
           powerPreference: this._lowPower ? "low-power" : "default",
           failIfMajorPerformanceCaveat: false,
           depth: true,
@@ -73,21 +76,30 @@
       const w = Math.max(1, mountEl.clientWidth || 320);
       const h = Math.max(1, mountEl.clientHeight || 480);
       this.camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
-      this.camera.position.set(0, 1.0, 4.0);
-      this.camera.lookAt(0, this._lookAtY, 0);
+      // Framed for ~1.7 m adult BP3D skin centered near y≈0.85.
+      this.camera.position.set(0, 0.95, 3.6);
+      this.camera.lookAt(0, this._lookAtY, 0.05);
 
       this.scene = new THREE.Scene();
-      // Brighter clinical lighting for a translucent consumer exterior.
-      this.scene.add(new THREE.HemisphereLight(0xfffaf5, 0xa8b0be, 1.2));
-      const key = new THREE.DirectionalLight(0xfffaf5, 1.05);
-      key.position.set(1.8, 3.4, 2.6);
-      this.scene.add(key);
-      const fill = new THREE.DirectionalLight(0xffffff, 0.45);
-      fill.position.set(-1.2, 2.4, 1.8);
-      this.scene.add(fill);
-      const rim = new THREE.DirectionalLight(0xe8f0fa, 0.5);
-      rim.position.set(-2.4, 1.2, -2.1);
-      this.scene.add(rim);
+      const appearance =
+        (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+        (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+        null;
+      if (appearance?.applySceneLighting) {
+        appearance.applySceneLighting(this.scene, THREE, this.renderer);
+      } else {
+        this.scene.add(new THREE.HemisphereLight(0xfff1e6, 0x8a7a6c, 0.55));
+        this.scene.add(new THREE.AmbientLight(0xfff6ef, 0.28));
+        const key = new THREE.DirectionalLight(0xfff2e4, 0.95);
+        key.position.set(2.2, 5.0, 3.2);
+        this.scene.add(key);
+        const fill = new THREE.DirectionalLight(0xc8d6ef, 0.28);
+        fill.position.set(-3.2, 1.4, -1.8);
+        this.scene.add(fill);
+        const rim = new THREE.DirectionalLight(0xdde8ff, 0.22);
+        rim.position.set(-1.2, 2.8, -3.5);
+        this.scene.add(rim);
+      }
 
       this.bodyRoot = new THREE.Group();
       this.bodyRoot.name = "spatialBodyRoot";
@@ -105,8 +117,8 @@
       this.meshByName = this.meshById;
 
       const ground = new THREE.Mesh(
-        new THREE.CircleGeometry(0.55, 32),
-        new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.12 })
+        new THREE.CircleGeometry(0.58, 48),
+        new THREE.MeshBasicMaterial({ color: 0x8a7a6c, transparent: true, opacity: 0.1 })
       );
       ground.rotation.x = -Math.PI / 2;
       ground.position.y = 0;
@@ -292,8 +304,12 @@
         }
       }
 
-      if (this._needsFrame) {
+      // Always paint while snapping; otherwise dirty frames. Also recover every ~500ms
+      // if a requestFrame was missed so the body never stays blank.
+      const now = performance.now();
+      if (this._needsFrame || this._snapping || !this._lastPaintMs || now - this._lastPaintMs > 500) {
         this.renderer.render(this.scene, this.camera);
+        this._lastPaintMs = now;
         if (!this._snapping) this._needsFrame = false;
       }
 

@@ -130,8 +130,9 @@ function syncDisplayModeButtons(mode) {
   plate?.setAttribute('aria-pressed', (!isSpatial).toString());
   spatial?.setAttribute('aria-pressed', isSpatial.toString());
   if (typeof SpatialPrimaryChrome !== 'undefined') {
+    // Plate mode must clear spatial-primary CSS that hides the 2D anatomy image.
     SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial, {
-      keepSpatialPrimary: isSpatial ? undefined : false
+      keepSpatialPrimary: isSpatial ? true : false
     });
   } else {
     const enlarge = document.getElementById('btnEnlargeAnatomy');
@@ -162,6 +163,10 @@ function initDisplayModeToggle() {
       Bp3dShellEngagement.writeSimpleDisplayPreference('plate');
     }
     state.engine?.setDisplayMode?.('plate');
+    if (typeof SpatialPrimaryChrome !== 'undefined') {
+      SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+    }
+    syncDisplayModeButtons('plate');
   });
   spatial.addEventListener('click', async () => {
     if (state.engine?.isSpatialMode?.()) return;
@@ -177,7 +182,22 @@ function initDisplayModeToggle() {
         if (typeof Bp3dShellEngagement?.writeSimpleDisplayPreference === 'function') {
           Bp3dShellEngagement.writeSimpleDisplayPreference('plate');
         }
-        showToast?.('3D body unavailable — using human image', 'warning');
+        const primary =
+          typeof Bp3dShellEngagement !== 'undefined' &&
+          Bp3dShellEngagement.shouldPreferSpatial?.();
+        if (primary) {
+          showToast?.('3D body unavailable — Retry 3D or use the 2D diagram', 'warning');
+          if (typeof SpatialPrimaryChrome !== 'undefined') {
+            SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+          }
+        } else {
+          showToast?.('3D body unavailable — using human image', 'warning');
+          if (typeof SpatialPrimaryChrome !== 'undefined') {
+            SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+          }
+        }
+      } else if (typeof SpatialPrimaryChrome !== 'undefined') {
+        SpatialPrimaryChrome.applySpatialPrimaryChrome(true);
       }
     } finally {
       spatial.disabled = false;
@@ -191,8 +211,14 @@ function initDisplayModeToggle() {
   state.engine?.on?.('displaymodechanged', ({ displayMode }) => {
     if (displayMode === 'spatial') {
       syncDisplayModeButtons('spatial');
+      if (typeof SpatialPrimaryChrome !== 'undefined') {
+        SpatialPrimaryChrome.applySpatialPrimaryChrome(true);
+      }
     } else if (displayMode === 'plate') {
       syncDisplayModeButtons('plate');
+      if (typeof SpatialPrimaryChrome !== 'undefined') {
+        SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+      }
     } else if (typeof SpatialPrimaryChrome !== 'undefined') {
       SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
     }
@@ -249,7 +275,7 @@ function updateComparePanel() {
 
   const opts = entries.map((e, i) => {
     const t = new Date(e.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-    return `<option value="${e.id}">Entry #${i + 1} · ${e.intensity}/10 · ${t}</option>`;
+    return `<option value="${escapeAttr(e.id)}">Entry #${i + 1} · ${escapeHtml(String(e.intensity))}/10 · ${escapeHtml(t)}</option>`;
   }).join('');
 
   if (entries.length < 2) {
@@ -274,10 +300,11 @@ function updateComparePanel() {
 
   const labelsA = a.regions.map(r => getRegionDisplay(r)).join(', ') || '—';
   const labelsB = b.regions.map(r => getRegionDisplay(r)).join(', ') || '—';
+  const delta = b.intensity - a.intensity;
   result.innerHTML = `
-    <div><strong>Entry A:</strong> Intensity ${a.intensity}/10 · ${a.regions.length} region(s) · ${labelsA}</div>
-    <div style="margin-top:4px"><strong>Entry B:</strong> Intensity ${b.intensity}/10 · ${b.regions.length} region(s) · ${labelsB}</div>
-    <div style="margin-top:6px">Δ Intensity: <strong>${b.intensity - a.intensity >= 0 ? '+' : ''}${b.intensity - a.intensity}</strong></div>`;
+    <div><strong>Entry A:</strong> Intensity ${escapeHtml(String(a.intensity))}/10 · ${a.regions.length} region(s) · ${escapeHtml(labelsA)}</div>
+    <div style="margin-top:4px"><strong>Entry B:</strong> Intensity ${escapeHtml(String(b.intensity))}/10 · ${b.regions.length} region(s) · ${escapeHtml(labelsB)}</div>
+    <div style="margin-top:6px">Δ Intensity: <strong>${escapeHtml((delta >= 0 ? '+' : '') + String(delta))}</strong></div>`;
 }
 
 function setCaptureFormDisabled(disabled) {

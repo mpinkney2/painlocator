@@ -29,19 +29,23 @@ if (!existsSync(anatomyFront)) {
   process.exit(1);
 }
 
-const spatialGlb = join(dist, 'anatomy', 'metahuman', 'body.glb');
+const spatialGlb = join(dist, 'anatomy', 'spatial', 'adult-male', 'exterior-lod0.glb');
 const spatialManifest = join(dist, 'anatomy', 'spatial', 'manifest.json');
 const adultManifest = join(dist, 'anatomy', 'spatial', 'adult-male', 'manifest.json');
 const vendorThree = join(dist, 'vendor', 'three.module.min.js');
 const vendorGltf = join(dist, 'vendor', 'GLTFLoader.js');
 const vendorMeshopt = join(dist, 'vendor', 'meshopt_decoder.module.js');
-const vendorGltfUtils = join(dist, 'utils', 'BufferGeometryUtils.js');
+const vendorGltfUtils = join(dist, 'vendor', 'utils', 'BufferGeometryUtils.js');
+const vendorLucide = join(dist, 'vendor', 'lucide.min.js');
+const vendorChart = join(dist, 'vendor', 'chart.umd.min.js');
 const canonicalGlb = join(dist, 'anatomy', 'spatial', 'prototype-bp3d-fullbody', 'canonical-body.glb');
 const requiredSpatialRuntime = [
   vendorThree,
   vendorGltf,
   vendorMeshopt,
   vendorGltfUtils,
+  vendorLucide,
+  vendorChart,
   spatialManifest,
   adultManifest,
   spatialGlb,

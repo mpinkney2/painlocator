@@ -6,40 +6,42 @@
   "coordinateSystem": "y-up-right-handed",
   "units": "meters",
   "coordinateFrame": {
-    "frameId": "painlocator-blender-stand-v1",
-    "role": "authored-standing-figure",
-    "note": "Clinician Spatial uses the Blender standing figure (New-avatar-stand) in authored Y-up meters. The old procedural mannequin and its canonical conformer are not applied to this surface."
+    "frameId": "painlocator-bp3d-canonical-v1",
+    "role": "native-bp3d-exterior",
+    "note": "Patient exterior is a stylized presentation of BP3D FMA:7163 skin in the canonical frame (warm clinical materials). No global exterior conformer is required when this mesh is the visible exterior."
   },
   "canonicalBridge": {
     "enabledByDefault": false,
     "featureFlag": "canonicalBodyMode",
-    "skipExteriorConformer": true,
-    "note": "Single-mesh Blender surface is not the interim 18-part mannequin; do not apply exterior-to-canonical-v1."
+    "conformerRegistrationVersion": "exterior-to-canonical-bp3d-native-v1",
+    "canonicalModelId": "bp3d-canonical-body",
+    "canonicalModelVersion": "bp3d-fullbody-skin-canonical-v0",
+    "note": "When exterior is already BP3D-derived, conformer is effectively identity; flag still loads hidden canonical for clinician tooling."
   },
   "provenance": {
-    "source": "Blender standing clinical figure (New-avatar-stand)",
+    "source": "BodyParts3D (DBCLS) FMA:7163 skin, presented with PainLocator clinical skin materials",
     "licenseRef": "./LICENSE.md",
-    "retrievedAt": "2026-09-11",
-    "status": "author-mesh",
-    "structureIdScheme": "PL:surface.body",
-    "notes": "Shared with the patient simple-map baker at /anatomy/metahuman/body.glb. One skinned clinical surface, not the retired procedural exterior-lod0 mannequin."
+    "retrievedAt": "2026-11-01",
+    "status": "interim-stylized-bp3d",
+    "structureIdScheme": "PL:surface.body (PainLocator-local; maps to FMA:7163 skin)",
+    "notes": "Single continuous exterior mesh for a human silhouette. Regional pain labels still come from CAE region detection / plate projection; meshId is surface.body. CC BY 4.0 BodyParts3D attribution required."
   },
   "layers": {
     "surface": {
       "layerId": "surface",
       "displayName": "Exterior surface",
-      "file": "/anatomy/metahuman/body.glb",
+      "file": "./exterior-lod0.glb",
       "lod": 0,
       "bindMode": "single-mesh",
-      "keepSourceMaterials": true,
       "meshes": [
         {
           "meshId": "surface.body",
           "structureId": "PL:surface.body",
-          "structureName": "Body",
-          "clinicalName": "Clinical exterior (standing figure)",
+          "structureName": "Body surface",
+          "clinicalName": "Body (exterior)",
           "layer": "surface",
-          "parentStructureId": null
+          "parentStructureId": null,
+          "fmaId": "FMA:7163"
         }
       ]
     }

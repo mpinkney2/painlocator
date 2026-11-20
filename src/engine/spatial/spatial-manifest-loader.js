@@ -165,16 +165,24 @@
       mats.forEach(softenClinicalExteriorMaterial);
       return;
     }
+    // Warm clinical skin (BP3D FMA:7163 exterior) — not cool mannequin gray.
+    const appearance =
+      (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+      (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+      null;
+    const mat = appearance?.createSkinMaterial
+      ? appearance.createSkinMaterial(THREE, meshId)
+      : new THREE.MeshStandardMaterial({
+          color: 0xc9a992,
+          roughness: 0.58,
+          metalness: 0.0,
+          flatShading: false
+        });
     if (obj.material) {
-      const mat = new THREE.MeshLambertMaterial({
-        color: CLINICAL_EXTERIOR_COLOR,
-        transparent: true,
-        opacity: CLINICAL_EXTERIOR_OPACITY,
-        depthWrite: true
-      });
-      if (obj.material.dispose) obj.material.dispose();
-      obj.material = mat;
+      if (Array.isArray(obj.material)) obj.material.forEach((m) => m?.dispose?.());
+      else obj.material.dispose?.();
     }
+    obj.material = mat;
   }
 
   /**
@@ -310,7 +318,8 @@
 
       const surface = packed.manifest.layers.surface;
       const bindMode = surface.bindMode === "single-mesh" ? "single-mesh" : "named";
-      const keepSourceMaterials = surface.keepSourceMaterials === true || bindMode === "single-mesh";
+      // Only keep authored materials when the manifest opts in. BP3D skin uses runtime clinical materials.
+      const keepSourceMaterials = surface.keepSourceMaterials === true;
       const known = packed.meshIndex;
       const meshes = collectBodyMeshes(root);
       /** @type {Map<string, import('three').Mesh>} */
@@ -333,7 +342,8 @@
         glbMeshIds.push(meshId);
       } else {
         for (const obj of meshes) {
-          const rawName = obj.name || obj.userData?.meshId;
+          // Prefer extras.meshId: Three's GLTFLoader sanitizes Object3D.name and strips dots.
+          const rawName = obj.userData?.meshId || obj.userData?.name || obj.name;
           const meshId = resolveGlbMeshId(rawName, known);
           if (!meshId) {
             throw new Error("GLB body mesh is missing a stable name/meshId");
@@ -344,6 +354,12 @@
         }
         assertManifestGlbIntegrity(known.keys(), glbMeshIds);
       }
+
+      const appearance =
+        (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+        (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+        null;
+      appearance?.prepareExteriorGeometry?.(root);
 
       return {
         modelId: packed.modelId,

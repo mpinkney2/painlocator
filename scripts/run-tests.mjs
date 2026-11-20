@@ -575,7 +575,7 @@ console.log('PainLocator tests\n');
     );
     const ok = U.validateModelManifest(manifest);
     assert.equal(ok.modelId, 'adult-male');
-    assert.equal(ok.layers.surface.file, '/anatomy/metahuman/body.glb');
+    assert.equal(ok.layers.surface.file, './exterior-lod0.glb');
     assert.equal(ok.layers.surface.bindMode, 'single-mesh');
   });
 
@@ -1559,11 +1559,15 @@ console.log('PainLocator tests\n');
     const man = JSON.parse(
       readFileSync(join(root, 'public/anatomy/spatial/adult-male/manifest.json'), 'utf8')
     );
-    assert.equal(man.coordinateFrame.frameId, 'painlocator-blender-stand-v1');
+    assert.equal(man.coordinateFrame.frameId, 'painlocator-bp3d-canonical-v1');
     assert.equal(man.canonicalBridge.enabledByDefault, false);
     assert.equal(man.canonicalBridge.featureFlag, 'canonicalBodyMode');
-    assert.equal(man.canonicalBridge.skipExteriorConformer, true);
+    assert.equal(
+      man.canonicalBridge.conformerRegistrationVersion,
+      'exterior-to-canonical-bp3d-native-v1'
+    );
     assert.equal(man.layers.surface.bindMode, 'single-mesh');
+    assert.equal(man.layers.surface.file, './exterior-lod0.glb');
   });
 
   test('canonical: PainRegion schema still lacks canonicalBodyXYZ persistence fields', () => {
@@ -2610,7 +2614,7 @@ console.log('PainLocator tests\n');
     assert.equal(typeof sandbox.SpatialBootUtils.isWebGLReallyAvailable, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importEsm, 'function');
     assert.equal(typeof sandbox.SpatialBootUtils.importVendorModule, 'function');
-    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-09-12-human-3d-toggle');
+    assert.equal(sandbox.SpatialBootUtils.SPATIAL_RUNTIME_VERSION, '2026-11-20-bp3d-integrate');
     let rejected = false;
     try {
       await sandbox.SpatialBootUtils.withTimeout(
@@ -2625,7 +2629,7 @@ console.log('PainLocator tests\n');
     assert.ok(sandbox.SpatialBootUtils.TIMEOUTS.mountMs > 0);
     const html = readFileSync(join(root, 'index.html'), 'utf8');
     assert.ok(html.includes('spatial-boot-utils.js'));
-    assert.ok(html.includes('?v=2026-09-12-human-3d-toggle'));
+    assert.ok(html.includes('?v=2026-11-20-bp3d-integrate'));
     assert.ok(html.includes('spatial-diagnostics.js'));
     const renderer = readFileSync(join(root, 'src/engine/spatial/spatial-anatomy-renderer.js'), 'utf8');
     assert.ok(renderer.includes('onProgress'));
@@ -2725,10 +2729,13 @@ console.log('PainLocator tests\n');
       'public/vendor/three.module.min.js',
       'public/vendor/GLTFLoader.js',
       'public/vendor/meshopt_decoder.module.js',
-      'public/utils/BufferGeometryUtils.js',
+      'public/vendor/utils/BufferGeometryUtils.js',
+      'public/vendor/lucide.min.js',
+      'public/vendor/chart.umd.min.js',
       'public/anatomy/spatial/manifest.json',
       'public/anatomy/spatial/adult-male/manifest.json',
-      'public/anatomy/metahuman/body.glb',
+      'public/anatomy/spatial/adult-male/exterior-lod0.glb',
+      'public/anatomy/spatial/registration/exterior-to-canonical-bp3d-native-v1.json',
       'public/anatomy/spatial/prototype-bp3d-fullbody/canonical-body.glb',
       'public/anatomy/spatial/prototype-bp3d/muscle.glb',
       'public/anatomy/spatial/prototype-bp3d/skeletal.glb'
@@ -2745,7 +2752,7 @@ console.log('PainLocator tests\n');
 
   test('spatial boot: unified runtime version on interdependent scripts', () => {
     const html = readFileSync(join(root, 'index.html'), 'utf8');
-    const ver = '2026-09-12-human-3d-toggle';
+    const ver = '2026-11-20-bp3d-integrate';
     for (const file of [
       'spatial-boot-utils.js',
       'spatial-three-loader.js',
@@ -2780,7 +2787,7 @@ console.log('PainLocator tests\n');
     assert.ok(sceneSrc.includes('HemisphereLight'));
     assert.ok(sceneSrc.includes('_lowPower') || sceneSrc.includes('probeWebGL'));
     const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
-    assert.ok(loader.includes('MeshLambertMaterial'));
+    assert.ok(loader.includes('createSkinMaterial') || loader.includes('MeshStandardMaterial') || loader.includes('MeshLambertMaterial'));
   });
 
   test('spatial output: overlay clears when exterior is interactive, before canonical', () => {
@@ -2799,26 +2806,121 @@ console.log('PainLocator tests\n');
     assert.ok(renderer.includes('skipCanonicalConformer'));
   });
 
-  test('spatial output: clinical exterior material is warm-neutral not game-metal', () => {
+  test('spatial output: clinical exterior material is warm skin not game-metal', () => {
     const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
-    assert.ok(loader.includes('0xf0e0d0'));
-    assert.ok(loader.includes('softenClinicalExteriorMaterial'));
-    assert.ok(loader.includes('CLINICAL_EXTERIOR_OPACITY'));
-    assert.ok(loader.includes('transparent: true'));
+    assert.ok(loader.includes('createSkinMaterial') || loader.includes('0xc9a992'));
+    assert.ok(loader.includes('SpatialExteriorAppearance') || loader.includes('softenClinicalExteriorMaterial'));
     assert.equal(loader.includes('0xb9c2cc'), false);
+    const appearance = readFileSync(join(root, 'src/engine/spatial/spatial-exterior-appearance.js'), 'utf8');
+    assert.ok(appearance.includes('createSkinMaterial'));
+    assert.ok(appearance.includes('applySceneLighting'));
   });
 
   test('spatial output: GLTFLoader relative ESM imports resolve to shipped files', () => {
     const gltfSrc = readFileSync(join(root, 'public/vendor/GLTFLoader.js'), 'utf8');
     const rel = [...gltfSrc.matchAll(/from\s+['"](\.\.?\/[^'"]+)['"]/g)].map((m) => m[1]);
-    assert.ok(rel.includes('../utils/BufferGeometryUtils.js'));
+    assert.ok(rel.includes('./utils/BufferGeometryUtils.js'));
+    assert.equal(rel.includes('../utils/BufferGeometryUtils.js'), false);
     for (const spec of rel) {
       const resolved = join(root, 'public/vendor', spec);
       assert.ok(statSync(resolved).isFile(), `missing GLTFLoader import target: ${spec} → ${resolved}`);
     }
-    const utilsSrc = readFileSync(join(root, 'public/utils/BufferGeometryUtils.js'), 'utf8');
-    assert.ok(utilsSrc.includes('export function toTrianglesDrawMode'));
+    const utilsSrc = readFileSync(join(root, 'public/vendor/utils/BufferGeometryUtils.js'), 'utf8');
+    assert.ok(utilsSrc.includes('export function toTrianglesDrawMode') || utilsSrc.includes('toTrianglesDrawMode'));
     assert.ok(utilsSrc.includes('from "three"') || utilsSrc.includes("from 'three'"));
+  });
+}
+
+{
+  test('spatial manifest: runtime meshId prefers userData over Three-sanitized name', () => {
+    const src = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(src.includes('userData?.meshId'));
+    assert.ok(src.includes("strips dots") || src.includes("sanitize") || src.includes("userData?.name"));
+    const resolve = (obj) => obj.userData?.meshId || obj.userData?.name || obj.name || null;
+    assert.equal(
+      resolve({ name: 'surfacehead', userData: { meshId: 'surface.head', name: 'surface.head' } }),
+      'surface.head'
+    );
+    const layerSrc = readFileSync(join(root, 'src/engine/spatial/spatial-layer-loader.js'), 'utf8');
+    assert.ok(layerSrc.includes('userData?.meshId'));
+    assert.ok(layerSrc.includes('userData?.name'));
+  });
+
+  test('presentation: query param selects clinician shell', () => {
+    const src = readFileSync(join(root, 'src/state/presentation.js'), 'utf8');
+    assert.ok(src.includes('readQueryMode'));
+    assert.ok(src.includes("params.get('presentation')"));
+    assert.ok(src.includes('fromQuery || readStored()'));
+    const boot = readFileSync(join(root, 'src/app/bootstrap.js'), 'utf8');
+    assert.ok(boot.indexOf('initPresentationMode') < boot.indexOf('engageBp3dAcrossShells'));
+  });
+
+  test('display mode sync: plate path must pass keepSpatialPrimary false', () => {
+    const src = readFileSync(join(root, 'src/features/review/history-ui.js'), 'utf8');
+    assert.ok(src.includes('keepSpatialPrimary: isSpatial ? true : false'));
+    assert.ok(src.includes('SpatialPrimaryChrome.applySpatialPrimaryChrome(isSpatial'));
+  });
+
+  test('spatial-primary: explicit plate clears spatial-primary shell', () => {
+    const sandbox = createSandbox();
+    sandbox.URLSearchParams = URLSearchParams;
+    sandbox.location = { search: '', href: 'http://localhost/', pathname: '/' };
+    loadScript('src/features/anatomy/spatial-primary-chrome.js', sandbox);
+    sandbox.document.body = {
+      classList: {
+        _set: new Set(['spatial-primary']),
+        toggle(name, on) {
+          if (on) this._set.add(name);
+          else this._set.delete(name);
+        },
+        contains(name) {
+          return this._set.has(name);
+        }
+      }
+    };
+    const els = {};
+    sandbox.document.getElementById = (id) => {
+      if (!els[id]) {
+        els[id] = {
+          hidden: false,
+          disabled: false,
+          textContent: '',
+          classList: { toggle() {}, remove() {}, add() {} },
+          setAttribute() {},
+          removeAttribute() {},
+          querySelectorAll: () => []
+        };
+      }
+      return els[id];
+    };
+    sandbox.document.querySelectorAll = () => [];
+    sandbox.document.querySelector = () => null;
+    sandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: false });
+    assert.equal(sandbox.document.body.classList.contains('spatial-primary'), false);
+    sandbox.SpatialPrimaryChrome.applySpatialPrimaryChrome(false, { keepSpatialPrimary: true });
+    assert.equal(sandbox.document.body.classList.contains('spatial-primary'), true);
+  });
+
+  test('security: feedback endpoint is ESM default export', () => {
+    const src = readFileSync(join(root, 'api/feedback.js'), 'utf8');
+    assert.ok(src.includes('export default async function handler'));
+    assert.equal(src.includes('module.exports'), false);
+  });
+
+  test('security: compare/insights escape HTML', () => {
+    const hist = readFileSync(join(root, 'src/features/review/history-ui.js'), 'utf8');
+    assert.ok(hist.includes('escapeAttr(e.id)'));
+    assert.ok(hist.includes('escapeHtml(labelsA)'));
+    const insights = readFileSync(join(root, 'src/features/clinical-analysis/insights.js'), 'utf8');
+    assert.ok(insights.includes('escapeHtml') || insights.includes('esc(a)'));
+  });
+
+  test('security: lucide and chart.js are vendored pins', () => {
+    const html = readFileSync(join(root, 'index.html'), 'utf8');
+    assert.ok(html.includes('/vendor/lucide.min.js'));
+    assert.ok(html.includes('/vendor/chart.umd.min.js'));
+    assert.equal(html.includes('unpkg.com/lucide@latest'), false);
+    assert.equal(/cdn\.jsdelivr\.net\/npm\/chart\.js["']/.test(html), false);
   });
 }
 

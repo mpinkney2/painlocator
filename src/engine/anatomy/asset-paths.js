@@ -3,7 +3,7 @@
  *
  * Packs:
  *   classic   — clinical atlas plates under /anatomy/{model}/{view}.png
- *   metahuman — lifelike MetaHuman-style plates under /anatomy/metahuman/{model}/{view}.png
+ *   metahuman — lifelike photo-style plates under /anatomy/metahuman/{model}/{view}.png
  *
  * Pack selection is a presentation concern; path resolution stays in CAE.
  *
