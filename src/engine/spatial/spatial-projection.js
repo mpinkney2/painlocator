@@ -18,6 +18,17 @@
     left: -Math.PI / 2
   });
 
+  /**
+   * The patient skin mesh is yawed +90° from canonical space: anterior lies on +X
+   * and the shoulders lie on Z. Subtract π/2 so logical front (yaw 0) faces the
+   * camera on +Z. Left, right, and back stay one quadrant apart from front.
+   */
+  const MODEL_YAW_OFFSET = -Math.PI / 2;
+
+  function modelYaw(logicalYaw) {
+    return normalizeYaw((Number(logicalYaw) || 0) + MODEL_YAW_OFFSET);
+  }
+
   function clamp01(v) {
     return Math.max(0, Math.min(1, Number(v) || 0));
   }
@@ -183,9 +194,11 @@
   global.SpatialProjection = {
     SPATIAL_VIEWS,
     VIEW_YAW,
+    MODEL_YAW_OFFSET,
     clamp01,
     normalizeYaw,
     yawForView,
+    modelYaw,
     nearestSnapView,
     cameraDistanceForBounds,
     worldToNormalizedAnchors,

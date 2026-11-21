@@ -63,7 +63,7 @@
     const scenario = getScenario();
     const entries = buildScenarioEntries(scenario.id);
     const envelope = {
-      schemaVersion: '1.1.0',
+      schemaVersion: (typeof LOCAL_SCHEMA_VERSION !== 'undefined' && LOCAL_SCHEMA_VERSION) || '1.2.0',
       entries,
       draftEntry: null,
       activeEntryId: entries[entries.length - 1]?.id || null,

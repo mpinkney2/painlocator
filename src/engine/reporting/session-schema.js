@@ -92,7 +92,8 @@ function buildSessionRegions(entries) {
         shape: region.shape,
         anchors: (region.anchors || []).map(a => ({ x: +a.x.toFixed(4), y: +a.y.toFixed(4) })),
         radius: region.radius,
-        structureLabel: region.structureLabel
+        structureLabel: region.structureLabel,
+        ...(region.spatial ? { spatial: region.spatial } : {})
       });
     });
   });

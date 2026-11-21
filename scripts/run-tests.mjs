@@ -227,7 +227,7 @@ console.log('PainLocator tests\n');
   test('schema version written on save', () => {
     store.save();
     const raw = JSON.parse(s.localStorage.getItem(s.getEntryStorageKey()));
-    assert.equal(raw.schemaVersion, '1.1.0');
+    assert.equal(raw.schemaVersion, '1.2.0');
   });
 
   test('undo restores prior annotation state', () => {
@@ -415,6 +415,11 @@ console.log('PainLocator tests\n');
     assert.equal(P.yawForView('back'), Math.PI);
     assert.equal(P.yawForView('right'), Math.PI / 2);
     assert.equal(P.yawForView('left'), -Math.PI / 2);
+    assert.equal(P.MODEL_YAW_OFFSET, -Math.PI / 2);
+    assert.ok(Math.abs(P.modelYaw(0) - (-Math.PI / 2)) < 1e-9);
+    assert.ok(Math.abs(P.modelYaw(Math.PI / 2) - 0) < 1e-9);
+    assert.ok(Math.abs(P.modelYaw(Math.PI) - (Math.PI / 2)) < 1e-9);
+    assert.ok(Math.abs(Math.abs(P.modelYaw(-Math.PI / 2)) - Math.PI) < 1e-9);
   });
 
   test('spatial projection: normalizeYaw wraps to (-π, π]', () => {
@@ -2123,7 +2128,12 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('facesPainSvg') && html.includes('data-open-faces-scale'));
     assert.ok(css.includes('simple-faces-sheet') && css.includes('simple-faces-slider'));
     const facesJs = readFileSync(join(root, 'src/features/capture/faces-pain-scale.js'), 'utf8');
-    assert.ok(facesJs.includes('FacesPainScale') && facesJs.includes('Unmentionable pain'));
+    assert.ok(facesJs.includes('FacesPainScale') && facesJs.includes('Worst pain imaginable'));
+    assert.ok(facesJs.includes('No pain') && facesJs.includes('Mild') && facesJs.includes('Moderate') && facesJs.includes('Severe'));
+    assert.equal(facesJs.includes('Unmentionable'), false);
+    assert.equal(html.includes('Wong-Baker'), false);
+    assert.equal(html.includes('FPS-R'), false);
+    assert.ok(html.includes('Pain level (0-10)'));
     assert.ok(facesJs.includes('applyIntensityValue') && facesJs.includes('mouthPath'));
     assert.ok(html.includes('id="btnSharePdf"') && html.includes('id="shareModal"'));
     assert.ok(flow.includes('openMoreMenu') && flow.includes('simpleMoreModal'));
@@ -2986,6 +2996,99 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('/vendor/chart.umd.min.js'));
     assert.equal(html.includes('unpkg.com/lucide@latest'), false);
     assert.equal(/cdn\.jsdelivr\.net\/npm\/chart\.js["']/.test(html), false);
+  });
+}
+
+// --- Plate tap labels (anatomical laterality, no nearest-centroid) ---
+{
+  const sandbox = { console, Math, Object, Number, window: {}, document: {} };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  vm.createContext(sandbox);
+  loadScript('src/engine/anatomy/regions.js', sandbox);
+
+  test('tap label: patient left knee on the front plate', () => {
+    const hit = sandbox.mapAnatomyAt('front', 0.60, 0.74, 'skin', false);
+    assert.equal(hit.patientLabel, 'Left knee');
+    assert.equal(hit.side, 'left');
+  });
+
+  test('tap label: patient right knee is viewer-left on the front plate', () => {
+    const hit = sandbox.mapAnatomyAt('front', 0.40, 0.74, 'skin', false);
+    assert.equal(hit.patientLabel, 'Right knee');
+    assert.equal(hit.side, 'right');
+  });
+
+  test('tap label: right shoulder on the back plate', () => {
+    const hit = sandbox.mapAnatomyAt('back', 0.64, 0.22, 'skin', false);
+    assert.equal(hit.patientLabel, 'Right shoulder');
+  });
+
+  test('tap label: left shoulder on the back plate stays viewer-left', () => {
+    const hit = sandbox.mapAnatomyAt('back', 0.36, 0.22, 'skin', false);
+    assert.equal(hit.patientLabel, 'Left shoulder');
+  });
+
+  test('tap label: right-side knee follows the mirrored plate', () => {
+    const hit = sandbox.mapAnatomyAt('right', 0.48, 0.73, 'skin', false);
+    assert.equal(hit.patientLabel, 'Right knee');
+  });
+
+  test('tap label: elbow, hand, and ankle', () => {
+    assert.equal(sandbox.mapAnatomyAt('front', 0.68, 0.40, 'skin').patientLabel, 'Left elbow');
+    assert.equal(sandbox.mapAnatomyAt('front', 0.30, 0.40, 'skin').patientLabel, 'Right elbow');
+    assert.equal(sandbox.mapAnatomyAt('front', 0.69, 0.54, 'skin').patientLabel, 'Left hand');
+    assert.equal(sandbox.mapAnatomyAt('front', 0.30, 0.54, 'skin').patientLabel, 'Right hand');
+    assert.equal(sandbox.mapAnatomyAt('front', 0.60, 0.91, 'skin').patientLabel, 'Left ankle');
+    assert.equal(sandbox.mapAnatomyAt('back', 0.39, 0.91, 'skin').patientLabel, 'Left ankle');
+  });
+
+  test('tap outside every polygon is unmapped, never the nearest region', () => {
+    const outside = sandbox.mapAnatomyAt('front', 0.05, 0.54, 'skin', false);
+    assert.equal(outside.patientLabel, 'Unmapped – please confirm');
+    assert.equal(outside.regionId, null);
+    assert.equal(outside.unmapped, true);
+    assert.equal(sandbox.findRegionAt('front', 0.02, 0.02), null);
+    assert.equal(sandbox.findRegionAt('back', 0.98, 0.5), null);
+  });
+
+  test('mirrorRegionId swaps patient sides on front and back', () => {
+    assert.equal(sandbox.mirrorRegionId('front-r-knee', 'front'), 'front-l-knee');
+    assert.equal(sandbox.mirrorRegionId('front-l-shoulder', 'front'), 'front-r-shoulder');
+    assert.equal(sandbox.mirrorRegionId('back-l-shoulder', 'back'), 'back-r-shoulder');
+    assert.equal(sandbox.mirrorRegionId('left-knee', 'left'), 'right-knee');
+  });
+
+  test('plate tap contract: dots are placed on release inside 8px', () => {
+    const renderer = readFileSync(join(root, 'src/engine/annotations/markup-renderer.js'), 'utf8');
+    assert.ok(renderer.includes('PLATE_TAP_SLOP_PX = 8'));
+    assert.ok(renderer.includes('pointerup'));
+    assert.ok(renderer.includes('touchend'));
+    const regions = readFileSync(join(root, 'src/engine/anatomy/regions.js'), 'utf8');
+    assert.equal(regions.includes('bestDist'), false);
+    assert.equal(regions.includes('nearest'), false);
+  });
+
+  test('3D mark spatial attachment round-trips through local region schema', () => {
+    const s = createSandbox();
+    const region = s.createPainRegion({
+      view: 'front',
+      patientLabel: 'Left knee',
+      spatial: {
+        schemaVersion: 1,
+        meshId: 'surface.body',
+        structureId: 'FMA:7163',
+        localPoint: { x: 0.1, y: 0.4, z: -0.02 },
+        capturedAtView: 'front',
+        meshUuid: 'do-not-keep'
+      }
+    });
+    assert.equal(region.spatial.meshId, 'surface.body');
+    assert.equal(region.spatial.structureId, 'FMA:7163');
+    assert.equal(region.spatial.localPoint.y, 0.4);
+    assert.equal(region.spatial.meshUuid, undefined);
+    const entry = s.createPainEntry({ regions: [region] });
+    assert.equal(entry.regions[0].spatial.meshId, 'surface.body');
   });
 }
 

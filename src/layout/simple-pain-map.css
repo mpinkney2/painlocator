@@ -1626,10 +1626,17 @@ body.shell-patient.simple-pain-map.simple-display-spatial .body-type-gallery {
   display: none;
 }
 
-/* Keep the BodyParts3D credit above the view compass, under the 3D figure. */
+/* Credit sits at the top of the 3D figure so it does not cover the legend. */
 body.shell-patient.simple-pain-map .anatomy-credit-3d {
-  bottom: 4.75rem;
-  z-index: 15;
+  top: 0.35rem;
+  bottom: auto;
+  z-index: 16;
+  width: max-content;
+  max-width: calc(100% - 1rem);
+  margin-inline: auto;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--spm-white, #fff) 90%, transparent);
   color: var(--spm-navy, var(--text-primary));
 }
 
@@ -2923,7 +2930,51 @@ body.shell-patient.simple-pain-map .body-type-gallery {
   }
 }
 
-/* ========== Optional Faces pain chart (does not replace the body map) ========== */
+/* ========== Optional pain level (0-10). Does not replace the body map. ========== */
+body.shell-patient.simple-pain-map .simple-zoom-btn {
+  appearance: none;
+  margin: 0.3rem 0 0;
+  padding: 0.35rem 0.2rem;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--spm-border, var(--border));
+  border-radius: 10px;
+  background: var(--spm-white, #fff);
+  color: var(--spm-navy, var(--text-primary));
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  line-height: 1.1;
+}
+
+body.shell-patient.simple-pain-map .simple-zoom-btn[aria-pressed="true"],
+body.shell-patient.simple-pain-map .simple-zoom-btn.active {
+  background: var(--spm-amber, #F9B847);
+  border-color: var(--spm-amber, #F9B847);
+}
+
+body.shell-patient.simple-pain-map .simple-zoom-btn:focus-visible {
+  outline: 2px solid var(--spm-navy);
+  outline-offset: 2px;
+}
+
+body.shell-patient.simple-pain-map.simple-display-spatial #btnPatientZoom {
+  display: none !important;
+}
+
+body.shell-patient.simple-pain-map .cae-image-frame > .cae-anatomy-image {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: fill !important;
+  object-position: center center !important;
+}
+
 body.shell-patient.simple-pain-map .simple-faces-launch {
   appearance: none;
   margin: 0.35rem 0 0;
@@ -2981,14 +3032,6 @@ body.shell-patient.simple-pain-map .simple-faces-head {
 body.shell-patient.simple-pain-map .simple-faces-mouth,
 body.shell-patient.simple-pain-map .simple-faces-brow {
   transition: d 0.12s ease, stroke 0.12s ease;
-}
-
-body.shell-patient.simple-pain-map .simple-faces-tear {
-  transition: opacity 0.18s ease;
-}
-
-body.shell-patient.simple-pain-map .simple-faces-cheek {
-  transition: opacity 0.18s ease;
 }
 
 body.shell-patient.simple-pain-map .simple-faces-readout {

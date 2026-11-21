@@ -8,7 +8,7 @@ const LAYOUT_STORAGE_KEY = "painlocator_layout";
 const LEGACY_STORAGE_KEY = "painlocator_entries";
 const DRAFT_KEY = "__draft__";
 /** Local storage envelope schema (separate from session export schema). */
-const LOCAL_SCHEMA_VERSION = "1.1.0";
+const LOCAL_SCHEMA_VERSION = "1.2.0";
 window.PAINLOCATOR_APP_VERSION = "5.4.0";
 
 const REGION_TOOLS = ["select", "point", "circle", "polygon", "brush", "lasso", "eraser"];
@@ -74,9 +74,29 @@ function dist(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
+function sanitizeSpatialAttachment(spatial) {
+  if (!spatial || typeof spatial !== "object") return null;
+  const point = spatial.localPoint;
+  const hasPoint = point && [point.x, point.y, point.z].every((n) => typeof n === "number" && Number.isFinite(n));
+  if (!hasPoint && !spatial.meshId && !spatial.structureId) return null;
+  const bary = spatial.barycentric;
+  return {
+    schemaVersion: 1,
+    meshId: spatial.meshId || null,
+    structureId: spatial.structureId || null,
+    localPoint: hasPoint ? { x: point.x, y: point.y, z: point.z } : null,
+    face: spatial.face || null,
+    faceIndex: spatial.faceIndex ?? null,
+    barycentric: bary && typeof bary === "object"
+      ? { a: bary.a, b: bary.b, c: bary.c }
+      : null,
+    capturedAtView: spatial.capturedAtView || null
+  };
+}
+
 function createPainRegion(partial = {}) {
   const now = new Date().toISOString();
-  return {
+  const region = {
     id: partial.id || `pr_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     entryId: partial.entryId || null,
     view: partial.view || "front",
@@ -94,6 +114,10 @@ function createPainRegion(partial = {}) {
     createdAt: partial.createdAt || now,
     updatedAt: partial.updatedAt || now
   };
+  if (partial.unmapped) region.unmapped = true;
+  const spatial = sanitizeSpatialAttachment(partial.spatial);
+  if (spatial) region.spatial = spatial;
+  return region;
 }
 
 function createPainEntry(partial = {}) {

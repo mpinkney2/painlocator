@@ -91,6 +91,7 @@ Flattened index of all regions across entries for tooling and reports.
 | `anchors` | `{ x, y }[]` (4 decimal places) |
 | `radius` | number |
 | `structureLabel` | string \| null |
+| `spatial` | object \| omitted | Optional 3D mark. Present only when the mark was placed on the spatial body. `schemaVersion` 1, `meshId`, `structureId`, `localPoint` `{x,y,z}`, `face`, `faceIndex`, `barycentric`, `capturedAtView`. Omitted for plate-only marks. Sessions without `spatial` still import. |
 
 ### `timeline`
 
@@ -201,7 +202,7 @@ Runtime persistence uses a versioned envelope under `painlocator_pain_entries` (
 
 ```json
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "entries": [],
   "draftEntry": null,
   "activeEntryId": null,
@@ -214,6 +215,7 @@ Runtime persistence uses a versioned envelope under `painlocator_pain_entries` (
 |--------------|-------|
 | `1.0.0` (implicit) | Pre-versioned envelopes without `schemaVersion` |
 | `1.1.0` | Adds `schemaVersion`; draft lifecycle no longer auto-creates blank Entry #1 on load |
+| `1.2.0` | Optional `PainRegion.spatial` stores a 3D mark (`meshId`, `structureId`, mesh-local point) on this device. Older envelopes still load. |
 
 Demo Mode uses a separate key and never merges with real user data.
 
