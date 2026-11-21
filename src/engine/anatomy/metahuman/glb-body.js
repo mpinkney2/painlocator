@@ -5,13 +5,8 @@
  * shapekeys (Stature, Shoulders, Waist, Hips, LegBuild, ArmBuild), rig bones,
  * and skin — not a photo tint.
  *
- * Drop order (first file that exists wins):
- *   /anatomy/metahuman/{profile}/body.glb
- *   /anatomy/metahuman/{profile}/figure.glb
- *   /anatomy/metahuman/{profile}/body.gltf
- *   /anatomy/metahuman/body.glb
- *
- * Shipped mesh: public/anatomy/metahuman/body.glb (New-avatar-stand, meshopt).
+ * No stand-in mesh is shipped. Human mode keeps the photo plates.
+ * 3D mode loads only /anatomy/spatial/adult-male/exterior-lod0.glb.
  */
 
 (function (global) {
@@ -30,15 +25,7 @@ function metahumanGlbCandidates(modelType) {
   if (typeof getMetahumanGlbCandidates === "function") {
     return getMetahumanGlbCandidates(modelType);
   }
-  const folder = typeof metahumanAnatomyFolder === "function"
-    ? metahumanAnatomyFolder(modelType)
-    : "adult-male";
-  return [
-    `/anatomy/metahuman/${folder}/body.glb`,
-    `/anatomy/metahuman/${folder}/figure.glb`,
-    `/anatomy/metahuman/${folder}/body.gltf`,
-    "/anatomy/metahuman/body.glb"
-  ];
+  return [];
 }
 
 function metahumanGlbScale(dna) {

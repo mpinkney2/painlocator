@@ -912,6 +912,27 @@ body.theme-dark .timeline-panel {
   z-index: 1;
 }
 
+.anatomy-credit-3d {
+  display: none;
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.35rem;
+  z-index: 6;
+  margin: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text-primary);
+  pointer-events: none;
+}
+
+body.spatial-ready .anatomy-credit-3d,
+body.simple-display-spatial .anatomy-credit-3d {
+  display: block;
+}
+
 .intake-form-box, .pain-entry-panel {
   position: relative;
   z-index: 2;

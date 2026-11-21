@@ -2,7 +2,7 @@
  * Minimal Node test runner for PainLocator pure logic.
  * Loads modules by evaluating source with stubs where needed.
  */
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -1891,9 +1891,9 @@ console.log('PainLocator tests\n');
 
   test('simple pain-map: getAssetPath uses MetaHuman plates', () => {
     sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
-    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/metahuman/adult-male/front.png');
-    assert.equal(sandbox.getAssetPath('adult-male', 'back'), '/anatomy/metahuman/adult-male/back.png');
-    assert.equal(sandbox.getAssetPath('simple-pain-map', 'left'), '/anatomy/metahuman/adult-male/left.png');
+    assert.equal(sandbox.getAssetPath('adult-male', 'front'), '/anatomy/metahuman/adult-male/front.webp');
+    assert.equal(sandbox.getAssetPath('adult-male', 'back'), '/anatomy/metahuman/adult-male/back.webp');
+    assert.equal(sandbox.getAssetPath('simple-pain-map', 'left'), '/anatomy/metahuman/adult-male/left.webp');
   });
 
   test('simple pain-map: clinician path keeps CAE adult-male plates', () => {
@@ -1905,15 +1905,18 @@ console.log('PainLocator tests\n');
   test('simple pain-map: gallery profiles use matching MetaHuman plates', () => {
     sandbox.document.body.classList.contains = (name) => name === 'simple-pain-map';
     sandbox.state = { presentationMode: 'patient' };
-    assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/metahuman/adult-female/front.png');
-    assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/metahuman/adult-female/back.png');
-    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/metahuman/teen-male/left.png');
-    assert.equal(sandbox.getAssetPath('teen-female', 'left'), '/anatomy/metahuman/teen-female/left.png');
-    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/metahuman/child-male/right.png');
-    assert.equal(sandbox.getAssetPath('child-female', 'right'), '/anatomy/metahuman/child-female/right.png');
-    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/metahuman/senior-male/front.png');
-    assert.equal(sandbox.getAssetPath('senior-female', 'front'), '/anatomy/metahuman/senior-female/front.png');
-    assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/metahuman/adult-male/front.png');
+    assert.equal(sandbox.getAssetPath('female', 'front'), '/anatomy/metahuman/adult-female/front.webp');
+    assert.equal(sandbox.getAssetPath('adult-female', 'back'), '/anatomy/metahuman/adult-female/back.webp');
+    assert.equal(sandbox.getAssetPath('teen', 'left'), '/anatomy/metahuman/teen-male/left.webp');
+    assert.equal(sandbox.getAssetPath('teen-female', 'left'), '/anatomy/metahuman/teen-female/left.webp');
+    assert.equal(sandbox.getAssetPath('child', 'right'), '/anatomy/metahuman/child-male/right.webp');
+    assert.equal(sandbox.getAssetPath('child-female', 'right'), '/anatomy/metahuman/child-female/right.webp');
+    assert.equal(sandbox.getAssetPath('senior', 'front'), '/anatomy/metahuman/senior-male/front.webp');
+    assert.equal(sandbox.getAssetPath('senior-female', 'front'), '/anatomy/metahuman/senior-female/front.webp');
+    assert.equal(sandbox.getAssetPath('male', 'front'), '/anatomy/metahuman/adult-male/front.webp');
+    assert.equal(sandbox.getAnatomyThumbPath('teen'), '/anatomy/metahuman/thumbs/teen-male.webp');
+    assert.equal(sandbox.getAnatomyThumbPath('child'), '/anatomy/metahuman/thumbs/child-male.webp');
+    assert.equal(sandbox.getAnatomyThumbPath('senior'), '/anatomy/metahuman/thumbs/senior-male.webp');
     assert.equal(sandbox.composeBodyModel('teen', 'female'), 'teen-female');
     const teenProfile = sandbox.parseBodyProfile('teen');
     assert.equal(teenProfile.stage, 'teen');
@@ -1937,16 +1940,20 @@ console.log('PainLocator tests\n');
       'adult-male', 'adult-female',
       'teen-male', 'teen-female',
       'child-male', 'child-female',
-      'senior-male', 'senior-female',
-      'teen', 'child', 'senior'
+      'senior-male', 'senior-female'
     ];
     for (const folder of folders) {
       for (const view of ['front', 'back', 'left', 'right']) {
-        assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/${view}.png`)).isFile());
+        assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/${view}.webp`)).isFile());
       }
-      assert.ok(statSync(join(root, `public/anatomy/metahuman/thumbs/${folder}.png`)).isFile());
+      assert.ok(statSync(join(root, `public/anatomy/metahuman/thumbs/${folder}.webp`)).isFile());
     }
-    assert.ok(statSync(join(root, 'public/anatomy/metahuman/body.glb')).isFile());
+    for (const legacy of ['teen', 'child', 'senior']) {
+      assert.equal(statSync(join(root, `public/anatomy/metahuman/${legacy}`), { throwIfNoEntry: false })?.isDirectory?.() || false, false);
+      assert.equal(statSync(join(root, `public/anatomy/metahuman/thumbs/${legacy}.webp`), { throwIfNoEntry: false })?.isFile?.() || false, false);
+      assert.equal(statSync(join(root, `public/anatomy/metahuman/thumbs/${legacy}.png`), { throwIfNoEntry: false })?.isFile?.() || false, false);
+    }
+    assert.equal(statSync(join(root, 'public/anatomy/metahuman/body.glb'), { throwIfNoEntry: false })?.isFile?.() || false, false);
   });
 
   test('simple pain-map: female models use female clinical overlays', () => {
@@ -1966,14 +1973,43 @@ console.log('PainLocator tests\n');
     );
   });
 
-  test('simple pain-map: MetaHuman plates are retina resolution', () => {
-    const buf = readFileSync(join(root, 'public/anatomy/metahuman/adult-male/front.png'));
-    assert.equal(buf.slice(1, 4).toString(), 'PNG');
-    const width = buf.readUInt32BE(16);
-    const height = buf.readUInt32BE(20);
-    const femaleBuf = readFileSync(join(root, 'public/anatomy/metahuman/teen-female/front.png'));
-    assert.ok(femaleBuf.readUInt32BE(16) >= 2048);
-    assert.ok(femaleBuf.readUInt32BE(20) >= 3072);
+  function readWebpSize(buf) {
+    assert.equal(buf.toString('ascii', 0, 4), 'RIFF');
+    assert.equal(buf.toString('ascii', 8, 12), 'WEBP');
+    const chunk = buf.toString('ascii', 12, 16);
+    if (chunk === 'VP8X') {
+      return { width: 1 + buf.readUIntLE(24, 3), height: 1 + buf.readUIntLE(27, 3) };
+    }
+    if (chunk === 'VP8 ') {
+      return { width: buf.readUInt16LE(26) & 0x3fff, height: buf.readUInt16LE(28) & 0x3fff };
+    }
+    if (chunk === 'VP8L') {
+      const bits = buf.readUInt32LE(21);
+      return { width: (bits & 0x3fff) + 1, height: ((bits >> 14) & 0x3fff) + 1 };
+    }
+    throw new Error(`unknown webp chunk ${chunk}`);
+  }
+
+  test('simple pain-map: MetaHuman plates are 1024x1536 WebP', () => {
+    const front = readWebpSize(readFileSync(join(root, 'public/anatomy/metahuman/adult-male/front.webp')));
+    assert.equal(front.width, 1024);
+    assert.equal(front.height, 1536);
+    const female = readWebpSize(readFileSync(join(root, 'public/anatomy/metahuman/teen-female/front.webp')));
+    assert.equal(female.width, 1024);
+    assert.equal(female.height, 1536);
+    const thumb = readWebpSize(readFileSync(join(root, 'public/anatomy/metahuman/thumbs/senior-female.webp')));
+    assert.ok(Math.max(thumb.width, thumb.height) <= 256);
+    const walk = (dir) => {
+      let bytes = 0;
+      for (const name of readdirSync(dir, { withFileTypes: true })) {
+        const path = join(dir, name.name);
+        if (name.isDirectory()) bytes += walk(path);
+        else bytes += statSync(path).size;
+      }
+      return bytes;
+    };
+    const packBytes = walk(join(root, 'public/anatomy/metahuman'));
+    assert.ok(packBytes <= 10 * 1024 * 1024, `metahuman pack is ${packBytes} bytes`);
   });
 
   test('simple pain-map: viewport fit + patient annotation chrome', () => {
@@ -2031,7 +2067,7 @@ console.log('PainLocator tests\n');
     const workspaceIdx = html.indexOf('id="simplePainWorkspace"');
     assert.ok(panelIdx > 0 && toolsIdx > panelIdx && viewsIdx > toolsIdx);
     assert.ok(workspaceIdx > 0 && timelineIdx > workspaceIdx);
-    assert.ok(html.includes('/anatomy/metahuman/adult-male/front.png'));
+    assert.ok(html.includes('/anatomy/metahuman/adult-male/front.webp'));
     assert.ok(flow.includes('activatePatientTool'));
     assert.ok(flow.includes('setAssessStep'));
     assert.ok(flow.includes('setDrawerExpanded'));
@@ -2042,14 +2078,14 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('id="btnSimpleBodyProfile"'));
     assert.ok(html.includes('data-sex="female"') && html.includes('data-sex="male"'));
     assert.ok(html.includes('data-stage="adult"') && html.includes('data-stage="teen"'));
-    assert.ok(html.includes('/anatomy/metahuman/thumbs/adult-male.png'));
-    assert.ok(html.includes('/anatomy/metahuman/thumbs/teen-male.png'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/adult-male.webp'));
+    assert.ok(html.includes('/anatomy/metahuman/thumbs/teen-male.webp'));
     assert.ok(css.includes('.body-type-gallery') && css.includes('.body-type-option'));
     assert.ok(css.includes('.body-sex-toggle') && css.includes('.body-sex-btn'));
     assert.ok(css.includes('theme-dark') && css.includes('--surface-elevated: #252b3a'));
     assert.ok(flow.includes('btnSimpleBodyProfile') && flow.includes('bodyTypeGallery'));
     for (const folder of ['adult-female', 'teen-female', 'child-female', 'senior-female', 'teen-male']) {
-      assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/front.png`)).isFile());
+      assert.ok(statSync(join(root, `public/anatomy/metahuman/${folder}/front.webp`)).isFile());
     }
     assert.ok(html.includes('id="simpleViewCompass"'));
     assert.ok(html.includes('id="simpleDrawerPeekBar"'));
@@ -2099,7 +2135,17 @@ console.log('PainLocator tests\n');
     assert.ok(html.includes('name="simpleAncestry"') && html.includes('src/engine/anatomy/metahuman/body-dna.js'));
     assert.ok(html.includes('src/engine/anatomy/metahuman/glb-body.js'));
     assert.ok(html.includes('src/engine/anatomy/metahuman/metahuman-engine.js'));
-    assert.ok(html.includes('your Blender standing figure'));
+    assert.ok(html.includes('Human view uses the photo of the body you picked'));
+    assert.ok(html.includes('3D anatomy: BodyParts3D © DBCLS, CC BY 4.0'));
+    assert.ok(html.includes('id="anatomyCredit3d"'));
+    const notice = readFileSync(join(root, 'NOTICE.md'), 'utf8');
+    assert.ok(notice.includes('BodyParts3D'));
+    assert.ok(notice.includes('CC BY 4.0'));
+    assert.ok(notice.includes('three.js'));
+    assert.ok(notice.includes('MIT'));
+    assert.ok(notice.includes('Lucide'));
+    assert.ok(notice.includes('ISC'));
+    assert.ok(notice.includes('Chart.js'));
     assert.ok(html.includes('src/engine/anatomy/plate-likeness.js'));
     assert.ok(css.includes('--spm-fit-x') && css.includes('--spm-fit-y'));
     assert.ok(css.includes('grid-template-rows: auto minmax(0, 1fr)'));
@@ -2182,15 +2228,19 @@ console.log('PainLocator tests\n');
     assert.ok(s.bodyDnaKey({ weight: 'heavy' }, 'front').includes('heavy'));
   });
 
-  test('metahuman engine: Blender GLB drop paths and DNA scale', () => {
+  test('metahuman engine: no grey mannequin; DNA scale stays on the plate path', () => {
     const s = createSandbox();
     loadScript('src/engine/anatomy/asset-paths.js', s);
     loadScript('src/engine/anatomy/metahuman/body-dna.js', s);
     loadScript('src/engine/anatomy/metahuman/glb-body.js', s);
     const paths = s.getMetahumanGlbCandidates('adult-female');
-    assert.ok(paths[0].endsWith('/anatomy/metahuman/adult-female/body.glb'));
-    assert.ok(paths.includes('/anatomy/metahuman/body.glb'));
-    assert.equal(s.getMetahumanGlbPath('teen'), '/anatomy/metahuman/teen-male/body.glb');
+    assert.equal(paths.length, 0);
+    assert.equal(paths.some((url) => String(url).includes('body.glb')), false);
+    assert.equal(s.getMetahumanGlbPath('teen'), null);
+    assert.equal(s.metahumanGlbCandidates('senior').length, 0);
+    assert.equal(s.getAssetPath('teen', 'front', 'metahuman'), '/anatomy/metahuman/teen-male/front.webp');
+    assert.equal(s.getAssetPath('child', 'back', 'metahuman'), '/anatomy/metahuman/child-male/back.webp');
+    assert.equal(s.getAssetPath('senior', 'right', 'metahuman'), '/anatomy/metahuman/senior-male/right.webp');
     const avg = s.metahumanGlbScale({ model: 'adult-male' });
     const tall = s.metahumanGlbScale({ model: 'adult-male', height: 'tall' });
     const heavy = s.metahumanGlbScale({ model: 'adult-male', weight: 'heavy' });
@@ -2214,11 +2264,26 @@ console.log('PainLocator tests\n');
     const glbHeaders = { get: (k) => (k === 'content-type' ? 'model/gltf-binary' : k === 'content-length' ? '1015596' : null) };
     assert.equal(s.isMetahumanGlbResponse({ ok: true, headers: htmlHeaders }), false);
     assert.equal(s.isMetahumanGlbResponse({ ok: true, headers: glbHeaders }), true);
-    assert.ok(statSync(join(root, 'public/anatomy/metahuman/body.glb')).isFile());
+    assert.equal(statSync(join(root, 'public/anatomy/metahuman/body.glb'), { throwIfNoEntry: false })?.isFile?.() || false, false);
     const engine = readFileSync(join(root, 'src/engine/anatomy/metahuman/metahuman-engine.js'), 'utf8');
     assert.ok(engine.includes('cloneMetahumanGlbBody'));
     assert.ok(engine.includes('CAE_ALLOW_PARAMETRIC_METAHUMAN'));
     assert.ok(engine.includes('_keepStill'));
+    assert.ok(engine.includes('mhMesh = "plate"'));
+    for (const rel of [
+      'src/engine/anatomy/asset-paths.js',
+      'src/engine/anatomy/metahuman/glb-body.js',
+      'src/engine/anatomy/metahuman/metahuman-engine.js',
+      'public/anatomy/metahuman/manifest.json',
+      'index.html'
+    ]) {
+      const text = readFileSync(join(root, rel), 'utf8');
+      assert.equal(text.includes('metahuman/body.glb'), false, rel);
+      assert.equal(text.includes('/body.glb'), false, rel);
+    }
+    const loader = readFileSync(join(root, 'src/engine/spatial/spatial-manifest-loader.js'), 'utf8');
+    assert.ok(loader.includes('"/anatomy/spatial/adult-male/exterior-lod0.glb"'));
+    assert.ok(loader.includes('3D mode only loads the BodyParts3D skin mesh'));
   });
 
   test('simple pain-map: tap marks correct for portrait SVG stretch', () => {

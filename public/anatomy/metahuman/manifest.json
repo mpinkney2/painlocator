@@ -2,40 +2,42 @@
   "id": "metahuman",
   "label": "Lifelike body",
   "schemaVersion": 1,
-  "width": 2048,
-  "height": 3072,
+  "format": "image/webp",
+  "width": 1024,
+  "height": 1536,
+  "thumbMaxEdge": 256,
   "models": {
     "adult-male": {
       "label": "Adult man",
-      "thumb": "/anatomy/metahuman/thumbs/adult-male.png"
+      "thumb": "/anatomy/metahuman/thumbs/adult-male.webp"
     },
     "adult-female": {
       "label": "Adult woman",
-      "thumb": "/anatomy/metahuman/thumbs/adult-female.png"
+      "thumb": "/anatomy/metahuman/thumbs/adult-female.webp"
     },
     "teen-male": {
       "label": "Teen boy",
-      "thumb": "/anatomy/metahuman/thumbs/teen-male.png"
+      "thumb": "/anatomy/metahuman/thumbs/teen-male.webp"
     },
     "teen-female": {
       "label": "Teen girl",
-      "thumb": "/anatomy/metahuman/thumbs/teen-female.png"
+      "thumb": "/anatomy/metahuman/thumbs/teen-female.webp"
     },
     "child-male": {
       "label": "Boy",
-      "thumb": "/anatomy/metahuman/thumbs/child-male.png"
+      "thumb": "/anatomy/metahuman/thumbs/child-male.webp"
     },
     "child-female": {
       "label": "Girl",
-      "thumb": "/anatomy/metahuman/thumbs/child-female.png"
+      "thumb": "/anatomy/metahuman/thumbs/child-female.webp"
     },
     "senior-male": {
       "label": "Elderly man",
-      "thumb": "/anatomy/metahuman/thumbs/senior-male.png"
+      "thumb": "/anatomy/metahuman/thumbs/senior-male.webp"
     },
     "senior-female": {
       "label": "Elderly woman",
-      "thumb": "/anatomy/metahuman/thumbs/senior-female.png"
+      "thumb": "/anatomy/metahuman/thumbs/senior-female.webp"
     }
   },
   "aliases": {
@@ -49,5 +51,5 @@
     "left",
     "right"
   ],
-  "notes": "Retina 2048x3072 stills plus shipped Blender GLB at /anatomy/metahuman/body.glb (optional standing mesh when present)."
+  "notes": "Photo plates are WebP at 1024x1536 (quality 80). Thumbs are WebP with the longest edge at most 256px. Unsexed ids teen, child, and senior map to the matching -male folders. 3D mode uses the BodyParts3D skin mesh at /anatomy/spatial/adult-male/exterior-lod0.glb."
 }

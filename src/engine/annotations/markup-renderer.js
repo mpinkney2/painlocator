@@ -24,7 +24,7 @@ function polygonPoints(anchors) {
 const SIMPLE_MARK_SIZE_KEY = "painlocator_mark_size";
 const SIMPLE_MARK_SIZE_SCALES = { s: 0.5, m: 1, l: 1.5 };
 const SIMPLE_VIEW_YAW = ["front", "right", "back", "left"];
-const SIMPLE_PLATE_CACHE = "spm-mh-glb3";
+const SIMPLE_PLATE_CACHE = "spm-mh-webp";
 
 function getSimpleMarkSizeScale() {
   try {
@@ -77,7 +77,7 @@ function simplePlateSrc(model, view) {
 
 function setSimplePlateImage(img, path) {
   if (!img || !path) return;
-  const viewMatch = String(path).match(/\/(front|back|left|right)\.png/i);
+  const viewMatch = String(path).match(/\/(front|back|left|right)\.(?:png|webp)/i);
   const modelMatch = String(path).match(/metahuman\/([^/?#]+)\//i);
   const view = viewMatch ? viewMatch[1] : "front";
   const model = modelMatch ? modelMatch[1] : (typeof state !== "undefined" ? state.modelType : "adult-male");

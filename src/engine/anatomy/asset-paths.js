@@ -3,7 +3,11 @@
  *
  * Packs:
  *   classic   — clinical atlas plates under /anatomy/{model}/{view}.png
- *   metahuman — lifelike photo-style plates under /anatomy/metahuman/{model}/{view}.png
+ *   metahuman — lifelike photo plates under /anatomy/metahuman/{model}/{view}.webp
+ *
+ * Unsexed ids (teen, child, senior) use the matching -male photo folder.
+ * 3D mode does not use these plates; it loads the BodyParts3D skin mesh at
+ * /anatomy/spatial/adult-male/exterior-lod0.glb.
  *
  * Pack selection is a presentation concern; path resolution stays in CAE.
  *
@@ -110,34 +114,28 @@ function getAssetPath(modelType, viewType, packId) {
   const folder = pack === "classic"
     ? classicAnatomyFolder(modelType)
     : metahumanAnatomyFolder(modelType);
-  return `${getAnatomyAssetRoot(pack)}/${folder}/${view}.png`;
+  const ext = pack === "metahuman" ? "webp" : "png";
+  return `${getAnatomyAssetRoot(pack)}/${folder}/${view}.${ext}`;
 }
 
 function getAnatomyThumbPath(modelType) {
   if (getAnatomyPack() === "metahuman") {
     const folder = metahumanAnatomyFolder(modelType);
-    return `/anatomy/metahuman/thumbs/${folder}.png`;
+    return `/anatomy/metahuman/thumbs/${folder}.webp`;
   }
   return getAssetPath(modelType, "front", "classic");
 }
 
 /**
- * Blender / glTF drop-in paths for a profile. First existing file wins.
- * Export from Blender as glTF Binary (.glb), +Y up, applied transforms.
+ * No MetaHuman mesh is shipped. Human mode uses photo plates.
+ * 3D mode loads only /anatomy/spatial/adult-male/exterior-lod0.glb.
  */
-function getMetahumanGlbCandidates(modelType) {
-  const folder = metahumanAnatomyFolder(modelType);
-  const root = getAnatomyAssetRoot("metahuman");
-  return [
-    `${root}/${folder}/body.glb`,
-    `${root}/${folder}/figure.glb`,
-    `${root}/${folder}/body.gltf`,
-    `${root}/body.glb`
-  ];
+function getMetahumanGlbCandidates(_modelType) {
+  return [];
 }
 
-function getMetahumanGlbPath(modelType) {
-  return getMetahumanGlbCandidates(modelType)[0];
+function getMetahumanGlbPath(_modelType) {
+  return null;
 }
 
 window.ANATOMY_MODELS = ANATOMY_MODELS;

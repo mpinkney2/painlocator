@@ -1626,6 +1626,13 @@ body.shell-patient.simple-pain-map.simple-display-spatial .body-type-gallery {
   display: none;
 }
 
+/* Keep the BodyParts3D credit above the view compass, under the 3D figure. */
+body.shell-patient.simple-pain-map .anatomy-credit-3d {
+  bottom: 4.75rem;
+  z-index: 15;
+  color: var(--spm-navy, var(--text-primary));
+}
+
 /* Plate forced visible only while Human mode (not when 3D is ready).
    Do NOT force inset/full-size — mapper syncFrameToImage owns letterbox + enlarge bounds. */
 body.shell-patient.simple-pain-map:not(.spatial-ready) .cae-clinical-viewport .cae-image-frame,

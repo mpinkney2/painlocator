@@ -58,12 +58,9 @@ DEFAULT_PROFILES = [
     "senior-female",
 ]
 
-# Canonical folder → extra copies so cached / legacy URLs keep working
-FOLDER_ALIASES = {
-    "teen-male": ["teen"],
-    "child-male": ["child"],
-    "senior-male": ["senior"],
-}
+# Unsexed ids resolve to the -male folders in asset-paths.js.
+# Do not write duplicate teen/, child/, or senior/ plate folders.
+FOLDER_ALIASES = {}
 
 SOURCE_STEMS = {
     "teen-male": ["teen-male", "teen"],

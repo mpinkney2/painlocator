@@ -397,7 +397,7 @@ function syncBodyTypeGallery(model) {
       const thumbModel = composeBodyModel(btn.dataset.stage, profile.sex);
       img.src = typeof getAnatomyThumbPath === 'function'
         ? getAnatomyThumbPath(thumbModel)
-        : `/anatomy/metahuman/thumbs/${thumbModel}.png`;
+        : `/anatomy/metahuman/thumbs/${thumbModel}.webp`;
     }
   });
   const radioValue = typeof clinicianRadioValue === 'function'

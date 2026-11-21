@@ -1,10 +1,10 @@
 /**
  * Clinical Anatomy Engine — Lifelike plate baker.
  *
- * Prefers a Blender / glTF mesh dropped at
- * /anatomy/metahuman/{profile}/body.glb. Identity DNA without a mesh keeps
- * the captured stills. The parametric capsule figure is not used on the
- * patient map — it is only a last-resort lab hook.
+ * Human mode always keeps the captured photo plates, including profiles that
+ * used to fall back to a shared grey mesh. 3D mode paints only the
+ * BodyParts3D skin mesh on the spatial canvas. The parametric capsule figure
+ * is not used on the patient map — it is only a last-resort lab hook.
  */
 
 (function (global) {
@@ -144,37 +144,13 @@ function applyMetahumanEnginePlate(img, fallbackPath, modelType, view) {
   img.dataset.mhView = vw;
   if (fallbackPath) {
     img.dataset.plateSrc = fallbackPath;
-    img.src = fallbackPath;
   }
 
-  const dna = currentEngineDna(model);
-  const findGlb = typeof findMetahumanGlb === "function"
-    ? findMetahumanGlb
-    : () => Promise.resolve(null);
-
-  return findGlb(model).then((glbUrl) => {
-    // Simple pain-map Human mode must stay a still plate — never live-bake GLB
-    // (that looks like the 3D body and confuses the Human|3D toggle).
-    const simpleMap =
-      typeof document !== "undefined" &&
-      document.body?.classList?.contains("simple-pain-map");
-    const forceStill =
-      simpleMap && !document.body.classList.contains("simple-display-spatial");
-    if (!glbUrl || forceStill) return _keepStill(img, fallbackPath);
-    const gen = Number(img.dataset.mhGen || 0) + 1;
-    img.dataset.mhGen = String(gen);
-    return bakeMetahumanPlate(dna, vw).then((url) => {
-      if (img.dataset.mhGen !== String(gen)) return url;
-      img.src = url;
-      img.dataset.mhBaked = "1";
-      img.dataset.mhMesh = "glb";
-      return url;
-    }).catch((err) => {
-      console.warn("[cae-metahuman] blender bake failed", err);
-      if (img.dataset) img.dataset.mhError = String(err && err.message ? err.message : err);
-      return _keepStill(img, fallbackPath);
-    });
-  }).catch(() => _keepStill(img, fallbackPath));
+  // Photo plate for every profile. Do not replace it with a baked mesh —
+  // that path used the retired grey stand-in and left a blank stage when
+  // the mesh was missing. 3D mode uses the spatial BodyParts3D canvas.
+  img.dataset.mhMesh = "plate";
+  return _keepStill(img, fallbackPath);
 }
 
 function refreshMetahumanFigure() {

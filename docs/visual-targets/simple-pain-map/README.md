@@ -8,9 +8,11 @@ Reference mockup:
 
 Patient simple-map uses the MetaHuman-style likeness pack:
 
-`public/anatomy/metahuman/{adult-male,adult-female,teen,child,senior}/{front,back,left,right}.png`
+`public/anatomy/metahuman/{adult-male,adult-female,teen-male,teen-female,child-male,child-female,senior-male,senior-female}/{front,back,left,right}.webp`
 
-Gallery thumbs: `public/anatomy/metahuman/thumbs/{model}.png`
+Gallery thumbs: `public/anatomy/metahuman/thumbs/{model}.webp` (longest edge ≤ 256px).
+
+Legacy ids `teen`, `child`, and `senior` map to the matching `-male` folders. 3D mode uses `public/anatomy/spatial/adult-male/exterior-lod0.glb`.
 
 Source sprite sheets: `docs/visual-targets/metahuman-sprites/`
 

@@ -4,6 +4,7 @@
  */
 (function (global) {
   const DEFAULT_CATALOG_URL = "/anatomy/spatial/manifest.json";
+  const BP3D_SKIN_MESH = "/anatomy/spatial/adult-male/exterior-lod0.glb";
 
   function joinUrl(base, relative) {
     if (!relative) return base;
@@ -307,6 +308,9 @@
         (boot && boot.TIMEOUTS && boot.TIMEOUTS.exteriorMs) || 20000;
 
       const packed = await this.loadModelManifest(modelId);
+      if (packed.surfaceUrl !== BP3D_SKIN_MESH) {
+        throw new Error("3D mode only loads the BodyParts3D skin mesh");
+      }
       const loader = await this._getGltfLoader(THREE);
       const gltf = await withTimeout(
         loader.loadAsync(packed.surfaceUrl),

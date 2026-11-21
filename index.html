@@ -15,8 +15,8 @@
   <script src="/vendor/lucide.min.js?v=0.468.0"></script>
   <script src="/vendor/chart.umd.min.js?v=4.4.7"></script>
   
-  <link rel="preload" as="image" href="/anatomy/metahuman/adult-male/front.png">
-  <link rel="preload" as="image" href="/anatomy/metahuman/adult-female/front.png">
+  <link rel="preload" as="image" type="image/webp" href="/anatomy/metahuman/adult-male/front.webp">
+  <link rel="preload" as="image" type="image/webp" href="/anatomy/metahuman/adult-female/front.webp">
   <link rel="stylesheet" href="src/layout/theme-tokens.css?v=5.8-realistic">
   <link rel="stylesheet" href="src/layout/styles.css?v=2026-11-20-bp3d-integrate">
   <link rel="stylesheet" href="src/layout/shell-styles.css?v=5.11-mobile-drawer">
@@ -317,25 +317,25 @@
                 <div class="body-stage-list" role="radiogroup" aria-label="Life stage">
                   <button type="button" class="body-type-option is-selected" data-stage="adult" aria-pressed="true" title="Adult">
                     <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/adult-male.png" alt="">
+                      <img src="/anatomy/metahuman/thumbs/adult-male.webp" alt="">
                     </span>
                     <span class="body-type-label">Adult</span>
                   </button>
                   <button type="button" class="body-type-option" data-stage="teen" aria-pressed="false" title="Teen">
                     <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/teen-male.png" alt="">
+                      <img src="/anatomy/metahuman/thumbs/teen-male.webp" alt="">
                     </span>
                     <span class="body-type-label">Teen</span>
                   </button>
                   <button type="button" class="body-type-option" data-stage="child" aria-pressed="false" title="Child">
                     <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/child-male.png" alt="">
+                      <img src="/anatomy/metahuman/thumbs/child-male.webp" alt="">
                     </span>
                     <span class="body-type-label">Child</span>
                   </button>
                   <button type="button" class="body-type-option" data-stage="senior" aria-pressed="false" title="Elderly">
                     <span class="body-type-silhouette" aria-hidden="true">
-                      <img src="/anatomy/metahuman/thumbs/senior-male.png" alt="">
+                      <img src="/anatomy/metahuman/thumbs/senior-male.webp" alt="">
                     </span>
                     <span class="body-type-label">Elderly</span>
                   </button>
@@ -369,6 +369,7 @@
                     <button type="button" class="btn btn-ghost btn-sm region-tool-edit" id="btnEditEntry" title="Enable region editing">Edit Entry</button>
                   </div>
                   <div class="avatar-stage" id="avatarStage" tabindex="0" aria-label="Body map — tap to mark pain"></div>
+                  <p class="anatomy-credit-3d" id="anatomyCredit3d">3D anatomy: BodyParts3D © DBCLS, CC BY 4.0</p>
                   <!-- Compact view snaps over the figure (not a full horizontal dock) -->
                   <div class="simple-view-compass shell-only-patient" id="simpleViewCompass" role="group" aria-label="Body view">
                     <button type="button" class="simple-compass-btn is-active" data-view="front" title="Front view" aria-pressed="true">Front</button>
@@ -1035,7 +1036,7 @@
         <button type="button" class="modal-close" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
-        <p class="modal-note">The map now uses your Blender standing figure. Appearance drives its stature and build shapekeys.</p>
+        <p class="modal-note">Human view uses the photo of the body you picked. Appearance adjusts skin tone, build, and height on that photo. 3D uses the BodyParts3D model.</p>
         <fieldset class="simple-prefs-fieldset">
           <legend>Tap mark size</legend>
           <p class="simple-prefs-hint">Default is small — half the previous size. Choose a larger mark if you want easier targets.</p>
@@ -1188,6 +1189,8 @@
           <li>Automated summaries are observations about your recorded entries only.</li>
         </ul>
         <p class="welcome-safety">PainLocator is not for emergencies. Seek immediate medical care for severe or sudden symptoms.</p>
+        <h4>About</h4>
+        <p>3D anatomy: BodyParts3D © DBCLS, CC BY 4.0</p>
         <h4>Developer / demo</h4>
         <p class="modal-note">Experience mode is for development and demos. Production routing should choose Patient or Clinician from role or session context — patients should not pick a product mode.</p>
         <div class="help-presentation-switch" role="group" aria-label="Experience mode">
