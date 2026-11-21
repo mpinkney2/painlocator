@@ -15,6 +15,21 @@
     return 'patient';
   }
 
+  function readQueryMode() {
+    try {
+      const params = new URLSearchParams(global.location?.search || '');
+      const raw =
+        params.get('presentation') ||
+        params.get('shell') ||
+        params.get('presentationMode') ||
+        '';
+      if (!raw) return null;
+      return normalizeMode(raw);
+    } catch (_) {
+      return null;
+    }
+  }
+
   function readStored() {
     try {
       return normalizeMode(localStorage.getItem(STORAGE_KEY) || 'patient');
@@ -52,16 +67,16 @@
 
     if (next === 'patient') {
       if (captureBtn) {
-        captureBtn.textContent = 'Locate';
-        captureBtn.title = 'Where does it hurt?';
+        captureBtn.textContent = 'Pain map';
+        captureBtn.title = 'Show where it hurts';
       }
       if (clinicalBtn) {
-        clinicalBtn.textContent = 'Describe';
-        clinicalBtn.title = 'How does it feel?';
+        clinicalBtn.textContent = 'Share';
+        clinicalBtn.title = 'Share your pain map';
       }
       if (reviewBtn) {
-        reviewBtn.textContent = 'Review';
-        reviewBtn.title = 'Review & save';
+        reviewBtn.textContent = 'History';
+        reviewBtn.title = 'Pain history';
       }
     } else {
       if (captureBtn) {
@@ -123,7 +138,9 @@
   }
 
   function initPresentationMode() {
-    applyPresentationMode(readStored(), { persist: false });
+    const fromQuery = readQueryMode();
+    // Query wins for demos/QA; persist so clinician shell survives reload without the query.
+    applyPresentationMode(fromQuery || readStored(), { persist: !!fromQuery });
 
     document.getElementById('btnPresentationMenu')?.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -172,15 +189,16 @@
   global.PresentationMode = {
     STORAGE_KEY,
     normalizeMode,
+    readQueryMode,
     readStored,
     writeStored,
     navLabels: function (m) {
       const mode = normalizeMode(m);
       if (mode === 'patient') {
         return {
-          capture: { label: 'Locate', title: 'Where does it hurt?' },
-          clinical: { label: 'Describe', title: 'How does it feel?' },
-          review: { label: 'Review', title: 'Review & save' }
+          capture: { label: 'Pain map', title: 'Show where it hurts' },
+          clinical: { label: 'Share', title: 'Share your pain map' },
+          review: { label: 'History', title: 'Pain history' }
         };
       }
       return {

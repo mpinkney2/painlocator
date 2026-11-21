@@ -21,9 +21,10 @@
  * @property {"light"|"dark"} theme
  *
  * @typedef {Object} SessionPatient
- * @property {string} model   - adult-male | adult-female | child | teen | senior
+ * @property {string} model   - adult-male | adult-female | teen-male | teen-female | child-male | child-female | senior-male | senior-female
  * @property {string} view    - front | back | left | right
  * @property {string} [label] - Optional display label
+ * @property {{ skin?: string, weight?: string, height?: string, ancestry?: string }} [likeness] - Lifelike body prefs (engine rebuilds geometry when not identity)
  *
  * @typedef {Object} SessionWorkflow
  * @property {"capture"|"review"|"clinical"} mode
@@ -59,9 +60,15 @@ function formatPatientModelLabel(model) {
   const labels = {
     'adult-male': 'Adult Male',
     'adult-female': 'Adult Female',
-    child: 'Child',
-    teen: 'Teen',
-    senior: 'Senior',
+    'teen-male': 'Teen Male',
+    'teen-female': 'Teen Female',
+    'child-male': 'Child Male',
+    'child-female': 'Child Female',
+    'senior-male': 'Senior Male',
+    'senior-female': 'Senior Female',
+    child: 'Child Male',
+    teen: 'Teen Male',
+    senior: 'Senior Male',
     male: 'Adult Male',
     female: 'Adult Female'
   };
@@ -136,7 +143,8 @@ function buildSessionExport(state, store) {
     patient: {
       model,
       view: state.view,
-      label: formatPatientModelLabel(model)
+      label: formatPatientModelLabel(model),
+      likeness: typeof getLikenessPref === 'function' ? getLikenessPref() : undefined
     },
     workflow: {
       mode: state.workflowMode || 'capture',
@@ -151,7 +159,7 @@ function buildSessionExport(state, store) {
 }
 
 function validateSessionImport(data) {
-  if (!data || typeof data !== 'object') {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
     return { valid: false, error: 'Invalid file: expected a JSON object.' };
   }
   if (!data.schemaVersion) {
@@ -163,6 +171,33 @@ function validateSessionImport(data) {
   }
   if (!Array.isArray(data.entries)) {
     return { valid: false, error: 'Session is missing entries array.' };
+  }
+  if (data.entries.length > 500) {
+    return { valid: false, error: 'Session has too many entries (max 500).' };
+  }
+  for (let i = 0; i < data.entries.length; i++) {
+    const entry = data.entries[i];
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+      return { valid: false, error: `Entry ${i + 1} is not an object.` };
+    }
+    if (entry.id != null && typeof entry.id !== 'string') {
+      return { valid: false, error: `Entry ${i + 1} has an invalid id.` };
+    }
+    if (entry.intensity != null) {
+      const n = Number(entry.intensity);
+      if (!Number.isFinite(n) || n < 0 || n > 10) {
+        return { valid: false, error: `Entry ${i + 1} has an invalid intensity.` };
+      }
+    }
+    if (entry.regions != null && !Array.isArray(entry.regions)) {
+      return { valid: false, error: `Entry ${i + 1} regions must be an array.` };
+    }
+    if (Array.isArray(entry.regions) && entry.regions.length > 200) {
+      return { valid: false, error: `Entry ${i + 1} has too many regions.` };
+    }
+  }
+  if (data.patient != null && (typeof data.patient !== 'object' || Array.isArray(data.patient))) {
+    return { valid: false, error: 'Session patient block must be an object.' };
   }
   return { valid: true };
 }

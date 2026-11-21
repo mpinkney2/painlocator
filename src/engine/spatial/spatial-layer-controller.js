@@ -23,9 +23,14 @@
 
   const DEPTHS = Object.freeze(["surface", "muscle", "skeletal"]);
 
+  const appearanceGhost =
+    (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance?.GHOST) ||
+    (typeof window !== "undefined" && window.SpatialExteriorAppearance?.GHOST) ||
+    null;
+
   const MATERIALS = Object.freeze({
-    exteriorGhostMuscle: { color: 0xb7c0c9, opacity: 0.22 },
-    exteriorGhostSkeletal: { color: 0xb7c0c9, opacity: 0.12 },
+    exteriorGhostMuscle: appearanceGhost?.muscle || { color: 0xc9b5a8, opacity: 0.22 },
+    exteriorGhostSkeletal: appearanceGhost?.skeletal || { color: 0xc9b5a8, opacity: 0.12 },
     muscle: { color: 0xb89a9a, roughness: 0.86, metalness: 0.04, opacity: 0.96 },
     muscleSubdued: { color: 0xa09090, roughness: 0.9, metalness: 0.02, opacity: 0.18 },
     skeletal: { color: 0xe4ddd2, roughness: 0.78, metalness: 0.06, opacity: 0.98 },

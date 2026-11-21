@@ -23,15 +23,26 @@
       this._yaw = 0;
       this._targetYaw = 0;
       this._snapping = false;
+      this._lastPaintMs = 0;
       this._exterior = null;
       this.modelId = null;
       this.provenance = null;
+      this._ground = null;
+      this._lookAtY = 0.85;
+      this._lowPower = false;
+      this._lastFitSize = { w: 0, h: 0 };
+
+      const boot = global.SpatialBootUtils || null;
+      const probe = boot && typeof boot.probeWebGL === "function" ? boot.probeWebGL() : { ok: true, software: false };
+      this._lowPower = !!probe.software;
 
       try {
         this.renderer = new THREE.WebGLRenderer({
-          antialias: true,
+          antialias: !this._lowPower,
           alpha: true,
-          powerPreference: "default",
+          // Keep last frame readable for screenshots / some GPUs in on-demand mode.
+          preserveDrawingBuffer: true,
+          powerPreference: this._lowPower ? "low-power" : "default",
           failIfMajorPerformanceCaveat: false,
           depth: true,
           stencil: false
@@ -49,26 +60,46 @@
       }
       this.renderer.setClearColor(0x000000, 0);
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+      if (!this._lowPower && THREE.ACESFilmicToneMapping != null) {
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.renderer.toneMappingExposure = 1.35;
+      }
       this.canvas = this.renderer.domElement;
       this.canvas.className = "cae-spatial-canvas";
       this.canvas.setAttribute("role", "img");
       this.canvas.setAttribute("aria-label", "Rotatable spatial body model");
+      this.canvas.style.display = "block";
+      this.canvas.style.width = "100%";
+      this.canvas.style.height = "100%";
       mountEl.appendChild(this.canvas);
 
       const w = Math.max(1, mountEl.clientWidth || 320);
       const h = Math.max(1, mountEl.clientHeight || 480);
       this.camera = new THREE.PerspectiveCamera(32, w / h, 0.1, 100);
-      this.camera.position.set(0, 1.0, 4.0);
-      this.camera.lookAt(0, 0.95, 0);
+      // Framed for ~1.7 m adult BP3D skin centered near y≈0.85.
+      this.camera.position.set(0, 0.95, 3.6);
+      this.camera.lookAt(0, this._lookAtY, 0.05);
 
       this.scene = new THREE.Scene();
-      this.scene.add(new THREE.AmbientLight(0xffffff, 0.72));
-      const key = new THREE.DirectionalLight(0xffffff, 0.85);
-      key.position.set(2.5, 4, 3);
-      this.scene.add(key);
-      const fill = new THREE.DirectionalLight(0xa8c4ff, 0.35);
-      fill.position.set(-3, 1, -2);
-      this.scene.add(fill);
+      const appearance =
+        (typeof globalThis !== "undefined" && globalThis.SpatialExteriorAppearance) ||
+        (typeof window !== "undefined" && window.SpatialExteriorAppearance) ||
+        null;
+      if (appearance?.applySceneLighting) {
+        appearance.applySceneLighting(this.scene, THREE, this.renderer);
+      } else {
+        this.scene.add(new THREE.HemisphereLight(0xfff1e6, 0x8a7a6c, 0.55));
+        this.scene.add(new THREE.AmbientLight(0xfff6ef, 0.28));
+        const key = new THREE.DirectionalLight(0xfff2e4, 0.95);
+        key.position.set(2.2, 5.0, 3.2);
+        this.scene.add(key);
+        const fill = new THREE.DirectionalLight(0xc8d6ef, 0.28);
+        fill.position.set(-3.2, 1.4, -1.8);
+        this.scene.add(fill);
+        const rim = new THREE.DirectionalLight(0xdde8ff, 0.22);
+        rim.position.set(-1.2, 2.8, -3.5);
+        this.scene.add(rim);
+      }
 
       this.bodyRoot = new THREE.Group();
       this.bodyRoot.name = "spatialBodyRoot";
@@ -86,13 +117,14 @@
       this.meshByName = this.meshById;
 
       const ground = new THREE.Mesh(
-        new THREE.CircleGeometry(0.55, 32),
-        new THREE.MeshBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.12 })
+        new THREE.CircleGeometry(0.58, 48),
+        new THREE.MeshBasicMaterial({ color: 0x8a7a6c, transparent: true, opacity: 0.1 })
       );
       ground.rotation.x = -Math.PI / 2;
       ground.position.y = 0;
       ground.name = "ground";
       ground.raycast = () => {};
+      this._ground = ground;
       this.scene.add(ground);
 
       this.raycaster = new THREE.Raycaster();
@@ -152,8 +184,51 @@
         this.meshById.set(meshId, mesh);
       }
 
+      this.fitToBody();
       this.requestFrame();
       return exterior;
+    }
+
+    /**
+     * Frame the loaded exterior in the camera and park the ground at the feet.
+     * Yaw still happens on bodyRoot — camera stays on +Z looking at the visual mid-mass.
+     */
+    fitToBody({ padding = 1.16 } = {}) {
+      if (this.disposed || !this.camera) return null;
+      const THREE = this.THREE;
+      const target = this._exterior?.root || this.bodyRoot;
+      if (!target || !THREE?.Box3) return null;
+      target.updateMatrixWorld(true);
+      const box = (typeof metahumanBodyBox === "function")
+        ? metahumanBodyBox(THREE, target)
+        : new THREE.Box3().setFromObject(target);
+      if (box.isEmpty()) return null;
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const Projection =
+        (typeof SpatialProjection !== "undefined" && SpatialProjection) ||
+        global.SpatialProjection;
+      const dist = Projection?.cameraDistanceForBounds
+        ? Projection.cameraDistanceForBounds(
+            { x: size.x, y: size.y, z: size.z },
+            this.camera.fov,
+            this.camera.aspect,
+            padding
+          )
+        : Math.max(3.2, size.y * 2.2);
+      this._lookAtY = center.y;
+      this.camera.position.set(0, center.y, dist);
+      this.camera.near = Math.max(0.05, dist / 50);
+      this.camera.far = Math.max(40, dist * 8);
+      this.camera.lookAt(0, center.y, 0);
+      this.camera.updateProjectionMatrix();
+      if (this._ground) {
+        this._ground.position.y = box.min.y;
+        const radius = Math.max(size.x, size.z, 0.4) * 0.62;
+        this._ground.scale.setScalar(Math.max(0.35, radius / 0.55));
+      }
+      this.requestFrame();
+      return { center: center.toArray(), size: size.toArray(), distance: dist };
     }
 
     _clearBodyMeshes() {
@@ -202,8 +277,16 @@
       const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? MOBILE_DPR : MAX_DPR);
       this.renderer.setPixelRatio(dpr);
       this.renderer.setSize(w, h, false);
+      this.canvas.style.width = "100%";
+      this.canvas.style.height = "100%";
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
+      const sizeChanged =
+        Math.abs(w - this._lastFitSize.w) > 2 || Math.abs(h - this._lastFitSize.h) > 2;
+      if (this._exterior && sizeChanged) {
+        this._lastFitSize = { w, h };
+        this.fitToBody();
+      }
       this.requestFrame();
     }
 
@@ -221,8 +304,12 @@
         }
       }
 
-      if (this._needsFrame) {
+      // Always paint while snapping; otherwise dirty frames. Also recover every ~500ms
+      // if a requestFrame was missed so the body never stays blank.
+      const now = performance.now();
+      if (this._needsFrame || this._snapping || !this._lastPaintMs || now - this._lastPaintMs > 500) {
         this.renderer.render(this.scene, this.camera);
+        this._lastPaintMs = now;
         if (!this._snapping) this._needsFrame = false;
       }
 
@@ -262,10 +349,10 @@
           else obj.material.dispose?.();
         }
       });
-      try {
-        this.renderer.forceContextLoss?.();
-      } catch (_) { /* ignore */ }
+      // Never forceContextLoss / loseContext — that poisons the next WebGLRenderer
+      // in Electron, Cursor Simple Browser, and some embedded previews (Retry 3D).
       this.renderer.dispose();
+      this._ground = null;
       this.canvas?.remove();
       this.canvas = null;
       this.raycastMeshes = [];

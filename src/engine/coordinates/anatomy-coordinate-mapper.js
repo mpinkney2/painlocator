@@ -13,6 +13,10 @@ function clamp(v, min, max) {
 
 class AnatomyCoordinateMapper {
   static ENLARGED_ZOOM = 1.85;
+  /** Simple map always letterboxes the full plate (no crop). */
+  static SIMPLE_PAIN_MAP_DESKTOP_ZOOM = 1;
+  /** Simple map always letterboxes the full plate (no crop). */
+  static SIMPLE_PAIN_MAP_MOBILE_ZOOM = 1;
 
   constructor(frameEl, imageEl) {
     this.frameEl = frameEl;
@@ -139,10 +143,24 @@ class AnatomyCoordinateMapper {
     if (!this.frameEl) return;
     this.clampPan();
     const b = this.getImageBounds();
-    this.frameEl.style.width = `${b.width}px`;
-    this.frameEl.style.height = `${b.height}px`;
-    this.frameEl.style.left = `${b.left}px`;
-    this.frameEl.style.top = `${b.top}px`;
+    const frame = this.frameEl;
+    // First layout: snap without transition so the figure does not jump from 0,0.
+    if (!frame.dataset.spmLaidOut) {
+      frame.style.transition = "none";
+      frame.style.width = `${b.width}px`;
+      frame.style.height = `${b.height}px`;
+      frame.style.left = `${b.left}px`;
+      frame.style.top = `${b.top}px`;
+      // Force reflow, then allow progressive transitions.
+      void frame.offsetWidth;
+      frame.style.transition = "";
+      frame.dataset.spmLaidOut = "1";
+      return;
+    }
+    frame.style.width = `${b.width}px`;
+    frame.style.height = `${b.height}px`;
+    frame.style.left = `${b.left}px`;
+    frame.style.top = `${b.top}px`;
   }
 
   clientToNormalizedRaw(clientX, clientY) {

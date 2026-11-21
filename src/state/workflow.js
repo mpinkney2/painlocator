@@ -111,11 +111,14 @@ function applyWorkflowMode(mode) {
   const editBtn = document.getElementById('btnEditEntry');
   if (editBtn) editBtn.textContent = 'Edit Entry';
 
+  const patientShell = state.presentationMode === 'patient';
+  // Patients tap to mark in both Spatial and 2D plate; clinicians keep circle/area on plate.
+  const captureDefaultTool = (state.engine?.isSpatialMode?.() || patientShell) ? 'point' : 'circle';
+
   if (mode !== 'clinical') {
     const advancedTools = ['polygon', 'brush', 'lasso'];
     if (advancedTools.includes(entryStore.activeTool)) {
-      const spatial = state.engine?.isSpatialMode?.();
-      entryStore.setTool(mode === 'review' ? 'select' : spatial ? 'point' : 'circle');
+      entryStore.setTool(mode === 'review' ? 'select' : captureDefaultTool);
     }
     state.engine?.clinicalRenderer?.layers?.interaction?.cancelPolygonDraw?.();
     if (state.vizController?.baseMode === 'reference') {
@@ -131,8 +134,7 @@ function applyWorkflowMode(mode) {
     document.getElementById('entryFilterBar').hidden = true;
     document.getElementById('comparePanel').hidden = true;
   } else if (mode === 'capture') {
-    const spatial = state.engine?.isSpatialMode?.();
-    const tool = spatial ? 'point' : 'circle';
+    const tool = captureDefaultTool;
     entryStore.setTool(tool);
     document.querySelectorAll('.capture-tools .region-tool[data-tool]').forEach(b => {
       b.classList.toggle('active', b.dataset.tool === tool);
