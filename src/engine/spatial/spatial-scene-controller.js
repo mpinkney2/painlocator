@@ -246,11 +246,19 @@
       return this._yaw;
     }
 
+    _paintYaw() {
+      const logical = this._yaw;
+      const painted = SpatialProjection.modelYaw
+        ? SpatialProjection.modelYaw(logical)
+        : logical;
+      this.bodyRoot.rotation.y = painted;
+    }
+
     setYawImmediate(yaw) {
       this._yaw = SpatialProjection.normalizeYaw(yaw);
       this._targetYaw = this._yaw;
       this._snapping = false;
-      this.bodyRoot.rotation.y = this._yaw;
+      this._paintYaw();
       this.requestFrame();
     }
 
@@ -299,7 +307,7 @@
           this.setYawImmediate(this._targetYaw);
         } else {
           this._yaw = SpatialProjection.normalizeYaw(this._yaw + delta * 0.22);
-          this.bodyRoot.rotation.y = this._yaw;
+          this._paintYaw();
           this._needsFrame = true;
         }
       }

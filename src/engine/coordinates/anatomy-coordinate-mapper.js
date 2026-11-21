@@ -163,9 +163,62 @@ class AnatomyCoordinateMapper {
     frame.style.top = `${b.top}px`;
   }
 
+  /**
+   * Bitmap rectangle actually painted by the plate image.
+   * object-fit contain/cover and object-position are included so a tap
+   * maps to the picture, not the letterbox margin around it.
+   */
+  getVisibleImageRect() {
+    const img = this.imageEl;
+    const frame = this.frameEl;
+    const basis = (img && typeof img.getBoundingClientRect === "function")
+      ? img.getBoundingClientRect()
+      : (frame && typeof frame.getBoundingClientRect === "function"
+        ? frame.getBoundingClientRect()
+        : null);
+    if (!basis || !basis.width || !basis.height) {
+      return { left: 0, top: 0, width: 1, height: 1 };
+    }
+    const nw = img?.naturalWidth || 0;
+    const nh = img?.naturalHeight || 0;
+    if (!nw || !nh || typeof window === "undefined" || !window.getComputedStyle || !img) {
+      return basis;
+    }
+    let fit = "fill";
+    let posX = 0.5;
+    let posY = 0.5;
+    try {
+      const cs = window.getComputedStyle(img);
+      fit = String(cs.objectFit || "fill").toLowerCase();
+      const parts = String(cs.objectPosition || "50% 50%").trim().split(/\s+/);
+      const parse = (token, size) => {
+        if (!token) return 0.5;
+        if (token.endsWith("%")) return (parseFloat(token) || 0) / 100;
+        if (token === "left" || token === "top") return 0;
+        if (token === "right" || token === "bottom") return 1;
+        if (token === "center") return 0.5;
+        const px = parseFloat(token);
+        return Number.isFinite(px) ? px / (size || 1) : 0.5;
+      };
+      posX = parse(parts[0], basis.width);
+      posY = parse(parts[1] || "50%", basis.height);
+    } catch (_) { /* use the element box */ }
+    if (fit === "fill" || fit === "none") return basis;
+    const scale = fit === "cover"
+      ? Math.max(basis.width / nw, basis.height / nh)
+      : Math.min(basis.width / nw, basis.height / nh);
+    const width = nw * scale;
+    const height = nh * scale;
+    return {
+      left: basis.left + (basis.width - width) * posX,
+      top: basis.top + (basis.height - height) * posY,
+      width,
+      height
+    };
+  }
+
   clientToNormalizedRaw(clientX, clientY) {
-    if (!this.frameEl) return { x: 0.5, y: 0.5 };
-    const rect = this.frameEl.getBoundingClientRect();
+    const rect = this.getVisibleImageRect();
     const x = (clientX - rect.left) / (rect.width || 1);
     const y = (clientY - rect.top) / (rect.height || 1);
     return { x, y };

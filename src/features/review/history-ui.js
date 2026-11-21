@@ -91,15 +91,26 @@ function initRegionTools() {
 }
 
 function syncEnlargeButton(enlarged) {
-  const btn = document.getElementById('btnEnlargeAnatomy');
-  if (!btn) return;
   const on = !!enlarged;
-  btn.classList.toggle('active', on);
-  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  btn.textContent = on ? 'Fit' : 'Enlarge';
-  btn.title = on
-    ? 'Return silhouette to full view'
-    : 'Enlarge silhouette for precise marking';
+  const btn = document.getElementById('btnEnlargeAnatomy');
+  if (btn) {
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? 'Fit' : 'Enlarge';
+    btn.title = on
+      ? 'Return silhouette to full view'
+      : 'Enlarge silhouette for precise marking';
+  }
+  const patientZoom = document.getElementById('btnPatientZoom');
+  if (patientZoom) {
+    patientZoom.classList.toggle('active', on);
+    patientZoom.setAttribute('aria-pressed', on ? 'true' : 'false');
+    patientZoom.textContent = on ? 'Fit' : 'Zoom';
+    patientZoom.title = on
+      ? 'Show the whole body'
+      : 'Zoom the body to place a mark more precisely';
+  }
+  if (!btn && !patientZoom) return;
   const hint = document.getElementById('avatarHint');
   if (hint && on) {
     hint.textContent = 'Silhouette enlarged — mark precisely, or drag empty space to pan';
@@ -110,13 +121,15 @@ function syncEnlargeButton(enlarged) {
 }
 
 function initAnatomyZoom() {
-  const btn = document.getElementById('btnEnlargeAnatomy');
-  if (!btn) return;
-  btn.addEventListener('click', () => {
+  const zoom = () => {
     if (state.engine?.isSpatialMode?.()) return;
     const enlarged = state.engine?.toggleEnlarge?.();
     syncEnlargeButton(enlarged);
-  });
+  };
+  const btn = document.getElementById('btnEnlargeAnatomy');
+  btn?.addEventListener('click', zoom);
+  document.getElementById('btnPatientZoom')?.addEventListener('click', zoom);
+  if (!btn && !document.getElementById('btnPatientZoom')) return;
   state.engine?.onZoomChange?.(({ enlarged }) => syncEnlargeButton(enlarged));
   syncEnlargeButton(state.engine?.isEnlarged?.());
 }
@@ -140,6 +153,8 @@ function syncDisplayModeButtons(mode) {
       enlarge.disabled = isSpatial;
       enlarge.hidden = isSpatial;
     }
+    const patientZoom = document.getElementById('btnPatientZoom');
+    if (patientZoom) patientZoom.hidden = isSpatial;
     document.getElementById('avatarWrap')?.classList.toggle('display-spatial', isSpatial);
     document.getElementById('avatarStage')?.classList.toggle('cae-spatial-host', isSpatial);
   }

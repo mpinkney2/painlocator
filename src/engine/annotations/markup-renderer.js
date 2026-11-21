@@ -21,6 +21,8 @@ function polygonPoints(anchors) {
   return anchors.map(a => `${a.x},${a.y}`).join(" ");
 }
 
+/** A plate tap places a dot only when the pointer travels less than this. */
+const PLATE_TAP_SLOP_PX = 8;
 const SIMPLE_MARK_SIZE_KEY = "painlocator_mark_size";
 const SIMPLE_MARK_SIZE_SCALES = { s: 0.5, m: 1, l: 1.5 };
 const SIMPLE_VIEW_YAW = ["front", "right", "back", "left"];
@@ -384,6 +386,100 @@ class RegionInteractionLayer {
     this._raf = 0;
     this._pendingMove = null;
     this._unbindMoveEnd = null;
+    this._tapArm = null;
+    this._pinch = null;
+    this._pointers = new Map();
+  }
+
+  _isPatientPlate() {
+    return typeof document !== "undefined"
+      && !!document.body?.classList?.contains("simple-pain-map")
+      && !!document.body?.classList?.contains("shell-patient");
+  }
+
+  _pointerPoint(e) {
+    if (e.touches?.length) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    if (e.changedTouches?.length) return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  _touchCount(e) {
+    if (e.touches) return e.touches.length;
+    return this._pointers.size;
+  }
+
+  _rememberPointer(e) {
+    if (e.pointerId == null) return;
+    const p = this._pointerPoint(e);
+    this._pointers.set(e.pointerId, p);
+  }
+
+  _forgetPointer(e) {
+    if (e.pointerId == null) return;
+    this._pointers.delete(e.pointerId);
+  }
+
+  _beginPinch(e) {
+    const touches = e.touches;
+    if (!touches || touches.length < 2 || !this._isPatientPlate()) return;
+    const a = touches[0];
+    const b = touches[1];
+    const mid = this.clientToNorm((a.clientX + b.clientX) / 2, (a.clientY + b.clientY) / 2);
+    this._pinch = {
+      dist: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1,
+      zoom: this.mapper.zoom || 1,
+      focusX: mid?.x ?? 0.5,
+      focusY: mid?.y ?? 0.5
+    };
+    this._tapArm = null;
+    this.mapper.setZoom(this._pinch.zoom, {
+      focusX: this._pinch.focusX,
+      focusY: this._pinch.focusY,
+      resetPan: true
+    });
+  }
+
+  _updatePinch(e) {
+    if (!this._pinch || !e.touches || e.touches.length < 2) return;
+    const a = e.touches[0];
+    const b = e.touches[1];
+    const dist = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1;
+    const next = this._pinch.zoom * (dist / this._pinch.dist);
+    this.mapper.setZoom(next, {
+      focusX: this._pinch.focusX,
+      focusY: this._pinch.focusY,
+      resetPan: false
+    });
+    this.renderer.syncLayout();
+    this.renderer._emitZoomChange?.();
+  }
+
+  _armPlateTap(pt) {
+    this._tapArm = {
+      x: pt.x,
+      y: pt.y,
+      moved: false,
+      panX: this.mapper.panX,
+      panY: this.mapper.panY
+    };
+  }
+
+  _tapTravel(pt) {
+    if (!this._tapArm || !pt) return Infinity;
+    return Math.hypot(pt.x - this._tapArm.x, pt.y - this._tapArm.y);
+  }
+
+  _placePoint(pt) {
+    const loc = this.clientToNorm(pt.x, pt.y);
+    if (!loc || !this.mapper?.isInsideImage(pt.x, pt.y)) return;
+    this.store.createPointRegion(
+      normalizeModelType(this.engine.modelType),
+      this.engine.viewType, loc.x, loc.y,
+      this.renderer.getActiveAnatomyLayer(),
+      this.engine.physicianMode
+    );
+    this.engine.trigger("regionplaced", { entry: this.store.getActiveEntry() });
+    this.renderer.renderRegions();
   }
 
   dist(a, b) {
@@ -444,6 +540,18 @@ class RegionInteractionLayer {
   }
 
   onPointerDown(e) {
+    this._rememberPointer(e);
+    const multi = (e.touches && e.touches.length >= 2) || this._pointers.size >= 2;
+    if (multi) {
+      e.preventDefault?.();
+      this._tapArm = null;
+      this._mode = null;
+      this._start = null;
+      this._preview = null;
+      this._beginPinch(e);
+      this.bindMoveEnd();
+      return;
+    }
     const pt = e.touches ? e.touches[0] : e;
     if (!this.mapper?.isInsideImage(pt.clientX, pt.clientY) && this.store.activeTool !== "select") {
       return;
@@ -503,14 +611,8 @@ class RegionInteractionLayer {
 
     if (tool === "point") {
       e.preventDefault();
-      this.store.createPointRegion(
-        normalizeModelType(this.engine.modelType),
-        this.engine.viewType, loc.x, loc.y,
-        this.renderer.getActiveAnatomyLayer(),
-        this.engine.physicianMode
-      );
-      this.engine.trigger("regionplaced", { entry: this.store.getActiveEntry() });
-      this.renderer.renderRegions();
+      this._armPlateTap({ x: pt.clientX, y: pt.clientY });
+      this.bindMoveEnd();
       return;
     }
 
@@ -601,8 +703,26 @@ class RegionInteractionLayer {
 
     const move = (ev) => {
       if (ev.cancelable) ev.preventDefault();
+      if ((ev.touches && ev.touches.length >= 2) || this._pointers.size >= 2) {
+        this._tapArm = null;
+        if (!this._pinch) this._beginPinch(ev);
+        this._updatePinch(ev);
+        return;
+      }
       const pt = ev.touches ? ev.touches[0] : ev;
       if (!pt) return;
+      if (this._tapArm) {
+        const travel = Math.hypot(pt.clientX - this._tapArm.x, pt.clientY - this._tapArm.y);
+        if (travel >= PLATE_TAP_SLOP_PX) this._tapArm.moved = true;
+        if (this._tapArm.moved && this._isPatientPlate() && this.mapper.isEnlarged()) {
+          this.mapper.setPan(
+            this._tapArm.panX + (pt.clientX - this._tapArm.x),
+            this._tapArm.panY + (pt.clientY - this._tapArm.y)
+          );
+          this.renderer.syncLayout();
+        }
+        return;
+      }
       this._didDrag = true;
       this._pendingMove = { clientX: pt.clientX, clientY: pt.clientY };
       if (!this._raf) {
@@ -611,6 +731,13 @@ class RegionInteractionLayer {
     };
 
     const end = (ev) => {
+      this._forgetPointer(ev);
+      const remaining = ev.touches ? ev.touches.length : this._pointers.size;
+      if (remaining > 0) {
+        if (remaining < 2) this._pinch = null;
+        this._tapArm = null;
+        return;
+      }
       this._unbindMoveEnd?.();
       this._unbindMoveEnd = null;
       if (this._raf) {
@@ -619,9 +746,20 @@ class RegionInteractionLayer {
       }
       if (this._pendingMove) this.applyPendingMove();
 
+      const tap = this._tapArm;
+      const pinched = !!this._pinch;
+      const cancelled = ev.type === "touchcancel" || ev.type === "pointercancel";
+      this._tapArm = null;
+      this._pinch = null;
+      if (tap && !pinched && !cancelled && this.store.activeTool === "point") {
+        const pt = this._pointerPoint(ev);
+        const travel = Math.hypot(pt.x - tap.x, pt.y - tap.y);
+        if (!tap.moved && travel < PLATE_TAP_SLOP_PX) this._placePoint(pt);
+      }
+
       const wasPan = this._dragKind === "pan";
 
-      if (this._mode === "circle-draw" && this._start) {
+      if (!pinched && !cancelled && this._mode === "circle-draw" && this._start) {
         const pt = ev.changedTouches ? ev.changedTouches[0] : ev;
         const loc = this.clientToNorm(pt.clientX, pt.clientY);
         if (loc) {
@@ -653,15 +791,19 @@ class RegionInteractionLayer {
     document.addEventListener("mousemove", move);
     document.addEventListener("touchmove", move, { passive: false });
     document.addEventListener("mouseup", end);
+    document.addEventListener("pointerup", end);
     document.addEventListener("touchend", end);
     document.addEventListener("touchcancel", end);
+    document.addEventListener("pointercancel", end);
 
     this._unbindMoveEnd = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("touchmove", move);
       document.removeEventListener("mouseup", end);
+      document.removeEventListener("pointerup", end);
       document.removeEventListener("touchend", end);
       document.removeEventListener("touchcancel", end);
+      document.removeEventListener("pointercancel", end);
     };
   }
 }
@@ -682,6 +824,14 @@ class ClinicalMarkupRenderer {
     this._onResize = () => {
       this.applySimplePainMapPresentationScale();
       this.syncLayout();
+    };
+    this._onOrientation = () => {
+      const run = () => {
+        this.applySimplePainMapPresentationScale();
+        this.syncLayout();
+      };
+      run();
+      if (typeof requestAnimationFrame === "function") requestAnimationFrame(run);
     };
     this._resizeObserver = null;
     this._zoomListeners = [];
@@ -836,7 +986,8 @@ class ClinicalMarkupRenderer {
       return;
     }
     if (typeof applyLikenessPresentation === "function") applyLikenessPresentation();
-    if (this.mapper.zoom >= AnatomyCoordinateMapper.ENLARGED_ZOOM - 0.05) return;
+    // Keep a patient pinch or zoom. Resize must not snap the figure back to fit.
+    if (this.mapper.zoom > 1.001) return;
     if (this._spmScaleMode === "fit" && this.mapper.zoom <= 1.001) return;
     this._spmScaleMode = "fit";
     this.mapper.setZoom(1, { focusX: 0.5, focusY: 0.5, resetPan: true });
@@ -908,6 +1059,7 @@ class ClinicalMarkupRenderer {
     this._cancelViewSwap = null;
     this._viewSwapGen += 1;
     window.removeEventListener("resize", this._onResize);
+    window.removeEventListener("orientationchange", this._onOrientation);
     this._resizeObserver?.disconnect();
 
     container.innerHTML = `
@@ -999,6 +1151,7 @@ class ClinicalMarkupRenderer {
     else img.src = plateSrc;
 
     window.addEventListener("resize", this._onResize);
+    window.addEventListener("orientationchange", this._onOrientation);
     if (typeof ResizeObserver !== "undefined" && this.viewport) {
       this._resizeObserver = new ResizeObserver(() => {
         this.applySimplePainMapPresentationScale();

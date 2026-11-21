@@ -1,22 +1,23 @@
 /**
- * Optional Faces pain scale — classic office-chart idea as one interactive face.
- * Does not replace the body map; writes the same 0–10 intensity the clinician already sees.
+ * Optional 0–10 pain level control with one original neutral face.
+ * The face is a simple indicator: mouth and brows shift slightly with the number.
+ * Intensity color stays on the slider. This does not replace the body map.
  */
 (function (global) {
   'use strict';
 
-  var FACE_LABELS = [
-    'Feels good — no pain',
-    'Almost fine — tiny twinge',
-    'Hurts a little',
-    'Hurts a little more',
-    'Hurts more',
-    'Hurts quite a bit',
-    'Hurts even more',
-    'Hurts a lot',
-    'Hurts badly',
-    'Hurts terribly',
-    'Unmentionable pain'
+  var LEVEL_LABELS = [
+    'No pain',
+    'Mild',
+    'Mild',
+    'Mild',
+    'Moderate',
+    'Moderate',
+    'Moderate',
+    'Severe',
+    'Severe',
+    'Severe',
+    'Worst pain imaginable'
   ];
 
   function clampIntensity(value) {
@@ -32,112 +33,56 @@
     return (colors && colors[n]) || '#f59e0b';
   }
 
-  /** Soft face fill: tint toward pain color as intensity rises. */
-  function faceFill(n) {
-    var t = n / 10;
-    // Calm cream → intense wash of the pain hue
-    var r = Math.round(255 - t * 40);
-    var g = Math.round(248 - t * (248 - 80));
-    var b = Math.round(236 - t * (236 - 90));
-    if (n >= 7) {
-      r = Math.min(255, r + 20);
-      g = Math.max(40, g - 30);
-      b = Math.max(40, b - 20);
-    }
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
-  }
-
   function lerp(a, b, t) {
     return a + (b - a) * t;
   }
 
+  function levelText(n) {
+    return LEVEL_LABELS[n] || LEVEL_LABELS[0];
+  }
+
+  /** Straight mouth at 0. Higher levels dip the center a few pixels. */
   function mouthPath(t) {
-    // t 0 = smile, 1 = deep frown
-    var leftY = lerp(78, 92, t);
-    var rightY = lerp(78, 92, t);
-    var midY = lerp(92, 68, t);
-    var c1y = lerp(100, 58, t);
-    var c2y = lerp(100, 58, t);
-    return 'M 42 ' + leftY.toFixed(1) +
-      ' C 55 ' + c1y.toFixed(1) + ', 85 ' + c2y.toFixed(1) + ', 98 ' + rightY.toFixed(1);
+    var edge = 86;
+    var mid = lerp(86, 93, t);
+    return 'M 48 ' + edge.toFixed(1) +
+      ' C 60 ' + mid.toFixed(1) + ', 80 ' + mid.toFixed(1) + ', 92 ' + edge.toFixed(1);
   }
 
+  /** Level brows that tip a few pixels as the number rises. */
   function browPath(side, t) {
-    // Neutral → angled distress
-    var lift = lerp(0, 6, t);
-    var tilt = lerp(0, 8, t);
+    var outer = lerp(54, 52.5, t);
+    var inner = lerp(54, 57, t);
     if (side === 'left') {
-      return 'M 38 ' + (48 + lift).toFixed(1) + ' L 58 ' + (46 - tilt).toFixed(1);
+      return 'M 40 ' + outer.toFixed(1) + ' L 58 ' + inner.toFixed(1);
     }
-    return 'M 82 ' + (46 - tilt).toFixed(1) + ' L 102 ' + (48 + lift).toFixed(1);
-  }
-
-  function eyeOpen(t) {
-    // Happier: slightly squinted happy; mid: round; high: wider distressed
-    return lerp(4.2, 6.5, t);
+    return 'M 82 ' + inner.toFixed(1) + ' L 100 ' + outer.toFixed(1);
   }
 
   function updateFacesFace(intensity) {
     var n = clampIntensity(intensity);
     var t = n / 10;
-    var svg = document.getElementById('facesPainSvg');
-    var face = document.getElementById('facesPainHead');
     var mouth = document.getElementById('facesPainMouth');
     var browL = document.getElementById('facesPainBrowL');
     var browR = document.getElementById('facesPainBrowR');
-    var eyeL = document.getElementById('facesPainEyeL');
-    var eyeR = document.getElementById('facesPainEyeR');
-    var tearL = document.getElementById('facesPainTearL');
-    var tearR = document.getElementById('facesPainTearR');
-    var cheekL = document.getElementById('facesPainCheekL');
-    var cheekR = document.getElementById('facesPainCheekR');
-    var ring = document.getElementById('facesPainRing');
     var label = document.getElementById('facesPainLabel');
     var valueEl = document.getElementById('facesPainValue');
     var accent = painColor(n);
+    var text = levelText(n);
 
-    if (face) {
-      face.setAttribute('fill', faceFill(n));
-      face.setAttribute('stroke', accent);
-    }
-    if (ring) {
-      ring.setAttribute('stroke', accent);
-      ring.style.opacity = String(0.25 + t * 0.55);
-    }
-    if (mouth) {
-      mouth.setAttribute('d', mouthPath(t));
-      mouth.setAttribute('stroke', n >= 6 ? '#7f1d1d' : '#1e293b');
-    }
+    if (mouth) mouth.setAttribute('d', mouthPath(t));
     if (browL) browL.setAttribute('d', browPath('left', t));
     if (browR) browR.setAttribute('d', browPath('right', t));
-    var r = eyeOpen(t);
-    if (eyeL) {
-      eyeL.setAttribute('ry', r.toFixed(1));
-      eyeL.setAttribute('fill', n >= 8 ? '#1e293b' : '#0f172a');
-    }
-    if (eyeR) {
-      eyeR.setAttribute('ry', r.toFixed(1));
-      eyeR.setAttribute('fill', n >= 8 ? '#1e293b' : '#0f172a');
-    }
-    // Tears from ~7 upward
-    var tearOpacity = n < 7 ? 0 : Math.min(1, (n - 6) / 4);
-    if (tearL) tearL.style.opacity = String(tearOpacity);
-    if (tearR) tearR.style.opacity = String(tearOpacity);
-    // Soft cheeks fade as pain rises
-    var cheekOpacity = Math.max(0, 0.45 - t * 0.45);
-    if (cheekL) cheekL.style.opacity = String(cheekOpacity);
-    if (cheekR) cheekR.style.opacity = String(cheekOpacity);
-    if (label) label.textContent = FACE_LABELS[n] || FACE_LABELS[0];
+    if (label) label.textContent = text;
     if (valueEl) {
       valueEl.textContent = String(n);
       valueEl.style.color = accent;
     }
-    if (svg) svg.style.setProperty('--faces-accent', accent);
     var slider = document.getElementById('facesIntensitySlider');
     if (slider) {
       slider.style.setProperty('--spm-intensity-accent', accent);
       slider.setAttribute('aria-valuenow', String(n));
-      slider.setAttribute('aria-valuetext', FACE_LABELS[n] + ', ' + n + ' out of 10');
+      slider.setAttribute('aria-valuetext', text + ', ' + n + ' out of 10');
     }
   }
 
@@ -175,7 +120,6 @@
     } else if (typeof applyIntensityValue === 'function') {
       applyIntensityValue(n);
     } else {
-      // Fallback: write store + sync map slider directly
       var mapSlider = document.getElementById('patientIntensitySlider');
       if (mapSlider) mapSlider.value = String(n);
       try {
@@ -188,7 +132,7 @@
     var status = document.getElementById('facesPainStatus');
     if (status) {
       status.hidden = false;
-      status.textContent = 'Saved for your doctor — intensity ' + n + ' / 10.';
+      status.textContent = 'Saved for your doctor — pain level ' + n + ' / 10.';
     }
     setTimeout(function () {
       closeFacesScale();
@@ -230,7 +174,6 @@
           var more = document.getElementById('simpleMoreModal');
           if (more && more.open && typeof more.close === 'function') more.close();
         }
-        // Allow More dialog to close before opening Faces
         var open = function () { openFacesScale(); };
         if (typeof queueMicrotask === 'function') queueMicrotask(open);
         else setTimeout(open, 0);
@@ -244,6 +187,6 @@
     open: openFacesScale,
     close: closeFacesScale,
     update: updateFacesFace,
-    labels: FACE_LABELS
+    labels: LEVEL_LABELS
   };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -60,7 +60,7 @@ function buildPostProcedure() {
       note: '[Demo] Light activity; avoided heavy lifting.',
       regions: [
         demoRegion({ view: 'front', anchors: [{ x: 0.48, y: 0.52 }], patientLabel: 'Lower abdomen', physicianLabel: 'Hypogastric region' }),
-        demoRegion({ view: 'front', anchors: [{ x: 0.52, y: 0.58 }], patientLabel: 'Right groin', physicianLabel: 'Right inguinal', radius: 0.018 })
+        demoRegion({ view: 'front', anchors: [{ x: 0.45, y: 0.57 }], patientLabel: 'Right groin', physicianLabel: 'Right inguinal', radius: 0.018 })
       ]
     },
     {
@@ -160,14 +160,14 @@ function buildSportsInjury() {
       quality: ['Sharp', 'Throbbing'], triggers: ['Walking', 'First step'], easesAfter: ['1 min'],
       duration: 'Hours', whenOccurring: 'During activity',
       note: '[Demo] Fictional sports injury — right knee twist during practice.',
-      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.032 })]
+      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.032 })]
     },
     {
       patientModel: model, intensity: 7, createdAt: daysAgo(9, 8), updatedAt: daysAgo(9, 8),
       quality: ['Throbbing', 'Ache'], triggers: ['Standing', 'Walking'], easesAfter: ['15 sec'],
       duration: 'Hours', whenOccurring: 'Morning',
       note: '[Demo] Ice and elevation logged (fictional).',
-      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee' })]
+      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee' })]
     },
     {
       patientModel: model, intensity: 6, createdAt: daysAgo(8, 15), updatedAt: daysAgo(8, 15),
@@ -175,8 +175,8 @@ function buildSportsInjury() {
       duration: 'Hours', whenOccurring: 'Afternoon',
       note: '[Demo] Clinic visit same day — fictional sample, not a medical record.',
       regions: [
-        demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee' }),
-        demoRegion({ view: 'right', anchors: [{ x: 0.45, y: 0.70 }], patientLabel: 'Right knee (side)', physicianLabel: 'Right knee lateral', radius: 0.025 })
+        demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee' }),
+        demoRegion({ view: 'right', anchors: [{ x: 0.48, y: 0.73 }], patientLabel: 'Right knee (side)', physicianLabel: 'Right knee lateral', radius: 0.025 })
       ]
     },
     {
@@ -184,28 +184,28 @@ function buildSportsInjury() {
       quality: ['Ache', 'Pressure'], triggers: ['Walking'], easesAfter: ['5 sec'],
       duration: 'Minutes', whenOccurring: 'Morning',
       note: '[Demo] Compression sleeve used during short walk.',
-      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.026 })]
+      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.026 })]
     },
     {
       patientModel: model, intensity: 4, createdAt: daysAgo(4, 16), updatedAt: daysAgo(4, 16),
       quality: ['Ache'], triggers: ['Sitting'], easesAfter: [],
       duration: 'Minutes', whenOccurring: 'Afternoon',
       note: '[Demo] Stationary bike associated with milder intensity (fictional).',
-      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.022 })]
+      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.022 })]
     },
     {
       patientModel: model, intensity: 4, createdAt: daysAgo(2, 11), updatedAt: daysAgo(2, 11),
       quality: ['Pulling'], triggers: ['First step'], easesAfter: ['5 sec'],
       duration: 'Minutes', whenOccurring: 'Morning',
       note: '[Demo] Mild stiffness on first steps.',
-      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.02 })]
+      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.02 })]
     },
     {
       patientModel: model, intensity: 3, createdAt: daysAgo(0, 17), updatedAt: daysAgo(0, 17),
       quality: ['Ache'], triggers: ['Walking'], easesAfter: [],
       duration: 'Minutes', whenOccurring: 'Evening',
       note: '[Demo] Light walk completed — fictional recovery tracking.',
-      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.58, y: 0.72 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.018 })]
+      regions: [demoRegion({ view: 'front', anchors: [{ x: 0.40, y: 0.74 }], patientLabel: 'Right knee', physicianLabel: 'Right knee', radius: 0.018 })]
     }
   ];
 }

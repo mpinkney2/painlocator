@@ -985,6 +985,69 @@
     }
   }
 
+  function unmappedLabel() {
+    return (typeof UNMAPPED_REGION_LABEL !== 'undefined' && UNMAPPED_REGION_LABEL)
+      || 'Unmapped – please confirm';
+  }
+
+  function promptUnmappedRegion() {
+    if (!isPatientShell()) return;
+    var store = getStore();
+    var entry = store && store.getActiveEntry ? store.getActiveEntry() : null;
+    var regions = entry && Array.isArray(entry.regions) ? entry.regions : [];
+    var region = regions[regions.length - 1];
+    if (!region || region.patientLabel !== unmappedLabel()) return;
+    var dialog = document.getElementById('unmappedRegionDialog');
+    var select = document.getElementById('unmappedRegionSelect');
+    if (!dialog || !select) return;
+    var view = region.view || 'front';
+    var catalog = (typeof ANATOMY_REGIONS !== 'undefined' && ANATOMY_REGIONS[view]) || [];
+    select.innerHTML = catalog.map(function (item) {
+      var label = item.patientLabel || item.label;
+      return '<option value="' + escapeHtml(item.id) + '">' + escapeHtml(label) + '</option>';
+    }).join('');
+    if (!select.dataset.unmappedBound) {
+      select.dataset.unmappedBound = '1';
+      var confirmBtn = document.getElementById('btnUnmappedConfirm');
+      var keepBtn = document.getElementById('btnUnmappedKeep');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', function () {
+          applyUnmappedChoice();
+        });
+      }
+      if (keepBtn) {
+        keepBtn.addEventListener('click', function () {
+          if (dialog.open && typeof dialog.close === 'function') dialog.close();
+        });
+      }
+    }
+    if (typeof dialog.showModal === 'function' && !dialog.open) dialog.showModal();
+  }
+
+  function applyUnmappedChoice() {
+    var dialog = document.getElementById('unmappedRegionDialog');
+    var select = document.getElementById('unmappedRegionSelect');
+    var store = getStore();
+    var entry = store && store.getActiveEntry ? store.getActiveEntry() : null;
+    var regions = entry && Array.isArray(entry.regions) ? entry.regions : [];
+    var region = regions[regions.length - 1];
+    var catalogView = region && region.view ? region.view : 'front';
+    var catalog = (typeof ANATOMY_REGIONS !== 'undefined' && ANATOMY_REGIONS[catalogView]) || [];
+    var chosen = catalog.find(function (item) { return item.id === (select && select.value); });
+    if (region && chosen && store && typeof store.updateRegion === 'function') {
+      store.updateRegion(region.id, {
+        regionId: chosen.id,
+        patientLabel: chosen.patientLabel || chosen.label,
+        physicianLabel: chosen.physicianLabel || chosen.label,
+        anatomyLayer: chosen.layer || region.anatomyLayer,
+        unmapped: false,
+        side: chosen.side || null
+      });
+    }
+    if (dialog && dialog.open && typeof dialog.close === 'function') dialog.close();
+    updateLocationChrome();
+  }
+
   function initPatientFlow() {
     var st = getState();
     if (st) st.patientStep = 'locate';
@@ -1009,6 +1072,7 @@
           updateLocationChrome();
           refreshMarkColors();
           syncAnatomyLayout();
+          promptUnmappedRegion();
         });
         stEngine.on('regionchanged', function () {
           updateLocationChrome();

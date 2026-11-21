@@ -86,7 +86,7 @@ class PainEntryStore {
 
   _migrateLocalEnvelope(data) {
     const version = data.schemaVersion || "1.0.0";
-    // 1.0.0 → 1.1.0: add schemaVersion; ensure draft null when empty
+    // 1.0.0 → 1.1.0: add schemaVersion. 1.2.0 adds optional PainRegion.spatial.
     if (!data.schemaVersion) data.schemaVersion = "1.1.0";
     if (data.draftEntry && Array.isArray(data.draftEntry.regions) && !data.draftEntry.regions.length
         && !(data.draftEntry.note || (data.draftEntry.quality || []).length)) {

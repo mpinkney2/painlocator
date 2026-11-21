@@ -712,6 +712,23 @@
       );
       if (!region) return;
 
+      const spatial = {
+        schemaVersion: 1,
+        meshId: attachment.meshId || null,
+        structureId: attachment.structureId || null,
+        localPoint: attachment.localPoint || null,
+        face: attachment.face || null,
+        faceIndex: attachment.faceIndex ?? null,
+        barycentric: attachment.barycentric || null,
+        capturedAtView: view
+      };
+      this.store.updateRegion?.(region.id, {
+        spatial,
+        structureId: attachment.structureId || region.structureId || null
+      });
+      region.spatial = spatial;
+      if (attachment.structureId) region.structureId = attachment.structureId;
+
       this._attachments.set(region.id, attachment);
 
       // Runtime-only canonical projection — never written to PainRegion / storage.
@@ -788,6 +805,10 @@
       const view = this.engine.viewType || "front";
       for (const region of this._regions) {
         const selected = this._selectedIds.has(region.id);
+        if (!this._attachments.has(region.id) && region.spatial) {
+          const restored = this._attachmentFromSpatial(region.spatial);
+          if (restored) this._attachments.set(region.id, restored);
+        }
         const attachment = this._attachments.get(region.id);
         if (attachment) {
           const ok = this.annotations.upsertSpatial(region.id, attachment, { selected });
@@ -800,6 +821,23 @@
         }
       }
       this.scene.requestFrame();
+    }
+
+    _attachmentFromSpatial(spatial) {
+      if (!spatial || typeof spatial !== "object") return null;
+      const point = spatial.localPoint;
+      const hasPoint = point && [point.x, point.y, point.z].every((n) => typeof n === "number" && Number.isFinite(n));
+      if (!hasPoint && !spatial.meshId) return null;
+      return {
+        kind: "spatialSurface",
+        meshId: spatial.meshId || null,
+        meshName: spatial.meshId || null,
+        structureId: spatial.structureId || null,
+        localPoint: hasPoint ? { x: point.x, y: point.y, z: point.z } : null,
+        face: spatial.face || null,
+        faceIndex: spatial.faceIndex ?? null,
+        barycentric: spatial.barycentric || null
+      };
     }
 
     _refreshLegacy(view) {

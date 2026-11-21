@@ -1352,7 +1352,7 @@ body.spatial-primary:not(.spatial-ready):not(.simple-pain-map) .cae-clinical-vie
   position: absolute;
   left: 8px;
   right: 8px;
-  bottom: 8px;
+  bottom: 2.1rem;
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
